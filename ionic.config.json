@@ -1,0 +1,8 @@
+{
+  "name": "CallServices",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react",
+  "id": "026d6878"
+}

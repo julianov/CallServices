@@ -1,0 +1,61 @@
+#tituloCardPRoveedor{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    width: 90%;
+    padding-top: 10px;
+    padding-bottom: 0px;
+    margin-top: 15px;
+}
+#ionCard-CardProveedor{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 90%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#CardProveedorImgContenedor{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin-top: 5px;
+}
+
+#ionCard-explorerContainer-Cliente-Imagen{
+    width: 200px;
+    height: 200px;
+   
+    border-radius: 50%;
+    margin-top: 5px;
+  }
+
+  #CardProveedorContainer{
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    width: 100%;
+  
+  }
+
+  #CardProveedorItem{
+      text-align: center;
+      align-self: center;
+  }
+
+  #CardProveedoresImg{
+      padding-bottom: 20px;
+  }
+
+  #botonContratar{
+      width: 98%;
+  }
+
+  #botonContratarContenedor{
+      width: 100%;
+      padding-top: 20px;
+      padding-bottom: 20px;
+  }

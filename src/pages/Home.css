@@ -1,0 +1,240 @@
+
+.ion-padding{
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.container {
+    text-align:right;
+    position: absolute;
+      
+  }
+
+
+/*
+/////////////////////////////////////////////////////////////////////
+*/
+/*
+Barra de búsqueda
+*/
+  #busqueda{
+    border-radius: 30px;
+  }
+  #columna{
+    display: inline-block;
+    vertical-align: middle;
+  }
+  /*
+  Fin de barra de búsqueda
+  */
+/*
+/////////////////////////////////////////////////////////////////////
+*/
+  /*
+  Columna donde va la foto de usuario
+  */
+  #columna3{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  #user{
+    margin-right: 5px;
+  }
+
+#foto-usuario{
+  border-radius: 50%;
+  height: 32px;
+  width: 32px;
+}
+
+.header{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  border:none;
+}
+  /*
+  Fin de Columna donde va la foto de usuario
+  */
+/*
+/////////////////////////////////////////////////////////////////////
+*/
+  /*
+  Modal de usuario
+  */
+    /* Works - pass "my-custom-class" in cssClass to increase specificity */
+
+#contenedor-central{
+  padding-top: 0.5cm;
+  padding-left:10px;
+  padding-right: 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border:none;
+
+}
+
+
+#elementos{
+  text-align: center;
+  justify-content: center;
+}
+
+#flecha-volver{
+  height: 32px;
+  width: 32px;
+}
+
+#contenedor-izquierda{
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+  border:none;
+}
+
+.cerrarsesion{
+  background-color: white;
+  border: none;
+  color: #3880ff;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  }
+
+  .iconosModal{
+    padding-left: 10px ;
+  }
+  /*
+  Fin de Modal de usuario
+  */
+
+ /*
+*************
+*/
+
+
+
+
+.boton-generales{
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  justify-content: center;
+  background-color:#85abee;
+  height: 32px;
+  width: 120px;
+}
+
+#foto-usuario-grande{
+  border-radius: 50%;
+  height: 128px;
+  width: 128px;
+}
+
+#foto-usuario-mas-grande{
+  border-radius: 50%;
+  height: 192px;
+  width: 192px;
+}
+
+.textoIconos{
+  color: black;
+}
+
+.imagen-boton-principal{
+  height: 20px;
+  width: 20px;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.label{
+  font-size: 0.25em;
+  }
+
+
+  #botoningresoregistro{
+    height: 40px;
+    width: 200px;
+  }
+
+  #contenedor-prueba{
+    display:flex;
+    justify-content: center;
+
+  }
+
+  .ion-list{
+    margin-top:10px;
+  }
+
+  #ionContentHome{
+    background:  #f3f2ef;  
+    padding-top: 1px;
+    width: 100%;
+    height: auto;
+  }
+
+
+  #ioncol-homecliente{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #ionrow-homecliente{
+    display:flex;
+    margin-bottom: 5px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #menu-cabecera-homecliente{
+    margin-bottom:20px ;
+  }
+  
+  
+  #busqueda-icono{
+    width: 32px;
+    height: 32px;
+  }
+  #busqueda-contenedor{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border:solid;
+    border-color: red;
+  }
+  #busqueda-imagen{
+    width: 10%;
+    margin-left: auto;
+  }
+#busqueda-input{
+  width: 85%;
+  margin-right: auto;
+}
+  #barra_busqueda{
+    width: 100%;
+    height: 32px;
+  }
+  
+  #posibilidades{
+    
+    position: relative;
+    text-align: center;
+    width: 100%;
+  }
+
+  

@@ -1,0 +1,20 @@
+#contenedorEstrellas{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    height: 32px;
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+}
+#badsStart {
+    font-size:32px;
+    color:gray;
+
+  }
+
+  #godsStart{
+    font-size:32px;
+    color:#3880ff;
+  }

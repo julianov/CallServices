@@ -1,0 +1,193 @@
+
+
+
+.container strong {
+  font-size: 20px;
+  line-height: 26px;
+  text-align: center;
+
+}
+
+#container-ubicacion{
+  text-align: center;
+  border-style: solid;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  margin:1px; padding-top:0 px;
+  padding-bottom: 0px;
+  word-wrap:break-word;
+}
+
+#textoCentrado{
+  text-align: center;
+}
+
+.container p {
+  font-size: 16px;
+  line-height: 22px;
+  color: #8c8c8c;
+  margin: 0;
+}
+
+.container a {
+  text-decoration: none;
+}
+
+#contenedor-vista-de-servicios{
+  text-align: center;
+  
+}
+
+  /* Works - pass "my-custom-class" in cssClass to increase specificity */
+  .my-custom-class .modal-wrapper {
+    background: #ffffff;
+  
+        height: 100%!important;
+        width: 100%!important;
+    
+  }
+
+  #container-principal-ExplorerContainer-Cliente {
+    width: 100%;
+    height: auto;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0px;
+   
+   
+  }
+
+
+  #ionCard-explorerContainer-Cliente{
+    width: auto;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;    
+    margin-bottom: 10px;
+
+  }
+
+  #elementos{
+    width: 90%;
+  }
+  
+  #explorerContainerClienteTitulo{
+    margin-bottom: 5px;
+  }
+  #lugarCalificacion{
+    padding-top:10px;
+  }
+
+  #boton1{
+    float: left;
+    width: 128px;
+    color:#E34B31;
+  
+  }
+
+  #boton2{
+    float: right;
+    width: 128px;
+
+  }
+
+
+  #explorerContainerCliente-titulo{
+    height: auto;
+    width: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+
+  #explorerContainerClienteContenedorBusqueda{
+    width: 100%;
+    margin-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    }
+    
+  #explorerContainerClienteListBusqueda{
+    text-align: center;
+    margin: auto;
+    justify-content: center;
+    width: 100%;
+  }
+#explorerContainerClienteItemBusqueda{
+  display:block; 
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
+
+#textoBusqueda{
+  font-size: 15px;
+}
+
+#volver-contenedor-ExplorerContainer{
+width: 100%;
+height: 100%;
+}
+
+#volver-ExplorerContainerCliente{
+  height: 32px;
+  width: 32px;
+  float: left;
+}
+
+
+#col-explorerContainerCliente{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+#img-explorerContainerCliente{
+  width: 128px;
+  height: 128px;
+  margin-bottom: 5px;
+    border-radius: 50%;
+}
+
+#IonCardTabs{
+  width: 90%;
+}
+
+#ExplorerContainerCliente-Tabs{
+  padding:0px;
+  width: 90%;
+  margin-top: 7px;
+ /* border: 1px solid #000000;
+  border-radius: 50%;
+  -webkit-border-radius: 7px;*/
+
+  background-color: white;
+}
+
+#ExploreContainerCliente-IonChip{
+  width: 100%;
+}
+
+#IonCardExplorerContainer{ 
+  width: 90%;
+}
+
+#imagenCampañaPublicidad{
+  text-align: center;
+  justify-content: center;
+  
+}
+
+#contenedorCentrado{
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,365 @@
+
+#item-modal{
+  width:80%;
+  text-align: left;
+}
+
+#item-modal-datos{
+  width:50%;
+  text-align: center;
+}
+
+#item-modal-datosCambio{
+  width:75%;
+  text-align: center;
+  margin-bottom: 30px ;
+}
+#item-modalRubro{
+  width:50%;
+  text-align: center;
+}
+#grid-rubros-cargados{
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.col{
+  width: auto;
+  display:flex;
+  flex-direction: row;
+  align-items: left!important;
+}
+
+.iconosModal{
+  float: right;
+  width: 10%;
+  margin: auto;
+  padding-right: 0;
+}
+
+
+ion-grid{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+
+}
+ion-row{
+  width:100%;
+  display: flex!important;
+  align-content: center!important;
+  align-items: center!important; 
+}
+ion-col{
+  width:100%;
+  display: flex!important;
+  align-content: center!important;
+  align-items: center!important;
+}
+
+#str{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.ion-padding{
+    margin-top: 0;
+    padding-top: 0;
+  }
+  
+  .container {
+      text-align:right;
+      position: absolute;
+        
+    }
+  
+  /*
+  /////////////////////////////////////////////////////////////////////
+  */
+  /*
+  Barra de búsqueda
+  */
+    #busqueda{
+      border-radius: 30px;
+    }
+    #columna{
+      display: inline-block;
+      vertical-align: middle;
+    }
+    /*
+    Fin de barra de búsqueda
+    */
+  /*
+  /////////////////////////////////////////////////////////////////////
+  */
+    /*
+    Columna donde va la foto de usuario
+    */
+    #columna3{
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+  
+    #user{
+      margin-right: 5px;
+    }
+  
+  #foto-usuario{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    border-radius: 50%;
+    height: 32px;
+    width: 32px;
+  }
+  
+  .header{
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+  }
+
+  #completo{
+    background:  #f3f2ef;  
+    padding-top: 1px;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    
+  }
+
+
+  #header-modal{
+    display: flex;
+    flex-direction: row;
+    align-items: right;
+    justify-content: right;
+    
+  }
+    /*
+    Fin de Columna donde va la foto de usuario
+    */
+  /*
+  /////////////////////////////////////////////////////////////////////
+  */
+    /*
+    Modal de usuario
+    */
+      /* Works - pass "my-custom-class" in cssClass to increase specificity */
+  
+  #contenedor-central-Modal{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding-top: 0px;
+
+    
+  }
+  
+  
+  #elementos{
+    text-align: center;
+    justify-content: center;
+  }
+  
+  #flecha-volver{
+    height: 32px;
+    width: 32px;
+    margin-top:5px;
+    margin-left: 5px;
+  }
+  #flecha-cerrar{
+    height: 32px;
+    width: 32px;
+    margin-top:5px;
+    margin-right: 5px;
+    
+  }
+  
+  #contenedor-izquierda{
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-end;
+    border:none;
+  }
+  
+  .cerrarsesion{
+    background-color: white;
+    border: none;
+    color: #3880ff;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top:32px;
+    cursor: pointer;
+    }
+  
+
+    /*
+    Fin de Modal de usuario
+    */
+  
+   /*
+  *************
+  */
+  
+  
+  
+  
+  .boton-generales{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: center;
+    background-color:#85abee;
+    height: 32px;
+    width: 120px;
+  }
+  
+  #foto-usuario-grande{
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    border-radius: 50%;
+    height: 128px;
+    width: 128px;
+    margin-bottom:10px ;
+   
+  }
+  
+  #itemFoto{
+    display: flex;
+    float:center;
+    justify-content: center;
+  }
+
+  #foto-usuario-mas-grande{
+    position: relative;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    border-radius: 50%;
+    height: 192px;
+    width: 192px;
+  }
+  
+  .textoIconos{
+    color: black;
+  }
+  
+  .imagen-boton-principal{
+    height: 20px;
+    width: 20px;
+    text-align: center;
+    
+  }
+  
+  #label{
+    font-size: 0.8em;
+    }
+  
+  
+    #contenedor-prueba{
+      display:flex;
+      justify-content: center;
+  
+    }
+  
+    .ion-list{
+      margin-top:10px;
+    }
+
+#btnVolver{
+margin: 10 10 10 10;
+}
+
+#cardItemModalProveedor{
+  
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  
+  background:  #f3f2ef;  
+
+}
+
+#principalModalProveedor{
+
+  padding-top: 0px;
+  margin-top: 0px;
+  height: 100%;
+  width: 100%;
+}
+
+#contenedorModalProveedor{
+  display: flex;
+  flex-direction: column;
+ 
+  margin-top: 0px;
+  background:  #f3f2ef;  
+  width: 100%;
+}
+
+ion-button{
+  width: 100%;
+}
+
+
+#btnModalIngresar{
+  width: 100%;
+  --background: #E34B31  ;
+  color:white;
+    margin-top: 25px;
+}
+
+#btnModalRegistrarse{
+  width: 100%;
+    margin-top: 25px;
+}
+
+#ModalGrid{
+  margin-top: 20px;
+}
+
+#modalProveedor-flechaVolver{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+
+}
+
+#textoCard{
+  margin-top: 10px;
+}
+#tituloModalProveedor{
+width: 95%;
+}
+
+#ModalProveedorItem{
+  width: 90%;
+}
+#ionCard-CardProveedorGeneral{
+  width: 100%;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
