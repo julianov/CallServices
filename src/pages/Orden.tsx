@@ -11,7 +11,7 @@ import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardS
 import { Photo, usePhotoGallery } from "../hooks/usePhotoGallery";
 import { base64FromPath } from '@ionic/react-hooks/filesystem';
 import { b64toBlob } from '../utilidades/b64toBlob';
-import { camera, trash } from 'ionicons/icons';
+import { arrowBack, camera, trash } from 'ionicons/icons';
 import { isSetAccessorDeclaration } from 'typescript';
 import { allowedNodeEnvironmentFlags } from 'process';
 
@@ -129,7 +129,11 @@ const OrdenSimple = (props:{data:any, clienteEmail:string , setVolver:any	}) => 
     if (vista=="primeraVista"){
         return (
             <IonContent>
-            <><div id="contenderCentralOrden">
+            <>
+            <div id="modalProveedor-flechaVolver">
+            <IonIcon icon={arrowBack} onClick={() => props.setVolver({ isOpen: false })} slot="start" id="flecha-volver">  </IonIcon>
+            </div>
+            <div id="contenderCentralOrden">
                 <IonCard id="ionCard-CardProveedor">
                     <IonCardHeader>
                         <IonCardTitle>SOLICITUD DE SERVICIO</IonCardTitle>
@@ -172,7 +176,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:string , setVolver:any	}) => 
         <div id="contenderCentralOrden">
             <IonCard id="ionCard-CardProveedor">
                 
-                    <IonCardTitle>IMÁGENES DE REFERENCIA</IonCardTitle>
+                    <IonCardTitle id="tituloOrden">IMÁGENES DE REFERENCIA</IonCardTitle>
                     <IonCardSubtitle>¿Desea agregar imágenes para que el proveedor tenga referencia del trabajo a realizar?</IonCardSubtitle>
 
                     <IonGrid>
