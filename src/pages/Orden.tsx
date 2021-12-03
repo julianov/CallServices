@@ -35,7 +35,6 @@ const OrdenSimple = (props:{data:any, clienteEmail:string , setVolver:any	}) => 
     console.log("llego a orden simple")
     console.log("el email mio es: "+ props.data.items)
 
-    console.log("la foto es: "+props.data.picture)
     
     const [vista,setVista] = useState ("primeraVista")
 
@@ -52,6 +51,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:string , setVolver:any	}) => 
     const hora = useRef("")
 
     const [showAlertCompletarCampos, setShowAlertCompletarCampos]=useState(false)
+    const [showAlertInconvenienteSolicitud, setShowAlertInconvenienteSolicitud]=useState(false)
 
     useEffect(() => {
         
@@ -82,7 +82,10 @@ const OrdenSimple = (props:{data:any, clienteEmail:string , setVolver:any	}) => 
         <diaPedido>/<horaPedido>/<descripcion_problema>/<imagen1>/<imagen2></imagen2>
         */
 
+        console.log("llego a enviar")
+
         if (posicionCliente.current!=""){
+            console.log("paso esto")
             var formDataToUpload = new FormData();
             formDataToUpload.append("clienteEmail", props.clienteEmail)
             formDataToUpload.append("tipoProveedor",props.data.tipo)
@@ -114,8 +117,12 @@ const OrdenSimple = (props:{data:any, clienteEmail:string , setVolver:any	}) => 
                     data:formDataToUpload
                 }).then(function(res: any){
     
-                    if(res!="problem found at send proveedor mail new orden"){
+                    console.log("veamos que pasó: "+ res.data)
+                    if(res.data!="bad"){
 
+                    }else{
+                        setShowAlertInconvenienteSolicitud(true)
+                        
                     }
                 
                 }).catch((error: any) =>{
@@ -232,6 +239,27 @@ const OrdenSimple = (props:{data:any, clienteEmail:string , setVolver:any	}) => 
               <IonButton  color="warning"  id="botonContratar" onClick={() => enviar()}>SOLICITAR</IonButton>
               <IonButton  id="botonContratar" onClick={() => setVista("primeraVista")}>VOLVER</IonButton>
             </div>
+
+            <IonAlert
+                    isOpen={showAlertInconvenienteSolicitud}
+                    onDidDismiss={() => setShowAlertInconvenienteSolicitud(false)}
+                    cssClass='my-custom-class'
+                    header={'INCONVENIENTE EN LA SOLICITUD DEL SERVICIO'}
+                    subHeader={''}
+                    message={'INTENTE MÁS TARDE'}
+                    buttons={[
+                        {
+                          text: 'OK',
+                          role: 'cancel',
+                          cssClass: 'secondary',
+                          handler: blah => {
+                            props.setVolver({ isOpen: false })
+                          }
+                        }
+                      ]} />
+                
+                
+
          </IonContent>
         )
 

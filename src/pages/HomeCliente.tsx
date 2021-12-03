@@ -17,7 +17,7 @@ import ExploreContainerCliente from '../components/ExploreContainerCliente';
 import Https from '../utilidades/HttpsURL';
 
 import { Database } from '@ionic/storage';
-import { createStore, getDB, setDB } from '../utilidades/dataBase';
+import { clearDB, createStore, getDB, removeDB, setDB } from '../utilidades/dataBase';
 
 
 const url=Https
@@ -87,6 +87,7 @@ const HomeCliente = (props:{setIsReg:any,
   const axios = require('axios');
 
   createStore("listaProveedores")
+
 
   useEffect(() => {
 
@@ -200,6 +201,7 @@ const HomeCliente = (props:{setIsReg:any,
          
           <ExploreContainerCliente setShowCargandoProveedores={setShowCargandoProveedores} 
           proveedores={proveedores}
+          aca va el correo del cliente para ser usado en ordenes
           url={url} 
           buscar={buscar}
           busqueda_categorias={categorias}
