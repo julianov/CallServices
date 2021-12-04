@@ -198,7 +198,7 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
             message={mensajeCuentaUsuario}
             buttons={[
               {
-                text: 'Cancel',
+                text: 'CANCELAR',
                 role: 'cancel',
                 cssClass: 'secondary',
                 handler: blah => {
@@ -221,7 +221,7 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
             message={mensajeCuentaProveedor}
             buttons={[
               {
-                text: 'Cancel',
+                text: 'CANCELAR',
                 role: 'cancel',
                 cssClass: 'secondary',
                 handler: blah => {

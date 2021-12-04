@@ -7,7 +7,7 @@ import CardProveedor from "../utilidades/CardProveedor";
 import { removeItem } from "../utilidades/Storage";
 import Https from "../utilidades/HttpsURL";
 import React, { useEffect, useRef, useState } from 'react';
-import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItemDivider, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent } from '@ionic/react';
+import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItemDivider, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent, IonDatetime } from '@ionic/react';
 import { Photo, usePhotoGallery } from "../hooks/usePhotoGallery";
 import { base64FromPath } from '@ionic/react-hooks/filesystem';
 import { b64toBlob } from '../utilidades/b64toBlob';
@@ -30,7 +30,7 @@ const getLocation = async () => {
     }
   }
 
-const OrdenSimple = (props:{data:any, clienteEmail:string , setVolver:any	}) => {
+const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
 
     console.log("llego a orden simple")
     console.log("el email mio es: "+ props.data.items)
@@ -52,6 +52,10 @@ const OrdenSimple = (props:{data:any, clienteEmail:string , setVolver:any	}) => 
 
     const [showAlertCompletarCampos, setShowAlertCompletarCampos]=useState(false)
     const [showAlertInconvenienteSolicitud, setShowAlertInconvenienteSolicitud]=useState(false)
+    const [showAlertOrdenCreada,setShowAlertOrdenCreada]=useState(false)
+    const [showAlertYaHayOrden,setShowAlertYaHayOrden]=useState(false)
+    
+    const ticket = useRef()
 
     useEffect(() => {
         
@@ -86,16 +90,26 @@ const OrdenSimple = (props:{data:any, clienteEmail:string , setVolver:any	}) => 
 
         if (posicionCliente.current!=""){
             console.log("paso esto")
+
+            console.log("pues veamos que tenemos que da error: "+hora.current)
+
             var formDataToUpload = new FormData();
             formDataToUpload.append("clienteEmail", props.clienteEmail)
             formDataToUpload.append("tipoProveedor",props.data.tipo)
             formDataToUpload.append("ProveedorEmail",props.data.proveedorEmail)
-            formDataToUpload.append("itemProveedor",props.data.item)
+            formDataToUpload.append("itemProveedor",props.data.items)
             formDataToUpload.append("clienteLat",posicionCliente.current.split("/")[0])
             formDataToUpload.append("clienteLong",posicionCliente.current.split("/")[1])
             formDataToUpload.append("tituloPedido",titulo.current)
-            formDataToUpload.append("diaPedido",fecha.current)
-            formDataToUpload.append("horaPedido",hora.current)
+
+            if(fecha.current!=undefined || fecha.current!=""){
+                formDataToUpload.append("diaPedido",fecha.current.split("T")[0])
+            }
+                
+            if ( hora.current!=""){
+                formDataToUpload.append("horaPedido",(hora.current.split("T")[1]).split(".")[0])
+            }
+                
             formDataToUpload.append("descripcion_problema",descripcion.current)
             
     
@@ -118,10 +132,18 @@ const OrdenSimple = (props:{data:any, clienteEmail:string , setVolver:any	}) => 
                 }).then(function(res: any){
     
                     console.log("veamos que pasó: "+ res.data)
-                    if(res.data!="bad"){
+                    if(res.data!="bad" && res.data!="ya hay una orden"){
+                        ticket.current=res.data
+                        setShowAlertOrdenCreada(true)
 
-                    }else{
-                        setShowAlertInconvenienteSolicitud(true)
+                    }
+                    else{
+                        if(res.data=="ya hay una orden"){
+                            setShowAlertYaHayOrden(true)
+                        }else{
+                            setShowAlertInconvenienteSolicitud(true)
+                        }
+                        
                         
                     }
                 
@@ -141,21 +163,22 @@ const OrdenSimple = (props:{data:any, clienteEmail:string , setVolver:any	}) => 
             <IonIcon icon={arrowBack} onClick={() => props.setVolver({ isOpen: false })} slot="start" id="flecha-volver">  </IonIcon>
             </div>
             <div id="contenderCentralOrden">
+            <IonCardTitle>SOLICITUD DE SERVICIO</IonCardTitle>
+
                 <IonCard id="ionCard-CardProveedor">
                     <IonCardHeader>
-                        <IonCardTitle>SOLICITUD DE SERVICIO</IonCardTitle>
                         <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.data.picture}></img>
                         <h2  > {props.data.items} </h2>
                         <h2> {props.data.nombre} </h2>
                         <IonItem id="CardProveedorItem" lines="none"> {props.data.calificacion} </IonItem>
                     </IonCardHeader>
 
-                    <IonItem id="item-completarInfo">
+                    <IonItem id="item-Orden">
                         <IonLabel position="floating">Ingrese un título para su pedido</IonLabel>
                         <IonInput onIonInput={(e: any) => titulo.current = (e.target.value)}></IonInput>
                     </IonItem>
 
-                    <IonItem id="item-completarInfo">
+                    <IonItem id="item-Orden">
                         <IonLabel position="floating">Ingrese una descripción</IonLabel>
                         <IonInput onIonInput={(e: any) => descripcion.current = (e.target.value)}></IonInput>
                     </IonItem>
@@ -180,6 +203,9 @@ const OrdenSimple = (props:{data:any, clienteEmail:string , setVolver:any	}) => 
 
     return (
         <IonContent>
+            <div id="modalProveedor-flechaVolver">
+                <IonIcon icon={arrowBack} onClick={() => setVista("primeraVista")} slot="start" id="flecha-volver">  </IonIcon>
+            </div>
         <div id="contenderCentralOrden">
             <IonCard id="ionCard-CardProveedor">
                 
@@ -201,27 +227,30 @@ const OrdenSimple = (props:{data:any, clienteEmail:string , setVolver:any	}) => 
 
           </IonCard>
           <IonButton  color="warning"  id="botonContratar" onClick={() => setVista("final")}>SIGUIENTE</IonButton>
-          <IonButton  id="botonContratar" onClick={() => setVista("primeraVista")}>VOLVER</IonButton>
         </div>
     </IonContent>
     )
 
-    }else {
+    }else if (vista=="final"){
 
         return (
             <IonContent>
+            <div id="modalProveedor-flechaVolver">
+                <IonIcon icon={arrowBack} onClick={() => setVista("imagenes")} slot="start" id="flecha-volver">  </IonIcon>
+            </div>
             <div id="contenderCentralOrden">
+            <IonCardTitle>PROGRAMAR FECHA</IonCardTitle>
+
                 <IonCard id="ionCard-CardProveedor">
                     
-                        <IonCardTitle>PROGRAMAR FECHA</IonCardTitle>
                         <IonCardSubtitle>Ingrese día y horario estimativo</IonCardSubtitle>
     
                         <IonGrid>
                             <IonRow>
                                 <IonCol >
                                     <IonItem id="item-completarInfo">
-                                        <IonLabel position="floating">Fecha estimativa</IonLabel>
-                                        <IonInput onIonInput={(e: any) => fecha.current=(e.target.value)}></IonInput>
+                                        <IonLabel position="floating">Fecha estimativa</IonLabel>                                    
+                                        <IonDatetime displayFormat="DD-MM-YYYY"  value={fecha.current} onIonChange={e => fecha.current=(e.detail.value!)}></IonDatetime>
                                     </IonItem>
                                 </IonCol>
                             </IonRow>
@@ -229,7 +258,8 @@ const OrdenSimple = (props:{data:any, clienteEmail:string , setVolver:any	}) => 
                                 <IonCol >
                                     <IonItem id="item-completarInfo">
                                         <IonLabel position="floating">Hora estimativa</IonLabel>
-                                        <IonInput onIonInput={(e: any) => hora.current=(e.target.value)}></IonInput>
+                                        <IonDatetime displayFormat="HH:mm" value={hora.current} onIonChange={e => hora.current=(e.detail.value!)}></IonDatetime>
+
                                     </IonItem>
                                 </IonCol>
                             </IonRow>                                              
@@ -237,7 +267,6 @@ const OrdenSimple = (props:{data:any, clienteEmail:string , setVolver:any	}) => 
     
               </IonCard>
               <IonButton  color="warning"  id="botonContratar" onClick={() => enviar()}>SOLICITAR</IonButton>
-              <IonButton  id="botonContratar" onClick={() => setVista("primeraVista")}>VOLVER</IonButton>
             </div>
 
             <IonAlert
@@ -257,12 +286,84 @@ const OrdenSimple = (props:{data:any, clienteEmail:string , setVolver:any	}) => 
                           }
                         }
                       ]} />
+
+                <IonAlert
+                    isOpen={showAlertYaHayOrden}
+                    onDidDismiss={() => setShowAlertYaHayOrden(false)}
+                    cssClass='my-custom-class'
+                    header={'INCONVENIENTE EN LA SOLICITUD DEL SERVICIO'}
+                    subHeader={''}
+                    message={'Ya posee una orden de servicio con el proveedor del servicio'}
+                    buttons={[
+                        {
+                          text: 'OK',
+                          role: 'cancel',
+                          cssClass: 'secondary',
+                          handler: blah => {
+                            props.setVolver({ isOpen: false })
+                          }
+                        }
+                      ]} />
+            <IonAlert
+                    isOpen={showAlertOrdenCreada}
+                    onDidDismiss={() => setShowAlertOrdenCreada(false)}
+                    cssClass='my-custom-class'
+                    header={'ORDEN DE SERVICIO CREADA CON ÉXITO'}
+                    subHeader={''}
+                    message={'Se ha creado con éxito la orden de servicio: '+ticket.current }
+                    buttons={[
+                        {
+                          text: 'OK',
+                          role: 'cancel',
+                          cssClass: 'secondary',
+                          handler: blah => {
+                            setVista("orden creada")
+                          }
+                        }
+                      ]} />
                 
                 
 
          </IonContent>
         )
 
+    }else{
+        return(
+        <IonContent>
+
+<>
+            <div id="modalProveedor-flechaVolver">
+            <IonIcon icon={arrowBack} onClick={() => props.setVolver({ isOpen: false })} slot="start" id="flecha-volver">  </IonIcon>
+            </div>
+
+            <div id="contenderCentralOrden">
+            <h1>ORDEN DE SERVICIO</h1>
+
+                <IonCard id="cardOrdenTicket">
+                    <IonCardHeader>
+                    <IonCardTitle> NÚMERO DE TICKET: {ticket.current} </IonCardTitle>
+                    <IonCardTitle>STATUS: SOLICITUD ENVIADA </IonCardTitle>
+                      
+                    </IonCardHeader>
+                    <p>En espera de confirmación por parte del proveedor </p>
+
+                    
+                    
+                </IonCard>
+                <h1>PROVEEDOR</h1>
+
+                <IonCard id="ionCard-CardProveedor">
+                        <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.data.picture}></img>
+                        <IonCardTitle> {props.data.nombre} </IonCardTitle>
+                        <IonCardTitle  > {props.data.items} </IonCardTitle>
+                        <IonItem id="CardProveedorItem" lines="none"> {props.data.calificacion} </IonItem>
+                </IonCard>
+
+            </div>
+            </>
+               
+        </IonContent>
+        )
     }
    
 

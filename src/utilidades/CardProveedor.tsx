@@ -10,13 +10,12 @@ import OrdenSimple from "../pages/Orden";
 
 var dataS :any
 
-const CardProveedor= (props:{ data:any, imagenes:any, email:string, proveedorEmail:string	}) => {
+const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, proveedorEmail:string	}) => {
 
   //el email del props es el email del proveedor
   //asi que al parecer tenemos 2 correos del proveedor
 
    
-  console.log ("el email es: "+props.email)
   
 
   const [showModalOrden, setShowModalOrden] = useState({ isOpen: false });
@@ -50,7 +49,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, email:string, proveedorEma
   }
 
   interface datosOrden{
-    clienteEmail:string,
+    clienteEmail:String,
     nombre:string,
     proveedorEmail:string,
     tipo:string,
@@ -62,7 +61,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, email:string, proveedorEma
 
     const datosDeOrdenes = useRef<datosOrden>(
       {
-        clienteEmail:props.email,
+        clienteEmail:props.emailCliente,
         nombre:"",
         proveedorEmail:props.proveedorEmail,
         tipo:"",
@@ -122,13 +121,13 @@ const CardProveedor= (props:{ data:any, imagenes:any, email:string, proveedorEma
               let igual=false
 
               for (var i=0;i < ultimos.length;i++){
-                if(ultimos[i]==[props.email, datosProveedoresArray.nombre,datosProveedoresArray.last_name,tipo,datosProveedoresArray.picture,datosProveedoresArray.qualification,datosProveedoresArray.items]){
+                if(ultimos[i]==[props.proveedorEmail, datosProveedoresArray.nombre,datosProveedoresArray.last_name,tipo,datosProveedoresArray.picture,datosProveedoresArray.qualification,datosProveedoresArray.items]){
                   igual=true
                 }
 
               }
               if(!igual){
-                ultimos.push([props.email, datosProveedoresArray.nombre,datosProveedoresArray.last_name,tipo,datosProveedoresArray.picture,datosProveedoresArray.qualification,datosProveedoresArray.items])
+                ultimos.push([props.proveedorEmail, datosProveedoresArray.nombre,datosProveedoresArray.last_name,tipo,datosProveedoresArray.picture,datosProveedoresArray.qualification,datosProveedoresArray.items])
                 setDB("UltimosProveedores", JSON.stringify(ultimos))
               }
               
@@ -137,14 +136,14 @@ const CardProveedor= (props:{ data:any, imagenes:any, email:string, proveedorEma
               let igual=false
 
               for (var i=0;i < ultimos.length;i++){
-                if(ultimos[i]==[props.email, datosProveedoresArray.nombre,datosProveedoresArray.last_name,tipo,datosProveedoresArray.picture,datosProveedoresArray.qualification,datosProveedoresArray.items]){
+                if(ultimos[i]==[props.proveedorEmail, datosProveedoresArray.nombre,datosProveedoresArray.last_name,tipo,datosProveedoresArray.picture,datosProveedoresArray.qualification,datosProveedoresArray.items]){
                   igual=true
                 }
               }
 
               if(!igual){
                 ultimos.shift() //elimino el primer elemento del array
-                ultimos.push([props.email, datosProveedoresArray.nombre,datosProveedoresArray.last_name,tipo,datosProveedoresArray.picture,datosProveedoresArray.qualification,datosProveedoresArray.items])
+                ultimos.push([props.proveedorEmail, datosProveedoresArray.nombre,datosProveedoresArray.last_name,tipo,datosProveedoresArray.picture,datosProveedoresArray.qualification,datosProveedoresArray.items])
                 setDB("UltimosProveedores", JSON.stringify(ultimos))
               }
 
@@ -153,7 +152,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, email:string, proveedorEma
           }else{
 
             var arreglo_guardar=[]
-            arreglo_guardar.push([props.email,datosProveedoresArray.nombre,datosProveedoresArray.last_name,tipo,datosProveedoresArray.picture, datosProveedoresArray.qualification,datosProveedoresArray.items])
+            arreglo_guardar.push([props.proveedorEmail,datosProveedoresArray.nombre,datosProveedoresArray.last_name,tipo,datosProveedoresArray.picture, datosProveedoresArray.qualification,datosProveedoresArray.items])
             setDB("UltimosProveedores", JSON.stringify(arreglo_guardar))
           
           }
@@ -170,7 +169,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, email:string, proveedorEma
         console.log ("y la imagen que quiere mandar es: "+datosProveedoresArray.picture)
         datosDeOrdenes.current= (
         {
-          clienteEmail:props.email,
+          clienteEmail:props.emailCliente,
           nombre:datosProveedoresArray.nombre+" "+datosProveedoresArray.last_name,
           proveedorEmail:props.proveedorEmail,
           tipo:datosProveedoresArray.tipo,
@@ -229,7 +228,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, email:string, proveedorEma
 
         }
 
-        if(props.email!="" && props.data!=undefined && datosProveedoresArray.nombre!="nombre" && datosProveedoresArray.last_name!="apellido"){
+        if(props.proveedorEmail!="" && props.data!=undefined && datosProveedoresArray.nombre!="nombre" && datosProveedoresArray.last_name!="apellido"){
           
           guardarUltimoProveedor()
   
@@ -322,7 +321,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, email:string, proveedorEma
           >
             <OrdenSimple
               data={datosDeOrdenes.current} 
-              clienteEmail={props.email}
+              clienteEmail={props.emailCliente}
               setVolver={setShowModalOrden} />
 
           </IonModal></>
@@ -419,7 +418,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, email:string, proveedorEma
           >
             <OrdenSimple
               data={datosDeOrdenes.current} 
-              clienteEmail={props.email} 
+              clienteEmail={props.emailCliente} 
               setVolver={setShowModalOrden} />
 
           </IonModal></>

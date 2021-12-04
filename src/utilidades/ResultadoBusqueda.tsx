@@ -42,7 +42,7 @@ const url=Https+"search/"
 const url2=Https
 
 
-const ResultadoBusqueda =  (props:{arreglo_ultimos:any, arreglo_categorias:any, busquedaDatosProveedores:any})=> {
+const ResultadoBusqueda =  (props:{arreglo_ultimos:any, emailCliente:any, arreglo_categorias:any, busquedaDatosProveedores:any})=> {
 
     var ultimos=props.arreglo_ultimos
     console.log(ultimos)
@@ -186,7 +186,7 @@ const ResultadoBusqueda =  (props:{arreglo_ultimos:any, arreglo_categorias:any, 
           </div> 
 
                 <div id="contenedorCentral-busqueda">
-                    <CardProveedor data={caracteres} imagenes={imagenes} email={email.current} proveedorEmail={email.current} ></CardProveedor>
+                    <CardProveedor data={caracteres} imagenes={imagenes} emailCliente={email.current} proveedorEmail={email.current} ></CardProveedor>
                 </div></>)
 
     }else if(lista=="sin-resultado"){

@@ -201,7 +201,7 @@ const HomeCliente = (props:{setIsReg:any,
          
           <ExploreContainerCliente setShowCargandoProveedores={setShowCargandoProveedores} 
           proveedores={proveedores}
-          aca va el correo del cliente para ser usado en ordenes
+          emailCliente={props.email}
           url={url} 
           buscar={buscar}
           busqueda_categorias={categorias}

@@ -1,6 +1,4 @@
 #contenderCentralOrden{
-    border:solid;
-    border-color: red;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,4 +20,15 @@
 
 #tituloOrden{
     margin-bottom: 10px;
+}
+
+#cardOrdenTicket{
+    width: 98%;
+    height: auto;
+    
+}
+
+#item-Orden{
+    width: 98%;
+    height: 100%;
 }

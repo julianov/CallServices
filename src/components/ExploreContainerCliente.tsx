@@ -33,7 +33,7 @@ const getLocation = async () => {
 var ultimos: never[]=[]
 
 const ExploreContainerCliente  = (props:{proveedores: Array<datosGeneralesVariosProveedores>, url:string, setShowCargandoProveedores:any, 
-  setShowModal:any, setTipoDeVistaEnModal:any,
+  setShowModal:any, setTipoDeVistaEnModal:any, emailCliente:String,
   buscar:any, busqueda_categorias:any, busquedaDatosProveedores:Array<proveedorBuscado>}) => {
 
   
@@ -60,7 +60,7 @@ const ExploreContainerCliente  = (props:{proveedores: Array<datosGeneralesVarios
     else{
       return (
         <><div id="container-principal-ExplorerContainer-Cliente">
-          <VerProveedorParticular url={props.url} email={verEmail} setVerEmail={setVerEmail} setShowModal2={setShowModal2} showModal2={showModal2} item={item} setItem={setItem} setShowCargandoProveedores={props.setShowCargandoProveedores} />
+          <VerProveedorParticular url={props.url} emailCliente={props.emailCliente} email={verEmail} setVerEmail={setVerEmail} setShowModal2={setShowModal2} showModal2={showModal2} item={item} setItem={setItem} setShowCargandoProveedores={props.setShowCargandoProveedores} />
         </div>
       </>
       )}
@@ -75,7 +75,7 @@ const ExploreContainerCliente  = (props:{proveedores: Array<datosGeneralesVarios
     })
     return (
       <div id="container-principal-ExplorerContainer-Cliente">   
-        <ResultadoBusqueda arreglo_categorias={props.busqueda_categorias} arreglo_ultimos={ultimos} busquedaDatosProveedores={props.busquedaDatosProveedores} ></ResultadoBusqueda>
+        <ResultadoBusqueda emailCliente={props.emailCliente} arreglo_categorias={props.busqueda_categorias} arreglo_ultimos={ultimos} busquedaDatosProveedores={props.busquedaDatosProveedores} ></ResultadoBusqueda>
       </div>
     )
   }
@@ -165,7 +165,7 @@ const CardVistaVariosProveedores= (props:{item:any, personalImg:any ,distancia: 
   );
 }
 
-const VerProveedorParticular = (  props:{url:string, email:any, setVerEmail:any, item:any, setItem:any, 
+const VerProveedorParticular = (  props:{url:string, emailCliente:String, email:any, setVerEmail:any, item:any, setItem:any, 
   setShowCargandoProveedores:any, setShowModal2:any, showModal2:any} ) =>{
 
   let aux: any[] = []
@@ -262,6 +262,7 @@ const VerProveedorParticular = (  props:{url:string, email:any, setVerEmail:any,
            caracteres={caracteres}
            imagenes={imagenes} 
            email={props.email}
+           emailCliente={props.emailCliente}
            proveedorEmail={props.email}
            setVerEmail={props.setVerEmail} 
            setItem={props.setItem}
