@@ -151,6 +151,13 @@ height: 100%;
   text-align: center;
 }
 
+#ionCard-explorerContainer-Proveedor{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
 #img-explorerContainerCliente{
   width: 128px;
   height: 128px;

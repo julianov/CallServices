@@ -35,15 +35,27 @@ const getLocation = async () => {
 }
 
 
+export interface ordenes {
+  tipo:string
+  status:string
+  fecha_creacion:string
+  ticket: string
+  dia: string
+  hora:string
+  titulo:string
+  descripcion:string
+  imagen:string
+  }
+
+
+
 const HomeProveedor = (props:{setIsReg:any, 
   email:any, tipodeCliente:any, foto:any, setFoto:any, 
   nombre:any, apellido:any, calificacion:any, setNombre:any, setApellido:any, 
   rubro1:any, rubro2:any, setRubro1:any, setRubro2:any}) => {
 
-    console.log("nombre en modal: "+props.nombre)
-    console.log("apellido en modal: "+props.apellido)
   
-    const [showModal, setShowModal] = useState({ isOpen: false });
+  const [showModal, setShowModal] = useState({ isOpen: false });
   const [retVal, setRetVal] = useState(null);
   const [tipoDeVistaEnModal, setTipoDeVistaEnModal] = useState("datosUsuario");
 
@@ -59,17 +71,48 @@ const HomeProveedor = (props:{setIsReg:any,
 
   const [showInicializando,setShowInicializando]=useState(false)
 
+  const [misOrdenes, setMisOrdenes] = useState <ordenes>(
+    {
+      tipo:"",
+      status:"",
+      fecha_creacion:"",
+      ticket: "",
+      dia: "",
+      hora:"",
+      titulo:"",
+      descripcion:"",
+      imagen:"",
+      }
+);
+
 
   const axios = require('axios');
 
 
   useEffect(() => {
-      const ubicacion = getLocation();
+      /*const ubicacion = getLocation();
         ubicacion.then((value)=>{
           axios.get(url+"home/"+value).then((resp: { data: any; }) => {
           });  
         
-        }); 
+        }); */
+
+        axios.get(url+"orden/misordenes/"+"proveedor/"+props.email).then((resp: { data: any; }) => {
+          if (resp.data!="bad"){
+
+            console.log("lo que llego de ordenes son: "+JSON.stringify(resp.data))
+           
+
+            setMisOrdenes(resp.data)
+
+             
+
+              console.log("lo que tengo en el array es: "+JSON.stringify(misOrdenes))
+
+            
+          }
+
+        })
    
   }, []);
 
@@ -142,7 +185,7 @@ const HomeProveedor = (props:{setIsReg:any,
           </IonModal>
 
           
-          <ExploreContainerProveedor  url={url} />
+          <ExploreContainerProveedor  ordenes={misOrdenes} />
          
 
 
