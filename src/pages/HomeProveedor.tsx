@@ -35,18 +35,21 @@ const getLocation = async () => {
 }
 
 
-export interface ordenes {
-  tipo:string
-  status:string
-  fecha_creacion:string
-  ticket: string
-  dia: string
-  hora:string
-  titulo:string
-  descripcion:string
-  imagen:string
-  }
-
+export interface ordenes  {
+    tipo:string
+    status:string
+    fecha_creacion:string
+    ticket: string
+    dia: string
+    hora:string
+    titulo:string
+    descripcion:string
+    imagen_cliente:string
+    location_lat:any
+    location_long:any
+    picture1:string
+    picture2:string
+    }
 
 
 const HomeProveedor = (props:{setIsReg:any, 
@@ -81,7 +84,11 @@ const HomeProveedor = (props:{setIsReg:any,
       hora:"",
       titulo:"",
       descripcion:"",
-      imagen:"",
+      imagen_cliente:"",
+      location_lat:"",
+      location_long:"",
+      picture1:"",
+      picture2:"",
       }
 );
 
