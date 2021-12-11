@@ -29,13 +29,13 @@ const getLocation = async () => {
 let proveedores = new Array<ordenes>();
 
 
-const ExploreContainerProveedor  = (props:{ ordenes:any} ) => {
+const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any} ) => {
 
   //const [proveedores, setProveedores]=useState()
 
   
   const [hayOrdenes, setHayOrdenes]=useState(false)
-  const [showModal2, setShowModal2] = useState({ isOpen: false });
+ // const [showModal2, setShowModal2] = useState({ isOpen: false });
   const [verOrden, setVerOrden] = useState( false );
 
   const [posicion, setPosicion] = useState(0)
@@ -52,6 +52,7 @@ const ExploreContainerProveedor  = (props:{ ordenes:any} ) => {
         hora:props.ordenes[i].hora,
         titulo:props.ordenes[i].titulo,
         descripcion:props.ordenes[i].descripcion,
+        email_cliente:props.ordenes[i].email_cliente,
         imagen_cliente:props.ordenes[i].imagen_cliente,
         location_lat:props.ordenes[i].location_lat,
         location_long:props.ordenes[i].location_long,
@@ -94,6 +95,7 @@ const ExploreContainerProveedor  = (props:{ ordenes:any} ) => {
       <ModalVerOrdenes 
         datos={proveedores[posicion-1]}
         setVolver={setVerOrden}
+        emailProveedor={props.emailProveedor}
         
       />  
     </IonModal>
@@ -200,9 +202,9 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
       <IonRow  id="row-busqueda">
         <IonCol size="auto"  id="col-explorerContainerCliente"><img id="img-explorerContainerCliente" src={props.imagen}></img></IonCol>
         <IonCol size="auto" id="col-explorerContainerCliente">
-          <IonCardSubtitle>TIPO: {props.tipo.toUpperCase( )}</IonCardSubtitle>
-          <IonCardSubtitle>STATUS: {estado}</IonCardSubtitle>
-          <IonCardSubtitle>TICKET: {props.ticket}</IonCardSubtitle>
+          <p>TIPO: {props.tipo.toUpperCase( )}</p>
+          <p>STATUS: {estado}</p>
+          <p>TICKET: {props.ticket}</p>
         </IonCol>
       </IonRow>
       

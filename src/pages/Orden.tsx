@@ -80,14 +80,6 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
 
     const enviar =() => {
 
-        /*
-        <clienteEmail>/<tipoProveedor>/<ProveedorEmail>/<itemProveedor>/
-            <clienteLat>/<clienteLong>/<tituloPedido>/
-        <diaPedido>/<horaPedido>/<descripcion_problema>/<imagen1>/<imagen2></imagen2>
-        */
-
-        console.log("llego a enviar")
-
         if (posicionCliente.current!=""){
             console.log("paso esto")
 
@@ -118,10 +110,8 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
                 
             }
             if(foto2.current!=null || foto2.current!=undefined){
-                formDataToUpload.append("imagen2", foto2.current);
-                
+                formDataToUpload.append("imagen2", foto2.current); 
             }
-    
     
             const axios = require('axios');
                 axios({

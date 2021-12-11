@@ -231,7 +231,6 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
              
          }
          else if(props.tipoCliente=="2"){
-             console.log("como es 2 debería entrar aqui")
 
              if(props.email!="-" && props.email!=null && nombre!=null && apellido!=null && imagen_a_enviar.current!=null){
                  setShowLoading(true)

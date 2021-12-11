@@ -27,6 +27,18 @@ const getLocation = async () => {
   try {
       const position = await Geolocation.getCurrentPosition();
       posicion=position.coords.latitude +"/"+ position.coords.longitude
+
+
+
+    var asdf = 'https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDoxQGda7BT0BJ0If1-aARxlbVSia4ZU1A&address=CORNELIO SAAVEDRA 1175, SAN MIGUEL, GBA'
+
+    axios.get(asdf).then((resp: { data: any; }) => {
+      if (resp.data!="bad"){
+        console.log("MI POSICIÓN ES: "+JSON.stringify(resp.data) )      }
+
+    })
+      
+      
       return posicion;
 
   } catch (e) {
@@ -44,6 +56,7 @@ export interface ordenes  {
     hora:string
     titulo:string
     descripcion:string
+    email_cliente:string
     imagen_cliente:string
     location_lat:any
     location_long:any
@@ -74,6 +87,8 @@ const HomeProveedor = (props:{setIsReg:any,
 
   const [showInicializando,setShowInicializando]=useState(false)
 
+  getLocation()
+
   const [misOrdenes, setMisOrdenes] = useState <ordenes>(
     {
       tipo:"",
@@ -84,6 +99,7 @@ const HomeProveedor = (props:{setIsReg:any,
       hora:"",
       titulo:"",
       descripcion:"",
+      email_cliente:"",
       imagen_cliente:"",
       location_lat:"",
       location_long:"",
@@ -97,39 +113,16 @@ const HomeProveedor = (props:{setIsReg:any,
 
 
   useEffect(() => {
-      /*const ubicacion = getLocation();
-        ubicacion.then((value)=>{
-          axios.get(url+"home/"+value).then((resp: { data: any; }) => {
-          });  
-        
-        }); */
 
         axios.get(url+"orden/misordenes/"+"proveedor/"+props.email).then((resp: { data: any; }) => {
           if (resp.data!="bad"){
-
-            console.log("lo que llego de ordenes son: "+JSON.stringify(resp.data))
-           
-
-            setMisOrdenes(resp.data)
-
-             
-
-              console.log("lo que tengo en el array es: "+JSON.stringify(misOrdenes))
-
-            
+            setMisOrdenes(resp.data)            
           }
 
         })
    
   }, []);
 
-
-  /////////////////////////funcion pedir info personal ///////////////////
-
-   
- 
-
-  //////////////fin de función pedir información personal. 
 
     return (
       <IonPage>
@@ -192,7 +185,7 @@ const HomeProveedor = (props:{setIsReg:any,
           </IonModal>
 
           
-          <ExploreContainerProveedor  ordenes={misOrdenes} />
+          <ExploreContainerProveedor  ordenes={misOrdenes} emailProveedor={props.email} />
          
 
 

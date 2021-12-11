@@ -363,3 +363,12 @@ width: 95%;
   flex-direction: column;
   text-align: center;
 }
+
+
+#img-orden{
+  margin-top: 15px;
+  width: 50%;
+  height: auto;
+  border-radius: 15%;
+
+}

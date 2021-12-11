@@ -1,95 +1,208 @@
-import { IonCard, IonCardSubtitle, IonCol, IonContent, IonGrid, IonIcon, IonRow } from "@ionic/react";
+import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCol, IonContent, IonGrid, IonIcon, IonRow } from "@ionic/react";
 import { arrowBack } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
+import { isConstructorDeclaration, isSetAccessorDeclaration } from "typescript";
 
 import Https from "../utilidades/HttpsURL";
+import './Modal.css';
 
 const url=Https
 
 
 const axios = require('axios');
 
-interface datos_orden {
-    tipo:string
-    status:string
-    fecha_creacion:string
-    ticket: string
-    dia: string
-    hora:string
-    titulo:string
-    descripcion:string
-    imagen_cliente:string
-    location_lat:any
-    location_long:any
-    picture1:string
-    picture2:string
-    }
 
-const ModalVerOrdenes = (props:{datos:any,setVolver:any})  =>{
+interface datos_cliente {
+  nombre:string
+  apellido:string
+  imagen:string
+  calificacion: number
+}
 
 
 
-    const [datosOrden, setDatosOrden] = useState <datos_orden>(  );
+const ModalVerOrdenes = (props:{datos:any,emailProveedor:any,setVolver:any})  =>{
 
-    var estado="Enviada"
+
+    const [vista, setVista] = useState("primero")
+
+    const [estado, setEstado] =useState("Enviada")
+
+    const [showAlertInconvenienteChat, setShowAlertInconvenienteChat] = useState(false)
 
     useEffect(() => {
         
    
             if (props.datos.status=="ENV"){
-              estado="PEDIDO DE TRABAJO"
+              setEstado("GENERADO POR CLIENTE")
+              axios.get(url+"orden/cambiarestado/"+props.datos.ticket+"/"+props.datos.tipo+"/"+"REC", {timeout: 7000})
+              .then((resp: { data: any; }) => {
+
+                console.log("lo que llego al cambiar el estado de la orden es: "+resp.data)
+                if(resp.data!="bad"){
+                  setEstado("RECIBIDO")
+                }
+        
+  
+               })
             }else if(props.datos.status=="REC"){
-              estado="PEDIDO DE TRABAJO RECIBIDO"
+              setEstado("RECIBIDO")
             }else if(props.datos.status=="ACE"){
-              estado="PEDIDO DE TRABAJO ACEPTADO"
+              setEstado("ORDEN ACEPTADA")
             }else if(props.datos.status=="EVI"){
-              estado="EN VIAJE"
+              setEstado("EN VIAJE")
             }else if(props.datos.status=="ENS"){
-              estado="EN SITIO"
+              setEstado("EN SITIO")
             }
         
       }, [])
 
 
-  
-   
-      return (
-        <IonContent>
+      const aceptarOrden = ()=> {
 
-        <div id="modalProveedor-flechaVolver">
-          <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
-        </div>
-      <IonCard id="ionCard-explorerContainer-Proveedor">
-        <IonGrid>
-        <IonRow  id="row-busqueda">
-          <IonCol size="auto"  id="col-explorerContainerCliente"><img id="img-explorerContainerCliente" src={props.datos.imagen_cliente}></img></IonCol>
-          <IonCol size="auto" id="col-explorerContainerCliente">
-            <IonCardSubtitle>TIPO: {props.datos.tipo}</IonCardSubtitle>
-            <IonCardSubtitle>STATUS: {estado}</IonCardSubtitle>
-            <IonCardSubtitle>TICKET: {props.datos.ticket}</IonCardSubtitle>
-          </IonCol>
-        </IonRow>
+        if (estado=="RECIBIDO"){
+          axios.get(url+"orden/cambiarestado/"+props.datos.ticket+"/"+props.datos.tipo+"/"+"ACE", {timeout: 7000})
+              .then((resp: { data: any; }) => {
+
+                console.log("lo que llego al cambiar el estado de la orden es: "+resp.data)
+                if(resp.data!="bad"){
+                  setEstado("ORDEN ACEPTADA")
+                }
         
-        </IonGrid>
-          
-    
-      </IonCard>
+  
+               })
+        }
+        
+      }
+   
+      if(vista=="primero"){
+        return (
+          <IonContent>
+          <div id="modalProveedor-flechaVolver">
+            <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+          </div>
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          <img id="img-orden" src={props.datos.imagen_cliente}></img>
+          <p>TIPO: {props.datos.tipo}</p>
+          <p>STATUS: {estado}</p>
+          <p>TICKET: {props.datos.ticket}</p>
+          <IonButton  id="botonContratar" onClick={() => setVista("datosClientes")} >DATOS DE CLIENTE</IonButton>
+        </IonCard>
+  
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          <p>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
+          <p>TÍTULO: {props.datos.titulo}</p>
+          <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+          <p>{props.datos.descripcion}</p>
+        </IonCard>
+  
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}   ></Imagenes>
+        </IonCard>
+  
+        <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => setVista("chat")} >CHAT</IonButton>
+        <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => aceptarOrden()} >ACEPTAR ORDEN</IonButton>
+  
+        </IonContent>
+             
+      );
+      }else if (vista=="datosClientes"){
 
-      <IonCard id="ionCard-explorerContainer-Proveedor">
-            <IonCardSubtitle>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</IonCardSubtitle>
-            <IonCardSubtitle>TÍTULO: {props.datos.titulo}</IonCardSubtitle>
-            <IonCardSubtitle>DESCRIPCIÓN DE LA SOLICITUD: {props.datos.descripcion}</IonCardSubtitle>        
-      </IonCard>
+        return (
+        < VerDatosProveedor ticket={props.datos.ticket} tipo={props.datos.tipo} setVista={setVista}  />
+        )
+      }else if (vista=="chat") {
+        return(
+        <><Chatear estado={estado} email_proveedor={props.emailProveedor} email_cliente={props.datos.email_cliente} setVista={setVista} setAlert={setShowAlertInconvenienteChat} />
+        
+        <IonAlert
+            isOpen={showAlertInconvenienteChat}
+            onDidDismiss={() => setShowAlertInconvenienteChat(false)}
+            cssClass='my-custom-class'
+            header={'NO ES POSIBLE ABRIR COMUNICACIÓN CON EL CLIENTE'}
+            subHeader={''}
+            message={'Para poder dialogar con el cliente debe aceptar la orden de trabajo'}
+            buttons={[
+              {
+                text: 'OK',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: blah => {
+                  setVista("primero");
+                }
+              }
+            ]} /></>
+        )
+      } 
+      else{
 
-      <IonCard id="ionCard-explorerContainer-Proveedor">
-      < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}   ></Imagenes>
-      </IonCard>
-
-      </IonContent>
-
-         
-    );
+        return (
+          <IonContent>
+       
+        </IonContent>
+             
+      );
+      }
+      
 }
+
+const VerDatosProveedor = (props:{ticket:any, tipo:any,setVista:any})  =>{
+
+  const [datosCliente, setDatosCliente] = useState <datos_cliente>({
+    nombre:"",
+    apellido:"",
+    imagen:"",
+    calificacion: 0
+  })
+  
+  useEffect(() => { 
+  axios.get(url+"orden/datocliente/"+props.ticket+"/"+props.tipo).then((resp: { data: any; }) => {
+
+    if (resp.data!="bad"){
+      setDatosCliente(resp.data)
+    }
+  }) 
+}, []);
+
+
+  return (
+    <IonContent>
+      <div id="modalProveedor-flechaVolver">
+        <IonIcon icon={arrowBack} onClick={() => props.setVista("primero")} slot="start" id="flecha-volver">  </IonIcon>
+      </div>
+      <IonCard id="ionCard-explorerContainer-Proveedor">
+        <img id="img-orden" src={datosCliente.imagen}></img>
+        <p>NOMBRE: {datosCliente.nombre}</p>
+        <p>APELLIDO: {datosCliente.apellido}</p>
+        <p>CALIFICACIÓN: {datosCliente.calificacion}</p>
+        <IonButton  id="botonContratar" onClick={() => props.setVista("chat")} >CHAT CON CLIENTE</IonButton>
+  </IonCard>
+  </IonContent>
+       
+);
+}
+
+const Chatear = (props:{estado:any, email_proveedor:any, email_cliente:any, setVista:any, setAlert:any})=>{
+
+
+  if (props.estado!="RECIBIDO" || props.estado!="GENERADO POR CLIENTE"){
+    props.setAlert(true)
+    return(
+      <IonContent>
+       
+      </IonContent>
+    )
+  }else{
+    return(
+      <IonContent>
+      </IonContent>
+    )
+  }
+
+}
+
+
+
 
 const Imagenes = (props:{picture1:any,picture2:any})=>{
   if(props.picture1!="" && props.picture2!="" ){
@@ -114,7 +227,7 @@ const Imagenes = (props:{picture1:any,picture2:any})=>{
   }else{
     return(
       <div id="CardProveedoresImg">
-        <strong>El proveedor no ha adjuntado imágenes de referencia</strong>
+        <p>El proveedor no ha adjuntado imágenes de referencia</p>
       </div>
     )
   }
