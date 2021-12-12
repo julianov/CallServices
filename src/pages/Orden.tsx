@@ -71,7 +71,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
     const irASiguiente =() => {
         if (vista=="primeraVista")
         {   
-            if(titulo.current!="" && descripcion.current!="" && ){
+            if(titulo.current!="" && descripcion.current!="" ){
                 setVista("imagenes")
             }else{
                 setShowAlertCompletarCampos(true)

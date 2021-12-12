@@ -21,15 +21,12 @@ interface datos_cliente {
   calificacion: number
 }
 
-const getLocation = async () => {
-  try {
-      const position = await Geolocation.getCurrentPosition();
-      const posicion=position.coords.latitude +"/"+ position.coords.longitude
-      return posicion;
+const verUbicacion = (latitud:any, longitud:any) =>{
 
-  } catch (e) {
-    return 0;
-  }
+
+  const link="https://www.google.com/maps/search/?api=1&query="+latitud+"%2C"+longitud
+  const win= window.open(   link, '_blank')?.focus();
+  
 }
 
 
@@ -42,6 +39,8 @@ const ModalVerOrdenes = (props:{datos:any,emailProveedor:any,setVolver:any})  =>
     const [estado, setEstado] =useState("Enviada")
 
     const [showAlertInconvenienteChat, setShowAlertInconvenienteChat] = useState(false)
+    const [showAlertOrdenAceptada, setShowAlertOrdenAceptada] = useState(false)
+
 
     useEffect(() => {
         
@@ -80,6 +79,7 @@ const ModalVerOrdenes = (props:{datos:any,emailProveedor:any,setVolver:any})  =>
                 console.log("lo que llego al cambiar el estado de la orden es: "+resp.data)
                 if(resp.data!="bad"){
                   setEstado("ORDEN ACEPTADA")
+                  setShowAlertOrdenAceptada(true)
                 }
         
   
@@ -107,6 +107,8 @@ const ModalVerOrdenes = (props:{datos:any,emailProveedor:any,setVolver:any})  =>
           <p>TÍTULO: {props.datos.titulo}</p>
           <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
           <p>{props.datos.descripcion}</p>
+          <IonButton  id="botonContratar" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) } >VER UBICACIÓN DEL CLIENTE</IonButton>
+
         </IonCard>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -114,7 +116,27 @@ const ModalVerOrdenes = (props:{datos:any,emailProveedor:any,setVolver:any})  =>
         </IonCard>
   
         <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => setVista("chat")} >CHAT</IonButton>
+        
         <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => aceptarOrden()} >ACEPTAR ORDEN</IonButton>
+        <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => rechazarOrden()} >RECHAZAR ORDEN</IonButton>
+
+        <IonAlert
+            isOpen={showAlertInconvenienteChat}
+            onDidDismiss={() => setShowAlertInconvenienteChat(false)}
+            cssClass='my-custom-class'
+            header={'ORDEN DE SERVICIO ACEPTADA'}
+            subHeader={''}
+            message={'Alguna información sobre la orden aceptada'}
+            buttons={[
+              {
+                text: 'OK',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: blah => {
+                  setVista("primero");
+                }
+              }
+            ]} />
   
         </IonContent>
              
@@ -177,14 +199,8 @@ const VerDatosCliente = (props:{ticket:any, tipo:any,latitud:any, longitud:any,s
   }) 
 }, []);
 
-  const verUbicacion = () =>{
 
-    var lat=-32
-    var lon=-60
-    const link="https://www.google.com/maps/search/?api=1&query="+lat+"%2C"+lon
-    const win= window.open(   link, '_blank')?.focus();
-  }
-
+  
 
   return (
     <IonContent>
@@ -196,7 +212,7 @@ const VerDatosCliente = (props:{ticket:any, tipo:any,latitud:any, longitud:any,s
         <p>NOMBRE: {datosCliente.nombre}</p>
         <p>APELLIDO: {datosCliente.apellido}</p>
         <p>CALIFICACIÓN: {datosCliente.calificacion}</p>
-        <IonButton  id="botonContratar" onClick={() => verUbicacion()} >VER UBICACIÓN DEL CLIENTE</IonButton>
+        <IonButton  id="botonContratar" onClick={() => verUbicacion(props.latitud, props.longitud) } >VER UBICACIÓN DEL CLIENTE</IonButton>
 
         <IonButton  id="botonContratar" onClick={() => props.setVista("chat")} >CHAT CON CLIENTE</IonButton>
   </IonCard>
