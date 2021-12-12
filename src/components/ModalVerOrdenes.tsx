@@ -6,6 +6,8 @@ import { isConstructorDeclaration, isSetAccessorDeclaration } from "typescript";
 import Https from "../utilidades/HttpsURL";
 import './Modal.css';
 
+import { Geolocation, Geoposition } from '@ionic-native/geolocation';
+
 const url=Https
 
 
@@ -17,6 +19,17 @@ interface datos_cliente {
   apellido:string
   imagen:string
   calificacion: number
+}
+
+const getLocation = async () => {
+  try {
+      const position = await Geolocation.getCurrentPosition();
+      const posicion=position.coords.latitude +"/"+ position.coords.longitude
+      return posicion;
+
+  } catch (e) {
+    return 0;
+  }
 }
 
 
@@ -109,7 +122,7 @@ const ModalVerOrdenes = (props:{datos:any,emailProveedor:any,setVolver:any})  =>
       }else if (vista=="datosClientes"){
 
         return (
-        < VerDatosProveedor ticket={props.datos.ticket} tipo={props.datos.tipo} setVista={setVista}  />
+        < VerDatosCliente ticket={props.datos.ticket} tipo={props.datos.tipo} latitud={props.datos.location_lat} longitud={props.datos.location_long} setVista={setVista}  />
         )
       }else if (vista=="chat") {
         return(
@@ -146,7 +159,7 @@ const ModalVerOrdenes = (props:{datos:any,emailProveedor:any,setVolver:any})  =>
       
 }
 
-const VerDatosProveedor = (props:{ticket:any, tipo:any,setVista:any})  =>{
+const VerDatosCliente = (props:{ticket:any, tipo:any,latitud:any, longitud:any,setVista:any})  =>{
 
   const [datosCliente, setDatosCliente] = useState <datos_cliente>({
     nombre:"",
@@ -164,6 +177,14 @@ const VerDatosProveedor = (props:{ticket:any, tipo:any,setVista:any})  =>{
   }) 
 }, []);
 
+  const verUbicacion = () =>{
+
+    var lat=-32
+    var lon=-60
+    const link="https://www.google.com/maps/search/?api=1&query="+lat+"%2C"+lon
+    const win= window.open(   link, '_blank')?.focus();
+  }
+
 
   return (
     <IonContent>
@@ -175,6 +196,8 @@ const VerDatosProveedor = (props:{ticket:any, tipo:any,setVista:any})  =>{
         <p>NOMBRE: {datosCliente.nombre}</p>
         <p>APELLIDO: {datosCliente.apellido}</p>
         <p>CALIFICACIÓN: {datosCliente.calificacion}</p>
+        <IonButton  id="botonContratar" onClick={() => verUbicacion()} >VER UBICACIÓN DEL CLIENTE</IonButton>
+
         <IonButton  id="botonContratar" onClick={() => props.setVista("chat")} >CHAT CON CLIENTE</IonButton>
   </IonCard>
   </IonContent>

@@ -50,6 +50,8 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
     const fecha = useRef("")
     const hora = useRef("")
 
+    const direccion = useRef("")
+
     const [showAlertCompletarCampos, setShowAlertCompletarCampos]=useState(false)
     const [showAlertInconvenienteSolicitud, setShowAlertInconvenienteSolicitud]=useState(false)
     const [showAlertOrdenCreada,setShowAlertOrdenCreada]=useState(false)
@@ -69,7 +71,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
     const irASiguiente =() => {
         if (vista=="primeraVista")
         {   
-            if(titulo.current!="" && descripcion.current!=""){
+            if(titulo.current!="" && descripcion.current!="" && ){
                 setVista("imagenes")
             }else{
                 setShowAlertCompletarCampos(true)
@@ -93,6 +95,8 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
             formDataToUpload.append("clienteLat",posicionCliente.current.split("/")[0])
             formDataToUpload.append("clienteLong",posicionCliente.current.split("/")[1])
             formDataToUpload.append("tituloPedido",titulo.current)
+            formDataToUpload.append("direccion",direccion.current)
+
 
             if(fecha.current!=undefined || fecha.current!=""){
                 formDataToUpload.append("diaPedido",fecha.current.split("T")[0])
@@ -173,6 +177,11 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
                         <IonInput onIonInput={(e: any) => descripcion.current = (e.target.value)}></IonInput>
                     </IonItem>
 
+                    <IonItem id="item-Orden">
+                        <IonLabel position="floating">Ingrese su dirección</IonLabel>
+                        <IonInput onIonInput={(e: any) => direccion.current = (e.target.value)}></IonInput>
+                    </IonItem>
+
                 </IonCard>
                 <IonButton color="warning" id="botonContratar" onClick={() => irASiguiente()}>SIGUIENTE</IonButton>
 
@@ -231,7 +240,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
             <div id="contenderCentralOrden">
             <IonCardTitle>PROGRAMAR FECHA</IonCardTitle>
 
-                <IonCard id="ionCard-CardProveedor">
+                    <IonCard id="ionCard-CardProveedor">
                     
                         <IonCardSubtitle>Ingrese día y horario estimativo</IonCardSubtitle>
     

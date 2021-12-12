@@ -26,19 +26,7 @@ const url = Https
 const getLocation = async () => {
   try {
       const position = await Geolocation.getCurrentPosition();
-      posicion=position.coords.latitude +"/"+ position.coords.longitude
-
-
-
-    var asdf = 'https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyDoxQGda7BT0BJ0If1-aARxlbVSia4ZU1A&address=CORNELIO SAAVEDRA 1175, SAN MIGUEL, GBA'
-
-    axios.get(asdf).then((resp: { data: any; }) => {
-      if (resp.data!="bad"){
-        console.log("MI POSICIÓN ES: "+JSON.stringify(resp.data) )      }
-
-    })
-      
-      
+      posicion=position.coords.latitude +"/"+ position.coords.longitude      
       return posicion;
 
   } catch (e) {
