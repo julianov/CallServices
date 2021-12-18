@@ -10,7 +10,8 @@ import { ordenes } from '../pages/HomeProveedor';
 import OrdenSimple from '../pages/Orden';
 import axios from 'axios';
 import Https from '../utilidades/HttpsURL';
-import ModalVerOrdenes from './ModalVerOrdenes';
+import ModalVerOrdenes from './ModalVerOrdenesProveedor';
+import ModalVerOrdenesProveedor from './ModalVerOrdenesProveedor';
 
 const url=Https
 
@@ -92,7 +93,7 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any} ) =
       isOpen={verOrden}
       onDidDismiss={() => setVerOrden( false )}
     >
-      <ModalVerOrdenes 
+      <ModalVerOrdenesProveedor 
         datos={proveedores[posicion-1]}
         setVolver={setVerOrden}
         emailProveedor={props.emailProveedor}

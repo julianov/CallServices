@@ -3,22 +3,16 @@ import { arrowBack, calendar, chevronDown, closeCircle, ellipse, informationCirc
 import React, { Component, useRef, useState } from 'react';
 import './ExploreContainer.css';
 
-import {Geoposition} from "@ionic-native/geolocation";
 import { Geolocation } from '@capacitor/core/dist/esm/web/geolocation';
 import { useEffect } from 'react';
-import CardProveedor from '../utilidades/CardProveedor';
 import Estrellas from '../utilidades/Estrellas';
 import ResultadoBusqueda from '../utilidades/ResultadoBusqueda';
-import { getItem, removeItem } from '../utilidades/Storage';
-import { url } from 'inspector';
-import { Route, Redirect } from 'react-router';
-import Tab2 from '../pages/Tabs2';
-import Completarinfo from '../pages/Completarinfo';
-import { IonReactRouter } from '@ionic/react-router';
-import { LocalNotifications } from '@capacitor/core';
 import { createStore, getDB, removeDB } from '../utilidades/dataBase';
-import { datosGeneralesVariosProveedores, proveedorBuscado } from '../pages/HomeCliente';
+import { datosGeneralesVariosProveedores, ordenesCliente, proveedorBuscado } from '../pages/HomeCliente';
 import ModalVerCardProveedor from './ModalVerCardProveedor';
+import { ordenes } from '../pages/HomeProveedor';
+import ModalVerOrdenes from './ModalVerOrdenesProveedor';
+import ModalVerOrdenesCliente from './ModalVerOrdenesCliente';
 
 const getLocation = async () => {
   try {
@@ -32,7 +26,10 @@ const getLocation = async () => {
 }
 var ultimos: never[]=[]
 
-const ExploreContainerCliente  = (props:{proveedores: Array<datosGeneralesVariosProveedores>, url:string, setShowCargandoProveedores:any, 
+let proveedores = new Array<ordenesCliente>();
+
+
+const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGeneralesVariosProveedores>, url:string, setShowCargandoProveedores:any, 
   setShowModal:any, setTipoDeVistaEnModal:any, emailCliente:String,
   buscar:any, busqueda_categorias:any, busquedaDatosProveedores:Array<proveedorBuscado>}) => {
 
@@ -44,16 +41,67 @@ const ExploreContainerCliente  = (props:{proveedores: Array<datosGeneralesVarios
 
   const [showModal2, setShowModal2] = useState({ isOpen: false });
 
+  const [hayOrdenes, setHayOrdenes]=useState(false)
+  const [verOrden, setVerOrden] = useState( false );
+
+  const [posicion, setPosicion] = useState(0)
+
+
+  useEffect(() => {
+
+    for (let i=0; i<props.ordenes.length;i++){     
+
+        proveedores.push({ tipo:props.ordenes[i].tipo,
+        status:props.ordenes[i].status,
+        fecha_creacion:props.ordenes[i].fecha_creacion,
+        ticket:props.ordenes[i].ticket,
+        dia:props.ordenes[i].dia,
+        hora:props.ordenes[i].hora,
+        titulo:props.ordenes[i].titulo,
+        descripcion:props.ordenes[i].descripcion,
+        email_proveedor:props.ordenes[i].email_proveedor,
+        imagen_proveedor:props.ordenes[i].imagen_proveedor,
+        location_lat:props.ordenes[i].location_lat,
+        location_long:props.ordenes[i].location_long,
+        picture1:props.ordenes[i].picture1,
+        picture2:props.ordenes[i].picture2,
+      })
+
+    }
+
+    if(props.ordenes.length > 0){
+      setHayOrdenes(true)
+    }
+   
+
+  }, [props.ordenes]);
+
 
   if (props.busqueda_categorias.length == 0 && props.buscar=="" ){
     if (verEmail=="" && item =="" ){
-      console.log("pues veamos que tenemos"+(props.proveedores))
       return (
+        <>
         <div id="container-principal-ExplorerContainer-Cliente">   
           <Tabs setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal} ></Tabs>
+          <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={proveedores}  setVerOrden={setVerOrden} setPosicion={setPosicion}></MisOrdenes>
           <h1 id="explorerContainerCliente-titulo">PROVEEDORES DE SERVICIOS EN LA ZONA </h1>             
           <Elements  proveedores={props.proveedores!} setVerEmail={setVerEmail} setItem={setItem} setShowModal2={setShowModal2} />
         </div>
+
+
+        <IonModal
+      animated={true}
+      isOpen={verOrden}
+      onDidDismiss={() => setVerOrden( false )}
+    >
+      <ModalVerOrdenesCliente 
+        datos={proveedores[posicion-1]}
+        setVolver={setVerOrden}
+        emailCliente={props.emailCliente}
+        
+      />  
+    </IonModal>
+            </>
         );
 
     }
@@ -239,17 +287,7 @@ const VerProveedorParticular = (  props:{url:string, emailCliente:String, email:
             ]}  /></>)
 
     }else{
-    /*  aca mostrar el modal de cardProveedor
-      return(
-        <>
-        <div id="volver-contenedor-ExplorerContainer">
-          <IonIcon icon={arrowBack} onClick={() => (props.setVerEmail(""), props.setItem(""))} id="volver-ExplorerContainerCliente">  </IonIcon>
-          </div> 
-          <CardProveedor data={caracteres} imagenes={imagenes} email={props.email} ></CardProveedor>
-        </>
-      )*/
 
-      console.log("ha llegado a este modal222")
       return (
         <div id="volver-contenedor-ExplorerContainer">
 
@@ -278,6 +316,72 @@ const VerProveedorParticular = (  props:{url:string, emailCliente:String, email:
 
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , hayOrdenes:any, setVerOrden:any,setPosicion:any }) => {
+
+  var i=0
+  //if (props.proveedores!=[]){
+    if (props.hayOrdenes){
+      return (
+        <>
+        <h1>SERVICIOS EN CURSO</h1>
+        <div>
+          {props.misOrdenes.map((a) => {
+            i = i + 1;
+            return (<CardVistaVariasOrdenes key={i} posicion={i} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket}
+              dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_proveedor} setVerOrden={props.setVerOrden} setPosicion={props.setPosicion}
+            ></CardVistaVariasOrdenes>);
+          })}
+        </div></>
+    )
+    }else{
+      return(
+        <></>
+      )
+    }
+    
+  //}
+      
+}
+
+const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fecha_creacion:string,ticket: string,
+  dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, setPosicion:any }) => {
+        
+    var estado="Enviada"
+    if (props.status=="ENV"){
+      estado="PEDIDO DE TRABAJO ENVIADO"
+    }else if(props.status=="REC"){
+      estado="PEDIDO DE TRABAJO RECIBIDO"
+    }else if(props.status=="ACE"){
+      estado="PEDIDO DE TRABAJO ACEPTADO"
+    }else if(props.status=="EVI"){
+      estado="EN VIAJE"
+    }else if(props.status=="ENS"){
+      estado="EN SITIO"
+    }
+
+ 
+    return (
+    <IonCard id="ionCard-explorerContainer-Proveedor" onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
+      <IonGrid>
+      <IonRow  id="row-busqueda">
+        <IonCol size="auto"  id="col-explorerContainerCliente"><img id="img-explorerContainerCliente" src={props.imagen}></img></IonCol>
+        <IonCol size="auto" id="col-explorerContainerCliente">
+          <p>TIPO: {props.tipo.toUpperCase( )}</p>
+          <p>STATUS: {estado}</p>
+          <p>TICKET: {props.ticket}</p>
+        </IonCol>
+      </IonRow>
+      
+      </IonGrid>
+        
+  
+    </IonCard>
+       
+  );
+}
 
 export const Categorias: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
@@ -319,7 +423,7 @@ export const Categorias: React.FC = () => {
 };
 
 
-const Tabs= (props:{setShowModal:any,setTipoDeVistaEnModal:any }) => {
+const Tabs= (props:{setShowModal:any,setTipoDeVistaEnModal:any  }) => {
   return(
   <IonCard id="IonCardTabs">
   <IonGrid id="ExplorerContainerCliente-Tabs">
@@ -336,7 +440,7 @@ const Tabs= (props:{setShowModal:any,setTipoDeVistaEnModal:any }) => {
     </IonCol>
 
     <IonCol id="ioncol-homecliente" onClick={() => {  props.setShowModal({ isOpen: true});  props.setTipoDeVistaEnModal("programar")}}>
-      <IonRow id="ionrow-homecliente"><small className="textoIconos">PROGRAMADOS</small></IonRow>
+      <IonRow id="ionrow-homecliente"><small className="textoIconos">MIS ORDENES</small></IonRow>
       <IonRow id="ionrow-homecliente"><img src={"./assets/icon/time.png"} className="imagen-boton-principal"/></IonRow>
     </IonCol>
   

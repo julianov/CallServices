@@ -58,6 +58,23 @@ export interface datosGeneralesVariosProveedores {
     email:string
     }
 
+    export interface ordenesCliente  {
+      tipo:string
+      status:string
+      fecha_creacion:string
+      ticket: string
+      dia: string
+      hora:string
+      titulo:string
+      descripcion:string
+      email_proveedor:string
+      imagen_proveedor:string
+      location_lat:any
+      location_long:any
+      picture1:string
+      picture2:string
+      }
+
   let proveedores = new Array<datosGeneralesVariosProveedores>();
 
   let proveedorBuscado = new Array<proveedorBuscado>();
@@ -83,6 +100,25 @@ const HomeCliente = (props:{setIsReg:any,
   const primeraVezProveedores = useRef()
 
   const [reload,setRealad]=useState(false)
+
+  const [misOrdenes, setMisOrdenes] = useState <ordenesCliente>(
+    {
+      tipo:"",
+      status:"",
+      fecha_creacion:"",
+      ticket: "",
+      dia: "",
+      hora:"",
+      titulo:"",
+      descripcion:"",
+      email_proveedor:"",
+      imagen_proveedor:"",
+      location_lat:"",
+      location_long:"",
+      picture1:"",
+      picture2:"",
+      }
+);
 
   const axios = require('axios');
 
@@ -131,6 +167,14 @@ const HomeCliente = (props:{setIsReg:any,
           });  
         
         });
+
+        axios.get(url+"orden/misordenes/"+"cliente/"+props.email).then((resp: { data: any; }) => {
+          if (resp.data!="bad"){
+            setMisOrdenes(resp.data)            
+          }
+
+        })
+   
    
   }, []);
 
@@ -200,6 +244,7 @@ const HomeCliente = (props:{setIsReg:any,
           
          
           <ExploreContainerCliente setShowCargandoProveedores={setShowCargandoProveedores} 
+          ordenes={misOrdenes}
           proveedores={proveedores}
           emailCliente={props.email}
           url={url} 

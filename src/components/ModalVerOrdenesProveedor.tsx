@@ -31,7 +31,7 @@ const verUbicacion = (latitud:any, longitud:any) =>{
 
 
 
-const ModalVerOrdenes = (props:{datos:any,emailProveedor:any,setVolver:any})  =>{
+const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:any})  =>{
 
 
     const [vista, setVista] = useState("primero")
@@ -40,6 +40,7 @@ const ModalVerOrdenes = (props:{datos:any,emailProveedor:any,setVolver:any})  =>
 
     const [showAlertInconvenienteChat, setShowAlertInconvenienteChat] = useState(false)
     const [showAlertOrdenAceptada, setShowAlertOrdenAceptada] = useState(false)
+    const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
 
 
     useEffect(() => {
@@ -87,6 +88,23 @@ const ModalVerOrdenes = (props:{datos:any,emailProveedor:any,setVolver:any})  =>
         }
         
       }
+
+      const rechazarOrden = ()=> {
+
+        if (estado=="RECIBIDO"){
+
+          axios.get(url+"orden/cambiarestado/"+props.datos.ticket+"/"+props.datos.tipo+"/"+"REX", {timeout: 7000})
+          .then((resp: { data: any; }) => {
+
+            if(resp.data!="bad"){
+              setEstado("ORDEN RECHAZADA")
+            }
+    
+
+           })
+        }
+
+      }
    
       if(vista=="primero"){
         return (
@@ -117,8 +135,14 @@ const ModalVerOrdenes = (props:{datos:any,emailProveedor:any,setVolver:any})  =>
   
         <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => setVista("chat")} >CHAT</IonButton>
         
-        <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => aceptarOrden()} >ACEPTAR ORDEN</IonButton>
-        <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => rechazarOrden()} >RECHAZAR ORDEN</IonButton>
+        <IonGrid>
+        <IonRow>
+
+        <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton></IonCol>
+        <IonCol><IonButton shape="round" color="warning"  id="botonContratar" onClick={() => aceptarOrden()} >ACEPTAR ORDEN</IonButton></IonCol>
+
+        </IonRow>
+        </IonGrid>
 
         <IonAlert
             isOpen={showAlertInconvenienteChat}
@@ -134,6 +158,34 @@ const ModalVerOrdenes = (props:{datos:any,emailProveedor:any,setVolver:any})  =>
                 cssClass: 'secondary',
                 handler: blah => {
                   setVista("primero");
+                }
+              }
+            ]} />
+
+
+          <IonAlert
+            isOpen={showAlertRechazarOrden}
+            onDidDismiss={() => setShowAlertRechazarOrden(false)}
+            cssClass='my-custom-class'
+            header={'¿DESEA RECHAZAR LA ORDEN?'}
+            subHeader={''}
+            message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+            buttons={[
+              {
+                text: 'SI',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: blah => {
+                  rechazarOrden();
+                },  
+               
+              },
+              {
+                text: 'NO',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: blah => {
+                  setShowAlertRechazarOrden(false);
                 }
               }
             ]} />
@@ -272,4 +324,4 @@ const Imagenes = (props:{picture1:any,picture2:any})=>{
   }
 }
 
-export default ModalVerOrdenes;
+export default ModalVerOrdenesProveedor;
