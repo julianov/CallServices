@@ -367,7 +367,7 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
     <IonCard id="ionCard-explorerContainer-Proveedor" onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
       <IonGrid>
       <IonRow  id="row-busqueda">
-        <IonCol size="auto"  id="col-explorerContainerCliente"><img id="img-explorerContainerCliente" src={props.imagen}></img></IonCol>
+        <IonCol size="auto"  id="col-explorerContainerCliente"><img id="imgOrden" src={props.imagen}></img></IonCol>
         <IonCol size="auto" id="col-explorerContainerCliente">
           <p>TIPO: {props.tipo.toUpperCase( )}</p>
           <p>STATUS: {estado}</p>

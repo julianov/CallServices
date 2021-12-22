@@ -1,6 +1,6 @@
-import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCol, IonContent, IonGrid, IonIcon, IonRow } from "@ionic/react";
+import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonRow } from "@ionic/react";
 import { arrowBack } from "ionicons/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { isConstructorDeclaration, isSetAccessorDeclaration } from "typescript";
 
 import Https from "../utilidades/HttpsURL";
@@ -42,10 +42,10 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
     const [showAlertOrdenAceptada, setShowAlertOrdenAceptada] = useState(false)
     const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
 
+    const precio = useRef ("")
+
 
     useEffect(() => {
-        
-   
             if (props.datos.status=="ENV"){
               setEstado("GENERADO POR CLIENTE")
               axios.get(url+"orden/cambiarestado/"+props.datos.ticket+"/"+props.datos.tipo+"/"+"REC", {timeout: 7000})
@@ -55,8 +55,6 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
                 if(resp.data!="bad"){
                   setEstado("RECIBIDO")
                 }
-        
-  
                })
             }else if(props.datos.status=="REC"){
               setEstado("RECIBIDO")
@@ -74,12 +72,11 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
       const aceptarOrden = ()=> {
 
         if (estado=="RECIBIDO"){
-          axios.get(url+"orden/cambiarestado/"+props.datos.ticket+"/"+props.datos.tipo+"/"+"ACE", {timeout: 7000})
+          axios.get(url+"orden/cambiarestado/"+props.datos.ticket+"/"+props.datos.tipo+"/"+"ABI", {timeout: 7000})
               .then((resp: { data: any; }) => {
 
-                console.log("lo que llego al cambiar el estado de la orden es: "+resp.data)
                 if(resp.data!="bad"){
-                  setEstado("ORDEN ACEPTADA")
+                  setEstado("ORDEN EN PROGRESO")
                   setShowAlertOrdenAceptada(true)
                 }
         
@@ -145,19 +142,19 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
         </IonGrid>
 
         <IonAlert
-            isOpen={showAlertInconvenienteChat}
-            onDidDismiss={() => setShowAlertInconvenienteChat(false)}
+            isOpen={showAlertOrdenAceptada}
+            onDidDismiss={() => setShowAlertOrdenAceptada(false)}
             cssClass='my-custom-class'
-            header={'ORDEN DE SERVICIO ACEPTADA'}
+            header={'ORDEN DE SERVICIO EN PROGRESO'}
             subHeader={''}
-            message={'Alguna información sobre la orden aceptada'}
+            message={'Si está en condiciones de presupuestar el trabajo/servicio coloque precio'+'\n'+"Sino solicite más información"}
             buttons={[
               {
                 text: 'OK',
                 role: 'cancel',
                 cssClass: 'secondary',
                 handler: blah => {
-                  setVista("primero");
+                  setVista("preaceptada");
                 }
               }
             ]} />
@@ -220,7 +217,43 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
               }
             ]} /></>
         )
-      } 
+      } else if (vista=="preaceptada") {
+
+
+        return (
+          <IonContent>
+          <div id="modalProveedor-flechaVolver">
+            <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+          </div>
+       
+  
+          <IonCardTitle>PRESUPUESTO</IonCardTitle>
+
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+        <IonItem id="item-Orden">
+          <IonLabel position="floating">INGRESE PRECIO ESTIMATIVO </IonLabel>
+          <IonInput onIonInput={(e: any) => precio.current = (e.target.value)}></IonInput>
+          </IonItem>
+        </IonCard>
+  
+              
+        <IonGrid>
+        <IonRow>
+
+        <IonCol><IonButton shape="round" color="warning"  id="botonContratar" onClick={() => aceptarOrden()} >ENVIAR PRESUPUESTO</IonButton></IonCol>
+
+        </IonRow>
+        </IonGrid>
+
+      
+  
+        </IonContent>
+
+        )
+
+
+
+      }
       else{
 
         return (
@@ -318,7 +351,7 @@ const Imagenes = (props:{picture1:any,picture2:any})=>{
   }else{
     return(
       <div id="CardProveedoresImg">
-        <p>El proveedor no ha adjuntado imágenes de referencia</p>
+        <p>CLIENTE NO HA ADJUNTADO IMÁGENES DE REFERENCIA DEL PEDIDO DE SERVICIO</p>
       </div>
     )
   }

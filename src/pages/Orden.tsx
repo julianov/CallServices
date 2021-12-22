@@ -7,7 +7,7 @@ import CardProveedor from "../utilidades/CardProveedor";
 import { removeItem } from "../utilidades/Storage";
 import Https from "../utilidades/HttpsURL";
 import React, { useEffect, useRef, useState } from 'react';
-import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItemDivider, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent, IonDatetime } from '@ionic/react';
+import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItemDivider, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent, IonDatetime, IonCheckbox } from '@ionic/react';
 import { Photo, usePhotoGallery } from "../hooks/usePhotoGallery";
 import { base64FromPath } from '@ionic/react-hooks/filesystem';
 import { b64toBlob } from '../utilidades/b64toBlob';
@@ -32,15 +32,14 @@ const getLocation = async () => {
 
 const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
 
-    console.log("llego a orden simple")
-    console.log("el email mio es: "+ props.data.items)
-
     
     const [vista,setVista] = useState ("primeraVista")
 
     const posicionCliente = useRef("")
     const titulo = useRef("")
     const descripcion = useRef("")
+    const latitudCliente = useRef("")
+    const longitudCliente=useRef("")
     const foto1Mostrar= useRef <String>()
     const foto2Mostrar= useRef <String>()
 
@@ -157,13 +156,15 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
             <IonIcon icon={arrowBack} onClick={() => props.setVolver({ isOpen: false })} slot="start" id="flecha-volver">  </IonIcon>
             </div>
             <div id="contenderCentralOrden">
-            <IonCardTitle>SOLICITUD DE SERVICIO</IonCardTitle>
+            <IonCardTitle>FORMULARIO DE SOLICITUD DE SERVICIO</IonCardTitle>
 
                 <IonCard id="ionCard-CardProveedor">
                     <IonCardHeader>
                         <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.data.picture}></img>
-                        <h2  > {props.data.items} </h2>
-                        <h2> {props.data.nombre} </h2>
+                        <h2>RUBRO DE SERVICIO:</h2>
+                        <p>{props.data.items}</p>
+                        <h2>PROVEEDOR DEL SERVICIO:</h2> 
+                        <p> {props.data.nombre} </p>
                         <IonItem id="CardProveedorItem" lines="none"> {props.data.calificacion} </IonItem>
                     </IonCardHeader>
 
@@ -176,11 +177,11 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
                         <IonLabel position="floating">Ingrese una descripción</IonLabel>
                         <IonInput onIonInput={(e: any) => descripcion.current = (e.target.value)}></IonInput>
                     </IonItem>
+                    </IonCard>
 
-                    <IonItem id="item-Orden">
-                        <IonLabel position="floating">Ingrese su dirección</IonLabel>
-                        <IonInput onIonInput={(e: any) => direccion.current = (e.target.value)}></IonInput>
-                    </IonItem>
+                    <IonCard id="ionCard-CardProveedor">
+                    <LocacionServicio direccion={direccion} posicionCliente={posicionCliente} ></LocacionServicio>
+                    
 
                 </IonCard>
                 <IonButton color="warning" id="botonContratar" onClick={() => irASiguiente()}>SIGUIENTE</IonButton>
@@ -372,7 +373,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
 
 
 
-const TomarFotografia = (props: {imagen:any, setFilepath:any}) => {
+export const TomarFotografia = (props: {imagen:any, setFilepath:any}) => {
 
     const { deletePhoto, photos, takePhoto } = usePhotoGallery();
     const [photoToDelete, setPhotoToDelete] = useState(false);
@@ -506,5 +507,39 @@ const TomarFotografia = (props: {imagen:any, setFilepath:any}) => {
     
 }  
 
+const LocacionServicio = ( props:{direccion:any, posicionCliente:any, latitudCliente:any, longitudCliente:any } ) =>{
+
+    const [siEsElLugar, setSiEsElLugar] = useState(true)
+    
+    return(
+        <div id="containerUbicacion">
+
+        <IonGrid>
+        <IonRow><IonCol>
+            <h3>¿SE ENCUENTRA ACTUALMENTE EN EL DOMICILIO DONDE SE REALIZARÁ EL SERVICIO?</h3>
+        </IonCol></IonRow>
+        <IonRow><IonCol>
+            <IonItem id="item-Orden">
+                <IonLabel>SI</IonLabel>
+                <IonCheckbox checked={siEsElLugar} onIonChange={e => setSiEsElLugar(e.detail.checked)} /> 
+            </IonItem >
+        </IonCol></IonRow>
+        <IonRow><IonCol>
+            <h2>ESPECIFIQUE LA DIRECCIÓN DE LA LOCACIÓN DONDE SOLICITA EL SERVICIO</h2>
+        </IonCol></IonRow>
+        <IonRow><IonCol>
+            <p >La misma debe ser lo más específica posible en cuanto a dirección y numeración de calle</p>
+        </IonCol></IonRow>
+        <IonRow><IonCol>
+            <IonItem id="item-Orden">
+                <IonLabel position="floating">Ingrese su dirección</IonLabel>
+                <IonInput onIonInput={(e: any) => props.direccion.current = (e.target.value)}></IonInput>
+            </IonItem>
+        </IonCol></IonRow>
+        </IonGrid>
+        </div>
+    )
+   
+}
 
 export default OrdenSimple 

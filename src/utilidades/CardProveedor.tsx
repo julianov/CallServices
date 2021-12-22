@@ -217,12 +217,28 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
         
         if(props.imagenes!=undefined){
 
+          var certificado=""
+          var imagen1=""
+          var imagen2=""
+          var imagen3=""
+          if (props.imagenes.certificate!=undefined){
+            certificado=props.imagenes.certificate
+          }
+          if (props.imagenes.picture1!=undefined){
+            imagen1=props.imagenes.picture1
+          }
+          if (props.imagenes.picture2!=undefined){
+            imagen2=props.imagenes.picture2
+          }
+          if (props.imagenes.picture3!=undefined){
+            imagen3=props.imagenes.picture3
+          }
           setImagenesProveedores(
             {
-              certificate:props.imagenes.certificate,
-              picture1:props.imagenes.picture1,
-              picture2:props.imagenes.picture2,
-              picture3:props.imagenes.picutre3
+              certificate:certificado,
+              picture1:imagen1,
+              picture2:imagen2,
+              picture3:imagen3
             }
           )
 
@@ -244,6 +260,8 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
                 <IonRow id="row-busqueda">
                   <IonCol size="auto" id="col-explorerContainerCliente">
                     <img id="ionCard-explorerContainer-Cliente-Imagen" src={datosProveedoresArray.picture}></img></IonCol>
+                </IonRow>
+                <IonRow id="row-busqueda">
                   <IonCol size="auto" id="col-explorerContainerCliente">
                     <IonCardTitle>{datosProveedoresArray.nombre+ " " + datosProveedoresArray.last_name}</IonCardTitle>
                     <IonCardSubtitle>RUBRO: {datosProveedoresArray.items}</IonCardSubtitle>
@@ -251,16 +269,19 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
                     <Estrellas calificacion={datosProveedoresArray.qualification}></Estrellas>
                   </IonCol>
                 </IonRow>
-                <IonRow>
-                <IonItemDivider></IonItemDivider>
-
+                
+                <IonRow id="row-busqueda">
+                  <IonCol size="auto" id="col-explorerContainerCliente">
                 <IonItem id="CardProveedorItem" lines="none"> {datosProveedoresArray.locacion} </IonItem>
-
+                </IonCol>
+                </IonRow>
                 <IonItemDivider></IonItemDivider>
-                  <IonCol><div id="CardProveedorContainer">
+                <IonRow id="row-busqueda">
+                  <IonCol size="auto" id="col-explorerContainerCliente">
                   <strong>DESCRIPCIÓN:</strong>
+
                   <IonItem lines="none"> {datosProveedoresArray.description} </IonItem>
-                </div></IonCol></IonRow>
+                </IonCol></IonRow>
               </IonGrid>
             </IonCardHeader>
           </IonCard>
@@ -430,6 +451,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
 
   const Imagenes= (props:{ picture1:any,picture2:any, picture3:any	}) => {
 
+
     if(props.picture1!="" && props.picture2!="" &&props.picture3!=""){
       return(
         <div id="CardProveedoresImg"><img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture1}></img>
@@ -445,6 +467,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
       )
     }
     else if(props.picture1!="" && props.picture2=="" &&props.picture3==""){
+      console.log("entonces debe mostrar esto una sola")
       return(
         <div id="CardProveedoresImg"><img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture1}></img>
         </div>
@@ -452,7 +475,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
     }else{
       return(
         <div id="CardProveedoresImg">
-          <strong>El proveedor no ha adjuntado imágenes de referencia</strong>
+          <strong>EL PROVEEDOR NO HA ADJUNTADO IMÁGENES DE REFERENCIA</strong>
         </div>
       )
     }
@@ -470,7 +493,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
     }else{
       return(
         <div id="CardProveedoresImg">
-          <strong>El proveedor no ha adjuntado certificación</strong>
+          <strong>EL PROVEEDOR NO HA ADJUNTADO CERTIFICACIÓN</strong>
         </div>
       )
     }

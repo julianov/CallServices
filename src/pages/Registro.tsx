@@ -194,7 +194,7 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
             isOpen={alertCuentaUsuario}
             onDidDismiss={() => setShowAlertCuentaUsuario(false)}
             cssClass='my-custom-class'
-            header={'Cuenta de usuario'}
+            header={'CUENTA DE USUARIO'}
             message={mensajeCuentaUsuario}
             buttons={[
               {
@@ -217,7 +217,7 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
             isOpen={alertCuentaProveedor}
             onDidDismiss={() => setShowAlertCuentaProveedor(false)}
             cssClass='my-custom-class'
-            header={'Cuenta de proveedor de servicio'}
+            header={'CUENTA DE PROVEEDOR DE SERVICIO'}
             message={mensajeCuentaProveedor}
             buttons={[
               {

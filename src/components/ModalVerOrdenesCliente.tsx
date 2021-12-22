@@ -1,6 +1,6 @@
 import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCol, IonContent, IonGrid, IonIcon, IonRow } from "@ionic/react";
 import { arrowBack } from "ionicons/icons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { isConstructorDeclaration, isSetAccessorDeclaration } from "typescript";
 
 import Https from "../utilidades/HttpsURL";
@@ -8,6 +8,7 @@ import './Modal.css';
 
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import axios from "axios";
+import { TomarFotografia } from "../pages/Orden";
 
 const url=Https
 
@@ -98,16 +99,12 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
         </IonCard>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
-          < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}   ></Imagenes>
+          < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
         </IonCard>
   
         <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => setVista("chat")} >CHAT</IonButton>
         
-   
         <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton></IonCol>
-
-      
-
 
           <IonAlert
             isOpen={showAlertRechazarOrden}
@@ -239,33 +236,134 @@ const Chatear = (props:{estado:any, email_proveedor:any, email_cliente:any, setV
 
 
 
-const Imagenes = (props:{picture1:any,picture2:any})=>{
-  if(props.picture1!="" && props.picture2!="" ){
-    return(
-      <div id="CardProveedoresImg">
-        <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture1}></img>
-        <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture2}></img>
-        </div>
-    )
+const Imagenes = (props:{picture1:any,picture2:any, ticket:any, tipo:any})=>{
+
+  const [agregarFotografia, setAgregarFotografia]=useState(false)
+  const [badResponse, setBadResponse]=useState(false)
+
+
+  const foto1Mostrar= useRef <String>()
+  const foto2Mostrar= useRef <String>()
+
+  const foto1= useRef <Blob>()
+  const foto2= useRef <Blob>()
+
+  const enviarFoto = ()=>{
+
+    if ((foto1.current!=null || foto1.current!=undefined) && (foto2.current!=null || foto2.current!=undefined) ){
+      var formDataToUpload = new FormData();
+
+      if(foto1.current!=null || foto1.current!=undefined){
+        formDataToUpload.append("imagen1", foto1.current);
+        
+      }
+      if(foto2.current!=null || foto2.current!=undefined){
+        formDataToUpload.append("imagen2", foto2.current); 
+      }
+      formDataToUpload.append("ticket", props.ticket)
+      formDataToUpload.append("tipo", props.tipo)
+  
+  
+  
+    const axios = require('axios');
+    axios({
+        url:url+"orden/agregarfoto",
+        method:'POST',
+        headers: {"content-type": "multipart/form-data"},
+        data:formDataToUpload
+    }).then(function(res: any){
+      if(res.data!="bad"){
+        setAgregarFotografia(false)
+    }else{
+      setBadResponse(true)
+    }
+  
+    })
+    }else{
+      setAgregarFotografia(false)
+
+    }
+    
+
   }
-  else if(props.picture1!="" && props.picture2==""){
-    return(
-      <div id="CardProveedoresImg"><img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture1}></img>
-      </div>
-    )
-  }
-  else if(props.picture1=="" && props.picture2!="" ){
-    return(
-      <div id="CardProveedoresImg"><img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture2}></img>
-      </div>
-    )
+
+  if(!badResponse){
+    if(!agregarFotografia){
+      if(props.picture1!="" && props.picture2!="" ){
+        return(
+          <div id="CardProveedoresImg">
+            <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture1}></img>
+            <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture2}></img>
+            </div>
+        )
+      }
+      else if(props.picture1!="" && props.picture2==""){
+        return(
+          <>
+          <div id="CardProveedoresImg"><img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture1}></img>
+          </div><IonButton id="botonContratar" onClick={() => setAgregarFotografia(true)}>CARGAR FOTO</IonButton></>
+        )
+      }
+      else if(props.picture1=="" && props.picture2!="" ){
+        return(
+          <>
+          <div id="CardProveedoresImg"><img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture2}></img>
+          </div><IonButton id="botonContratar" onClick={() => setAgregarFotografia(true)}>CARGAR FOTO</IonButton></>
+        )
+      }else{
+        return(
+          <><div id="CardProveedoresImg">
+            <p>NO HA ADJUNTADO IMÁGENES DE REFERENCIA PARA ESTE SERVICIO</p>
+          </div><IonButton id="botonContratar" onClick={() => setAgregarFotografia(true)}>CARGAR FOTO</IonButton></>
+    
+        ) }
+    }else{
+      if(props.picture1!="" && props.picture2==""){
+        return (
+          <div id="CardProveedoresImg">
+  
+          <TomarFotografia imagen={foto2Mostrar} setFilepath={foto2} />
+          <IonButton id="botonContratar" onClick={() => enviarFoto()}>ENVIAR FOTO</IonButton>
+          </div>
+        )
+      }else if(props.picture1=="" && props.picture2!="" ){
+        return(
+          <div id="CardProveedoresImg">
+          <TomarFotografia imagen={foto1Mostrar} setFilepath={foto1} />
+          <IonButton id="botonContratar" onClick={() => enviarFoto()}>ENVIAR FOTO</IonButton>
+  
+          </div>
+        )}else{
+          return(
+            <div id="CardProveedoresImg">
+            <TomarFotografia imagen={foto1Mostrar} setFilepath={foto1} />
+            <TomarFotografia imagen={foto2Mostrar} setFilepath={foto2} />
+            <IonButton id="botonContratar" onClick={() => enviarFoto()}>ENVIAR FOTO</IonButton>
+  
+  
+            </div>
+          )
+  
+        }
+    
+   
+    }
   }else{
     return(
-      <div id="CardProveedoresImg">
-        <p>El proveedor no ha adjuntado imágenes de referencia</p>
-      </div>
-    )
+    <div id="CardProveedoresImg">
+      <p>ERROR AL CARGAR LAS IMÁGENES. INTENTE MÁS TARDE</p>
+      <IonButton id="botonContratar" onClick={() => setBadResponse(false)}>OK</IonButton>
+
+
+    </div>
+)
   }
+
+
+
+
 }
+
+
 
 export default ModalVerOrdenesCliente;
