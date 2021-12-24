@@ -14,6 +14,7 @@ import { b64toBlob } from '../utilidades/b64toBlob';
 import { arrowBack, camera, trash } from 'ionicons/icons';
 import { isSetAccessorDeclaration } from 'typescript';
 import { allowedNodeEnvironmentFlags } from 'process';
+import { BotonDia } from './CompletarRubros';
 
 const url=Https+"orden/"
 
@@ -30,7 +31,7 @@ const getLocation = async () => {
     }
   }
 
-const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
+const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedorVaALocacion:any}) => {
 
     
     const [vista,setVista] = useState ("primeraVista")
@@ -38,8 +39,8 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
     const posicionCliente = useRef("")
     const titulo = useRef("")
     const descripcion = useRef("")
-    const latitudCliente = useRef("")
-    const longitudCliente=useRef("")
+    const latitudCliente = useRef("0")
+    const longitudCliente=useRef("0")
     const foto1Mostrar= useRef <String>()
     const foto2Mostrar= useRef <String>()
 
@@ -63,6 +64,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
         const ubicacion = getLocation();
         ubicacion.then((value)=>{
             posicionCliente.current=(value)
+
         });
 
       }, [])
@@ -82,17 +84,17 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
     const enviar =() => {
 
         if (posicionCliente.current!=""){
-            console.log("paso esto")
 
-            console.log("pues veamos que tenemos que da error: "+hora.current)
-
+            console.log("latitud: "+latitudCliente.current)
+            console.log("longitudCliente: "+longitudCliente.current)
+         
             var formDataToUpload = new FormData();
             formDataToUpload.append("clienteEmail", props.clienteEmail)
             formDataToUpload.append("tipoProveedor",props.data.tipo)
             formDataToUpload.append("ProveedorEmail",props.data.proveedorEmail)
             formDataToUpload.append("itemProveedor",props.data.items)
-            formDataToUpload.append("clienteLat",posicionCliente.current.split("/")[0])
-            formDataToUpload.append("clienteLong",posicionCliente.current.split("/")[1])
+            formDataToUpload.append("clienteLat",latitudCliente.current)
+            formDataToUpload.append("clienteLong",longitudCliente.current)
             formDataToUpload.append("tituloPedido",titulo.current)
             formDataToUpload.append("direccion",direccion.current)
 
@@ -160,7 +162,6 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
 
                 <IonCard id="ionCard-CardProveedor">
                     <IonCardHeader>
-                        <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.data.picture}></img>
                         <h2>RUBRO DE SERVICIO:</h2>
                         <p>{props.data.items}</p>
                         <h2>PROVEEDOR DEL SERVICIO:</h2> 
@@ -180,7 +181,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
                     </IonCard>
 
                     <IonCard id="ionCard-CardProveedor">
-                    <LocacionServicio direccion={direccion} posicionCliente={posicionCliente} ></LocacionServicio>
+                    <LocacionServicio direccion={direccion} posicionCliente={posicionCliente} latitudCliente={latitudCliente} longitudCliente={longitudCliente} ></LocacionServicio>
                     
 
                 </IonCard>
@@ -243,14 +244,15 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
 
                     <IonCard id="ionCard-CardProveedor">
                     
-                        <IonCardSubtitle>Ingrese día y horario estimativo</IonCardSubtitle>
+                        <IonCardSubtitle>Ingrese día y horario estimativo para su servicio</IonCardSubtitle>
     
                         <IonGrid>
                             <IonRow>
                                 <IonCol >
+
                                     <IonItem id="item-completarInfo">
-                                        <IonLabel position="floating">Fecha estimativa</IonLabel>                                    
-                                        <IonDatetime displayFormat="DD-MM-YYYY"  value={fecha.current} onIonChange={e => fecha.current=(e.detail.value!)}></IonDatetime>
+                                        <IonLabel position="floating">DÍAS DISPONIBLES</IonLabel>                                    
+                                        < Dias  dias={fecha} />
                                     </IonItem>
                                 </IonCol>
                             </IonRow>
@@ -328,6 +330,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
         )
 
     }else{
+       // aca tengo que cambiar que la flecha valla al home
         return(
         <IonContent>
 
@@ -350,8 +353,9 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any	}) => {
                     
                     
                 </IonCard>
-                <h1>PROVEEDOR</h1>
-
+                <div id="tituloCardPRoveedor">
+                    <strong>PROVEEDOR</strong>
+                </div>
                 <IonCard id="ionCard-CardProveedor">
                         <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.data.picture}></img>
                         <IonCardTitle> {props.data.nombre} </IonCardTitle>
@@ -510,6 +514,24 @@ export const TomarFotografia = (props: {imagen:any, setFilepath:any}) => {
 const LocacionServicio = ( props:{direccion:any, posicionCliente:any, latitudCliente:any, longitudCliente:any } ) =>{
 
     const [siEsElLugar, setSiEsElLugar] = useState(true)
+
+    useEffect(() => {
+        console.log("estamos en useEffects")
+
+        if(siEsElLugar){
+            props.latitudCliente.current=props.posicionCliente.current.split("/")[0]
+            props.longitudCliente.current=props.posicionCliente.current.split("/")[1]
+            console.log("es el lugar")
+            console.log("latitud: "+props.latitudCliente.current)
+            console.log("longitudCliente: "+props.longitudCliente.current)
+    
+        }else{
+            props.latitudCliente.current="0"
+            props.longitudCliente.current="0"
+        }
+    }, [siEsElLugar]);
+
+   
     
     return(
         <div id="containerUbicacion">
@@ -542,4 +564,47 @@ const LocacionServicio = ( props:{direccion:any, posicionCliente:any, latitudCli
    
 }
 
+const Dias =(props:{dias:any})=>{
+
+    let dia: string[] = ['', '', '', '', '', '', ''];
+    
+            
+    const [lunes, setLunes]= useState (false)
+    const [martes, setMartes]= useState (false)
+    const [miercoles, setMiercoles]= useState (false)
+    const [jueves, setJueves]= useState (false)
+    const [viernes, setViernes]= useState (false)
+    const [sabado, setSabado]= useState (false)
+    const [domingo, setDomingo]= useState (false)
+
+    if(lunes){dia[0]='Lunes'}else{dia[0]=''}
+    if(martes){dia[1]='Martes'}else{dia[1]=''}
+    if(miercoles){dia[2]='Miercoles'}else{dia[2]=''}
+    if(jueves){dia[3]='Jueves'}else{dia[3]=''}
+    if(viernes){dia[4]='Viernes'}else{dia[4]=''}
+    if(sabado){dia[5]='Sabado'}else{dia[5]=''}
+    if(domingo){dia[6]='Domingo'}else{dia[6]=''}
+
+
+    if (lunes || martes || miercoles || jueves ||  viernes || sabado || domingo ){
+        props.dias.current=dia[0]+" "+dia[1]+" "+dia[2]+" "+dia[3]+" "+dia[4]+" "+dia[5]+" "+dia[6]
+    }
+    return (
+            <IonGrid>
+            <IonRow>
+                <IonCol><BotonDia dia={"LU"} setDia={setLunes} ></BotonDia></IonCol>
+                <IonCol><BotonDia dia={"MA"} setDia={setMartes} ></BotonDia></IonCol>
+                <IonCol><BotonDia dia={"MI"} setDia={setMiercoles} ></BotonDia></IonCol>
+                <IonCol><BotonDia dia={"JU"} setDia={setJueves} ></BotonDia></IonCol>
+                <IonCol><BotonDia dia={"VI"} setDia={setViernes} ></BotonDia></IonCol>
+                <IonCol><BotonDia dia={"SA"} setDia={setSabado} ></BotonDia></IonCol>
+                <IonCol><BotonDia dia={"DO"} setDia={setDomingo} ></BotonDia></IonCol>
+
+                </IonRow>
+            </IonGrid>
+
+
+        );
+
+}
 export default OrdenSimple 

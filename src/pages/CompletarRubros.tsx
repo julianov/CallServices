@@ -838,7 +838,7 @@ const CardItem= (props:{setVista:any, clientType:any, email:any, ver:any}) => {
     }
     
     
-    const BotonDia=  (props:{dia:any, setDia:any})=> {
+   export const BotonDia=  (props:{dia:any, setDia:any})=> {
     
         const [selecionado, setSeleccionado] =useState(false)
     

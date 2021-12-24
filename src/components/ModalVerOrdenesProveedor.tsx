@@ -1,4 +1,4 @@
-import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonRow } from "@ionic/react";
+import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCheckbox, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonRow, IonTitle } from "@ionic/react";
 import { arrowBack } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import { isConstructorDeclaration, isSetAccessorDeclaration } from "typescript";
@@ -42,6 +42,7 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
     const [showAlertOrdenAceptada, setShowAlertOrdenAceptada] = useState(false)
     const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
 
+
     const precio = useRef ("")
 
 
@@ -58,6 +59,9 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
                })
             }else if(props.datos.status=="REC"){
               setEstado("RECIBIDO")
+            }else if(props.datos.status=="PRE"){
+              setEstado("PRESUPUESTADA")
+              setVista("PRESUPUESTADA")
             }else if(props.datos.status=="ACE"){
               setEstado("ORDEN ACEPTADA")
             }else if(props.datos.status=="EVI"){
@@ -118,20 +122,19 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
         </IonCard>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
-          <p>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
-          <p>TÍTULO: {props.datos.titulo}</p>
+          <p>FECHA DE SOLICITUD:</p>
+          <p>{props.datos.fecha_creacion}</p>
+          <p>TÍTULO:</p>
+          <p>{props.datos.titulo}</p>
           <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
           <p>{props.datos.descripcion}</p>
           <IonButton  id="botonContratar" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) } >VER UBICACIÓN DEL CLIENTE</IonButton>
-
         </IonCard>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
           < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}   ></Imagenes>
         </IonCard>
-  
-        <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => setVista("chat")} >CHAT</IonButton>
-        
+          
         <IonGrid>
         <IonRow>
 
@@ -147,7 +150,7 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
             cssClass='my-custom-class'
             header={'ORDEN DE SERVICIO EN PROGRESO'}
             subHeader={''}
-            message={'Si está en condiciones de presupuestar el trabajo/servicio coloque precio'+'\n'+"Sino solicite más información"}
+            message={'Si está en condiciones de presupuestar el trabajo/servicio coloque precio'+"\n"+"Sino solicite más información"}
             buttons={[
               {
                 text: 'OK',
@@ -226,33 +229,56 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
             <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
           </div>
        
-  
-          <IonCardTitle>PRESUPUESTO</IonCardTitle>
-
-        <IonCard id="ionCard-explorerContainer-Proveedor">
-        <IonItem id="item-Orden">
-          <IonLabel position="floating">INGRESE PRECIO ESTIMATIVO </IonLabel>
-          <IonInput onIonInput={(e: any) => precio.current = (e.target.value)}></IonInput>
-          </IonItem>
-        </IonCard>
-  
-              
-        <IonGrid>
-        <IonRow>
-
-        <IonCol><IonButton shape="round" color="warning"  id="botonContratar" onClick={() => aceptarOrden()} >ENVIAR PRESUPUESTO</IonButton></IonCol>
-
-        </IonRow>
-        </IonGrid>
-
-      
-  
+          <Presupuestar setVista={setVista} setEstado={setEstado} ticket={props.datos.ticket} />
+        
         </IonContent>
 
         )
 
 
 
+      }else if(vista=="PRESUPUESTADA"){
+
+  
+        return (
+          <IonContent>
+          <div id="modalProveedor-flechaVolver">
+            <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+          </div>
+          <IonTitle>EN ESPERA DE RESPUESTA DEL CLIENTE</IonTitle>
+
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          <img id="img-orden" src={props.datos.imagen_cliente}></img>
+          <p>TIPO: {props.datos.tipo}</p>
+          <p>STATUS: {estado}</p>
+          <p>TICKET: {props.datos.ticket}</p>
+          <IonButton  id="botonContratar" onClick={() => setVista("datosClientes")} >DATOS DE CLIENTE</IonButton>
+        </IonCard>
+  
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          <p>FECHA DE SOLICITUD:</p>
+          <p>{props.datos.fecha_creacion}</p>
+          <p>TÍTULO:</p>
+          <p>{props.datos.titulo}</p>
+          <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+          <p>{props.datos.descripcion}</p>
+          <IonButton  id="botonContratar" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) } >VER UBICACIÓN DEL CLIENTE</IonButton>
+
+        </IonCard>
+
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          <p>PRESUPUESTO:</p>
+          
+        </IonCard>
+  
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}   ></Imagenes>
+        </IonCard>
+
+        </IonContent>
+        )
+        ACA PONER EL PRESUPUESTO QUE SE A HA ENVIADO
+      
       }
       else{
 
@@ -326,7 +352,86 @@ const Chatear = (props:{estado:any, email_proveedor:any, email_cliente:any, setV
 }
 
 
+const Presupuestar = (props: {setVista:any,setEstado:any, ticket:any}) => {
 
+  const [presupuestar, setPresupuestar]= useState(true)
+  const precio=useRef (0)
+  const informacion= useRef("")
+
+
+  const enviarPresupuesto = ()=>{
+
+  }
+
+  const masInformacion  = ()  =>{
+
+    if (informacion.current!=""){
+      var formDataToUpload = new FormData();
+    formDataToUpload.append("masInfo", informacion.current)
+    formDataToUpload.append("ticket", props.ticket)
+    formDataToUpload.append("estado", "PRE")
+    formDataToUpload.append("tipoOrden","Orden general" )
+
+    const axios = require('axios');
+    axios({
+        url:url+"masInfo/proveedor",
+        method:'POST',
+        headers: {"content-type": "multipart/form-data"},
+        data:formDataToUpload
+    }).then(function(res: any){
+
+      if(res.data!="bad"){
+        props.setEstado("PRE")
+        props.setVista("PRESUPUESTADA")
+      }
+    
+    }).catch((error: any) =>{
+//              setVista(0)
+        //Network error comes in
+    });
+    }
+
+    
+  }
+
+  if (presupuestar){
+    return (
+      <><IonCardTitle>PRESUPUESTO</IonCardTitle><IonCard id="ionCard-explorerContainer-Proveedor">
+
+      <IonItem id="item-Orden">
+        <IonLabel>SI</IonLabel>
+        <IonCheckbox checked={presupuestar} onIonChange={e => setPresupuestar(e.detail.checked)} />
+      </IonItem>
+
+      <IonItem id="item-Orden">
+        <IonLabel position="floating">INGRESE PRECIO ESTIMATIVO </IonLabel>
+        <IonInput onIonInput={(e: any) => precio.current = (e.target.value)}></IonInput>
+      </IonItem>
+    </IonCard>
+    <IonCol><IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviarPresupuesto()} >ENVIAR PRESUPUESTO</IonButton></IonCol>
+
+    </>
+
+  )
+  }else{
+    return(
+      <><IonCardTitle>PEDIR MÁS INFORMACIÓN</IonCardTitle>
+      
+      <IonCard id="ionCard-explorerContainer-Proveedor">
+      <p>INDIQUE LA INFORMACIÓN QUE NECESITA DEL CLIENTE PARA PRESUPUESTAR</p>
+      <IonItem id="item-Orden">
+                <IonLabel position="floating">Pedido de información / comentarios</IonLabel>
+                <IonInput onIonInput={(e: any) => informacion.current = (e.target.value)}></IonInput>
+            </IonItem>
+
+    </IonCard>
+    <IonButton  color="warning"  id="botonContratar" onClick={() => masInformacion()}>RESPONDER AL CLIENTE</IonButton>
+</>
+    )
+  }
+ 
+  
+}
 
 const Imagenes = (props:{picture1:any,picture2:any})=>{
   if(props.picture1!="" && props.picture2!="" ){

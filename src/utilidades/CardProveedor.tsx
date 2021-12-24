@@ -20,6 +20,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
 
   const [showModalOrden, setShowModalOrden] = useState({ isOpen: false });
 
+  const proveedorVaALocacion = useRef(true)
   
   interface datosProveedor{
     nombre:string
@@ -191,8 +192,11 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
           
           if(props.data.radio<=1){
             location=("EL PROVEEDOR NO SE DESPLAZA A LOCACIONES DE CLIENTES")
+            proveedorVaALocacion.current=(false)
           }else{
             location=("EL PROVEEDOR SE DESPLAZA A LOCACIONES DE CLIENTES")
+            proveedorVaALocacion.current=(true)
+
           }
           
           setDatosProveedores({nombre:props.data.name,
@@ -343,6 +347,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
             <OrdenSimple
               data={datosDeOrdenes.current} 
               clienteEmail={props.emailCliente}
+              proveedorVaALocacion={proveedorVaALocacion.current}
               setVolver={setShowModalOrden} />
 
           </IonModal></>
@@ -440,6 +445,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
             <OrdenSimple
               data={datosDeOrdenes.current} 
               clienteEmail={props.emailCliente} 
+              proveedorVaALocacion={proveedorVaALocacion.current}
               setVolver={setShowModalOrden} />
 
           </IonModal></>
