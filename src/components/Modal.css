@@ -372,3 +372,9 @@ width: 95%;
   border-radius: 15%;
 
 }
+
+.h2{
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}

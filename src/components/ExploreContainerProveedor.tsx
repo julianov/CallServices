@@ -61,6 +61,9 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any} ) =
         picture2:props.ordenes[i].picture2,
         presupuesto_inicial:props.ordenes[i].presupuesto,
         pedido_mas_información:props.ordenes[i].pedidoMasInformacion,
+        respuesta_cliente_pedido_mas_información:props.ordenes[i].respuesta_cliente_pedido_mas_información,
+        picture1_mas_información:props.ordenes[i].picture1_mas_información,
+        picture2_mas_información:props.ordenes[i].picture2_mas_información
       })
 
     }
@@ -187,25 +190,25 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
         
     const [mensaje, setMensaje] = useState("")
 
-    var estado="Enviada"
+    const [estado,setEstado]=useState("Enviada")
     
     useEffect(() => {
 
 
-
     if (props.status=="ENV"){
-      estado="PEDIDO DE TRABAJO"
+      setEstado("PEDIDO DE TRABAJO")
     }else if(props.status=="REC"){
-      estado="PEDIDO DE TRABAJO RECIBIDO"
+      setEstado("PEDIDO DE TRABAJO RECIBIDO")
     }else if(props.status=="PRE"){
-      estado="PEDIDO DE TRABAJO PRE ACEPTADO"
+      setEstado("PEDIDO DE TRABAJO PRE ACEPTADO")
       setMensaje("EN ESPERA DE LA RESPUESTA DEL CLIENTE")
     } else if(props.status=="ACE"){
-      estado="PEDIDO DE TRABAJO ACEPTADO"
+      setEstado("PEDIDO DE TRABAJO ACEPTADO")
+      setMensaje("VER RESPUESTA DEL CLIENTE")
     }else if(props.status=="EVI"){
-      estado="EN VIAJE"
+      setEstado("EN VIAJE")
     }else if(props.status=="ENS"){
-      estado="EN SITIO"
+      setEstado("EN SITIO")
     }
 
   }, []);
@@ -227,155 +230,6 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
   )
 }
 
-/*
-interface datos_orden {
-  tipo:string
-  status:string
-  fecha_creacion:string
-  ticket: string
-  dia: string
-  hora:string
-  titulo:string
-  descripcion:string
-  imagen_cliente:string
-  location_lat:any
-  location_long:any
-  picture1:string
-  picture2:string
-  }
 
-  let llego = new Array<datos_orden>();
-
-
-const ModalVerOrdenes = (props:{datos:any,setVolver:any})  =>{
-
-console.log("llego a modal ver ordenes "+ props.datos)
-
-  const [datosOrden, setDatosOrden] = useState <datos_orden>(  );
-
-  useEffect(() => {
-
-      
-      axios.get(url+"orden/verordenparticular/"+"proveedor/"+props.datos.ticket).then((resp: { data: any; }) => {
-          
-        if (resp.data!="bad"){
-             
-          setDatosOrden(resp.data)
-              setDatosOrden(
-                {
-                  tipo:resp.data.tipo,
-                  status:resp.data.status,
-                  fecha_creacion:resp.data.fecha_creacion,
-                  ticket:resp.data.ticket,
-                  dia:resp.data.dia,
-                  hora:resp.data.hora,
-                  titulo:resp.data.titulo,
-                  descripcion:resp.data.descripcion,
-                  imagen_cliente:resp.data.imagen_cliente,
-                  location_lat:resp.data.location_lat,
-                  location_long:resp.data.location_long,
-                  picture1:resp.data.picture1,
-                  picture2:resp.data.picture2,
-
-                })   
-          }
-
-        })
-    }, [])
-
-
-    var estado="Enviada"
-    if (datosOrden.status=="ENV"){
-      estado="PEDIDO DE TRABAJO"
-    }else if(datosOrden.status=="REC"){
-      estado="PEDIDO DE TRABAJO RECIBIDO"
-    }else if(datosOrden.status=="ACE"){
-      estado="PEDIDO DE TRABAJO ACEPTADO"
-    }else if(datosOrden.status=="EVI"){
-      estado="EN VIAJE"
-    }else if(datosOrden.status=="ENS"){
-      estado="EN SITIO"
-    }
- 
-    if(datosOrden){
-
-      var estado="Enviada"
-    if (datosOrden.status=="ENV"){
-      estado="PEDIDO DE TRABAJO"
-    }else if(datosOrden.status=="REC"){
-      estado="PEDIDO DE TRABAJO RECIBIDO"
-    }else if(datosOrden.status=="ACE"){
-      estado="PEDIDO DE TRABAJO ACEPTADO"
-    }else if(datosOrden.status=="EVI"){
-      estado="EN VIAJE"
-    }else if(datosOrden.status=="ENS"){
-      estado="EN SITIO"
-    }
-
-      return (
-     
-
-        <><div id="modalProveedor-flechaVolver">
-          <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
-        </div><IonCard id="ionCard-explorerContainer-Proveedor">
-            <IonGrid>
-              <IonRow id="row-busqueda">
-                <IonCol size="auto" id="col-explorerContainerCliente"><img id="img-explorerContainerCliente" src={datosOrden.imagen_cliente}></img></IonCol>
-                <IonCol size="auto" id="col-explorerContainerCliente">
-                  <IonCardSubtitle>TIPO: {datosOrden.tipo}</IonCardSubtitle>
-                  <IonCardSubtitle>STATUS: {estado}</IonCardSubtitle>
-                  <IonCardSubtitle>TICKET: {datosOrden.ticket}</IonCardSubtitle>
-                </IonCol>
-              </IonRow>
-  
-            </IonGrid>
-  
-  
-          </IonCard><IonCard id="ionCard-explorerContainer-Proveedor">
-            <IonCardSubtitle>FECHA DE SOLICITUD: {datosOrden.fecha_creacion}</IonCardSubtitle>
-            <IonCardSubtitle>TÍTULO: {datosOrden.titulo}</IonCardSubtitle>
-            <IonCardSubtitle>DESCRIPCIÓN DE LA SOLICITUD: {datosOrden.descripcion}</IonCardSubtitle>
-          </IonCard><IonCard id="ionCard-explorerContainer-Proveedor">
-            <Imagenes picture1={datosOrden.picture1} picture2={datosOrden.picture2}></Imagenes>
-          </IonCard></>
-  
-  
-         
-    );
-    }
-    else{
-      return(<></>)
-    }
-   
-}
-
-const Imagenes = (props:{picture1:any,picture2:any})=>{
-if(props.picture1!="" && props.picture2!="" ){
-  return(
-    <div id="CardProveedoresImg">
-      <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture1}></img>
-      <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture2}></img>
-      </div>
-  )
-}
-else if(props.picture1!="" && props.picture2==""){
-  return(
-    <div id="CardProveedoresImg"><img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture1}></img>
-    </div>
-  )
-}
-else if(props.picture1=="" && props.picture2!="" ){
-  return(
-    <div id="CardProveedoresImg"><img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture2}></img>
-    </div>
-  )
-}else{
-  return(
-    <div id="CardProveedoresImg">
-      <strong>El proveedor no ha adjuntado imágenes de referencia</strong>
-    </div>
-  )
-}
-}*/
 
 export default ExploreContainerProveedor;

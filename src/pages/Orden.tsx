@@ -7,7 +7,7 @@ import CardProveedor from "../utilidades/CardProveedor";
 import { removeItem } from "../utilidades/Storage";
 import Https from "../utilidades/HttpsURL";
 import React, { useEffect, useRef, useState } from 'react';
-import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItemDivider, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent, IonDatetime, IonCheckbox } from '@ionic/react';
+import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItemDivider, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent, IonDatetime, IonCheckbox, IonLoading } from '@ionic/react';
 import { Photo, usePhotoGallery } from "../hooks/usePhotoGallery";
 import { base64FromPath } from '@ionic/react-hooks/filesystem';
 import { b64toBlob } from '../utilidades/b64toBlob';
@@ -35,6 +35,8 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
 
     
     const [vista,setVista] = useState ("primeraVista")
+
+    const [showLoading, setShowLoading] =useState(false)
 
     const posicionCliente = useRef("")
     const titulo = useRef("")
@@ -87,6 +89,8 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
 
             console.log("latitud: "+latitudCliente.current)
             console.log("longitudCliente: "+longitudCliente.current)
+
+            setShowLoading(true)
          
             var formDataToUpload = new FormData();
             formDataToUpload.append("clienteEmail", props.clienteEmail)
@@ -98,6 +102,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
             formDataToUpload.append("tituloPedido",titulo.current)
             formDataToUpload.append("direccion",direccion.current)
 
+            
 
             if(fecha.current!=undefined || fecha.current!=""){
                 formDataToUpload.append("diaPedido",fecha.current.split("T")[0])
@@ -126,7 +131,8 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                     data:formDataToUpload
                 }).then(function(res: any){
     
-                    console.log("veamos que pasó: "+ res.data)
+                    setShowLoading(false)
+
                     if(res.data!="bad" && res.data!="ya hay una orden"){
                         ticket.current=res.data
                         setShowAlertOrdenCreada(true)
@@ -143,6 +149,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                     }
                 
                 }).catch((error: any) =>{
+                    setShowLoading(false)
       //              setVista(0)
                     //Network error comes in
                 });
@@ -270,6 +277,14 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
               </IonCard>
               <IonButton  color="warning"  id="botonContratar" onClick={() => enviar()}>SOLICITAR</IonButton>
             </div>
+
+            <IonLoading
+            cssClass='my-custom-class'
+            isOpen={showLoading}
+            onDidDismiss={() => setShowLoading(false)}
+            message={'Generando Orden de trabajo...'}
+            duration={7000}
+          />
 
             <IonAlert
                     isOpen={showAlertInconvenienteSolicitud}

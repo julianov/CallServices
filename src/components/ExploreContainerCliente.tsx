@@ -67,6 +67,9 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
         picture2:props.ordenes[i].picture2,
         presupuesto_inicial:props.ordenes[i].presupuesto,
         pedido_mas_información:props.ordenes[i].pedidoMasInformacion,
+        respuesta_cliente_pedido_mas_información:props.ordenes[i].respuesta_cliente_pedido_mas_información,
+        picture1_mas_información:props.ordenes[i].picture1_mas_información,
+        picture2_mas_información:props.ordenes[i].picture2_mas_información
       })
 
     }
@@ -352,58 +355,60 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , hayOrdenes:any,
 const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fecha_creacion:string,ticket: string,
   dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, setPosicion:any, presupuesto:any, masInfo:any}) => {
         
-    var estado="Enviada"
+    const [estado,setEstado]=useState("Enviada")
+
+    const [mensaje1, setMensaje1] = useState("")
+    const [mensaje2, setMensaje2] = useState("")
+    useEffect(() => {
+
     if (props.status=="ENV"){
-      estado="PEDIDO DE TRABAJO ENVIADO"
+      setEstado("PEDIDO DE TRABAJO ENVIADO")
     }else if(props.status=="REC"){
-      estado="PEDIDO DE TRABAJO RECIBIDO"
+      setEstado("PEDIDO DE TRABAJO RECIBIDO")
     }else if(props.status=="PRE"){
-      estado="TRABAJO PRE ACEPTADO"
+      setEstado("TRABAJO PRE ACEPTADO")
+      setMensaje1("EL PROVEEDOR HA ENVIADO COTIZACIÓN")
+      setMensaje2("Ingrese para aceptarlo o rechazarlo")
     }else if(props.status=="ACE"){
-      estado="PEDIDO DE TRABAJO ACEPTADO"
+      setEstado("PEDIDO DE TRABAJO ACEPTADO")
     }else if(props.status=="EVI"){
-      estado="EN VIAJE"
+      setEstado("EN VIAJE")
+      setMensaje1("EL PROVEEDOR ESTÁ EN CAMINO!")
     }else if(props.status=="ENS"){
-      estado="EN SITIO"
+      setEstado("EN SITIO")
     }
 
-    if(props.status=="PRE"){
+  }, [])
 
     
 
       return (
-        <IonCard id="ionCard-explorerContainer-Proveedor" onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
+        <IonCard id="ionCard-explorerContainer-Cliente" onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
           <IonGrid>
-          <IonRow  id="row-busqueda">
-            <IonCol size="auto"  id="col-explorerContainerCliente"><img id="imgOrden" src={props.imagen}></img></IonCol>
-            <IonCol size="auto" id="col-explorerContainerCliente">
-              <p>TIPO: {props.tipo.toUpperCase( )}</p>
-              <p>STATUS: {estado}</p>
-              <p>TICKET: {props.ticket}</p>
-              <strong>EL PROVEEDOR HA ENVIADO COTIZACIÓN</strong>
-              <p>Ingrese para aceptarlo o rechazarlo</p>
-            </IonCol>
-          </IonRow>
+            <IonRow  id="row-busqueda">
+              <IonCol   id="col-explorerContainerCliente">
+                <img id="imgOrden" src={props.imagen}></img>
+              </IonCol>
+            </IonRow>
+            <IonRow  id="row-busqueda">
+              <IonCol   id="col-explorerContainerCliente">
+                <IonCardSubtitle>TIPO: {props.tipo.toUpperCase( )}</IonCardSubtitle>
+                <IonCardSubtitle>STATUS: {estado}</IonCardSubtitle>
+                <IonCardSubtitle>TICKET: {props.ticket}</IonCardSubtitle>  
+              </IonCol>
+            </IonRow>
+            <IonRow  id="row-busqueda">
+              <IonCol   id="col-explorerContainerCliente">
+                <IonCardSubtitle>{mensaje1}</IonCardSubtitle>
+                <IonCardSubtitle>{mensaje2}</IonCardSubtitle>
+              </IonCol>
+            </IonRow> 
           </IonGrid>
         </IonCard>
       )
 
-    }else{
-      return (
-        <IonCard id="ionCard-explorerContainer-Proveedor" onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
-          <IonGrid>
-          <IonRow  id="row-busqueda">
-            <IonCol size="auto"  id="col-explorerContainerCliente"><img id="imgOrden" src={props.imagen}></img></IonCol>
-            <IonCol size="auto" id="col-explorerContainerCliente">
-              <p>TIPO: {props.tipo.toUpperCase( )}</p>
-              <p>STATUS: {estado}</p>
-              <p>TICKET: {props.ticket}</p>
-            </IonCol>
-          </IonRow>
-          </IonGrid>
-        </IonCard>
-      )
-    }
+  
+    
  
     
 }

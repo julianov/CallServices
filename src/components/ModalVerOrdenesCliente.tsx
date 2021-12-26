@@ -19,12 +19,11 @@ interface datos_proveedor {
     calificacion: number
   }
 
-const verUbicacion = (latitud:any, longitud:any) =>{
-
+const verUbicacion = ( latitud:any, longitud:any) =>{
 
     const link="https://www.google.com/maps/search/?api=1&query="+latitud+"%2C"+longitud
     const win= window.open(   link, '_blank')?.focus();
-    
+
   }
 
 const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any})  =>{
@@ -36,7 +35,8 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
     const [showAlertOrdenAceptada, setShowAlertOrdenAceptada] = useState(false)
     const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
 
-
+    const [showAlertUbicacion,setShowAlertUbicacion] = useState(false)
+    
     useEffect(() => {
         
    
@@ -53,6 +53,8 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
               setVista("enEsperaDelPRoveedor")
             }else if(props.datos.status=="EVI"){
               setEstado("PROVEEDOR EN VIAJE")
+              setVista("proveedorEnViaje")
+
             }else if(props.datos.status=="ENS"){
               setEstado("PROVEEDOR EN SITIO")
             }
@@ -68,12 +70,9 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
 
           axios.get(url+"orden/cambiarestado/"+props.datos.ticket+"/"+props.datos.tipo+"/"+"REX", {timeout: 7000})
           .then((resp: { data: any; }) => {
-
             if(resp.data!="bad"){
               setEstado("ORDEN RECHAZADA")
             }
-    
-
            })
         }
 
@@ -81,66 +80,29 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
    
       if(vista=="primero"){
         return (
-          <IonContent>
-          <div id="modalProveedor-flechaVolver">
-            <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
-          </div>
-        <IonCard id="ionCard-explorerContainer-Proveedor">
-          <img id="img-orden" src={props.datos.imagen_proveedor}></img>
-          <p>TIPO: {props.datos.tipo}</p>
-          <p>STATUS: {estado}</p>
-          <p>TICKET: {props.datos.ticket}</p>
-          <IonButton  id="botonContratar" onClick={() => setVista("datosClientes")} >DATOS DEL PROVEEDOR</IonButton>
-        </IonCard>
-  
-        <IonCard id="ionCard-explorerContainer-Proveedor">
-          <p>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
-          <p>TÍTULO: {props.datos.titulo}</p>
-          <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-          <p>{props.datos.descripcion}</p>
-          <IonButton  id="botonContratar" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) } >VER UBICACIÓN DEL PROVEEDOR</IonButton>
+          < Primero datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
+          setVolver={props.setVolver} cancelarOrden={cancelarOrden} />
 
-        </IonCard>
-  
-        <IonCard id="ionCard-explorerContainer-Proveedor">
-          < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
-        </IonCard>
-  
-        <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => setVista("chat")} >CHAT</IonButton>
-        
-        <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton></IonCol>
-
-          <IonAlert
-            isOpen={showAlertRechazarOrden}
-            onDidDismiss={() => setShowAlertRechazarOrden(false)}
-            cssClass='my-custom-class'
-            header={'¿DESEA CANCELAR LA ORDEN?'}
-            subHeader={''}
-            message={'Agregar una indicación de por qué es mala rechazar ordenes'}
-            buttons={[
-              {
-                text: 'SI',
-                role: 'cancel',
-                cssClass: 'secondary',
-                handler: blah => {
-                    cancelarOrden();
-                },  
-               
-              },
-              {
-                text: 'NO',
-                role: 'cancel',
-                cssClass: 'secondary',
-                handler: blah => {
-                  setShowAlertRechazarOrden(false);
-                }
-              }
-            ]} />
-  
-        </IonContent>
-             
       );
-      }else if (vista=="datosClientes"){
+      }else if (vista=="preaceptada"){
+
+        return(
+          <OrdenPreAceptada datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
+          setVolver={props.setVolver} cancelarOrden={cancelarOrden}/>
+        )
+      }else if (vista=="enEsperaDelPRoveedor"){
+        
+        return(
+          <EnEsperaDelProveedor datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
+          setVolver={props.setVolver} cancelarOrden={cancelarOrden} />
+          )
+      }else if(vista=="proveedorEnViaje"){
+
+        return(
+          <OrdenEnViaje datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
+          setVolver={props.setVolver} />
+        )
+      }else if (vista=="datosProveedor"){
 
         return (
         < VerDatosProveedor ticket={props.datos.ticket} tipo={props.datos.tipo} latitud={props.datos.location_lat} longitud={props.datos.location_long} setVista={setVista}  />
@@ -167,47 +129,7 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
               }
             ]} /></>
         )
-      }else if (vista=="preaceptada"){
-
-        return(
-          <OrdenPreAceptada datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
-          setVolver={props.setVolver} />
-        )
-      }else if (vista=="enEsperaDelPRoveedor"){
-        
-        return(<IonContent>
-          <div id="modalProveedor-flechaVolver">
-            <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
-          </div>
-          <IonTitle>ORDEN ACEPTADA </IonTitle>  
-          <IonTitle>ESPERE AL PROVEEDOR</IonTitle>  
-
-        <IonCard id="ionCard-explorerContainer-Proveedor">
-          <img id="img-orden" src={props.datos.imagen_proveedor}></img>
-          <p>TIPO: {props.datos.tipo}</p>
-          <p>STATUS: {estado}</p>
-          <p>TICKET: {props.datos.ticket}</p>
-          <IonButton  id="botonContratar" onClick={() => setVista("datosClientes")} >DATOS DEL PROVEEDOR</IonButton>
-        </IonCard>
-  
-        <IonCard id="ionCard-explorerContainer-Proveedor">
-          <p>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
-          <p>TÍTULO: {props.datos.titulo}</p>
-          <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-          <p>{props.datos.descripcion}</p>
-          <IonButton  id="botonContratar" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) } >VER UBICACIÓN DEL PROVEEDOR</IonButton>
-
-        </IonCard>
-  
-        <IonCard id="ionCard-explorerContainer-Proveedor">
-          < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
-        </IonCard>
-  
-        <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => setVista("chat")} >CHAT</IonButton>
-        
-        <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton></IonCol>
-        </IonContent>)
-      } else{
+      }else{
 
         return (
           <IonContent>
@@ -219,46 +141,91 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
       
 }
 
-const VerDatosProveedor = (props:{ticket:any, tipo:any,latitud:any, longitud:any,setVista:any})  =>{
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  const [datosCliente, setDatosCliente] = useState <datos_proveedor>({
-    nombre:"",
-    apellido:"",
-    imagen:"",
-    calificacion: 0
-  })
+const Primero = ( props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any, cancelarOrden:any} )=>{
+
+  const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
+  const [showAlertUbicacion,setShowAlertUbicacion] = useState(false)
+
+return (
+  <IonContent>
+          <div id="modalProveedor-flechaVolver">
+            <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+          </div>
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          <img id="img-orden" src={props.datos.imagen_proveedor}></img>
+          <p>TIPO: {props.datos.tipo}</p>
+          <p>STATUS: {props.estado}</p>
+          <p>TICKET: {props.datos.ticket}</p>
+          <IonButton  id="botonContratar" onClick={() => props.setVista("datosProveedor")} >DATOS DEL PROVEEDOR</IonButton>
+        </IonCard>
   
-  useEffect(() => { 
-  axios.get(url+"orden/datoproveedor/"+props.ticket+"/"+props.tipo).then((resp: { data: any; }) => {
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          <p>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
+          <p>TÍTULO: {props.datos.titulo}</p>
+          <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+          <p>{props.datos.descripcion}</p>
+          <IonButton  id="botonContratar" onClick={() =>setShowAlertUbicacion(true) } >VER UBICACIÓN DEL PROVEEDOR</IonButton>
 
-    if (resp.data!="bad"){
-      setDatosCliente(resp.data)
-    }
-  }) 
-}, []);
+        </IonCard>
+  
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
+        </IonCard>
+  
+        <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => props.setVista("chat")} >CHAT</IonButton>
+        
+        <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton></IonCol>
 
+          <IonAlert
+            isOpen={showAlertRechazarOrden}
+            onDidDismiss={() => setShowAlertRechazarOrden(false)}
+            cssClass='my-custom-class'
+            header={'¿DESEA CANCELAR LA ORDEN?'}
+            subHeader={''}
+            message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+            buttons={[
+              {
+                text: 'SI',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: blah => {
+                    props.cancelarOrden();
+                },  
+               
+              },
+              {
+                text: 'NO',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: blah => {
+                  setShowAlertRechazarOrden(false);
+                }
+              }
+            ]} />
 
-  return (
-    <IonContent>
-      <div id="modalProveedor-flechaVolver">
-        <IonIcon icon={arrowBack} onClick={() => props.setVista("primero")} slot="start" id="flecha-volver">  </IonIcon>
-      </div>
-      <IonCard id="ionCard-explorerContainer-Proveedor">
-        <img id="img-orden" src={datosCliente.imagen}></img>
-        <p>NOMBRE: {datosCliente.nombre}</p>
-        <p>APELLIDO: {datosCliente.apellido}</p>
-        <p>CALIFICACIÓN: {datosCliente.calificacion}</p>
-        <IonButton  id="botonContratar" onClick={() => verUbicacion(props.latitud, props.longitud) } >VER UBICACIÓN DEL PROVEEDOR</IonButton>
+        <IonAlert
+              isOpen={showAlertUbicacion}
+              onDidDismiss={() => setShowAlertUbicacion(false)}
+              cssClass='my-custom-class'
+              header={'UBICACIÓN DEL PROVEEDOR'}
+              subHeader={''}
+              message={'El proveedor debe estar en camino para ver su ubicación'}
+              buttons={['OK']}
+              />
+  
+        </IonContent>
+             
+)
 
-        <IonButton  id="botonContratar" onClick={() => props.setVista("chat")} >CHAT CON PROVEEDOR</IonButton>
-  </IonCard>
-  </IonContent>
-       
-);
 }
 
 
-const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any} )=>{
+
+const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any, cancelarOrden:any} )=>{
+
 
   const respuesta_informacion=useRef("")
   const foto1Mostrar= useRef <String>()
@@ -267,6 +234,8 @@ const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEst
   const foto1= useRef <Blob>()
   const foto2= useRef <Blob>()
 
+  const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
+  
   const aceptarPresupuesto = () => {
 
     var formDataToUpload = new FormData();
@@ -344,7 +313,7 @@ const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEst
         <p>TIPO: {props.datos.tipo}</p>
         <p>STATUS: {props.estado}</p>
         <p>TICKET: {props.datos.ticket}</p>
-        <IonButton onClick={() => props.setVista("datosClientes")} >DATOS DEL PROVEEDOR</IonButton>
+        <IonButton onClick={() => props.setVista("datosProveedor")} >DATOS DEL PROVEEDOR</IonButton>
       </IonCard>
 
       <div id="tituloCardPRoveedor">
@@ -355,7 +324,34 @@ const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEst
      
     </IonCard>
     <IonButton color="warning" id="botonContratar" onClick={() => aceptarPresupuesto()}>ACEPTAR PRESUPUESTO</IonButton>
+    <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton></IonCol>
 
+<IonAlert
+  isOpen={showAlertRechazarOrden}
+  onDidDismiss={() => setShowAlertRechazarOrden(false)}
+  cssClass='my-custom-class'
+  header={'¿DESEA CANCELAR LA ORDEN?'}
+  subHeader={''}
+  message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+  buttons={[
+    {
+      text: 'SI',
+      role: 'cancel',
+      cssClass: 'secondary',
+      handler: blah => {
+          props.cancelarOrden();
+      },  
+     
+    },
+    {
+      text: 'NO',
+      role: 'cancel',
+      cssClass: 'secondary',
+      handler: blah => {
+        setShowAlertRechazarOrden(false);
+      }
+    }
+  ]} />
     </IonContent>
 
     )
@@ -372,7 +368,7 @@ const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEst
         <p>TIPO: {props.datos.tipo}</p>
         <p>STATUS: {props.estado}</p>
         <p>TICKET: {props.datos.ticket}</p>
-        <IonButton onClick={() => props.setVista("datosClientes")} >DATOS DEL PROVEEDOR</IonButton>
+        <IonButton onClick={() => props.setVista("datosProveedor")} >DATOS DEL PROVEEDOR</IonButton>
       </IonCard>
 
       <div id="tituloCardPRoveedor">
@@ -405,7 +401,34 @@ const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEst
 
       </IonCard>
       <IonButton color="warning" id="botonContratar" onClick={() => enviarMasInfo()}>RESPONDER</IonButton>
+      <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton></IonCol>
 
+<IonAlert
+  isOpen={showAlertRechazarOrden}
+  onDidDismiss={() => setShowAlertRechazarOrden(false)}
+  cssClass='my-custom-class'
+  header={'¿DESEA CANCELAR LA ORDEN?'}
+  subHeader={''}
+  message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+  buttons={[
+    {
+      text: 'SI',
+      role: 'cancel',
+      cssClass: 'secondary',
+      handler: blah => {
+          props.cancelarOrden();
+      },  
+     
+    },
+    {
+      text: 'NO',
+      role: 'cancel',
+      cssClass: 'secondary',
+      handler: blah => {
+        setShowAlertRechazarOrden(false);
+      }
+    }
+  ]} />
 
       </IonContent>
 
@@ -423,13 +446,299 @@ const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEst
     <p>TIPO: {props.datos.tipo}</p>
     <p>STATUS: {props.estado}</p>
     <p>TICKET: {props.datos.ticket}</p>
-    <IonButton  id="botonContratar" onClick={() => props.setVista("datosClientes")} >DATOS DEL PROVEEDOR</IonButton>
+    <IonButton  id="botonContratar" onClick={() => props.setVista("datosProveedor")} >DATOS DEL PROVEEDOR</IonButton>
   </IonCard>
 
 
   </IonContent>
 );
 
+}
+
+const EnEsperaDelProveedor = (props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any, cancelarOrden:any} )=>{
+
+  const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
+  const [showAlertUbicacion,setShowAlertUbicacion] = useState(false)
+
+  return (
+
+    <IonContent>
+          <div id="modalProveedor-flechaVolver">
+            <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+          </div>
+          <IonTitle>ORDEN ACEPTADA </IonTitle>  
+          <IonTitle>ESPERE AL PROVEEDOR</IonTitle>  
+
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          <img id="img-orden" src={props.datos.imagen_proveedor}></img>
+          <p>TIPO: {props.datos.tipo}</p>
+          <p>STATUS: {props.estado}</p>
+          <p>TICKET: {props.datos.ticket}</p>
+          <IonButton  id="botonContratar" onClick={() => props.setVista("datosProveedor")} >DATOS DEL PROVEEDOR</IonButton>
+        </IonCard>
+  
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          <p>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
+          <p>TÍTULO: {props.datos.titulo}</p>
+          <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+          <p>{props.datos.descripcion}</p>
+          <IonButton  id="botonContratar" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) } >VER UBICACIÓN DEL PROVEEDOR</IonButton>
+
+        </IonCard>
+  
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
+        </IonCard>
+  
+        <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => props.setVista("chat")} >CHAT</IonButton>
+        
+        <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton></IonCol>
+        
+        <IonAlert
+            isOpen={showAlertRechazarOrden}
+            onDidDismiss={() => setShowAlertRechazarOrden(false)}
+            cssClass='my-custom-class'
+            header={'¿DESEA CANCELAR LA ORDEN?'}
+            subHeader={''}
+            message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+            buttons={[
+              {
+                text: 'SI',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: blah => {
+                    props.cancelarOrden();
+                },  
+               
+              },
+              {
+                text: 'NO',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: blah => {
+                  setShowAlertRechazarOrden(false);
+                }
+              }
+            ]} />
+
+        </IonContent>
+
+  )
+}
+
+const OrdenEnViaje = ( props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any} )=>{
+
+  const respuesta_informacion=useRef("")
+  const [showAlertCancelarOrden,setShowAlertCancelarOrden] = useState(false)
+
+  const cancelarOrden = ()=>{
+     
+    props.setVista ("cancelar")
+
+  }
+
+
+  if(props.datos.pedido_mas_información=="" &&props.datos.presupuesto_inicial!="0" ){
+    //ACA ACEPTAR PRESUPUESTO 
+    return (
+      <IonContent>
+      <div id="modalProveedor-flechaVolver">
+        <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+      </div>
+
+      <IonTitle>PROVEEDOR EN VIAJE</IonTitle>  
+      <IonCard id="ionCard-explorerContainer-Proveedor">
+        <p>TIPO: {props.datos.tipo}</p>
+        <p>STATUS: {props.estado}</p>
+        <p>TICKET: {props.datos.ticket}</p>
+        <IonButton onClick={() => props.setVista("datosProveedor")} >DATOS DEL PROVEEDOR</IonButton>
+      </IonCard>
+
+      <div id="tituloCardPRoveedor">
+          <strong>PRESUPUESTO DEL TRABAJO</strong>
+      </div>
+      <IonCard id="ionCard-explorerContainer-Proveedor">
+      <p>PRESUPUESTO: {props.datos.presupuesto_inicial}</p>
+     
+    </IonCard>
+    <IonButton color="warning" id="botonContratar" onClick={() => setShowAlertCancelarOrden(true)}>CANCELAR ORDEN</IonButton>
+
+    <IonAlert
+              isOpen={showAlertCancelarOrden}
+              onDidDismiss={() => setShowAlertCancelarOrden(false)}
+              cssClass='my-custom-class'
+              header={'¿DESEA RECHAZAR LA ORDEN?'}
+              subHeader={''}
+              message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+              buttons={[
+                {
+                  text: 'SI',
+                  role: 'cancel',
+                  cssClass: 'secondary',
+                  handler: blah => {
+                    cancelarOrden();
+                  },  
+                
+                },
+                {
+                  text: 'NO',
+                  role: 'cancel',
+                  cssClass: 'secondary',
+                  handler: blah => {
+                    setShowAlertCancelarOrden(false);
+                  }
+                }
+              ]} />
+    </IonContent>
+
+    )
+  }
+  else if(props.datos.pedido_mas_información!="" &&props.datos.presupuesto_inicial=="0"){
+    console.log("aqui debo estar")
+      return (
+        <IonContent>
+        <div id="modalProveedor-flechaVolver">
+          <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+        </div>
+
+      <IonTitle>PROVEEDOR EN VIAJE</IonTitle>  
+      <IonCard id="ionCard-explorerContainer-Proveedor">
+        <p>TIPO: {props.datos.tipo}</p>
+        <p>STATUS: {props.estado}</p>
+        <p>TICKET: {props.datos.ticket}</p>
+        <IonButton onClick={() => props.setVista("datosProveedor")} >DATOS DEL PROVEEDOR</IonButton>
+      </IonCard>
+
+      <IonCard id="ionCard-explorerContainer-Proveedor">
+          <p>FECHA DE SOLICITUD:</p>
+          <p>{props.datos.fecha_creacion}</p>
+          <p>TÍTULO:</p>
+          <p>{props.datos.titulo}</p>
+          <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+          <p>{props.datos.descripcion}</p>
+          <IonButton  id="botonContratar" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) } >VER UBICACIÓN DEL CLIENTE</IonButton>
+        </IonCard>
+
+        <div id="tituloCardPRoveedor">
+          <strong>IMÁGENES ADJUNTAS</strong>
+        </div>
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+        < Imagenes2   picture1={props.datos.picture1} picture2={props.datos.picture2}   ></Imagenes2>
+        </IonCard>
+  
+        <div id="tituloCardPRoveedor">
+          <strong>RESPUESTA DEL CLIENTE</strong>
+        </div>
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          <p>PREGUNTA PROVEEDOR:</p>
+          <p>{props.datos.pedido_mas_información}</p>
+          <p>RESPUESTA DADA:</p>
+          <p>{props.datos.respuesta_cliente_pedido_mas_información}</p>
+          <p>IMÁGENES BRINDADAS:</p>
+          <Imagenes2 picture1={props.datos.picture1_mas_información} picture2={props.datos.picture2_mas_información} />
+        </IonCard>
+  
+      <IonButton color="danger" id="botonContratar" onClick={() => setShowAlertCancelarOrden(true)}>CANCELAR ORDEN</IonButton>
+
+      <IonAlert
+              isOpen={showAlertCancelarOrden}
+              onDidDismiss={() => setShowAlertCancelarOrden(false)}
+              cssClass='my-custom-class'
+              header={'¿DESEA RECHAZAR LA ORDEN?'}
+              subHeader={''}
+              message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+              buttons={[
+                {
+                  text: 'SI',
+                  role: 'cancel',
+                  cssClass: 'secondary',
+                  handler: blah => {
+                    cancelarOrden();
+                  },  
+                
+                },
+                {
+                  text: 'NO',
+                  role: 'cancel',
+                  cssClass: 'secondary',
+                  handler: blah => {
+                    setShowAlertCancelarOrden(false);
+                  }
+                }
+              ]} />
+      </IonContent>
+
+      )
+  }else{
+
+  }
+  return (
+    <IonContent>
+    <div id="modalProveedor-flechaVolver">
+      <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+    </div>
+  <IonCard id="ionCard-explorerContainer-Proveedor">
+    <img id="img-orden" src={props.datos.imagen_proveedor}></img>
+    <p>TIPO: {props.datos.tipo}</p>
+    <p>STATUS: {props.estado}</p>
+    <p>TICKET: {props.datos.ticket}</p>
+    <IonButton  id="botonContratar" onClick={() => props.setVista("datosProveedor")} >DATOS DEL PROVEEDOR</IonButton>
+  </IonCard>
+
+
+  </IonContent>
+);
+
+}
+
+
+const VerDatosProveedor = (props:{ticket:any, tipo:any,latitud:any, longitud:any,setVista:any})  =>{
+
+  const [datosCliente, setDatosCliente] = useState <datos_proveedor>({
+    nombre:"",
+    apellido:"",
+    imagen:"",
+    calificacion: 0
+  })
+  
+  useEffect(() => { 
+  axios.get(url+"orden/datoproveedor/"+props.ticket+"/"+props.tipo).then((resp: { data: any; }) => {
+
+    if (resp.data!="bad"){
+      setDatosCliente(resp.data)
+    }
+  }) 
+}, []);
+
+const [showAlertUbicacion,setShowAlertUbicacion] =useState(false)
+
+  return (
+    <IonContent>
+      <div id="modalProveedor-flechaVolver">
+        <IonIcon icon={arrowBack} onClick={() => props.setVista("primero")} slot="start" id="flecha-volver">  </IonIcon>
+      </div>
+      <IonCard id="ionCard-explorerContainer-Proveedor">
+        <img id="img-orden" src={datosCliente.imagen}></img>
+        <p>NOMBRE: {datosCliente.nombre}</p>
+        <p>APELLIDO: {datosCliente.apellido}</p>
+        <p>CALIFICACIÓN: {datosCliente.calificacion}</p>
+        <IonButton  id="botonContratar" onClick={() => setShowAlertUbicacion(true)} >VER UBICACIÓN DEL PROVEEDOR</IonButton>
+
+        <IonButton  id="botonContratar" onClick={() => props.setVista("chat")} >CHAT CON PROVEEDOR</IonButton>
+  </IonCard>
+
+           <IonAlert
+              isOpen={showAlertUbicacion}
+              onDidDismiss={() => setShowAlertUbicacion(false)}
+              cssClass='my-custom-class'
+              header={'UBICACIÓN DEL PROVEEDOR'}
+              subHeader={''}
+              message={'El proveedor debe estar en camino para ver su ubicación'}
+              buttons={['OK']}
+              />
+  </IonContent>
+       
+);
 }
 
 const Chatear = (props:{estado:any, email_proveedor:any, email_cliente:any, setVista:any, setAlert:any})=>{
@@ -580,6 +889,35 @@ const Imagenes = (props:{picture1:any,picture2:any, ticket:any, tipo:any})=>{
 
 
 
+}
+
+const Imagenes2 = (props:{picture1:any,picture2:any})=>{
+  if(props.picture1!="" && props.picture2!="" ){
+    return(
+      <div id="CardProveedoresImg">
+        <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture1}></img>
+        <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture2}></img>
+        </div>
+    )
+  }
+  else if(props.picture1!="" && props.picture2==""){
+    return(
+      <div id="CardProveedoresImg"><img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture1}></img>
+      </div>
+    )
+  }
+  else if(props.picture1=="" && props.picture2!="" ){
+    return(
+      <div id="CardProveedoresImg"><img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture2}></img>
+      </div>
+    )
+  }else{
+    return(
+      <div id="CardProveedoresImg">
+        <p>CLIENTE NO HA ADJUNTADO IMÁGENES DE REFERENCIA DEL PEDIDO DE SERVICIO</p>
+      </div>
+    )
+  }
 }
 
 
