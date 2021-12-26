@@ -73,6 +73,8 @@ export interface datosGeneralesVariosProveedores {
       location_long:any
       picture1:string
       picture2:string
+      presupuesto_inicial:any
+      pedido_mas_información:string
       }
 
   let proveedores = new Array<datosGeneralesVariosProveedores>();
@@ -117,6 +119,8 @@ const HomeCliente = (props:{setIsReg:any,
       location_long:"",
       picture1:"",
       picture2:"",
+      presupuesto_inicial:"",
+      pedido_mas_información:"",
       }
 );
 

@@ -50,6 +50,9 @@ export interface ordenes  {
     location_long:any
     picture1:string
     picture2:string
+    presupuesto_inicial:any
+    pedido_mas_información:string
+
     }
 
 
@@ -93,6 +96,8 @@ const HomeProveedor = (props:{setIsReg:any,
       location_long:"",
       picture1:"",
       picture2:"",
+      presupuesto_inicial:"",
+      pedido_mas_información:"",
       }
 );
 

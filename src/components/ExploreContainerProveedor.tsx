@@ -59,6 +59,8 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any} ) =
         location_long:props.ordenes[i].location_long,
         picture1:props.ordenes[i].picture1,
         picture2:props.ordenes[i].picture2,
+        presupuesto_inicial:props.ordenes[i].presupuesto,
+        pedido_mas_información:props.ordenes[i].pedidoMasInformacion,
       })
 
     }
@@ -183,12 +185,22 @@ const Elements = (props:{ proveedores: Array <ordenes> , setVerOrden:any,setPosi
 const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fecha_creacion:string,ticket: string,
   dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, setPosicion:any }) => {
         
+    const [mensaje, setMensaje] = useState("")
+
     var estado="Enviada"
+    
+    useEffect(() => {
+
+
+
     if (props.status=="ENV"){
       estado="PEDIDO DE TRABAJO"
     }else if(props.status=="REC"){
       estado="PEDIDO DE TRABAJO RECIBIDO"
-    }else if(props.status=="ACE"){
+    }else if(props.status=="PRE"){
+      estado="PEDIDO DE TRABAJO PRE ACEPTADO"
+      setMensaje("EN ESPERA DE LA RESPUESTA DEL CLIENTE")
+    } else if(props.status=="ACE"){
       estado="PEDIDO DE TRABAJO ACEPTADO"
     }else if(props.status=="EVI"){
       estado="EN VIAJE"
@@ -196,6 +208,7 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
       estado="EN SITIO"
     }
 
+  }, []);
  
     return (
     <IonCard id="ionCard-explorerContainer-Proveedor" onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
@@ -206,15 +219,12 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
           <p>TIPO: {props.tipo.toUpperCase( )}</p>
           <p>STATUS: {estado}</p>
           <p>TICKET: {props.ticket}</p>
+          <p>{mensaje}</p>
         </IonCol>
       </IonRow>
-      
       </IonGrid>
-        
-  
-    </IonCard>
-       
-  );
+    </IonCard>  
+  )
 }
 
 /*

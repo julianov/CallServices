@@ -65,6 +65,8 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
         location_long:props.ordenes[i].location_long,
         picture1:props.ordenes[i].picture1,
         picture2:props.ordenes[i].picture2,
+        presupuesto_inicial:props.ordenes[i].presupuesto,
+        pedido_mas_información:props.ordenes[i].pedidoMasInformacion,
       })
 
     }
@@ -332,6 +334,7 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , hayOrdenes:any,
             i = i + 1;
             return (<CardVistaVariasOrdenes key={i} posicion={i} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket}
               dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_proveedor} setVerOrden={props.setVerOrden} setPosicion={props.setPosicion}
+              presupuesto={a.presupuesto_inicial} masInfo={a.pedido_mas_información}
             ></CardVistaVariasOrdenes>);
           })}
         </div></>
@@ -347,13 +350,15 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , hayOrdenes:any,
 }
 
 const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fecha_creacion:string,ticket: string,
-  dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, setPosicion:any }) => {
+  dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, setPosicion:any, presupuesto:any, masInfo:any}) => {
         
     var estado="Enviada"
     if (props.status=="ENV"){
       estado="PEDIDO DE TRABAJO ENVIADO"
     }else if(props.status=="REC"){
       estado="PEDIDO DE TRABAJO RECIBIDO"
+    }else if(props.status=="PRE"){
+      estado="TRABAJO PRE ACEPTADO"
     }else if(props.status=="ACE"){
       estado="PEDIDO DE TRABAJO ACEPTADO"
     }else if(props.status=="EVI"){
@@ -362,25 +367,45 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
       estado="EN SITIO"
     }
 
+    if(props.status=="PRE"){
+
+    
+
+      return (
+        <IonCard id="ionCard-explorerContainer-Proveedor" onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
+          <IonGrid>
+          <IonRow  id="row-busqueda">
+            <IonCol size="auto"  id="col-explorerContainerCliente"><img id="imgOrden" src={props.imagen}></img></IonCol>
+            <IonCol size="auto" id="col-explorerContainerCliente">
+              <p>TIPO: {props.tipo.toUpperCase( )}</p>
+              <p>STATUS: {estado}</p>
+              <p>TICKET: {props.ticket}</p>
+              <strong>EL PROVEEDOR HA ENVIADO COTIZACIÓN</strong>
+              <p>Ingrese para aceptarlo o rechazarlo</p>
+            </IonCol>
+          </IonRow>
+          </IonGrid>
+        </IonCard>
+      )
+
+    }else{
+      return (
+        <IonCard id="ionCard-explorerContainer-Proveedor" onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
+          <IonGrid>
+          <IonRow  id="row-busqueda">
+            <IonCol size="auto"  id="col-explorerContainerCliente"><img id="imgOrden" src={props.imagen}></img></IonCol>
+            <IonCol size="auto" id="col-explorerContainerCliente">
+              <p>TIPO: {props.tipo.toUpperCase( )}</p>
+              <p>STATUS: {estado}</p>
+              <p>TICKET: {props.ticket}</p>
+            </IonCol>
+          </IonRow>
+          </IonGrid>
+        </IonCard>
+      )
+    }
  
-    return (
-    <IonCard id="ionCard-explorerContainer-Proveedor" onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
-      <IonGrid>
-      <IonRow  id="row-busqueda">
-        <IonCol size="auto"  id="col-explorerContainerCliente"><img id="imgOrden" src={props.imagen}></img></IonCol>
-        <IonCol size="auto" id="col-explorerContainerCliente">
-          <p>TIPO: {props.tipo.toUpperCase( )}</p>
-          <p>STATUS: {estado}</p>
-          <p>TICKET: {props.ticket}</p>
-        </IonCol>
-      </IonRow>
-      
-      </IonGrid>
-        
-  
-    </IonCard>
-       
-  );
+    
 }
 
 export const Categorias: React.FC = () => {
