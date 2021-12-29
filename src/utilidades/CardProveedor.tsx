@@ -57,7 +57,8 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
     last_name:string,
     picture:string,
     items:string,
-    qualification:number
+    qualification:number,
+    dias_proveedor:string
      }
 
     const datosDeOrdenes = useRef<datosOrden>(
@@ -69,7 +70,8 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
         last_name:"",
         picture:"",
         items:"",
-        qualification:0
+        qualification:0,
+        dias_proveedor:"",
          }
     )
 
@@ -178,6 +180,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
           picture:datosProveedoresArray.picture,
           items:datosProveedoresArray.items,
           qualification:datosProveedoresArray.qualification,
+          dias_proveedor:datosProveedoresArray.days_of_works
         })
 
         setShowModalOrden({ isOpen: true })

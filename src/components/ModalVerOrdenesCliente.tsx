@@ -66,7 +66,7 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
 
       const cancelarOrden = ()=> {
 
-        if (estado=="ORDEN ACEPTADA POR PROVEEDOR"){
+        
 
           axios.get(url+"orden/cambiarestado/"+props.datos.ticket+"/"+props.datos.tipo+"/"+"REX", {timeout: 7000})
           .then((resp: { data: any; }) => {
@@ -74,7 +74,7 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
               setEstado("ORDEN RECHAZADA")
             }
            })
-        }
+        
 
       }
    
@@ -100,7 +100,7 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
 
         return(
           <OrdenEnViaje datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
-          setVolver={props.setVolver} />
+          setVolver={props.setVolver} cancelarOrden={cancelarOrden} />
         )
       }else if (vista=="datosProveedor"){
 
@@ -526,16 +526,10 @@ const EnEsperaDelProveedor = (props:{datos:any, setVolver:any, setVista:any, set
   )
 }
 
-const OrdenEnViaje = ( props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any} )=>{
+const OrdenEnViaje = ( props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any, cancelarOrden:any} )=>{
 
   const respuesta_informacion=useRef("")
   const [showAlertCancelarOrden,setShowAlertCancelarOrden] = useState(false)
-
-  const cancelarOrden = ()=>{
-     
-    props.setVista ("cancelar")
-
-  }
 
 
   if(props.datos.pedido_mas_información=="" &&props.datos.presupuesto_inicial!="0" ){
@@ -576,7 +570,7 @@ const OrdenEnViaje = ( props:{datos:any, setVolver:any, setVista:any, setEstado:
                   role: 'cancel',
                   cssClass: 'secondary',
                   handler: blah => {
-                    cancelarOrden();
+                    props.cancelarOrden();
                   },  
                 
                 },
@@ -653,7 +647,7 @@ const OrdenEnViaje = ( props:{datos:any, setVolver:any, setVista:any, setEstado:
                   role: 'cancel',
                   cssClass: 'secondary',
                   handler: blah => {
-                    cancelarOrden();
+                    props.cancelarOrden();
                   },  
                 
                 },

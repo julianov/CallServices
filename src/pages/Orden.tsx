@@ -257,9 +257,22 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                             <IonRow>
                                 <IonCol >
 
+                                
+
+                                <IonItem id="item-completarInfo">
+                                        <IonLabel position="floating">DÍAS DISPONIBLES DEL PROVEEDOR</IonLabel>                                    
+                                        < Dias  dias={props.data.dias_proveedor} cliente={false} />
+
+                                    </IonItem>
+                                    </IonCol>
+                            </IonRow>
+                                    <IonRow>
+                                <IonCol >
+
                                     <IonItem id="item-completarInfo">
-                                        <IonLabel position="floating">DÍAS DISPONIBLES</IonLabel>                                    
-                                        < Dias  dias={fecha} />
+                                        <IonLabel position="floating">MIS DÍAS DISPONIBLES PARA EL SERVICIO</IonLabel>                                    
+                                        < Dias  dias={fecha} cliente={true} />
+
                                     </IonItem>
                                 </IonCol>
                             </IonRow>
@@ -579,11 +592,8 @@ const LocacionServicio = ( props:{direccion:any, posicionCliente:any, latitudCli
    
 }
 
-const Dias =(props:{dias:any})=>{
+const Dias =(props:{dias:any, cliente:boolean})=>{
 
-    let dia: string[] = ['', '', '', '', '', '', ''];
-    
-            
     const [lunes, setLunes]= useState (false)
     const [martes, setMartes]= useState (false)
     const [miercoles, setMiercoles]= useState (false)
@@ -592,34 +602,87 @@ const Dias =(props:{dias:any})=>{
     const [sabado, setSabado]= useState (false)
     const [domingo, setDomingo]= useState (false)
 
-    if(lunes){dia[0]='Lunes'}else{dia[0]=''}
-    if(martes){dia[1]='Martes'}else{dia[1]=''}
-    if(miercoles){dia[2]='Miercoles'}else{dia[2]=''}
-    if(jueves){dia[3]='Jueves'}else{dia[3]=''}
-    if(viernes){dia[4]='Viernes'}else{dia[4]=''}
-    if(sabado){dia[5]='Sabado'}else{dia[5]=''}
-    if(domingo){dia[6]='Domingo'}else{dia[6]=''}
+    if (props.cliente){
+        let dia: string[] = ['', '', '', '', '', '', ''];
 
+            
 
-    if (lunes || martes || miercoles || jueves ||  viernes || sabado || domingo ){
-        props.dias.current=dia[0]+" "+dia[1]+" "+dia[2]+" "+dia[3]+" "+dia[4]+" "+dia[5]+" "+dia[6]
+    
+        if(lunes){dia[0]='Lunes'}else{dia[0]=''}
+        if(martes){dia[1]='Martes'}else{dia[1]=''}
+        if(miercoles){dia[2]='Miercoles'}else{dia[2]=''}
+        if(jueves){dia[3]='Jueves'}else{dia[3]=''}
+        if(viernes){dia[4]='Viernes'}else{dia[4]=''}
+        if(sabado){dia[5]='Sabado'}else{dia[5]=''}
+        if(domingo){dia[6]='Domingo'}else{dia[6]=''}
+    
+    
+        if (lunes || martes || miercoles || jueves ||  viernes || sabado || domingo ){
+            props.dias.current=dia[0]+" "+dia[1]+" "+dia[2]+" "+dia[3]+" "+dia[4]+" "+dia[5]+" "+dia[6]
+        }
+        return (
+                <IonGrid>
+                <IonRow>
+                    <IonCol><BotonDia dia={"LU"} setDia={setLunes} ></BotonDia></IonCol>
+                    <IonCol><BotonDia dia={"MA"} setDia={setMartes} ></BotonDia></IonCol>
+                    <IonCol><BotonDia dia={"MI"} setDia={setMiercoles} ></BotonDia></IonCol>
+                    <IonCol><BotonDia dia={"JU"} setDia={setJueves} ></BotonDia></IonCol>
+                    <IonCol><BotonDia dia={"VI"} setDia={setViernes} ></BotonDia></IonCol>
+                    <IonCol><BotonDia dia={"SA"} setDia={setSabado} ></BotonDia></IonCol>
+                    <IonCol><BotonDia dia={"DO"} setDia={setDomingo} ></BotonDia></IonCol>
+    
+                    </IonRow>
+                </IonGrid>
+    
+    
+            );
+    }else{
+        
+            let valores = props.dias.split(" ")
+
+            console.log("valores:" +valores)
+            return (
+                <IonGrid>
+                <IonRow>
+                    <IonCol><BotonDiaProveedor dia={"LU"} valor={valores[0]} ></BotonDiaProveedor></IonCol>
+                    <IonCol><BotonDiaProveedor dia={"MA"} valor={valores[1]} ></BotonDiaProveedor></IonCol>
+                    <IonCol><BotonDiaProveedor dia={"MI"} valor={valores[2]} ></BotonDiaProveedor></IonCol>
+                    <IonCol><BotonDiaProveedor dia={"JU"} valor={valores[3]} ></BotonDiaProveedor></IonCol>
+                    <IonCol><BotonDiaProveedor dia={"VI"} valor={valores[4]} ></BotonDiaProveedor></IonCol>
+                    <IonCol><BotonDiaProveedor dia={"SA"} valor={valores[5]} ></BotonDiaProveedor></IonCol>
+                    <IonCol><BotonDiaProveedor dia={"DO"} valor={valores[6]} ></BotonDiaProveedor></IonCol>
+    
+                    </IonRow>
+                </IonGrid>
+    
+    
+            );
+
+        
+
     }
-    return (
-            <IonGrid>
-            <IonRow>
-                <IonCol><BotonDia dia={"LU"} setDia={setLunes} ></BotonDia></IonCol>
-                <IonCol><BotonDia dia={"MA"} setDia={setMartes} ></BotonDia></IonCol>
-                <IonCol><BotonDia dia={"MI"} setDia={setMiercoles} ></BotonDia></IonCol>
-                <IonCol><BotonDia dia={"JU"} setDia={setJueves} ></BotonDia></IonCol>
-                <IonCol><BotonDia dia={"VI"} setDia={setViernes} ></BotonDia></IonCol>
-                <IonCol><BotonDia dia={"SA"} setDia={setSabado} ></BotonDia></IonCol>
-                <IonCol><BotonDia dia={"DO"} setDia={setDomingo} ></BotonDia></IonCol>
-
-                </IonRow>
-            </IonGrid>
-
-
-        );
+   
 
 }
+
+const BotonDiaProveedor=  (props:{dia:any, valor:any})=> {
+    
+    const [marcar, setMarcar] =useState(false)
+
+
+    useEffect(() => {
+     
+        if (props.valor!=''){
+            setMarcar(true)
+        }else{
+            setMarcar(false)
+        }
+    }, []);
+
+    return (
+        marcar ? <IonButton color="primary" shape="round"  id="diaSelecionado">{props.dia}</IonButton> : <IonButton color="white" shape="round" id="diaNoSelecionado" >{props.dia}</IonButton>
+
+    )
+}
+
 export default OrdenSimple 
