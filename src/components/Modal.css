@@ -378,3 +378,11 @@ width: 95%;
   justify-content: center;
   align-items: center;
 }
+
+#titulo{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 90%;
+
+}

@@ -199,6 +199,9 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
       setEstado("PEDIDO DE TRABAJO")
     }else if(props.status=="REC"){
       setEstado("PEDIDO DE TRABAJO RECIBIDO")
+    }else if(props.status=="PEI"){
+      setEstado("MÁS INFORMACIÓN HA SIDO SOLICITADA AL CLIENTE")
+      setMensaje("EN ESPERA DE LA RESPUESTA DEL CLIENTE")
     }else if(props.status=="PRE"){
       setEstado("PEDIDO DE TRABAJO PRE ACEPTADO")
       setMensaje("EN ESPERA DE LA RESPUESTA DEL CLIENTE")

@@ -1,17 +1,17 @@
-import { IonAlert, IonAvatar, IonBadge, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonChip, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonItemDivider, IonLabel, IonList, IonModal, IonPage, IonRouterOutlet, IonRow, IonTabBar, IonTabButton, IonTabs, IonTitle, IonToolbar } from '@ionic/react';
-import { arrowBack, calendar, chevronDown, closeCircle, ellipse, informationCircle, map, personCircle, pin, square, triangle } from 'ionicons/icons';
-import React, { Component, useRef, useState } from 'react';
+import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonChip, IonCol, IonGrid, IonIcon, IonItem, IonItemDivider, IonLabel, IonList, IonModal, IonRow } from '@ionic/react';
+import { chevronDown, closeCircle } from 'ionicons/icons';
+import React, { useRef, useState } from 'react';
+import {Adsense} from '@ctrl/react-adsense';
+
 import './ExploreContainer.css';
 
 import { Geolocation } from '@capacitor/core/dist/esm/web/geolocation';
 import { useEffect } from 'react';
 import Estrellas from '../utilidades/Estrellas';
 import ResultadoBusqueda from '../utilidades/ResultadoBusqueda';
-import { createStore, getDB, removeDB } from '../utilidades/dataBase';
+import { createStore, getDB } from '../utilidades/dataBase';
 import { datosGeneralesVariosProveedores, ordenesCliente, proveedorBuscado } from '../pages/HomeCliente';
 import ModalVerCardProveedor from './ModalVerCardProveedor';
-import { ordenes } from '../pages/HomeProveedor';
-import ModalVerOrdenes from './ModalVerOrdenesProveedor';
 import ModalVerOrdenesCliente from './ModalVerOrdenesCliente';
 
 const getLocation = async () => {
@@ -86,7 +86,9 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
     if (verEmail=="" && item =="" ){
       return (
         <>
-        <div id="container-principal-ExplorerContainer-Cliente">   
+        <div id="container-principal-ExplorerContainer-Cliente">  
+       
+    
           <Tabs setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal} ></Tabs>
           <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={proveedores}  setVerOrden={setVerOrden} setPosicion={setPosicion}></MisOrdenes>
           <h1 id="explorerContainerCliente-titulo">PROVEEDORES DE SERVICIOS EN LA ZONA </h1>             
@@ -365,10 +367,15 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
       setEstado("PEDIDO DE TRABAJO ENVIADO")
     }else if(props.status=="REC"){
       setEstado("PEDIDO DE TRABAJO RECIBIDO")
+    }else if(props.status=="PEI"){
+      setEstado("TRABAJO PRE ACEPTADO")
+      setMensaje1("EL PROVEEDOR SOLICITA MÁS INFORMACIÓN")
+      setMensaje2("Ingrese para aceptarlo o rechazarlo")
+
     }else if(props.status=="PRE"){
       setEstado("TRABAJO PRE ACEPTADO")
       setMensaje1("EL PROVEEDOR HA ENVIADO COTIZACIÓN")
-      setMensaje2("Ingrese para aceptarlo o rechazarlo")
+      setMensaje2("Ingrese responder")
     }else if(props.status=="ACE"){
       setEstado("PEDIDO DE TRABAJO ACEPTADO")
     }else if(props.status=="EVI"){

@@ -9,6 +9,7 @@ import './Modal.css';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import axios from "axios";
 import { TomarFotografia } from "../pages/Orden";
+import { Calificacion } from "./ModalVerOrdenesProveedor";
 
 const url=Https
 
@@ -39,13 +40,17 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
     
     useEffect(() => {
         
+      console.log("estado: "+props.datos.status)
    
             if (props.datos.status=="ENV"){
               setEstado("GENERADA")
-        
             }else if(props.datos.status=="REC"){
               setEstado("ORDEN RECIBIDA POR PROVEEDOR")
-            }else if(props.datos.status=="PRE"){
+            }else if(props.datos.status=="PEI"){
+              console.log("esto deberia devolver")
+              setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
+              setVista("masinfo")
+            } else if(props.datos.status=="PRE"){
               setEstado("ORDEN PRE ACEPTADA POR PROVEEDOR")
               setVista("preaceptada")
             }else if(props.datos.status=="ACE"){
@@ -57,6 +62,9 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
 
             }else if(props.datos.status=="ENS"){
               setEstado("PROVEEDOR EN SITIO")
+            }else if(props.datos.status=="RED"){
+              setVista("finalizada")
+
             }
         
       }, [])
@@ -66,9 +74,7 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
 
       const cancelarOrden = ()=> {
 
-        
-
-          axios.get(url+"orden/cambiarestado/"+props.datos.ticket+"/"+props.datos.tipo+"/"+"REX", {timeout: 7000})
+          axios.get(url+"orden/cambiarestado/"+props.datos.ticket+"/"+props.datos.tipo+"/"+"CAN", {timeout: 7000})
           .then((resp: { data: any; }) => {
             if(resp.data!="bad"){
               setEstado("ORDEN RECHAZADA")
@@ -84,13 +90,27 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
           setVolver={props.setVolver} cancelarOrden={cancelarOrden} />
 
       );
-      }else if (vista=="preaceptada"){
+      }else if(vista=="masinfo"){
+
+        console.log("esto deberia devolver")
+        return(
+          < PedidoMasInfo datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
+          setVolver={props.setVolver} cancelarOrden={cancelarOrden}/>
+        )
+
+      } else if (vista=="preaceptada"){
 
         return(
           <OrdenPreAceptada datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
           setVolver={props.setVolver} cancelarOrden={cancelarOrden}/>
+  
         )
-      }else if (vista=="enEsperaDelPRoveedor"){
+      }else if(vista=="respuestaEnviada"){
+        return(
+          <RespuestaEnviada datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
+          setVolver={props.setVolver} cancelarOrden={cancelarOrden} />
+          )
+      } else if (vista=="enEsperaDelPRoveedor"){
         
         return(
           <EnEsperaDelProveedor datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
@@ -102,7 +122,12 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
           <OrdenEnViaje datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
           setVolver={props.setVolver} cancelarOrden={cancelarOrden} />
         )
-      }else if (vista=="datosProveedor"){
+      }else if(vista=="finalizada"){
+        return(
+        <Finalizada datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
+          setVolver={props.setVolver} />
+        )
+      } else if (vista=="datosProveedor"){
 
         return (
         < VerDatosProveedor ticket={props.datos.ticket} tipo={props.datos.tipo} latitud={props.datos.location_lat} longitud={props.datos.location_long} setVista={setVista}  />
@@ -222,10 +247,7 @@ return (
 
 }
 
-
-
-const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any, cancelarOrden:any} )=>{
-
+const PedidoMasInfo = ( props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any, cancelarOrden:any} )=>{
 
   const respuesta_informacion=useRef("")
   const foto1Mostrar= useRef <String>()
@@ -233,6 +255,128 @@ const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEst
 
   const foto1= useRef <Blob>()
   const foto2= useRef <Blob>()
+
+  const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
+
+  const enviarMasInfo = () =>{
+
+    if(respuesta_informacion.current!=""){
+      var formDataToUpload = new FormData();
+      formDataToUpload.append("ticket",props.datos.ticket)
+      formDataToUpload.append("respuesta_informacion",respuesta_informacion.current)
+      if(foto1.current!=null || foto1.current!=undefined){
+        formDataToUpload.append("imagen1", foto1.current);
+      }
+      if(foto2.current!=null || foto2.current!=undefined){
+        formDataToUpload.append("imagen2", foto2.current); 
+      }
+      
+      const axios = require('axios');
+                axios({
+                    url:url+"orden/masInfo/cliente",
+                    method:'POST',
+                    headers: {"content-type": "multipart/form-data"},
+                    data:formDataToUpload
+                }).then(function(res: any){
+
+                  console.log(res.data)
+                  if(res.data=="ok"){
+                   // aca cambiar porque cuando se envia lo que el proveedor requiere aparece como aceptada pero en realidad no está aceptada, solo se envio lo que pedía el proveedor
+                   props.setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
+                   props.setVista("respuestaEnviada")
+                  }
+    
+                  
+                
+                }).catch((error: any) =>{
+      //              setVista(0)
+                    //Network error comes in
+                });
+    }
+
+  }
+
+  return (
+    <IonContent>
+    <div id="modalProveedor-flechaVolver">
+      <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+    </div>
+
+  <IonTitle>SOLICITUD DE MÁS INFORMACIÓN</IonTitle>  
+  <IonCard id="ionCard-explorerContainer-Proveedor">
+    <p>TIPO: {props.datos.tipo}</p>
+    <p>STATUS: {props.estado}</p>
+    <p>TICKET: {props.datos.ticket}</p>
+    <IonButton onClick={() => props.setVista("datosProveedor")} >DATOS DEL PROVEEDOR</IonButton>
+  </IonCard>
+
+  <div id="tituloCardPRoveedor">
+      <strong>SOLICITUD DE MÁS INFORMACIÓN </strong>
+  </div>
+  <IonCard id="ionCard-explorerContainer-Proveedor">
+    <p>MAS INFORMACIÓN REQUERIDA POR EL PROVEEDOR:</p> 
+    <p>{props.datos.pedido_mas_información}</p> 
+    <IonItemDivider></IonItemDivider>
+
+    <IonItem id="item-Orden">
+      <IonLabel position="floating">Respuesta</IonLabel>
+      <IonInput onIonInput={(e: any) => respuesta_informacion.current = (e.target.value)}></IonInput>
+    </IonItem>
+
+    <p>Agregar Fotos:</p> 
+
+    <IonGrid>
+                    <IonRow>
+                        <IonCol >
+                            <TomarFotografia imagen={foto1Mostrar} setFilepath={foto1} />
+                        </IonCol>
+                    </IonRow>
+                    <IonRow>
+                        <IonCol >
+                            <TomarFotografia imagen={foto2Mostrar} setFilepath={foto2} />
+                        </IonCol>
+                    </IonRow>                                              
+                </IonGrid>
+
+  </IonCard>
+  <IonButton color="warning" id="botonContratar" onClick={() => enviarMasInfo()}>RESPONDER</IonButton>
+  <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton></IonCol>
+
+<IonAlert
+isOpen={showAlertRechazarOrden}
+onDidDismiss={() => setShowAlertRechazarOrden(false)}
+cssClass='my-custom-class'
+header={'¿DESEA CANCELAR LA ORDEN?'}
+subHeader={''}
+message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+buttons={[
+{
+  text: 'SI',
+  role: 'cancel',
+  cssClass: 'secondary',
+  handler: blah => {
+      props.cancelarOrden();
+  },  
+ 
+},
+{
+  text: 'NO',
+  role: 'cancel',
+  cssClass: 'secondary',
+  handler: blah => {
+    setShowAlertRechazarOrden(false);
+  }
+}
+]} />
+
+  </IonContent>
+
+  )
+}
+
+
+const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any, cancelarOrden:any} )=>{
+
 
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
   
@@ -262,45 +406,7 @@ const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEst
     });
 }
 
-  
 
-  const enviarMasInfo = () =>{
-
-    if(respuesta_informacion.current!=""){
-      var formDataToUpload = new FormData();
-      formDataToUpload.append("ticket",props.datos.ticket)
-      formDataToUpload.append("respuesta_informacion",respuesta_informacion.current)
-      if(foto1.current!=null || foto1.current!=undefined){
-        formDataToUpload.append("imagen1", foto1.current);
-      }
-      if(foto2.current!=null || foto2.current!=undefined){
-        formDataToUpload.append("imagen2", foto2.current); 
-      }
-      const axios = require('axios');
-                axios({
-                    url:url+"orden/masInfo/cliente",
-                    method:'POST',
-                    headers: {"content-type": "multipart/form-data"},
-                    data:formDataToUpload
-                }).then(function(res: any){
-
-                  console.log(res.data)
-                  if(res.data=="ok"){
-                      props.setEstado("ORDEN ACEPTADA")
-                      props.setVista("enEsperaDelPRoveedor")
-                  }
-    
-                  
-                
-                }).catch((error: any) =>{
-      //              setVista(0)
-                    //Network error comes in
-                });
-    }
-
-  }
-
-  if(props.datos.pedido_mas_información=="" &&props.datos.presupuesto_inicial!="0" ){
     //ACA ACEPTAR PRESUPUESTO 
     return (
       <IonContent>
@@ -355,104 +461,89 @@ const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEst
     </IonContent>
 
     )
-  }
-  else if(props.datos.pedido_mas_información!="" &&props.datos.presupuesto_inicial=="0"){
-      return (
-        <IonContent>
-        <div id="modalProveedor-flechaVolver">
-          <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
-        </div>
+ 
 
-      <IonTitle>SOLICITUD DE MÁS INFORMACIÓN</IonTitle>  
-      <IonCard id="ionCard-explorerContainer-Proveedor">
-        <p>TIPO: {props.datos.tipo}</p>
-        <p>STATUS: {props.estado}</p>
-        <p>TICKET: {props.datos.ticket}</p>
-        <IonButton onClick={() => props.setVista("datosProveedor")} >DATOS DEL PROVEEDOR</IonButton>
-      </IonCard>
+}
 
-      <div id="tituloCardPRoveedor">
-          <strong>SOLICITUD DE MÁS INFORMACIÓN </strong>
-      </div>
-      <IonCard id="ionCard-explorerContainer-Proveedor">
-        <p>MAS INFORMACIÓN REQUERIDA POR EL PROVEEDOR:</p> 
-        <p>{props.datos.pedido_mas_información}</p> 
-        <IonItemDivider></IonItemDivider>
+const RespuestaEnviada  = (props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any, cancelarOrden:any} )=>{
+  const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
 
-        <IonItem id="item-Orden">
-          <IonLabel position="floating">Respuesta</IonLabel>
-          <IonInput onIonInput={(e: any) => respuesta_informacion.current = (e.target.value)}></IonInput>
-        </IonItem>
-
-        <p>Agregar Fotos:</p> 
-
-        <IonGrid>
-                        <IonRow>
-                            <IonCol >
-                                <TomarFotografia imagen={foto1Mostrar} setFilepath={foto1} />
-                            </IonCol>
-                        </IonRow>
-                        <IonRow>
-                            <IonCol >
-                                <TomarFotografia imagen={foto2Mostrar} setFilepath={foto2} />
-                            </IonCol>
-                        </IonRow>                                              
-                    </IonGrid>
-
-      </IonCard>
-      <IonButton color="warning" id="botonContratar" onClick={() => enviarMasInfo()}>RESPONDER</IonButton>
-      <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton></IonCol>
-
-<IonAlert
-  isOpen={showAlertRechazarOrden}
-  onDidDismiss={() => setShowAlertRechazarOrden(false)}
-  cssClass='my-custom-class'
-  header={'¿DESEA CANCELAR LA ORDEN?'}
-  subHeader={''}
-  message={'Agregar una indicación de por qué es mala rechazar ordenes'}
-  buttons={[
-    {
-      text: 'SI',
-      role: 'cancel',
-      cssClass: 'secondary',
-      handler: blah => {
-          props.cancelarOrden();
-      },  
-     
-    },
-    {
-      text: 'NO',
-      role: 'cancel',
-      cssClass: 'secondary',
-      handler: blah => {
-        setShowAlertRechazarOrden(false);
-      }
-    }
-  ]} />
-
-      </IonContent>
-
-      )
-  }else{
-
-  }
   return (
+
     <IonContent>
-    <div id="modalProveedor-flechaVolver">
-      <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
-    </div>
-  <IonCard id="ionCard-explorerContainer-Proveedor">
-    <img id="img-orden" src={props.datos.imagen_proveedor}></img>
-    <p>TIPO: {props.datos.tipo}</p>
-    <p>STATUS: {props.estado}</p>
-    <p>TICKET: {props.datos.ticket}</p>
-    <IonButton  id="botonContratar" onClick={() => props.setVista("datosProveedor")} >DATOS DEL PROVEEDOR</IonButton>
-  </IonCard>
+          <div id="modalProveedor-flechaVolver">
+            <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+          </div>
+          <IonTitle>ESPERE PRESUPUESTO DEL PROVEEDOR</IonTitle>  
 
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          <img id="img-orden" src={props.datos.imagen_proveedor}></img>
+          <p>TIPO: {props.datos.tipo}</p>
+          <p>STATUS: {props.estado}</p>
+          <p>TICKET: {props.datos.ticket}</p>
+          <IonButton  id="botonContratar" onClick={() => props.setVista("datosProveedor")} >DATOS DEL PROVEEDOR</IonButton>
+        </IonCard>
+  
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          <p>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
+          <p>TÍTULO: {props.datos.titulo}</p>
+          <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+          <p>{props.datos.descripcion}</p>
+          <IonButton  id="botonContratar" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) } >VER UBICACIÓN DEL PROVEEDOR</IonButton>
 
-  </IonContent>
-);
+        </IonCard>
+  
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
+        </IonCard>
 
+        <div id="tituloCardPRoveedor">
+          <strong>PEDIDO DE MÁS INFORMACIÓN</strong>
+        </div>
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          <p>PREGUNTA PROVEEDOR:</p>
+          <p>{props.datos.pedido_mas_información}</p>
+          <p>RESPUESTA DADA:</p>
+          <p>{props.datos.respuesta_cliente_pedido_mas_información}</p>
+          <p>IMÁGENES BRINDADAS:</p>
+          <Imagenes2 picture1={props.datos.picture1_mas_información} picture2={props.datos.picture2_mas_información} />
+        </IonCard>
+  
+  
+        <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => props.setVista("chat")} >CHAT</IonButton>
+        
+        <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton></IonCol>
+        
+        <IonAlert
+            isOpen={showAlertRechazarOrden}
+            onDidDismiss={() => setShowAlertRechazarOrden(false)}
+            cssClass='my-custom-class'
+            header={'¿DESEA CANCELAR LA ORDEN?'}
+            subHeader={''}
+            message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+            buttons={[
+              {
+                text: 'SI',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: blah => {
+                    props.cancelarOrden();
+                },  
+               
+              },
+              {
+                text: 'NO',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: blah => {
+                  setShowAlertRechazarOrden(false);
+                }
+              }
+            ]} />
+
+        </IonContent>
+
+  )
 }
 
 const EnEsperaDelProveedor = (props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any, cancelarOrden:any} )=>{
@@ -685,6 +776,86 @@ const OrdenEnViaje = ( props:{datos:any, setVolver:any, setVista:any, setEstado:
 
 }
 
+const Finalizada = ( props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any} )=>{
+
+  const calificacion = useRef ("0")
+  const reseña = useRef ("")
+
+  const [showAlertCalificacion, setShowAlertCalificacion] = useState(false)
+  const [showAlertConexion, setShowAlertConexion] = useState(false)
+
+  const enviar = ()=>{
+    if (calificacion.current=="0") {
+      setShowAlertCalificacion(true)
+    }else{
+      var formDataToUpload = new FormData();
+      formDataToUpload.append("ticket",props.datos.ticket)
+      formDataToUpload.append("resena", reseña.current)
+      formDataToUpload.append("calificacion", calificacion.current)
+
+      const axios = require('axios');
+      axios({
+          url:url+"orden/finalizar/cliente",
+          method:'POST',
+          headers: {"content-type": "multipart/form-data"},
+          data:formDataToUpload
+      }).then(function(res: any){
+  
+        console.log(res.data)
+        if(res.data=="ok"){
+            props.setVolver(false)
+        }else{
+          setShowAlertConexion(true)
+        }
+      }).catch((error: any) =>{
+  //              setVista(0)
+          //Network error comes in
+          setShowAlertConexion(true)
+
+      });
+    }
+  }
+
+  return (
+    <IonContent>
+      <div id="modalProveedor-flechaVolver">
+          <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+      </div>
+      <h2>ORDEN DE TRABAJO REALIZADA</h2>
+      <h3>COMPLETE LOS SIGUIENTES CAMPOS</h3>
+
+      <h3>INGRESE LA CALIFICACIÓN DEL PROVEEDOR</h3>
+      <Calificacion calificacion={calificacion} ></Calificacion>
+
+      <h3>¿DESEA INGRESAR UNA RESEÑA DEL PROVEEDOR</h3>
+      <IonItem id="item-completarInfo">
+        <IonLabel position="floating">RESEÑA</IonLabel>
+        <IonInput onIonInput={(e: any) => reseña.current=(e.target.value)}></IonInput>
+      </IonItem>
+
+    
+     <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviar()} >TRABAJO FINALIZADO</IonButton>
+   
+          <IonAlert
+                isOpen={showAlertCalificacion}
+                onDidDismiss={() => setShowAlertCalificacion(false)}
+                cssClass='my-custom-class'
+                header={'CALIFICACIÓN'}
+                subHeader={''}
+                message={'Debe ingresra una calificación para el cliente'}
+                buttons={['OK']} />
+          <IonAlert
+                isOpen={showAlertConexion}
+                onDidDismiss={() => setShowAlertConexion(false)}
+                cssClass='my-custom-class'
+                header={'INCONVENIENTE CON EL SERVIDOR'}
+                subHeader={''}
+                message={'Ingrese la calificación luego'}
+                buttons={['OK']} />
+      
+      </IonContent>)
+
+}
 
 const VerDatosProveedor = (props:{ticket:any, tipo:any,latitud:any, longitud:any,setVista:any})  =>{
 
