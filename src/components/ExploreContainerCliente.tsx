@@ -368,15 +368,14 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
     }else if(props.status=="REC"){
       setEstado("PEDIDO DE TRABAJO RECIBIDO")
     }else if(props.status=="PEI"){
-      setEstado("TRABAJO PRE ACEPTADO")
+      setEstado("SOLILCITUD DE MÁS INFORMACIÓN")
       setMensaje1("EL PROVEEDOR SOLICITA MÁS INFORMACIÓN")
       setMensaje2("Ingrese para aceptarlo o rechazarlo")
-
     }else if(props.status=="PRE"){
-      setEstado("TRABAJO PRE ACEPTADO")
+      setEstado("TRABAJO PRESUPUESTADO")
       setMensaje1("EL PROVEEDOR HA ENVIADO COTIZACIÓN")
       setMensaje2("Ingrese responder")
-    }else if(props.status=="ACE"){
+    } else if(props.status=="ACE"){
       setEstado("PEDIDO DE TRABAJO ACEPTADO")
     }else if(props.status=="EVI"){
       setEstado("EN VIAJE")

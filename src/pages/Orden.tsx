@@ -543,9 +543,10 @@ const LocacionServicio = ( props:{direccion:any, posicionCliente:any, latitudCli
 
     const [siEsElLugar, setSiEsElLugar] = useState(true)
 
-    useEffect(() => {
+  //  useEffect(() => {
         console.log("estamos en useEffects")
 
+        
         if(siEsElLugar){
             props.latitudCliente.current=props.posicionCliente.current.split("/")[0]
             props.longitudCliente.current=props.posicionCliente.current.split("/")[1]
@@ -557,10 +558,9 @@ const LocacionServicio = ( props:{direccion:any, posicionCliente:any, latitudCli
             props.latitudCliente.current="0"
             props.longitudCliente.current="0"
         }
-    }, [siEsElLugar]);
+    //}, [siEsElLugar]);
 
    
-    
     return(
         <div id="containerUbicacion">
 
@@ -604,9 +604,6 @@ const Dias =(props:{dias:any, cliente:boolean})=>{
 
     if (props.cliente){
         let dia: string[] = ['', '', '', '', '', '', ''];
-
-            
-
     
         if(lunes){dia[0]='Lunes'}else{dia[0]=''}
         if(martes){dia[1]='Martes'}else{dia[1]=''}
@@ -620,6 +617,8 @@ const Dias =(props:{dias:any, cliente:boolean})=>{
         if (lunes || martes || miercoles || jueves ||  viernes || sabado || domingo ){
             props.dias.current=dia[0]+" "+dia[1]+" "+dia[2]+" "+dia[3]+" "+dia[4]+" "+dia[5]+" "+dia[6]
         }
+
+
         return (
                 <IonGrid>
                 <IonRow>
@@ -640,7 +639,6 @@ const Dias =(props:{dias:any, cliente:boolean})=>{
         
             let valores = props.dias.split(" ")
 
-            console.log("valores:" +valores)
             return (
                 <IonGrid>
                 <IonRow>

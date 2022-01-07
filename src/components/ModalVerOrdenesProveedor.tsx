@@ -1022,9 +1022,9 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
             isOpen={showAlertEnSitio}
             onDidDismiss={() => setShowAlertEnSitio(false)}
             cssClass='my-custom-class'
-            header={'EN VIAJE'}
+            header={'EN SITIO'}
             subHeader={''}
-            message={'¿Se está dirigiendo a la locación del cliente?'}
+            message={'¿Se encuentra en la dirección del cliente?'}
             buttons={[
               {
                 text: 'SI',
@@ -1563,6 +1563,8 @@ export const Calificacion = (props:{calificacion:any})=>{
   const [cuarta, setCuarta] =useState<boolean>(false)
   const [quinta, setQuinta] =useState<boolean>(false)
 
+  useEffect(() => {
+
   if(valor==1){
     setPrimera(true)
     props.calificacion.current="1"
@@ -1589,7 +1591,7 @@ export const Calificacion = (props:{calificacion:any})=>{
     setQuinta(true)
     props.calificacion.current="5"
   }
-
+}, [valor])
   return (
     <IonGrid>
       <IonRow>
@@ -1608,9 +1610,9 @@ export const Calificacion = (props:{calificacion:any})=>{
 
 }
 
-const Estrella =(buena:any) =>{
+const Estrella =(props:{buena:any}) =>{
 
-  if (buena){
+  if (props.buena){
     return(
       <h2 id="godsStart">&#9733;</h2>
     )
