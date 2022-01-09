@@ -14,10 +14,12 @@
 
 
 #item-registro-validacion{
-    width:60%;
+    width:50%;
     text-align: center;
-    margin: 0;
+    justify-content: center;
+    align-items: center;
 }
+
 #columna{
     width:10%;
     text-align: center;
@@ -133,4 +135,34 @@ ion-button{
     color:black;
     position: relative;
     text-align: left;
+}
+
+
+#contenedorPrincipal{
+    width: 100%;
+    height: 100%;
+    display: table;
+    text-align: center;
+
+}
+
+#contenedorHijoCentrado{
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    
+    width: 100%;
+    
+   }
+
+#contenederCentrarItem{
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    
+}
+
+#boton-registro{
+    width: 95%;
+    margin-top: 15px;
 }

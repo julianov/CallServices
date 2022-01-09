@@ -107,12 +107,10 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
       )
   } else if (vista=="preaceptada") {
     return (
-      <IonContent>
-        <div id="modalProveedor-flechaVolver">
-            <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
-        </div>
-        <Presupuestar setVista={setVista} setEstado={setEstado} ticket={props.datos.ticket} />
-      </IonContent>
+    
+        
+        <Presupuestar setVista={setVista} setEstado={setEstado} ticket={props.datos.ticket} setVolver={props.setVolver} />
+      
     )
   }else if(vista=="PRESUPUESTADA"){
     return (
@@ -201,6 +199,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
 
   return ( 
     <IonContent>
+      <div id="ionContentModalOrdenes">
         <div id="modalProveedor-flechaVolver">
             <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
         </div>
@@ -282,13 +281,14 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
               message={'La orden debe ser aceptada para ver ubicación del cliente'}
               buttons={['OK']}
               />
+    </div>
       </IonContent>
   )
 }
 
 
 
-const Presupuestar = (props: {setVista:any,setEstado:any, ticket:any}) => {
+const Presupuestar = (props: {setVista:any,setEstado:any,setVolver:any, ticket:any}) => {
 
   const [presupuestar, setPresupuestar]= useState(true)
   const precio=useRef ("0")
@@ -358,19 +358,29 @@ const Presupuestar = (props: {setVista:any,setEstado:any, ticket:any}) => {
   }
 
   if (presupuestar){
+    
     return (
-      <><IonCardTitle>PRESUPUESTO</IonCardTitle>
+      <IonContent>
+      <div id="ionContentModalOrdenes">
+
+        <div id="modalProveedor-flechaVolver">
+            <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+        </div>
+
+        <IonCardTitle>PRESUPUESTO</IonCardTitle>
+
       <IonCard id="ionCard-explorerContainer-Proveedor">
+        <div id="contenedorCamposCentro">
+          <IonItem id="item-Orden">
+            <IonLabel>SI</IonLabel>
+            <IonCheckbox checked={presupuestar} onIonChange={e => setPresupuestar(e.detail.checked)} />
+          </IonItem>
 
-      <IonItem id="item-Orden">
-        <IonLabel>SI</IonLabel>
-        <IonCheckbox checked={presupuestar} onIonChange={e => setPresupuestar(e.detail.checked)} />
-      </IonItem>
-
-      <IonItem id="item-Orden">
-        <IonLabel position="floating">INGRESE PRECIO ESTIMATIVO </IonLabel>
-        <IonInput onIonInput={(e: any) => precio.current = (e.target.value)}></IonInput>
-      </IonItem>
+          <IonItem id="item-Orden">
+            <IonLabel position="floating">INGRESE PRECIO ESTIMATIVO </IonLabel>
+            <IonInput onIonInput={(e: any) => precio.current = (e.target.value)}></IonInput>
+          </IonItem>
+        </div>
     </IonCard>
 
     <IonLoading
@@ -383,26 +393,30 @@ const Presupuestar = (props: {setVista:any,setEstado:any, ticket:any}) => {
 
     <IonCol><IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviarPresupuesto()} >ENVIAR PRESUPUESTO</IonButton></IonCol>
 
-    </>
-
+    </div>
+    </IonContent>
   )
   }else{
     return(
-      <>
+      <div id="ionContentModalOrdenes">
       <IonCardTitle>PEDIR MÁS INFORMACIÓN</IonCardTitle>
       
       <IonCard id="ionCard-explorerContainer-Proveedor">
+      <div id="contenedorCamposCentro">
       <IonItem id="item-Orden">
         <IonLabel>SI</IonLabel>
         <IonCheckbox checked={presupuestar} onIonChange={e => setPresupuestar(e.detail.checked)} />
       </IonItem>
-      
-      <p>INDIQUE LA INFORMACIÓN QUE NECESITA DEL CLIENTE PARA PRESUPUESTAR</p>
-      <IonItem id="item-Orden">
-                <IonLabel position="floating">Pedido de información / comentarios</IonLabel>
-                <IonInput onIonInput={(e: any) => informacion.current = (e.target.value)}></IonInput>
-            </IonItem>
-
+      </div>
+      <div id="contenedorCamposCentro">
+        <p>INDIQUE LA INFORMACIÓN QUE NECESITA DEL CLIENTE PARA PRESUPUESTAR</p>
+      </div>
+      <div id="contenedorCamposIzquierda">
+        <IonItem id="item-Orden">
+          <IonLabel position="floating">Pedido de información / comentarios</IonLabel>
+          <IonInput onIonInput={(e: any) => informacion.current = (e.target.value)}></IonInput>
+        </IonItem>
+      </div>
     </IonCard>
     
     <IonLoading
@@ -414,7 +428,7 @@ const Presupuestar = (props: {setVista:any,setEstado:any, ticket:any}) => {
           />
 
     <IonButton  color="warning"  id="botonContratar" onClick={() => masInformacion()}>RESPONDER AL CLIENTE</IonButton>
-</>
+</div>
     )
   }
  
@@ -464,6 +478,7 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
   if(props.datos.respuesta_cliente_pedido_mas_información!="0" || props.datos.picture1_mas_información!=""||props.datos.picture2_mas_información!=""){
     return ( 
       <IonContent>
+      <div id="ionContentModalOrdenes">
           <div id="modalProveedor-flechaVolver">
               <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
           </div>
@@ -554,11 +569,13 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
                     }
                   }
                 ]} />
+      </div>
         </IonContent>
     )
   }else {
     return ( 
       <IonContent>
+        <div id="ionContentModalOrdenes">
           <div id="modalProveedor-flechaVolver">
               <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
           </div>
@@ -638,6 +655,7 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
                     }
                   }
                 ]} />
+        </div>
         </IonContent>
     )
   }
@@ -651,6 +669,7 @@ const Presupuestada = (props:{datos:any, estado:any, setVolver:any, setVista:any
   return (
 
     <IonContent>
+      <div id="ionContentModalOrdenes">
         <div id="modalProveedor-flechaVolver">
             <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
         </div>
@@ -712,6 +731,7 @@ const Presupuestada = (props:{datos:any, estado:any, setVolver:any, setVista:any
                 }
               }
             ]} />
+      </div>
         </IonContent>
 
   )
@@ -749,6 +769,7 @@ const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any
   if (props.datos.respuesta_cliente_pedido_mas_información!="" || props.datos.picture1_mas_información!=""|| props.datos.picture2_mas_información){
     return (
       <IonContent>
+        <div id="ionContentModalOrdenes">
         <div id="modalProveedor-flechaVolver">
             <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
         </div>
@@ -845,12 +866,13 @@ const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any
                 }
               }
             ]} />
-        
+       </div>
         </IonContent>
     )
 
   }else{
     return(<IonContent>
+      <div id="ionContentModalOrdenes">
       <div id="modalProveedor-flechaVolver">
           <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
       </div>
@@ -935,7 +957,7 @@ const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any
               }
             }
           ]} />
-      
+</div>
       </IonContent>)
   }
   
@@ -975,6 +997,7 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
   if (props.datos.respuesta_cliente_pedido_mas_información!="" || props.datos.picture1_mas_información!=""|| props.datos.picture2_mas_información){
     return (
       <IonContent>
+        <div id="ionContentModalOrdenes">
         <div id="modalProveedor-flechaVolver">
             <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
         </div>
@@ -1071,12 +1094,13 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
                 }
               }
             ]} />
-        
+       </div>
         </IonContent>
     )
 
   }else{
     return(<IonContent>
+    <div id="ionContentModalOrdenes">
       <div id="modalProveedor-flechaVolver">
           <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
       </div>
@@ -1161,7 +1185,7 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
               }
             }
           ]} />
-      
+   </div>   
       </IonContent>)
   }
 
@@ -1194,6 +1218,7 @@ const EnSitio  = (props:{datos:any, setVolver:any, setVista:any, estado:any, set
   if (props.datos.respuesta_cliente_pedido_mas_información!="" || props.datos.picture1_mas_información!=""|| props.datos.picture2_mas_información){
     return (
       <IonContent>
+        <div id="ionContentModalOrdenes">
         <div id="modalProveedor-flechaVolver">
             <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
         </div>
@@ -1289,12 +1314,13 @@ const EnSitio  = (props:{datos:any, setVolver:any, setVista:any, estado:any, set
                 }
               }
             ]} />
-        
+    </div>
         </IonContent>
     )
 
   }else{
     return(<IonContent>
+    <div id="ionContentModalOrdenes">
       <div id="modalProveedor-flechaVolver">
           <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
       </div>
@@ -1379,7 +1405,7 @@ const EnSitio  = (props:{datos:any, setVolver:any, setVista:any, estado:any, set
               }
             }
           ]} />
-      
+     </div>
       </IonContent>)
   }
 
@@ -1427,6 +1453,7 @@ const Finalizar  = (props:{datos:any, setVolver:any, setVista:any, estado:any, s
 
   return (
     <IonContent>
+      <div id="ionContentModalOrdenes">
       <div id="modalProveedor-flechaVolver">
           <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
       </div>
@@ -1461,7 +1488,7 @@ const Finalizar  = (props:{datos:any, setVolver:any, setVista:any, estado:any, s
                 subHeader={''}
                 message={'Ingrese la calificación luego'}
                 buttons={['OK']} />
-      
+     </div>
       </IonContent>)
 }
 
@@ -1485,6 +1512,7 @@ const VerDatosCliente = (props:{ticket:any, tipo:any,latitud:any, longitud:any,s
 
   return (
     <IonContent>
+      <div id="ionContentModalOrdenes">
       <div id="modalProveedor-flechaVolver">
         <IonIcon icon={arrowBack} onClick={() => props.setVista("primero")} slot="start" id="flecha-volver">  </IonIcon>
       </div>
@@ -1497,6 +1525,7 @@ const VerDatosCliente = (props:{ticket:any, tipo:any,latitud:any, longitud:any,s
 
         <IonButton  id="botonContratar" onClick={() => props.setVista("chat")} >CHAT CON CLIENTE</IonButton>
   </IonCard>
+  </div>
   </IonContent>
        
 );

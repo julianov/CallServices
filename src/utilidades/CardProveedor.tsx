@@ -6,6 +6,7 @@ import './CardProveedor.css';
 import Estrellas from "./Estrellas";
 import { contractSharp } from "ionicons/icons";
 import OrdenSimple from "../pages/Orden";
+import Resenas from "./Resenas";
 
 
 var dataS :any
@@ -19,6 +20,8 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
   
 
   const [showModalOrden, setShowModalOrden] = useState({ isOpen: false });
+  const [showModalVerReseñas, setShowModalVerReseñas] = useState({ isOpen: false });
+
 
   const proveedorVaALocacion = useRef(true)
   
@@ -169,7 +172,6 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
 
       const contratar = () =>{
 
-        console.log ("y la imagen que quiere mandar es: "+datosProveedoresArray.picture)
         datosDeOrdenes.current= (
         {
           clienteEmail:props.emailCliente,
@@ -187,6 +189,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
     
       }
 
+    
 
       useEffect(() => {
         
@@ -331,16 +334,16 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
                 <Imagenes picture1={imagenesProveedoresArray.picture1} picture2={imagenesProveedoresArray.picture2} picture3={imagenesProveedoresArray.picture3}></Imagenes>              
             </IonCard>
 
-            <IonCard id="ionCard-CardProveedor">
               <IonGrid>
                 <IonRow>
-                    <IonButton shape="round" color="primary"  id="botonContratar">RESEÑAS</IonButton>
-                </IonRow>
-                <IonRow>
+                <IonCol>
+                    <IonButton shape="round" color="primary"  id="botonContratar"  onClick={() => setShowModalVerReseñas({ isOpen: true })}>RESEÑAS</IonButton>
+                    </IonCol>
+                    <IonCol>
                     <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => contratar()} >CONTRATAR</IonButton>
+                    </IonCol>
                 </IonRow>
               </IonGrid>
-            </IonCard>
 
             <IonModal
             animated={true}
@@ -353,7 +356,22 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
               proveedorVaALocacion={proveedorVaALocacion.current}
               setVolver={setShowModalOrden} />
 
-          </IonModal></>
+          </IonModal>
+          
+          <IonModal
+            animated={true}
+            isOpen={showModalVerReseñas.isOpen}
+            onDidDismiss={() => setShowModalVerReseñas({ isOpen: false })}
+          >
+            <Resenas
+              tipo={datosDeOrdenes.current.tipo}
+              email_a_ver_reseñas={datosDeOrdenes.current.proveedorEmail}
+              setVolver={setShowModalVerReseñas} />
+          </IonModal>
+          
+
+          </>
+      
       
              
         )
@@ -432,7 +450,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
               <IonCard id="ionCard-CardProveedor">
               <IonGrid>
                 <IonRow>
-                    <IonButton shape="round" color="primary"  id="botonContratar">RESEÑAS</IonButton>
+                    <IonButton shape="round" color="primary"  id="botonContratar" onClick={() => setShowModalVerReseñas({ isOpen: true })}>RESEÑAS</IonButton>
                 </IonRow>
                 <IonRow>
                     <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => contratar()} >CONTRATAR</IonButton>
@@ -451,7 +469,19 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
               proveedorVaALocacion={proveedorVaALocacion.current}
               setVolver={setShowModalOrden} />
 
-          </IonModal></>
+          </IonModal>
+          
+          <IonModal
+            animated={true}
+            isOpen={showModalVerReseñas.isOpen}
+            onDidDismiss={() => setShowModalVerReseñas({ isOpen: false })}
+          >
+            <Resenas
+              tipo={datosDeOrdenes.current.tipo}
+              email_a_ver_reseñas={datosDeOrdenes.current.proveedorEmail}
+              setVolver={setShowModalVerReseñas} />
+          </IonModal>
+          </>
         );
       }
     

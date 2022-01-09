@@ -29,15 +29,7 @@ const Registro = (props:{setIsReg:any, setCliente:any, setTipoCliente:any ,setEm
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonGrid>
-            <IonRow>
-            <IonCol id="columna2" ><IonTitle>REGISTRO</IonTitle></IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonToolbar>
-      </IonHeader>
+      
       <IonContent text-center >
 
       <div id="ionContentRegistro">
@@ -99,21 +91,9 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
 
   const [tipo, setCount] = useState <string>("registro inicio")
 
-  //const history = useHistory()
-
-
-
-  //const [user, setUser] = useState(null)
-  //const [email, setEmail] = useState(0)
-  //const [password, setPassword] = useState<string>("")
-  //const [password2, setPassword2] = useState<string>("")
-
   const email = useRef("")
   const password = useRef("")
   const password2 = useRef("")
-
-  //const [codigo, setCodigo] = useState(0)
-  //const [codigo_agregado, setCodigo_agregado] = useState(1)
 
   const codigo = useRef(0)
   const codigo_agregado= useRef(1)
@@ -125,8 +105,6 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
   
   const [alertCuentaProveedor,setShowAlertCuentaProveedor]=useState(false)
   const mensajeCuentaProveedor="Al registrarse con una cuenta de proveedor podrá ofrecer sus servicios seleccionando rubros en los cuales domina los conocimientos requeridos para llevar a cabo los trabajos mediante certificaciones que los acrediten"
-
-
 
   const enviarRegistro = () =>{
 
@@ -240,13 +218,16 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
        <a href={"/"} id="flechaIngresar">
         <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro">  </IonIcon>
        </a>
-        <div id="registro_header">
-        <IonTitle id="register-title">SELECCIONE TIPO DE CUENTA</IonTitle>
-        </div>
-        <div id="registro_contenedor_central">
 
-          <IonButton shape="round" onClick={() => { setShowAlertCuentaUsuario(true); } } id="boton-proveedor"> Nueva cuenta de usuario</IonButton>
-          <IonButton shape="round" onClick={() => { setShowAlertCuentaProveedor(true); } } id="boton-proveedor">Nueva cuenta de servicio</IonButton>
+       <div id="contenedorPrincipal">
+       <div id="contenedorHijoCentrado">
+        
+        <IonTitle id="register-title">SELECCIONE TIPO DE CUENTA</IonTitle>
+        
+
+          <IonButton shape="round" onClick={() => { setShowAlertCuentaUsuario(true); } } id="boton-registro"> Nueva cuenta de usuario</IonButton>
+          <IonButton shape="round" onClick={() => { setShowAlertCuentaProveedor(true); } } id="boton-registro">Nueva cuenta de servicio</IonButton>
+        </div>
         </div>
         
         </>
@@ -317,17 +298,18 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
         <a onClick={()=>setCount("registro inicio")} id="flechaIngresar">
               <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro">  </IonIcon>
         </a>
-        <div id="registro_header">
-          <IonGrid id="registro-iongrid">
-           <IonRow><IonCol>
+
+        <div id="contenedorPrincipal">
+          <div id="contenedorHijoCentrado">
+       
             <IonTitle id="register-title">SELECCIONE TIPO DE PROVEEDOR DE SERVICIO</IonTitle>
-           </IonCol></IonRow>
-          </IonGrid>
+       
+      
+          <IonButton shape="round" onClick={() => { setCount("proveedor independiente"); } } id="boton-registro">Proveedor de servicio independiente</IonButton>
+          <IonButton shape="round" onClick={() => { setCount("proveedor empresa"); } } id="boton-registro">Empresa proveedora de servicio</IonButton>
         </div>
-        <div id="registro_contenedor_central">
-          <IonButton shape="round" onClick={() => { setCount("proveedor independiente"); } } id="boton-proveedor">Proveedor de servicio independiente</IonButton>
-          <IonButton shape="round" onClick={() => { setCount("proveedor empresa"); } } id="boton-proveedor">Empresa proveedora de servicio</IonButton>
-        </div></>
+        </div>
+        </>
     );
   }
   if(tipo=="proveedor independiente"){
@@ -441,25 +423,22 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
     */
     return (
 
-      <><div id="registro_header">
-        <IonGrid id="registro-iongrid">
-          <IonRow><IonCol>
+      <>
+        
+        <div id="contenedorPrincipal">
+          <div id="contenedorHijoCentrado">
             <IonTitle id="register-title">VALIDACIÓN VÍA EMAIL</IonTitle>
-          </IonCol></IonRow>
-          <IonRow><IonCol><strong>Se ha enviado al e-mail código para validación</strong></IonCol></IonRow>
-        </IonGrid>
-      </div>
-        <div id="registro_contenedor_central">
-
-          <IonGrid>
-            <IonRow><IonCol><IonItem id="item-registro-validacion">
-              <IonLabel position="floating">Código de validación</IonLabel>
-              <IonInput value="" onIonInput={(e: any) => codigo_agregado.current = (e.target.value)}></IonInput>
-            </IonItem></IonCol></IonRow>
-
-            <IonRow><IonCol><Boton name="Continuar" onClick={completarRegistro}></Boton></IonCol></IonRow>
-          </IonGrid>
-        </div></>
+            <strong>Se ha enviado al e-mail código para validación</strong>
+            <div id="contenederCentrarItem">  
+                <IonItem id="item-registro-validacion">
+                  <IonLabel position="floating">Código de validación</IonLabel>
+                  <IonInput value="" onIonInput={(e: any) => codigo_agregado.current = (e.target.value)}></IonInput>
+                </IonItem>
+                </div>
+              <Boton name="Continuar" onClick={completarRegistro}></Boton>
+          </div>
+        </div>
+        </>
     );
   }
   if(tipo=="registro completo"){
@@ -488,42 +467,28 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
             }
           ]} /></>
     );
-    /*return(
-      <Completarinfo setIsReg={props.setIsReg}
-      email={email}
-      setCliente={tipoUsuario}
-      setNombre={props.setNombre}
-      setApellido={props.setApellido}
-      setFoto={props.setFoto}
-      rubro1={props.rubro1}
-      rubro2={props.rubro2}
-      setRubro1={props.setRubro1}
-      setRubro2=/>
-    )*/
-
-
+  
   }
   else{
     return (
-      <><div id="registro_header">
-        <IonGrid id="registro-iongrid">
-          <IonRow><IonCol>
+      <><div id="contenedorPrincipal">
+      <div id="contenedorHijoCentrado">
             <IonTitle id="register-title">VALIDACIÓN VÍA EMAIL</IonTitle>
-          </IonCol></IonRow>
-          <IonRow><IonCol> <strong>Se ha enviado al e-mail un código para comprobación</strong></IonCol></IonRow>
-            <IonRow><IonCol><strong>Codigo erroneo, Vuelva a verificar</strong></IonCol></IonRow>        </IonGrid>
-      </div>
-        <div id="registro_contenedor_central">
-
-          <IonGrid>
-            <IonRow><IonCol>  <IonItem id="item-registro-validacion">
+          
+          <strong>Se ha enviado al e-mail un código para comprobación</strong>
+          <p>Codigo erroneo, Vuelva a verificar</p>
+    
+          <div id="contenederCentrarItem">  
+          <IonItem id="item-registro-validacion">
               <IonLabel position="floating">Código de validación</IonLabel>
               <IonInput onIonInput={(e: any) => codigo_agregado.current = (e.target.value)}></IonInput>
-            </IonItem></IonCol></IonRow>
-            <IonRow><IonCol><Boton name="Continuar" onClick={completarRegistro}></Boton></IonCol></IonRow>
-
-          </IonGrid>
-        </div></>
+            </IonItem>
+            </div>             
+              <Boton name="Continuar" onClick={completarRegistro}></Boton>
+              </div>
+        </div>
+          
+       </>
     );
   }
 }

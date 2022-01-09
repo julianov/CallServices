@@ -159,39 +159,49 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
     
     if (vista=="primeraVista"){
         return (
-            <IonContent>
-            <>
+            <IonContent >
+            <div id="GenerarOrdenContainer">
             <div id="modalProveedor-flechaVolver">
             <IonIcon icon={arrowBack} onClick={() => props.setVolver({ isOpen: false })} slot="start" id="flecha-volver">  </IonIcon>
             </div>
             <div id="contenderCentralOrden">
             <IonCardTitle>FORMULARIO DE SOLICITUD DE SERVICIO</IonCardTitle>
 
-                <IonCard id="ionCard-CardProveedor">
-                    <IonCardHeader>
+                <IonCard id="ionCardOrden">
+                    <div id="contenedorCamposCentro">
                         <h2>RUBRO DE SERVICIO:</h2>
                         <p>{props.data.items}</p>
                         <h2>PROVEEDOR DEL SERVICIO:</h2> 
                         <p> {props.data.nombre} </p>
-                        <IonItem id="CardProveedorItem" lines="none"> {props.data.calificacion} </IonItem>
-                    </IonCardHeader>
+                        <Estrellas calificacion={props.data.calificacion}></Estrellas>
 
-                    <IonItem id="item-Orden">
-                        <IonLabel position="floating">Ingrese un título para su pedido</IonLabel>
-                        <IonInput onIonInput={(e: any) => titulo.current = (e.target.value)}></IonInput>
-                    </IonItem>
-
-                    <IonItem id="item-Orden">
-                        <IonLabel position="floating">Ingrese una descripción</IonLabel>
-                        <IonInput onIonInput={(e: any) => descripcion.current = (e.target.value)}></IonInput>
-                    </IonItem>
-                    </IonCard>
-
-                    <IonCard id="ionCard-CardProveedor">
-                    <LocacionServicio direccion={direccion} posicionCliente={posicionCliente} latitudCliente={latitudCliente} longitudCliente={longitudCliente} ></LocacionServicio>
+                    </div>
+                    <div id="contenedorCamposCentro">
+                    <p>INGRESE UN TÍTULO PARA EL SERVICIO</p>
+                    </div>
+                    <div id="contenedorCamposIzquierda">
+                        <IonItem id="item-Orden">
+                            <IonLabel position="floating">TÍTULO</IonLabel>
+                            <IonInput onIonInput={(e: any) => titulo.current = (e.target.value)}></IonInput>
+                        </IonItem>
+                        </div>
+                        <div id="contenedorCamposCentro">
+                        <p>INGRESE UNA BREVE DESCRIPCIÓN DEL PROBLEMA</p>
+                    </div>
+                    <div id="contenedorCamposIzquierda">
+ 
+                        <IonItem id="item-Orden">
+                            <IonLabel position="floating">DESCRIPCIÓN</IonLabel>
+                            <IonInput onIonInput={(e: any) => descripcion.current = (e.target.value)}></IonInput>
+                        </IonItem>
+                    </div>
+                </IonCard>
                     
 
+                <IonCard id="ionCard-ionCardOrden">
+                    <LocacionServicio direccion={direccion} posicionCliente={posicionCliente} latitudCliente={latitudCliente} longitudCliente={longitudCliente} ></LocacionServicio>
                 </IonCard>
+
                 <IonButton color="warning" id="botonContratar" onClick={() => irASiguiente()}>SIGUIENTE</IonButton>
 
             </div>
@@ -203,7 +213,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                     subHeader={''}
                     message={'Debe completar todos los campos para continuar'}
                     buttons={['OK']} />
-                </>
+                </div>
         </IonContent>
         )
     }
@@ -211,6 +221,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
 
     return (
         <IonContent>
+            <div id="GenerarOrdenContainer">
             <div id="modalProveedor-flechaVolver">
                 <IonIcon icon={arrowBack} onClick={() => setVista("primeraVista")} slot="start" id="flecha-volver">  </IonIcon>
             </div>
@@ -236,6 +247,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
           </IonCard>
           <IonButton  color="warning"  id="botonContratar" onClick={() => setVista("final")}>SIGUIENTE</IonButton>
         </div>
+        </div>
     </IonContent>
     )
 
@@ -243,6 +255,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
 
         return (
             <IonContent>
+                <div id="GenerarOrdenContainer">
             <div id="modalProveedor-flechaVolver">
                 <IonIcon icon={arrowBack} onClick={() => setVista("imagenes")} slot="start" id="flecha-volver">  </IonIcon>
             </div>
@@ -353,7 +366,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                       ]} />
                 
                 
-
+</div>
          </IonContent>
         )
 
@@ -362,7 +375,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
         return(
         <IonContent>
 
-<>
+            <div id="GenerarOrdenContainer">
             <div id="modalProveedor-flechaVolver">
             <IonIcon icon={arrowBack} onClick={() => props.setVolver({ isOpen: false })} slot="start" id="flecha-volver">  </IonIcon>
             </div>
@@ -392,7 +405,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                 </IonCard>
 
             </div>
-            </>
+            </div>
                
         </IonContent>
         )
@@ -562,31 +575,31 @@ const LocacionServicio = ( props:{direccion:any, posicionCliente:any, latitudCli
 
    
     return(
-        <div id="containerUbicacion">
+        <div id="contenderCentralOrden">
 
-        <IonGrid>
-        <IonRow><IonCol>
-            <h3>¿SE ENCUENTRA ACTUALMENTE EN EL DOMICILIO DONDE SE REALIZARÁ EL SERVICIO?</h3>
-        </IonCol></IonRow>
-        <IonRow><IonCol>
+        <div id="contenedorCamposCentro">
+            <p>¿SE ENCUENTRA ACTUALMENTE EN EL DOMICILIO DONDE SE REALIZARÁ EL SERVICIO?</p>
+            </div>
+       
+        
             <IonItem id="item-Orden">
                 <IonLabel>SI</IonLabel>
                 <IonCheckbox checked={siEsElLugar} onIonChange={e => setSiEsElLugar(e.detail.checked)} /> 
             </IonItem >
-        </IonCol></IonRow>
-        <IonRow><IonCol>
-            <h2>ESPECIFIQUE LA DIRECCIÓN DE LA LOCACIÓN DONDE SOLICITA EL SERVICIO</h2>
-        </IonCol></IonRow>
-        <IonRow><IonCol>
+            
+            <div id="contenedorCamposCentro">
+
+            <p>ESPECIFIQUE LA DIRECCIÓN DE LA LOCACIÓN DONDE SOLICITA EL SERVICIO</p>
             <p >La misma debe ser lo más específica posible en cuanto a dirección y numeración de calle</p>
-        </IonCol></IonRow>
-        <IonRow><IonCol>
+            </div>
+            <div id="contenedorCamposIzquierda">
             <IonItem id="item-Orden">
-                <IonLabel position="floating">Ingrese su dirección</IonLabel>
+                <IonLabel position="floating" >DIRECCIÓN</IonLabel>
                 <IonInput onIonInput={(e: any) => props.direccion.current = (e.target.value)}></IonInput>
             </IonItem>
-        </IonCol></IonRow>
-        </IonGrid>
+        
+        
+        </div>
         </div>
     )
    
