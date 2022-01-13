@@ -200,8 +200,8 @@ height: 100%;
 }
 
 #imgOrden{
-  width: 128px;
+  width: auto;
   height: 128px;
   margin-bottom: 5px;
-    border-radius: 50%;
+    
 }

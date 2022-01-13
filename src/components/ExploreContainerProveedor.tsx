@@ -78,19 +78,12 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any} ) =
     if(hayOrdenes){
       return (
         <><div id="container-principal-ExplorerContainer-Cliente">
-          <IonCard id="IonCardExplorerContainer">
-            <IonCardHeader>
-
-              <h1 id="textoCentrado"> ORDENES DE TRABAJO ACTIVAS </h1>
-            </IonCardHeader>
+         
+            <h1 id="textoCentrado"> ORDENES DE TRABAJO ACTIVAS </h1>
 
             <Elements proveedores={proveedores} setVerOrden={setVerOrden} setPosicion={setPosicion} />
-          </IonCard>
+          
           <CampanaPublicidad></CampanaPublicidad>
-
-
-
-
         </div>
         
         <IonModal
@@ -216,21 +209,28 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
 
   }, []);
  
-    return (
-    <IonCard id="ionCard-explorerContainer-Proveedor" onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
+
+  return (
+    <IonCard id="ionCard-explorerContainer-Cliente" onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
       <IonGrid>
-      <IonRow  id="row-busqueda">
-        <IonCol size="auto"  id="col-explorerContainerCliente"><img id="img-explorerContainerCliente" src={props.imagen}></img></IonCol>
-        <IonCol size="auto" id="col-explorerContainerCliente">
-          <p>TIPO: {props.tipo.toUpperCase( )}</p>
-          <p>STATUS: {estado}</p>
-          <p>TICKET: {props.ticket}</p>
-          <p>{mensaje}</p>
-        </IonCol>
-      </IonRow>
+        <IonRow  id="row-busqueda">
+          <IonCol   id="col-explorerContainerCliente">
+            <img id="imgOrden" src={props.imagen}></img>
+          </IonCol>
+        </IonRow>
+        <IonRow  id="row-busqueda">
+          <IonCol   id="col-explorerContainerCliente">
+            <IonCardSubtitle>TIPO: {props.tipo.toUpperCase( )}</IonCardSubtitle>
+            <IonCardSubtitle>STATUS: {estado}</IonCardSubtitle>
+            <IonCardSubtitle>TICKET: {props.ticket}</IonCardSubtitle>  
+            <IonCardSubtitle>{mensaje}</IonCardSubtitle>
+          </IonCol>
+        </IonRow>
+      
       </IonGrid>
-    </IonCard>  
+    </IonCard>
   )
+
 }
 
 

@@ -161,11 +161,11 @@ ion-col{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     padding-top: 0px;
-
     
   }
+
+  
   
   
   #elementos{
@@ -342,8 +342,7 @@ ion-button{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-
-
+  
 }
 
 #textoCard{
@@ -390,4 +389,41 @@ width: 95%;
 #ionContentModalOrdenes{
   background:  #f3f2ef;  
 
+}
+
+
+#ionCardModalCentro{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  padding-bottom: 30px;
+}
+
+#contenedorcentro{
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+#pcentrado{
+  text-align: center;
+  font-size: small;
+  
+}
+
+#contenederCentrarItemModal{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+#centro{
+  display: inline;
+  width: 100%;
+}
+
+#botonAgregarRubro{
+  width: 80%;
 }

@@ -367,19 +367,30 @@ const Presupuestar = (props: {setVista:any,setEstado:any,setVolver:any, ticket:a
             <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
         </div>
 
+        <div id="contenedorPrincipal">
+        <div id="contenedorHijoCentrado">
         <IonCardTitle>PRESUPUESTO</IonCardTitle>
+        </div></div>
+      <IonCard id="ionCardModalCentro">
 
-      <IonCard id="ionCard-explorerContainer-Proveedor">
-        <div id="contenedorCamposCentro">
+        <div id="contenedorPrincipal">
+      <div id="contenedorHijoCentrado">
+
+        <p>¿ESTÁ EN CONDICIONES DE PRESUPUESTAR EL TRABAJO?</p>
+        <div id="contenederCentrarItem">
           <IonItem id="item-Orden">
             <IonLabel>SI</IonLabel>
             <IonCheckbox checked={presupuestar} onIonChange={e => setPresupuestar(e.detail.checked)} />
           </IonItem>
-
+          </div>
+          <p>INGRESE PRECIO ESTIMATIVO</p>
+          <div id="contenederCentrarItem">
           <IonItem id="item-Orden">
-            <IonLabel position="floating">INGRESE PRECIO ESTIMATIVO </IonLabel>
-            <IonInput onIonInput={(e: any) => precio.current = (e.target.value)}></IonInput>
+            <IonLabel  position="floating">PRECIO</IonLabel>
+            <IonInput type="number" onIonInput={(e: any) => precio.current = (e.target.value)}></IonInput>
           </IonItem>
+          </div>
+        </div>
         </div>
     </IonCard>
 
@@ -398,27 +409,42 @@ const Presupuestar = (props: {setVista:any,setEstado:any,setVolver:any, ticket:a
   )
   }else{
     return(
+      <IonContent>
       <div id="ionContentModalOrdenes">
-      <IonCardTitle>PEDIR MÁS INFORMACIÓN</IonCardTitle>
+
+        <div id="modalProveedor-flechaVolver">
+            <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+        </div>
+
+        <div id="contenedorPrincipal">
+          <div id="contenedorHijoCentrado">
+          <IonCardTitle>PEDIR MÁS INFORMACIÓN</IonCardTitle>
+        </div></div>
       
-      <IonCard id="ionCard-explorerContainer-Proveedor">
-      <div id="contenedorCamposCentro">
-      <IonItem id="item-Orden">
-        <IonLabel>SI</IonLabel>
-        <IonCheckbox checked={presupuestar} onIonChange={e => setPresupuestar(e.detail.checked)} />
-      </IonItem>
-      </div>
-      <div id="contenedorCamposCentro">
-        <p>INDIQUE LA INFORMACIÓN QUE NECESITA DEL CLIENTE PARA PRESUPUESTAR</p>
-      </div>
-      <div id="contenedorCamposIzquierda">
-        <IonItem id="item-Orden">
+      <IonCard id="ionCardModalCentro">
+
+      <div id="contenedorPrincipal">
+      <div id="contenedorHijoCentrado">
+
+        <p>¿ESTÁ EN CONDICIONES DE PRESUPUESTAR EL TRABAJO?</p>
+        <div id="contenederCentrarItem">
+          <IonItem id="item-Orden">
+            <IonLabel>SI</IonLabel>
+            <IonCheckbox checked={presupuestar} onIonChange={e => setPresupuestar(e.detail.checked)} />
+          </IonItem>
+          </div>
+          <p>INDIQUE LA INFORMACIÓN QUE NECESITA DEL CLIENTE PARA PRESUPUESTAR</p>
+          <div id="contenederCentrarItem">
+          <IonItem id="item-Orden">
           <IonLabel position="floating">Pedido de información / comentarios</IonLabel>
-          <IonInput onIonInput={(e: any) => informacion.current = (e.target.value)}></IonInput>
-        </IonItem>
-      </div>
+            <IonInput onIonInput={(e: any) => informacion.current = (e.target.value)}></IonInput>          </IonItem>
+          </div>
+        </div>
+        </div>
     </IonCard>
-    
+
+
+
     <IonLoading
             cssClass='my-custom-class'
             isOpen={showLoading}
@@ -429,6 +455,8 @@ const Presupuestar = (props: {setVista:any,setEstado:any,setVolver:any, ticket:a
 
     <IonButton  color="warning"  id="botonContratar" onClick={() => masInformacion()}>RESPONDER AL CLIENTE</IonButton>
 </div>
+</IonContent>
+
     )
   }
  
@@ -760,10 +788,14 @@ const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any
     .then((resp: { data: any; }) => {
       if(resp.data!="bad"){
         props.setEstado("EN VIAJE")
+        props.setVista("EN VIAJE")
       }
      })
   }
 
+  console.log("VEAMOS PUES INFOS"+props.datos.respuesta_cliente_pedido_mas_información)
+    console.log("VEAMOS PUES"+props.datos.picture1_mas_información)
+      console.log("VEAMOS PUES"+props.datos.picture2_mas_información)
   
 
   if (props.datos.respuesta_cliente_pedido_mas_información!="" || props.datos.picture1_mas_información!=""|| props.datos.picture2_mas_información){
@@ -773,8 +805,11 @@ const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any
         <div id="modalProveedor-flechaVolver">
             <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
         </div>
-        <IonTitle>RESPUESTA DEL CLIENTE</IonTitle>
-  
+        
+        
+        <div id="contenedorcentro">
+          <IonTitle>CLIENTE HA ENVIADO INFORMACIÓN</IonTitle>
+        </div>
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <img id="img-orden" src={props.datos.imagen_cliente}></img>
           <p>TIPO: {props.datos.tipo}</p>
@@ -793,8 +828,8 @@ const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any
           <IonButton  id="botonContratar" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) } >VER UBICACIÓN DEL CLIENTE</IonButton>
         </IonCard>
   
-        <div id="tituloCardPRoveedor">
-          <strong>RESPUESTA DEL CLIENTE</strong>
+        <div id="contenedorcentro">
+          <IonTitle>RESPUESTA DEL CLIENTE</IonTitle>
         </div>
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <p>RESPUESTA:</p>
@@ -1001,7 +1036,10 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
         <div id="modalProveedor-flechaVolver">
             <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
         </div>
-        <h2>ACTUALMENTE EN VIAJE AL SITIO DEL CLIENTE</h2>
+
+        <div id="contenedorcentro">
+          <IonTitle>ACTUALMENTE EN VIAJE AL SITIO DEL CLIENTE</IonTitle>
+        </div>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <img id="img-orden" src={props.datos.imagen_cliente}></img>
@@ -1021,8 +1059,8 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
           <IonButton  id="botonContratar" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) } >VER UBICACIÓN DEL CLIENTE</IonButton>
         </IonCard>
   
-        <div id="tituloCardPRoveedor">
-          <strong>RESPUESTA DEL CLIENTE</strong>
+        <div id="contenedorcentro">
+          <IonTitle>RESPUESTA DEL CLIENTE</IonTitle>
         </div>
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <p>RESPUESTA:</p>
@@ -1222,7 +1260,10 @@ const EnSitio  = (props:{datos:any, setVolver:any, setVista:any, estado:any, set
         <div id="modalProveedor-flechaVolver">
             <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
         </div>
-        <h2>ORDEN EN EJECUCIÓN</h2>
+        
+        <div id="contenedorcentro">
+          <IonTitle>ORDEN EN EJECUCIÓN</IonTitle>
+        </div>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <img id="img-orden" src={props.datos.imagen_cliente}></img>
@@ -1242,9 +1283,10 @@ const EnSitio  = (props:{datos:any, setVolver:any, setVista:any, estado:any, set
           <IonButton  id="botonContratar" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) } >VER UBICACIÓN DEL CLIENTE</IonButton>
         </IonCard>
   
-        <div id="tituloCardPRoveedor">
-          <strong>RESPUESTA DEL CLIENTE</strong>
+        <div id="contenedorcentro">
+          <IonTitle>RESPUESTA DEL CLIENTE</IonTitle>
         </div>
+       
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <p>RESPUESTA:</p>
           <p>{props.datos.respuesta_cliente_pedido_mas_información}</p>
@@ -1324,8 +1366,9 @@ const EnSitio  = (props:{datos:any, setVolver:any, setVista:any, estado:any, set
       <div id="modalProveedor-flechaVolver">
           <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
       </div>
-      <IonTitle>ORDEN EN EJECUCIÓN</IonTitle>
-
+      <div id="contenedorcentro">
+          <IonTitle>ORDEN EN EJECUCIÓN</IonTitle>
+        </div>
       <IonCard id="ionCard-explorerContainer-Proveedor">
         <img id="img-orden" src={props.datos.imagen_cliente}></img>
         <p>TIPO: {props.datos.tipo}</p>
@@ -1453,24 +1496,39 @@ const Finalizar  = (props:{datos:any, setVolver:any, setVista:any, estado:any, s
 
   return (
     <IonContent>
+
       <div id="ionContentModalOrdenes">
+
       <div id="modalProveedor-flechaVolver">
           <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
       </div>
-      <h2>ORDEN DE TRABAJO REALIZADA</h2>
-      <h3>COMPLETE LOS SIGUIENTES CAMPOS</h3>
 
-      <h3>INGRESE LA CALIFICACIÓN DEL CLIENTE</h3>
+      <div id="contenedorcentro">
+      <IonGrid>
+      <IonRow><IonCol>
+          <IonTitle>TRABAJO REALIZADO</IonTitle>
+          </IonCol></IonRow>
+          <IonRow><IonCol>   
+          <p id="pcentrado">COMPLETE LOS SIGUIENTES CAMPOS</p>
+          </IonCol></IonRow>
+          </IonGrid>
+        </div>
+        
+        <IonCard id="ionCardModalCentro">
+
+      
+      <p>INGRESE LA CALIFICACIÓN DEL CLIENTE</p>
       <Calificacion calificacion={calificacion} ></Calificacion>
 
-      <h3>¿DESEA INGRESAR UNA RESEÑA DEL CLIENTE</h3>
+      <p>¿DESEA INGRESAR UNA RESEÑA DEL CLIENTE=?</p>
       <IonItem id="item-completarInfo">
         <IonLabel position="floating">RESEÑA</IonLabel>
         <IonInput onIonInput={(e: any) => reseña.current=(e.target.value)}></IonInput>
+
       </IonItem>
 
-    
-     <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviar()} >TRABAJO FINALIZADO</IonButton>
+      </IonCard>
+     <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviar()} >ENVIAR</IonButton>
    
           <IonAlert
                 isOpen={showAlertCalificacion}

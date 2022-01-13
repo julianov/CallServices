@@ -386,8 +386,6 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
 
   }, [])
 
-    
-
       return (
         <IonCard id="ionCard-explorerContainer-Cliente" onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
           <IonGrid>
@@ -411,12 +409,7 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
             </IonRow> 
           </IonGrid>
         </IonCard>
-      )
-
-  
-    
- 
-    
+      )    
 }
 
 export const Categorias: React.FC = () => {

@@ -66,7 +66,8 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
         const ubicacion = getLocation();
         ubicacion.then((value)=>{
             posicionCliente.current=(value)
-
+            latitudCliente.current=(value).split("/")[0]
+            longitudCliente.current=(value).split("/")[1]
         });
 
       }, [])
@@ -557,9 +558,10 @@ const LocacionServicio = ( props:{direccion:any, posicionCliente:any, latitudCli
     const [siEsElLugar, setSiEsElLugar] = useState(true)
 
   //  useEffect(() => {
-        console.log("estamos en useEffects")
-
-        
+     /*   console.log("estamos en useEffects")
+        props.latitudCliente.current=props.posicionCliente.current.split("/")[0]
+        props.longitudCliente.current=props.posicionCliente.current.split("/")[1]
+        */
         if(siEsElLugar){
             props.latitudCliente.current=props.posicionCliente.current.split("/")[0]
             props.longitudCliente.current=props.posicionCliente.current.split("/")[1]

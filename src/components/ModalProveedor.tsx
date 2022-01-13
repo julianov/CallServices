@@ -345,11 +345,9 @@ const DatosPersonales =(props:{setIsReg:any, completarInfoPersonal:any; closeSes
                 <>
                 
                 <IonContent >
-                <div id="contenedor-central-Modal">
                 <MisRubros onClose={props.onClose} setIsReg={props.setIsReg} setRubros={setRubros} email={props.email} tipoProveedor={props.tipoProveedor}  
                 rubro1={props.rubro1} rubro2={props.rubro2} setRubro1={props.setRubro1} setRubro2={props.setRubro2}
                 ></MisRubros>
-                </div>
                 </IonContent>
               </>
               );
@@ -823,28 +821,29 @@ const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:
     if (verRubro==""){
       if((props.rubro1!=""&& props.rubro1!=null )&& (props.rubro2=="" || props.rubro2==null )){
         return(
-          <>   
-          
-          <div id="modalProveedor-flechaVolver">
+            
+            <div id="centro"><div id="modalProveedor-flechaVolver">
             <IonIcon icon={arrowBack} onClick={() => props.setRubros(false)} slot="start" id="flecha-volver">  </IonIcon>
             <IonIcon icon={close} onClick={() => props.onClose(null)} slot="end" id="flecha-cerrar">  </IonIcon>
-          </div>
+          </div><div id="contenedorPrincipal">
 
-          <IonTitle>MIS RUBROS CARGADOS</IonTitle>  
+              <div id="contenedorHijoCentrado">
 
-          <IonGrid id="grid-rubros-cargados">
-          <IonRow><IonCol><IonItem id="item-modalRubro" onClick={()=> ( verRubros(props.rubro1)) }>
-          <strong> {JSON.parse(props.rubro1)[0]} </strong>
-          </IonItem></IonCol></IonRow><IonRow><IonCol></IonCol></IonRow>
-          <IonRow></IonRow>
-          </IonGrid >
-          <IonGrid >
-          <IonRow>
-          <IonCol><IonButton  shape="round" onClick={() => setAgregarOtroRubro(true)} > AGREGAR OTRO RUBRO  </IonButton></IonCol>
-          </IonRow>
-          <IonRow></IonRow>
-          </IonGrid>
-      </>);
+
+                <IonTitle>MIS RUBROS CARGADOS</IonTitle>
+
+
+                <div id="contenederCentrarItemModal">
+                  <IonItem id="item-modalRubro" onClick={() => (verRubros(props.rubro1))}>
+                    <strong> {JSON.parse(props.rubro1)[0]} </strong>
+                  </IonItem>
+                </div>
+                <IonButton id="botonAgregarRubro" shape="round" onClick={() => setAgregarOtroRubro(true)}> AGREGAR OTRO RUBRO  </IonButton>
+
+              </div>
+            </div></div>
+          
+     );
       }
       else if((props.rubro1!=""&&props.rubro1!=null )&& (props.rubro2!="" && props.rubro2!=null )){
         return(
