@@ -1,6 +1,6 @@
 import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonChip, IonCol, IonGrid, IonIcon, IonItem, IonItemDivider, IonLabel, IonList, IonModal, IonRow } from '@ionic/react';
 import { chevronDown, closeCircle } from 'ionicons/icons';
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import {Adsense} from '@ctrl/react-adsense';
 
 import './ExploreContainer.css';
@@ -13,6 +13,10 @@ import { createStore, getDB } from '../utilidades/dataBase';
 import { datosGeneralesVariosProveedores, ordenesCliente, proveedorBuscado } from '../pages/HomeCliente';
 import ModalVerCardProveedor from './ModalVerCardProveedor';
 import ModalVerOrdenesCliente from './ModalVerOrdenesCliente';
+import OrdenSimple from '../pages/Orden';
+import Resenas from '../utilidades/Resenas';
+import { datosOrden } from '../utilidades/CardProveedor';
+import axios from 'axios';
 
 const getLocation = async () => {
   try {
@@ -39,13 +43,30 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
   const [verEmail, setVerEmail]=useState("")
   const[item, setItem]=useState("")
 
-  const [showModal2, setShowModal2] = useState({ isOpen: false });
-
   const [hayOrdenes, setHayOrdenes]=useState(false)
   const [verOrden, setVerOrden] = useState( false );
 
   const [posicion, setPosicion] = useState(0)
+  const [locacion, setLocacion] = useState("")
 
+
+  const [verProveedor,setVerProveedor]= useState(false);
+  const [pediOrden, setPediOrden] = useState(false);
+  const [verReseña, setVerReseña] = useState(false);
+
+  const [datosDeOrdenes,setDatosDeOrdenes]=useState<datosOrden>(
+    {
+      clienteEmail:props.emailCliente,
+      nombre:"",
+      proveedorEmail:"",
+      tipo:"",
+      last_name:"",
+      picture:"",
+      items:"",
+      qualification:0,
+      dias_proveedor:"",
+       }
+  )
 
   useEffect(() => {
 
@@ -78,48 +99,130 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
       setHayOrdenes(true)
     }
    
+    const ubicacion = getLocation();
+    ubicacion.then((value)=>{
+      if (value!=0){
 
-  }, [props.ordenes]);
+        setLocacion(value)
+      }
+    })
 
+    if(pediOrden){
+      axios.get(props.url+"home/cliente/pedirdatos/"+verEmail+"/"+item+"/"+"caracteres"+"/"+locacion).then((resp: { data: any; }) => {
+        if (resp.data!="bad"){
+         setDatosDeOrdenes( 
+            {
+              clienteEmail:props.emailCliente,
+              nombre:resp.data.name+" "+resp.data.last_name,
+              proveedorEmail:verEmail,
+              tipo:resp.data.tipo,
+              last_name:resp.data.last_name,
+              picture:resp.data.picture,
+              items:resp.data.items,
+              qualification:resp.data.qualification,
+              dias_proveedor:resp.data.days_of_works
+            })
+          }
+        })
+    }
+
+  
+
+  }, [props.ordenes, pediOrden]);
+
+  
 
   if (props.busqueda_categorias.length == 0 && props.buscar=="" ){
-    if (verEmail=="" && item =="" ){
-      return (
-        <>
-        <div id="container-principal-ExplorerContainer-Cliente">  
-       
+
+   
+      if (verEmail=="" && item =="" ){
+        return (
+          <>
+          <div id="container-principal-ExplorerContainer-Cliente">  
+            <Tabs setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal} ></Tabs>
+            <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={proveedores}  setVerOrden={setVerOrden} setPosicion={setPosicion}></MisOrdenes>
+            <h1 id="explorerContainerCliente-titulo">PROVEEDORES DE SERVICIOS EN LA ZONA </h1>             
+            <Elements  proveedores={props.proveedores!} setVerEmail={setVerEmail} setItem={setItem} 
+             setPediOrden={setPediOrden}  setVerReseña={setVerReseña}  setVerProveedor={setVerProveedor}/>
+          </div>
+  
+  
+          <IonModal
+            animated={true}
+            isOpen={verOrden}
+            onDidDismiss={() => setVerOrden( false )}
+            >
+            <ModalVerOrdenesCliente 
+              datos={proveedores[posicion-1]}
+              setVolver={setVerOrden}
+              emailCliente={props.emailCliente}
+            />  
+        </IonModal>
+              </>
+          );
+  
+      }
+      else{
+
+        if (verReseña){
+          return (
+            <IonModal
+              animated={true}
+              isOpen={verReseña}
+              onDidDismiss={() =>setVerReseña(false )} >
+              <Resenas
+                tipo={datosDeOrdenes.tipo}
+                email_a_ver_reseñas={verEmail}
+                setVolver={setVerReseña} />
+          </IonModal>
+          )
     
-          <Tabs setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal} ></Tabs>
-          <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={proveedores}  setVerOrden={setVerOrden} setPosicion={setPosicion}></MisOrdenes>
-          <h1 id="explorerContainerCliente-titulo">PROVEEDORES DE SERVICIOS EN LA ZONA </h1>             
-          <Elements  proveedores={props.proveedores!} setVerEmail={setVerEmail} setItem={setItem} setShowModal2={setShowModal2} />
-        </div>
-
-
-        <IonModal
-      animated={true}
-      isOpen={verOrden}
-      onDidDismiss={() => setVerOrden( false )}
-    >
-      <ModalVerOrdenesCliente 
-        datos={proveedores[posicion-1]}
-        setVolver={setVerOrden}
-        emailCliente={props.emailCliente}
+        }else if(pediOrden){
+    
+       
+      
+         
+          return (
+    
+            <IonModal
+              animated={true}
+              isOpen={pediOrden}
+              onDidDismiss={() => setPediOrden( false )}>
+              <OrdenSimple
+                data={datosDeOrdenes} 
+                clienteEmail={props.emailCliente} 
+                proveedorVaALocacion={true}
+                setVolver={setPediOrden} />
+          </IonModal>
+    
+    
+          
+          )
+    
+        }else if (verProveedor){
+          return (
+            <><div id="container-principal-ExplorerContainer-Cliente">
+              <VerProveedorParticular url={props.url} emailCliente={props.emailCliente} email={verEmail} setVerEmail={setVerEmail} verProveedor={verProveedor} setVerProveedor={setVerProveedor} item={item} setItem={setItem} setShowCargandoProveedores={props.setShowCargandoProveedores}/>
+            </div>
+          </>
+          )
+        }
+        else{
+          console.log("aca debería llegar para el return")
+          setVerEmail("") 
+           setItem ("") 
+           return(<></>)
+        }
         
-      />  
-    </IonModal>
-            </>
-        );
+      
+      
+      }
 
+    
     }
-    else{
-      return (
-        <><div id="container-principal-ExplorerContainer-Cliente">
-          <VerProveedorParticular url={props.url} emailCliente={props.emailCliente} email={verEmail} setVerEmail={setVerEmail} setShowModal2={setShowModal2} showModal2={showModal2} item={item} setItem={setItem} setShowCargandoProveedores={props.setShowCargandoProveedores} />
-        </div>
-      </>
-      )}
-  }else{
+
+  
+  else{
 
     createStore("UltimosProveedores")
 
@@ -139,7 +242,8 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
 
 
 
-const Elements = (props:{ proveedores: Array<datosGeneralesVariosProveedores> , setVerEmail:any, setItem:any,setShowModal2:any }) => {
+const Elements = (props:{ proveedores: Array<datosGeneralesVariosProveedores> , setVerEmail:any, 
+  setItem:any,setPediOrden:any,  setVerReseña:any, setVerProveedor:any}) => {
 
   var i=0
   //if (props.proveedores!=[]){
@@ -148,7 +252,8 @@ const Elements = (props:{ proveedores: Array<datosGeneralesVariosProveedores> , 
         {props.proveedores.map((a) => {
           i=i+1
           //item, imagen personal, distancia, calificación, email, nombre, apellido, tipo
-          return (<CardVistaVariosProveedores key={i} setShowModal2={props.setShowModal2} item={a.item} personalImg={a.imagenPersonal} distancia={a.distancia} calificacion={a.calificacion} email={a.email} nombre={a.nombre} apellido={a.apellido} tipo={a.tipo} setVerEmail={props.setVerEmail} setItem={props.setItem} ></CardVistaVariosProveedores> ) 
+          return (<CardVistaVariosProveedores key={i} item={a.item} personalImg={a.imagenPersonal} distancia={a.distancia} calificacion={a.calificacion} email={a.email} nombre={a.nombre} apellido={a.apellido} tipo={a.tipo} setVerEmail={props.setVerEmail} setItem={props.setItem} 
+            setPediOrden={props.setPediOrden}  setVerReseña={props.setVerReseña} setVerProveedor={props.setVerProveedor}></CardVistaVariosProveedores> ) 
         })
         }
     </div>
@@ -157,21 +262,40 @@ const Elements = (props:{ proveedores: Array<datosGeneralesVariosProveedores> , 
       
 }
 
+
           //item, imagen, distancia, calificación, email, nombre, apellido,
 
 const CardVistaVariosProveedores= (props:{item:any, personalImg:any ,distancia: any, calificacion:any, 
-  email:any, nombre: any, apellido:any, tipo:any, setVerEmail:any, setItem:any, setShowModal2:any }) => {
+  email:any, nombre: any, apellido:any, tipo:any, setVerEmail:any, setItem:any,
+  setPediOrden:any,  setVerReseña:any, setVerProveedor:any }) => {
     
     //console.log(props.email + " - "+ props.item)
+
 
     const verProveedor = ()=> {
       console.log(props.email + " - "+ props.item)
       //if(props.email=="" && props.item==""){
         props.setVerEmail(props.email)
-        props.setShowModal2({ isOpen: true })
+        props.setVerProveedor(true)
         props.setItem(props.item)
 
      // }
+    }
+
+    const orden = ()=> {
+
+      props.setVerEmail(props.email)
+      props.setItem(props.item)
+      props.setPediOrden(true)
+      
+    }
+
+    const verReseñas = ()=> {
+      props.setVerEmail(props.email)
+      props.setItem(props.item)
+      props.setVerReseña(true)
+      console.log("y esto se ejecuta mucho?")
+
     }
 
     const surname = useRef("")
@@ -200,11 +324,11 @@ const CardVistaVariosProveedores= (props:{item:any, personalImg:any ,distancia: 
       <IonItemDivider></IonItemDivider>
       <IonGrid>
         <IonRow>
-          <IonCol id="ioncol-homecliente">
+          <IonCol id="ioncol-homecliente" onClick={()=>{orden()} }>
             <IonRow id="ionrow-homecliente"><img src={"./assets/icon/seleccionar.png"} className="imagen-boton-principal"/></IonRow>
             <IonRow id="ionrow-homecliente"><small>SOLICITAR</small></IonRow>
           </IonCol>
-          <IonCol id="ioncol-homecliente">
+          <IonCol id="ioncol-homecliente" onClick={()=>{ verReseñas()} }>
             <IonRow id="ionrow-homecliente"><img src={"./assets/icon/mensaje.png"} className="imagen-boton-principal"/></IonRow>
             <IonRow id="ionrow-homecliente"><small>RESEÑAS</small></IonRow>
           </IonCol>
@@ -215,67 +339,55 @@ const CardVistaVariosProveedores= (props:{item:any, personalImg:any ,distancia: 
         </IonRow>
     </IonGrid>
 
+  
+
     </IonCard>
        
   );
 }
 
 const VerProveedorParticular = (  props:{url:string, emailCliente:String, email:any, setVerEmail:any, item:any, setItem:any, 
-  setShowCargandoProveedores:any, setShowModal2:any, showModal2:any} ) =>{
-
-  let aux: any[] = []
-  
-  //const proveedor=useRef()
+  setShowCargandoProveedores:any, verProveedor:any, setVerProveedor:any} ) =>{
 
   const [caracteres,setCaracteres]=useState([])
   const [imagenes,setImagenes]=useState([])
-
   const [locacionBloqueada, setAlertLocation]=useState(false)
-
-  const [retVal, setRetVal] = useState(null);
-
-
 
   useEffect(() => {
 
     const ubicacion = getLocation();
-
     ubicacion.then((value)=>{
-    
-    if (value!=0){
+      if (value!=0){
 
-      const posicion=value
-    props.setShowCargandoProveedores(true)
-    const axios = require('axios');
+        const posicion=value
+        props.setShowCargandoProveedores(true)
+        const axios = require('axios');
 
-    axios.get(props.url+"home/cliente/pedirdatos/"+props.email+"/"+props.item+"/"+"caracteres"+"/"+posicion).then((resp: { data: any; }) => {
-      if (resp.data!="bad" && caracteres.length==0){
-        setCaracteres(resp.data)
-        props.setShowCargandoProveedores(false)
-        
+        axios.get(props.url+"home/cliente/pedirdatos/"+props.email+"/"+props.item+"/"+"caracteres"+"/"+posicion).then((resp: { data: any; }) => {
+          if (resp.data!="bad" && caracteres.length==0){
+            setCaracteres(resp.data)
+            props.setShowCargandoProveedores(false)
+            
+          }else{
+            props.setShowCargandoProveedores(false)
+          }
+        })
+        axios.get(props.url+"home/cliente/pedirdatos/"+props.email+"/"+props.item+"/"+"imagenes"+"/"+posicion).then((resp: { data: any; }) => {
+          if (resp.data!="bad"&& imagenes.length==0){
+            setImagenes(resp.data)
+          }
+        })
       }else{
-        props.setShowCargandoProveedores(false)
+        setAlertLocation(true)
       }
-      })
-      axios.get(props.url+"home/cliente/pedirdatos/"+props.email+"/"+props.item+"/"+"imagenes"+"/"+posicion).then((resp: { data: any; }) => {
-        if (resp.data!="bad"&& imagenes.length==0){
-          setImagenes(resp.data)
-        }
-    })
-
-    }else{
-      setAlertLocation(true)
-    }
     
     })
 
   }, []);
 
-    if(locacionBloqueada){
-
-    
-      return(<>
-
+    if(locacionBloqueada){    
+      return(
+      <>
         <IonAlert isOpen={locacionBloqueada} onDidDismiss={() => setAlertLocation(false)} cssClass='my-custom-class'
             header={'UBICACIÓN DE DISPOSITIVO'}
             subHeader={''}
@@ -291,33 +403,28 @@ const VerProveedorParticular = (  props:{url:string, emailCliente:String, email:
                 }
               }
             
-            ]}  /></>)
-
+            ]}  />
+            </>
+      )
     }else{
-
       return (
         <div id="volver-contenedor-ExplorerContainer">
-
-        <IonModal
-        animated={true}
-        isOpen={props.showModal2.isOpen}
-        onDidDismiss={() => props.setShowModal2({ isOpen: false })}
-      >
-        <ModalVerCardProveedor 
-           caracteres={caracteres}
-           imagenes={imagenes} 
-           email={props.email}
-           emailCliente={props.emailCliente}
-           proveedorEmail={props.email}
-           setVerEmail={props.setVerEmail} 
-           setItem={props.setItem}
-
-          
-        />  
-      </IonModal>
+          <IonModal
+            animated={true}
+            isOpen={props.verProveedor}
+            onDidDismiss={() => props.setVerProveedor( false )}
+          >
+            <ModalVerCardProveedor 
+              caracteres={caracteres}
+              imagenes={imagenes} 
+              email={props.email}
+              emailCliente={props.emailCliente}
+              proveedorEmail={props.email}
+              setVerEmail={props.setVerEmail} 
+              setItem={props.setItem}            
+            />  
+          </IonModal>
       </div>
-
-
       )
     } 
 
@@ -478,40 +585,6 @@ const Tabs= (props:{setShowModal:any,setTipoDeVistaEnModal:any  }) => {
   </IonCard> 
   )
 
-/*  return(
-    <>
-    
-    <IonReactRouter>
-
-    <IonTabs>
-
-        <IonRouterOutlet>
-     
-         
-        </IonRouterOutlet>
-
-        <IonTabBar slot="top">
-
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon icon={triangle} />
-            <IonLabel>CATEGORÍAS</IonLabel>
-          </IonTabButton>
-
-          <IonTabButton tab="tab2" href="/tab2">
-            <img className="imagen-boton-principal" src={"./assets/icon/sirena.png"} />
-            <IonLabel>EMERGENCIAS</IonLabel>
-          </IonTabButton>
-
-          <IonTabButton tab="tab3" href="/">
-          <img className="imagen-boton-principal" src={"./assets/icon/time.png"} />
-            <IonLabel>PROGRAMAR</IonLabel>
-          </IonTabButton>
-       
-        </IonTabBar>
-      </IonTabs>
-      </IonReactRouter>
-      </>
-  )*/
 }
   
 export default ExploreContainerCliente;

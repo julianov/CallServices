@@ -9,23 +9,21 @@ import OrdenSimple from "../pages/Orden";
 import Resenas from "./Resenas";
 
 
-var dataS :any
 
-const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, proveedorEmail:string	}) => {
 
-  //el email del props es el email del proveedor
-  //asi que al parecer tenemos 2 correos del proveedor
-
+export interface datosOrden{
+  clienteEmail:String,
+  nombre:string,
+  proveedorEmail:string,
+  tipo:string,
+  last_name:string,
+  picture:string,
+  items:string,
+  qualification:number,
+  dias_proveedor:string
+   }
    
-  
-
-  const [showModalOrden, setShowModalOrden] = useState({ isOpen: false });
-  const [showModalVerReseñas, setShowModalVerReseñas] = useState({ isOpen: false });
-
-
-  const proveedorVaALocacion = useRef(true)
-  
-  interface datosProveedor{
+   interface datosProveedor{
     nombre:string
     tipo:string
     last_name:string
@@ -52,18 +50,19 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
     picture3:string
   }
 
-  interface datosOrden{
-    clienteEmail:String,
-    nombre:string,
-    proveedorEmail:string,
-    tipo:string,
-    last_name:string,
-    picture:string,
-    items:string,
-    qualification:number,
-    dias_proveedor:string
-     }
 
+const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, proveedorEmail:string	}) => {
+
+  //el email del props es el email del proveedor
+  //asi que al parecer tenemos 2 correos del proveedor
+
+   
+  const [showModalOrden, setShowModalOrden] = useState( false );
+  const [showModalVerReseñas, setShowModalVerReseñas] = useState( false );
+
+
+  const proveedorVaALocacion = useRef(true)
+  
     const datosDeOrdenes = useRef<datosOrden>(
       {
         clienteEmail:props.emailCliente,
@@ -185,7 +184,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
           dias_proveedor:datosProveedoresArray.days_of_works
         })
 
-        setShowModalOrden({ isOpen: true })
+        setShowModalOrden( true )
     
       }
 
@@ -337,7 +336,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
               <IonGrid>
                 <IonRow>
                 <IonCol>
-                    <IonButton shape="round" color="primary"  id="botonContratar"  onClick={() => setShowModalVerReseñas({ isOpen: true })}>RESEÑAS</IonButton>
+                    <IonButton shape="round" color="primary"  id="botonContratar"  onClick={() => setShowModalVerReseñas( true )}>RESEÑAS</IonButton>
                     </IonCol>
                     <IonCol>
                     <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => contratar()} >CONTRATAR</IonButton>
@@ -347,8 +346,8 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
 
             <IonModal
             animated={true}
-            isOpen={showModalOrden.isOpen}
-            onDidDismiss={() => setShowModalOrden({ isOpen: false })}
+            isOpen={showModalOrden}
+            onDidDismiss={() => setShowModalOrden( false)}
           >
             <OrdenSimple
               data={datosDeOrdenes.current} 
@@ -360,8 +359,8 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
           
           <IonModal
             animated={true}
-            isOpen={showModalVerReseñas.isOpen}
-            onDidDismiss={() => setShowModalVerReseñas({ isOpen: false })}
+            isOpen={showModalVerReseñas}
+            onDidDismiss={() => setShowModalVerReseñas(false )}
           >
             <Resenas
               tipo={datosDeOrdenes.current.tipo}
@@ -450,7 +449,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
               <IonCard id="ionCard-CardProveedor">
               <IonGrid>
                 <IonRow>
-                    <IonButton shape="round" color="primary"  id="botonContratar" onClick={() => setShowModalVerReseñas({ isOpen: true })}>RESEÑAS</IonButton>
+                    <IonButton shape="round" color="primary"  id="botonContratar" onClick={() => setShowModalVerReseñas( true )}>RESEÑAS</IonButton>
                 </IonRow>
                 <IonRow>
                     <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => contratar()} >CONTRATAR</IonButton>
@@ -460,8 +459,8 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
             </IonCard>
             <IonModal
             animated={true}
-            isOpen={showModalOrden.isOpen}
-            onDidDismiss={() => setShowModalOrden({ isOpen: false })}
+            isOpen={showModalOrden}
+            onDidDismiss={() => setShowModalOrden( false )}
           >
             <OrdenSimple
               data={datosDeOrdenes.current} 
@@ -473,8 +472,8 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
           
           <IonModal
             animated={true}
-            isOpen={showModalVerReseñas.isOpen}
-            onDidDismiss={() => setShowModalVerReseñas({ isOpen: false })}
+            isOpen={showModalVerReseñas}
+            onDidDismiss={() => setShowModalVerReseñas( false )}
           >
             <Resenas
               tipo={datosDeOrdenes.current.tipo}

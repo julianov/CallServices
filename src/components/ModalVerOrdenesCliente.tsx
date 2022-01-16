@@ -1,5 +1,5 @@
 import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonRow, IonTitle } from "@ionic/react";
-import { arrowBack, chatbox, eye, location } from "ionicons/icons";
+import { arrowBack, camera, chatbox, eye, location } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import { isConstructorDeclaration, isSetAccessorDeclaration } from "typescript";
 
@@ -1246,20 +1246,42 @@ const Imagenes = (props:{picture1:any,picture2:any, ticket:any, tipo:any})=>{
         return(
           <>
           <div id="CardProveedoresImg"><img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture1}></img>
-          </div><IonButton id="botonContratar" onClick={() => setAgregarFotografia(true)}>CARGAR FOTO</IonButton></>
+          </div>
+          <IonGrid><IonRow>
+          <IonCol id="ioncol-homecliente"onClick={() => setAgregarFotografia(true)}>
+            <IonRow id="ionrow-homecliente">
+            <IonIcon icon={camera} /> </IonRow>
+            <IonRow id="ionrow-homecliente"><small>CARGAR OTRA IMÁGEN</small></IonRow>
+          </IonCol></IonRow>
+          </IonGrid>
+          </>
         )
       }
       else if(props.picture1=="" && props.picture2!="" ){
         return(
           <>
           <div id="CardProveedoresImg"><img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture2}></img>
-          </div><IonButton id="botonContratar" onClick={() => setAgregarFotografia(true)}>CARGAR FOTO</IonButton></>
+          </div>
+          <IonGrid><IonRow>
+          <IonCol id="ioncol-homecliente"onClick={() => setAgregarFotografia(true)}>
+            <IonRow id="ionrow-homecliente">
+            <IonIcon icon={camera} /> </IonRow>
+            <IonRow id="ionrow-homecliente"><small>CARGAR OTRA IMÁGEN</small></IonRow>
+          </IonCol></IonRow>
+          </IonGrid>          </>
         )
       }else{
         return(
           <><div id="CardProveedoresImg">
             <p>NO HA ADJUNTADO IMÁGENES DE REFERENCIA PARA ESTE SERVICIO</p>
-          </div><IonButton id="botonContratar" onClick={() => setAgregarFotografia(true)}>CARGAR FOTO</IonButton></>
+          </div>
+          <IonGrid><IonRow>
+          <IonCol id="ioncol-homecliente"onClick={() => setAgregarFotografia(true)}>
+            <IonRow id="ionrow-homecliente">
+            <IonIcon icon={camera} /> </IonRow>
+            <IonRow id="ionrow-homecliente"><small>CARGAR OTRA IMÁGEN</small></IonRow>
+          </IonCol></IonRow>
+          </IonGrid>          </>
     
         ) }
     }else{

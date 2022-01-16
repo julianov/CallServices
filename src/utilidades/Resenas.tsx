@@ -21,6 +21,7 @@ let reseñas = new Array<reseñados>();
 const Resenas = (props:{email_a_ver_reseñas:any,  tipo:any, setVolver:any}) => {
 
     const [sinReseñas, setSinReseñas] = useState(false)
+    console.log("llego a reseña")
 
    //tipo puede ser: "cliente", Proveedor de servicio independiente o Empresa de servicios
     axios.get(url+"resena/"+props.email_a_ver_reseñas+"/0/"+props.tipo.current).then((resp: { data: any; }) => {
@@ -37,15 +38,18 @@ const Resenas = (props:{email_a_ver_reseñas:any,  tipo:any, setVolver:any}) => 
       if(sinReseñas){
         return (
             <IonContent >
+            <div id="contenedorCentralReseñas">
+
               <div id="contenedorPrincipal">
                 <div id="modalProveedor-flechaVolver">
-                    <IonIcon icon={arrowBack} onClick={() => props.setVolver({ isOpen: false })} slot="start" id="flecha-volver">  </IonIcon>
+                    <IonIcon icon={arrowBack} onClick={() => props.setVolver(false )} slot="start" id="flecha-volver">  </IonIcon>
                 </div>
                 
                 <div id="contenedorHijoCentrado">
                     <h1>NO HAY RESEÑAS HASTA EL MOMENTO</h1>
                 </div>
-                </div>      
+                </div>    
+                </div>    
             </IonContent>
         
         )
@@ -54,11 +58,12 @@ const Resenas = (props:{email_a_ver_reseñas:any,  tipo:any, setVolver:any}) => 
         return (
             <IonContent >
                 <div id="modalProveedor-flechaVolver">
-                    <IonIcon icon={arrowBack} onClick={() => props.setVolver({ isOpen: false })} slot="start" id="flecha-volver">  </IonIcon>
+                    <IonIcon icon={arrowBack} onClick={() => props.setVolver( false)} slot="start" id="flecha-volver">  </IonIcon>
                 </div>
-                
+                <div id="contenedorCentralReseñas">
+
                 <Elementos reseñas={reseñas} />
-                
+                </div>
             </IonContent>
         
         )

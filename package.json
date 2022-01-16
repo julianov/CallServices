@@ -62,6 +62,7 @@
   "description": "An Ionic project",
   "devDependencies": {
     "@capacitor/cli": "^3.3.3",
+    "eslint-plugin-react-hooks": "^4.3.0",
     "react-scripts": "^5.0.0"
   }
 }

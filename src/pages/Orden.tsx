@@ -33,6 +33,7 @@ const getLocation = async () => {
 
 const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedorVaALocacion:any}) => {
 
+    console.log("RE RENDER")
     
     const [vista,setVista] = useState ("primeraVista")
 
@@ -163,7 +164,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
             <IonContent >
             <div id="GenerarOrdenContainer">
             <div id="modalProveedor-flechaVolver">
-            <IonIcon icon={arrowBack} onClick={() => props.setVolver({ isOpen: false })} slot="start" id="flecha-volver">  </IonIcon>
+            <IonIcon icon={arrowBack} onClick={() => props.setVolver( false )} slot="start" id="flecha-volver">  </IonIcon>
             </div>
             <div id="contenderCentralOrden">
             <IonCardTitle>FORMULARIO DE SOLICITUD DE SERVICIO</IonCardTitle>
