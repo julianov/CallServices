@@ -133,8 +133,6 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
   
 
   if (props.busqueda_categorias.length == 0 && props.buscar=="" ){
-
-   
       if (verEmail=="" && item =="" ){
         return (
           <>
@@ -473,6 +471,8 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
     if (props.status=="ENV"){
       setEstado("PEDIDO DE TRABAJO ENVIADO")
     }else if(props.status=="REC"){
+      setEstado("PEDIDO DE TRABAJO RECIBIDO")
+    }else if(props.status=="ABI"){
       setEstado("PEDIDO DE TRABAJO RECIBIDO")
     }else if(props.status=="PEI"){
       setEstado("SOLILCITUD DE MÁS INFORMACIÓN")

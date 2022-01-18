@@ -427,3 +427,28 @@ width: 95%;
 #botonAgregarRubro{
   width: 80%;
 }
+
+#divSentencias{
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+#pChico{
+  font-size: small;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  
+}
+
+#titulo{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 100%;
+  padding-top: 10px;
+  
+}
+
+#titulo{
+  margin-top: 20px;
+  align-items: center;
+}

@@ -1,5 +1,5 @@
 import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCheckbox, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonLoading, IonRow, IonTitle } from "@ionic/react";
-import { arrowBack } from "ionicons/icons";
+import { arrowBack, chatbox, eye, location } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import { isConstructorDeclaration, isSetAccessorDeclaration } from "typescript";
 
@@ -60,7 +60,6 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
             }else if(props.datos.status=="REC"){
               setEstado("RECIBIDO")
             }else if(props.datos.status=="PEI"){
-              console.log("deberia mostrar lo de pei")
               setEstado("PEDIDO INFORMACION")
               setVista("PEDIDO INFORMACION")
             } else if(props.datos.status=="PRE"){
@@ -79,8 +78,6 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
         
       }, [])
 
-
-      
 
       const rechazarOrden = ()=> {
 
@@ -205,19 +202,42 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
         </div>
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <img id="img-orden" src={props.datos.imagen_cliente}></img>
-          <p>TIPO: {props.datos.tipo}</p>
-          <p>STATUS: {props.estado}</p>
-          <p>TICKET: {props.datos.ticket}</p>
-          <IonButton  id="botonContratar" onClick={() => props.setVista("datosClientes")} >DATOS DE CLIENTE</IonButton>
+          <div id="divSentencias">
+            <p>TIPO: {props.datos.tipo}</p>
+            <p>STATUS: {props.estado}</p>
+            <p>TICKET: {props.datos.ticket}</p>
+          </div>
+          <IonGrid>
+            <IonRow>
+              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={eye} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER DATOS CLIENTE</small></IonRow>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+       
         </IonCard>
         <IonCard id="ionCard-explorerContainer-Proveedor">
-              <p>FECHA DE SOLICITUD:</p>
-              <p>{props.datos.fecha_creacion}</p>
-              <p>TÍTULO:</p>
-              <p>{props.datos.titulo}</p>
-              <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-              <p>{props.datos.descripcion}</p>
-              <IonButton  id="botonContratar" onClick={() =>setShowAlertUbicacion(true) } >VER UBICACIÓN DEL CLIENTE</IonButton>
+          <div id="divSentencias">
+            <p>FECHA DE SOLICITUD:</p>
+            <p>{props.datos.fecha_creacion}</p>
+            <p>TÍTULO:</p>
+            <p>{props.datos.titulo}</p>
+            <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+            <p>{props.datos.descripcion}</p>
+          </div>
+          <IonGrid>
+            <IonRow>
+              <IonCol id="ioncol-homecliente"  onClick={() =>setShowAlertUbicacion(true) }   >
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={location} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+
+        
         </IonCard>
         <IonCard id="ionCard-explorerContainer-Proveedor">
               < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}   ></Imagenes>
@@ -512,19 +532,33 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
           </div>
           <IonCard id="ionCard-explorerContainer-Proveedor">
             <img id="img-orden" src={props.datos.imagen_cliente}></img>
-            <p>TIPO: {props.datos.tipo}</p>
-            <p>STATUS: {props.estado}</p>
-            <p>TICKET: {props.datos.ticket}</p>
+            <div id="divSentencias">
+              <p>TIPO: {props.datos.tipo}</p>
+              <p>STATUS: {props.estado}</p>
+              <p>TICKET: {props.datos.ticket}</p>
+            </div>
             <IonButton  id="botonContratar" onClick={() => props.setVista("datosClientes")} >DATOS DE CLIENTE</IonButton>
           </IonCard>
           <IonCard id="ionCard-explorerContainer-Proveedor">
-                <p>FECHA DE SOLICITUD:</p>
-                <p>{props.datos.fecha_creacion}</p>
-                <p>TÍTULO:</p>
-                <p>{props.datos.titulo}</p>
-                <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-                <p>{props.datos.descripcion}</p>
-                <IonButton  id="botonContratar" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) } >VER UBICACIÓN DEL CLIENTE</IonButton>
+            <div id="divSentencias">
+              <p>FECHA DE SOLICITUD:</p>
+              <p>{props.datos.fecha_creacion}</p>
+              <p>TÍTULO:</p>
+              <p>{props.datos.titulo}</p>
+              <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+              <p>{props.datos.descripcion}</p>
+            </div>
+
+            <IonGrid>
+              <IonRow>
+                <IonCol id="ioncol-homecliente" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) }>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={location} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DEL CLIENTE</small></IonRow>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+
           </IonCard>
           <IonCard id="ionCard-explorerContainer-Proveedor">
                 < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}   ></Imagenes>
@@ -534,9 +568,11 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
             <strong>RESPUESTA DEL CLIENTE</strong>
           </div>
           <IonCard id="ionCard-explorerContainer-Proveedor">
+          <div id="divSentencias">
             <p>RESPUESTA:</p>
             <p>{props.datos.respuesta_cliente_pedido_mas_información}</p>
             <p>INFORMACIÓN SOLICITADA AL CLIENTE:</p>
+            </div>
             <Imagenes picture1={props.datos.picture1_mas_información} picture2={props.datos.picture2_mas_información} />
           </IonCard>
     
@@ -612,20 +648,41 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
           </div>
           <IonCard id="ionCard-explorerContainer-Proveedor">
             <img id="img-orden" src={props.datos.imagen_cliente}></img>
-            <p>TIPO: {props.datos.tipo}</p>
-            <p>STATUS: {props.estado}</p>
-            <p>TICKET: {props.datos.ticket}</p>
-            <IonButton  id="botonContratar" onClick={() => props.setVista("datosClientes")} >DATOS DE CLIENTE</IonButton>
+            <div id="divSentencias">
+              <p>TIPO: {props.datos.tipo}</p>
+              <p>STATUS: {props.estado}</p>
+              <p>TICKET: {props.datos.ticket}</p>
+            </div>
+            <IonGrid>
+              <IonRow>
+                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={eye} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENTE</small></IonRow>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
           </IonCard>
           <IonCard id="ionCard-explorerContainer-Proveedor">
-                <p>FECHA DE SOLICITUD:</p>
-                <p>{props.datos.fecha_creacion}</p>
-                <p>TÍTULO:</p>
-                <p>{props.datos.titulo}</p>
-                <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-                <p>{props.datos.descripcion}</p>
-                <IonButton  id="botonContratar" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) } >VER UBICACIÓN DEL CLIENTE</IonButton>
+            <div id="divSentencias">
+              <p>FECHA DE SOLICITUD:</p>
+              <p>{props.datos.fecha_creacion}</p>
+              <p>TÍTULO:</p>
+              <p>{props.datos.titulo}</p>
+              <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+              <p>{props.datos.descripcion}</p>
+            </div>
+            <IonGrid>
+              <IonRow>
+                <IonCol id="ioncol-homecliente" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) }>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={location} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DEL CLIENTE</small></IonRow>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
           </IonCard>
+
           <IonCard id="ionCard-explorerContainer-Proveedor">
                 < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}   ></Imagenes>
           </IonCard>
@@ -705,27 +762,51 @@ const Presupuestada = (props:{datos:any, estado:any, setVolver:any, setVista:any
 
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <img id="img-orden" src={props.datos.imagen_cliente}></img>
-          <p>TIPO: {props.datos.tipo}</p>
-          <p>STATUS: {props.estado}</p>
-          <p>TICKET: {props.datos.ticket}</p>
-          <IonButton  id="botonContratar" onClick={() => props.setVista("datosClientes")} >DATOS DE CLIENTE</IonButton>
+          <div id="divSentencias">
+            <p>TIPO: {props.datos.tipo}</p>
+            <p>STATUS: {props.estado}</p>
+            <p>TICKET: {props.datos.ticket}</p>
+          </div>
+          <IonGrid>
+              <IonRow>
+                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={eye} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENTE</small></IonRow>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
         </IonCard>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
-          <p>FECHA DE SOLICITUD:</p>
-          <p>{props.datos.fecha_creacion}</p>
-          <p>TÍTULO:</p>
-          <p>{props.datos.titulo}</p>
-          <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-          <p>{props.datos.descripcion}</p>
-          <IonButton  id="botonContratar" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) } >VER UBICACIÓN DEL CLIENTE</IonButton>
+          <div id="divSentencias">
+            <p>FECHA DE SOLICITUD:</p>
+            <p>{props.datos.fecha_creacion}</p>
+            <p>TÍTULO:</p>
+            <p>{props.datos.titulo}</p>
+            <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+            <p>{props.datos.descripcion}</p>
+          </div>
+
+          <IonGrid>
+              <IonRow>
+                <IonCol id="ioncol-homecliente" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) }>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={location} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DEL CLIENTE</small></IonRow>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+
         </IonCard>
 
         <IonCard id="ionCard-explorerContainer-Proveedor">
+        <div id="divSentencias">
           <p>PRESUPUESTO:</p>
           <p>{props.datos.presupuesto_inicial}</p>
           <p>INFORMACIÓN SOLICITADA AL CLIENTE:</p>
           <p>{props.datos.pedido_mas_información}</p>
+        </div>
         </IonCard>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -793,11 +874,6 @@ const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any
      })
   }
 
-  console.log("VEAMOS PUES INFOS"+props.datos.respuesta_cliente_pedido_mas_información)
-    console.log("VEAMOS PUES"+props.datos.picture1_mas_información)
-      console.log("VEAMOS PUES"+props.datos.picture2_mas_información)
-  
-
   if (props.datos.respuesta_cliente_pedido_mas_información!="" || props.datos.picture1_mas_información!=""|| props.datos.picture2_mas_información){
     return (
       <IonContent>
@@ -812,29 +888,51 @@ const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any
         </div>
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <img id="img-orden" src={props.datos.imagen_cliente}></img>
-          <p>TIPO: {props.datos.tipo}</p>
-          <p>STATUS: {props.estado}</p>
-          <p>TICKET: {props.datos.ticket}</p>
-          <IonButton  id="botonContratar" onClick={() => props.setVista("datosClientes")} >DATOS DE CLIENTE</IonButton>
+          <div id="divSentencias">
+            <p>TIPO: {props.datos.tipo}</p>
+            <p>STATUS: {props.estado}</p>
+            <p>TICKET: {props.datos.ticket}</p>
+          </div>
+          <IonGrid>
+              <IonRow>
+                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={eye} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENT</small></IonRow>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
         </IonCard>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
+        <div id="divSentencias">
           <p>FECHA DE SOLICITUD:</p>
           <p>{props.datos.fecha_creacion}</p>
           <p>TÍTULO:</p>
           <p>{props.datos.titulo}</p>
           <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
           <p>{props.datos.descripcion}</p>
-          <IonButton  id="botonContratar" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) } >VER UBICACIÓN DEL CLIENTE</IonButton>
+        </div>
+        <IonGrid>
+              <IonRow>
+                <IonCol id="ioncol-homecliente" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) }>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={location} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DEL CLIENTE</small></IonRow>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
         </IonCard>
   
         <div id="contenedorcentro">
           <IonTitle>RESPUESTA DEL CLIENTE</IonTitle>
         </div>
         <IonCard id="ionCard-explorerContainer-Proveedor">
-          <p>RESPUESTA:</p>
-          <p>{props.datos.respuesta_cliente_pedido_mas_información}</p>
-          <p>INFORMACIÓN SOLICITADA AL CLIENTE:</p>
+          <div id="divSentencias">
+            <p>RESPUESTA:</p>
+            <p>{props.datos.respuesta_cliente_pedido_mas_información}</p>
+            <p>INFORMACIÓN SOLICITADA AL CLIENTE:</p>
+          </div>
           <Imagenes picture1={props.datos.picture1_mas_información} picture2={props.datos.picture2_mas_información} />
         </IonCard>
   
@@ -915,20 +1013,40 @@ const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any
 
       <IonCard id="ionCard-explorerContainer-Proveedor">
         <img id="img-orden" src={props.datos.imagen_cliente}></img>
-        <p>TIPO: {props.datos.tipo}</p>
-        <p>STATUS: {props.estado}</p>
-        <p>TICKET: {props.datos.ticket}</p>
-        <IonButton  id="botonContratar" onClick={() => props.setVista("datosClientes")} >DATOS DE CLIENTE</IonButton>
+        <div id="divSentencias">
+          <p>TIPO: {props.datos.tipo}</p>
+          <p>STATUS: {props.estado}</p>
+          <p>TICKET: {props.datos.ticket}</p>
+        </div>
+        <IonGrid>
+              <IonRow>
+                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={eye} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENT</small></IonRow>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
       </IonCard>
 
       <IonCard id="ionCard-explorerContainer-Proveedor">
-        <p>FECHA DE SOLICITUD:</p>
-        <p>{props.datos.fecha_creacion}</p>
-        <p>TÍTULO:</p>
-        <p>{props.datos.titulo}</p>
-        <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-        <p>{props.datos.descripcion}</p>
-        <IonButton  id="botonContratar" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) } >VER UBICACIÓN DEL CLIENTE</IonButton>
+        <div id="divSentencias">
+          <p>FECHA DE SOLICITUD:</p>
+          <p>{props.datos.fecha_creacion}</p>
+          <p>TÍTULO:</p>
+          <p>{props.datos.titulo}</p>
+          <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+          <p>{props.datos.descripcion}</p>
+        </div>
+        <IonGrid>
+              <IonRow>
+                <IonCol id="ioncol-homecliente" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) }>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={location} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DEL CLIENTE</small></IonRow>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
       </IonCard>
 
       <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -1043,29 +1161,51 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <img id="img-orden" src={props.datos.imagen_cliente}></img>
-          <p>TIPO: {props.datos.tipo}</p>
-          <p>STATUS: {props.estado}</p>
-          <p>TICKET: {props.datos.ticket}</p>
-          <IonButton  id="botonContratar" onClick={() => props.setVista("datosClientes")} >DATOS DE CLIENTE</IonButton>
+          <div id="divSentencias">
+            <p>TIPO: {props.datos.tipo}</p>
+            <p>STATUS: {props.estado}</p>
+            <p>TICKET: {props.datos.ticket}</p>
+          </div>
+          <IonGrid>
+              <IonRow>
+                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={eye} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENT</small></IonRow>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
         </IonCard>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
-          <p>FECHA DE SOLICITUD:</p>
-          <p>{props.datos.fecha_creacion}</p>
-          <p>TÍTULO:</p>
-          <p>{props.datos.titulo}</p>
-          <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-          <p>{props.datos.descripcion}</p>
-          <IonButton  id="botonContratar" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) } >VER UBICACIÓN DEL CLIENTE</IonButton>
+          <div id="divSentencias">
+            <p>FECHA DE SOLICITUD:</p>
+            <p>{props.datos.fecha_creacion}</p>
+            <p>TÍTULO:</p>
+            <p>{props.datos.titulo}</p>
+            <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+            <p>{props.datos.descripcion}</p>
+          </div>
+          <IonGrid>
+              <IonRow>
+                <IonCol id="ioncol-homecliente" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) }>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={location} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DEL CLIENTE</small></IonRow>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
         </IonCard>
   
         <div id="contenedorcentro">
           <IonTitle>RESPUESTA DEL CLIENTE</IonTitle>
         </div>
         <IonCard id="ionCard-explorerContainer-Proveedor">
+        <div id="divSentencias">
           <p>RESPUESTA:</p>
           <p>{props.datos.respuesta_cliente_pedido_mas_información}</p>
           <p>INFORMACIÓN SOLICITADA AL CLIENTE:</p>
+        </div>
           <Imagenes picture1={props.datos.picture1_mas_información} picture2={props.datos.picture2_mas_información} />
         </IonCard>
   
@@ -1146,20 +1286,40 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
 
       <IonCard id="ionCard-explorerContainer-Proveedor">
         <img id="img-orden" src={props.datos.imagen_cliente}></img>
-        <p>TIPO: {props.datos.tipo}</p>
-        <p>STATUS: {props.estado}</p>
-        <p>TICKET: {props.datos.ticket}</p>
-        <IonButton  id="botonContratar" onClick={() => props.setVista("datosClientes")} >DATOS DE CLIENTE</IonButton>
+        <div id="divSentencias">
+          <p>TIPO: {props.datos.tipo}</p>
+          <p>STATUS: {props.estado}</p>
+          <p>TICKET: {props.datos.ticket}</p>
+        </div>
+        <IonGrid>
+              <IonRow>
+                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={eye} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENT</small></IonRow>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
       </IonCard>
 
       <IonCard id="ionCard-explorerContainer-Proveedor">
-        <p>FECHA DE SOLICITUD:</p>
-        <p>{props.datos.fecha_creacion}</p>
-        <p>TÍTULO:</p>
-        <p>{props.datos.titulo}</p>
-        <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-        <p>{props.datos.descripcion}</p>
-        <IonButton  id="botonContratar" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) } >VER UBICACIÓN DEL CLIENTE</IonButton>
+        <div id="divSentencias">
+          <p>FECHA DE SOLICITUD:</p>
+          <p>{props.datos.fecha_creacion}</p>
+          <p>TÍTULO:</p>
+          <p>{props.datos.titulo}</p>
+          <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+          <p>{props.datos.descripcion}</p>
+        </div>
+        <IonGrid>
+              <IonRow>
+                <IonCol id="ioncol-homecliente" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) }>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={location} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DEL CLIENTE</small></IonRow>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
       </IonCard>
 
       <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -1267,20 +1427,40 @@ const EnSitio  = (props:{datos:any, setVolver:any, setVista:any, estado:any, set
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <img id="img-orden" src={props.datos.imagen_cliente}></img>
-          <p>TIPO: {props.datos.tipo}</p>
-          <p>STATUS: {props.estado}</p>
-          <p>TICKET: {props.datos.ticket}</p>
-          <IonButton  id="botonContratar" onClick={() => props.setVista("datosClientes")} >DATOS DE CLIENTE</IonButton>
+          <div id="divSentencias">
+            <p>TIPO: {props.datos.tipo}</p>
+            <p>STATUS: {props.estado}</p>
+            <p>TICKET: {props.datos.ticket}</p>
+          </div>
+          <IonGrid>
+              <IonRow>
+                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={eye} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENT</small></IonRow>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
         </IonCard>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
-          <p>FECHA DE SOLICITUD:</p>
-          <p>{props.datos.fecha_creacion}</p>
-          <p>TÍTULO:</p>
-          <p>{props.datos.titulo}</p>
-          <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-          <p>{props.datos.descripcion}</p>
-          <IonButton  id="botonContratar" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) } >VER UBICACIÓN DEL CLIENTE</IonButton>
+          <div id="divSentencias">
+            <p>FECHA DE SOLICITUD:</p>
+            <p>{props.datos.fecha_creacion}</p>
+            <p>TÍTULO:</p>
+            <p>{props.datos.titulo}</p>
+            <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+            <p>{props.datos.descripcion}</p>
+          </div>
+          <IonGrid>
+              <IonRow>
+                <IonCol id="ioncol-homecliente" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) }>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={location} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DEL CLIENTE</small></IonRow>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
         </IonCard>
   
         <div id="contenedorcentro">
@@ -1288,9 +1468,11 @@ const EnSitio  = (props:{datos:any, setVolver:any, setVista:any, estado:any, set
         </div>
        
         <IonCard id="ionCard-explorerContainer-Proveedor">
-          <p>RESPUESTA:</p>
-          <p>{props.datos.respuesta_cliente_pedido_mas_información}</p>
-          <p>INFORMACIÓN SOLICITADA AL CLIENTE:</p>
+          <div id="divSentencias">
+            <p>RESPUESTA:</p>
+            <p>{props.datos.respuesta_cliente_pedido_mas_información}</p>
+            <p>INFORMACIÓN SOLICITADA AL CLIENTE:</p>
+          </div>
           <Imagenes picture1={props.datos.picture1_mas_información} picture2={props.datos.picture2_mas_información} />
         </IonCard>
   
@@ -1371,20 +1553,40 @@ const EnSitio  = (props:{datos:any, setVolver:any, setVista:any, estado:any, set
         </div>
       <IonCard id="ionCard-explorerContainer-Proveedor">
         <img id="img-orden" src={props.datos.imagen_cliente}></img>
-        <p>TIPO: {props.datos.tipo}</p>
-        <p>STATUS: {props.estado}</p>
-        <p>TICKET: {props.datos.ticket}</p>
-        <IonButton  id="botonContratar" onClick={() => props.setVista("datosClientes")} >DATOS DE CLIENTE</IonButton>
+        <div id="divSentencias">
+          <p>TIPO: {props.datos.tipo}</p>
+          <p>STATUS: {props.estado}</p>
+          <p>TICKET: {props.datos.ticket}</p>
+        </div>
+        <IonGrid>
+              <IonRow>
+                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={eye} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENT</small></IonRow>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
       </IonCard>
 
       <IonCard id="ionCard-explorerContainer-Proveedor">
-        <p>FECHA DE SOLICITUD:</p>
-        <p>{props.datos.fecha_creacion}</p>
-        <p>TÍTULO:</p>
-        <p>{props.datos.titulo}</p>
-        <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-        <p>{props.datos.descripcion}</p>
-        <IonButton  id="botonContratar" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) } >VER UBICACIÓN DEL CLIENTE</IonButton>
+        <div id="divSentencias">
+          <p>FECHA DE SOLICITUD:</p>
+          <p>{props.datos.fecha_creacion}</p>
+          <p>TÍTULO:</p>
+          <p>{props.datos.titulo}</p>
+          <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+          <p>{props.datos.descripcion}</p>
+        </div>
+        <IonGrid>
+              <IonRow>
+                <IonCol id="ioncol-homecliente" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) }>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={location} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DEL CLIENTE</small></IonRow>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
       </IonCard>
 
       <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -1579,9 +1781,25 @@ const VerDatosCliente = (props:{ticket:any, tipo:any,latitud:any, longitud:any,s
         <p>NOMBRE: {datosCliente.nombre}</p>
         <p>APELLIDO: {datosCliente.apellido}</p>
         <p>CALIFICACIÓN: {datosCliente.calificacion}</p>
-        <IonButton  id="botonContratar" onClick={() => verUbicacion(props.latitud, props.longitud) } >VER UBICACIÓN DEL CLIENTE</IonButton>
 
-        <IonButton  id="botonContratar" onClick={() => props.setVista("chat")} >CHAT CON CLIENTE</IonButton>
+        <IonGrid>
+            <IonRow>
+            <IonCol id="ioncol-homecliente"  onClick={() => verUbicacion(props.latitud, props.longitud) }  >
+            <IonRow id="ionrow-homecliente">
+            <IonIcon icon={location} /> </IonRow>
+            <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
+          </IonCol>
+
+          <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+            <IonRow id="ionrow-homecliente">
+            <IonIcon icon={chatbox} /> </IonRow>
+            <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
+          </IonCol>
+
+
+            </IonRow>
+          </IonGrid>
+
   </IonCard>
   </div>
   </IonContent>

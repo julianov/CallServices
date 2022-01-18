@@ -6,6 +6,7 @@
     width: 100%;
     padding-top: 10px;
     padding-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 #ionCardOrden{
@@ -45,11 +46,10 @@
 #cardOrdenTicket{
     width: 98%;
     height: auto;
-    margin-top: 25px;
+    margin-top: 15px;
     margin-bottom: 25px;
     display: flex;
     flex-direction: column;
-    
 }
 
 #item-Orden{
@@ -72,3 +72,14 @@
 
  }
 
+ #ionCard-Orden{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: 90%;
+    margin-bottom: 30px;
+}
+
+#p-estado{
+    font-size: small;
+}

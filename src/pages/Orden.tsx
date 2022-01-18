@@ -7,7 +7,7 @@ import CardProveedor from "../utilidades/CardProveedor";
 import { removeItem } from "../utilidades/Storage";
 import Https from "../utilidades/HttpsURL";
 import React, { useEffect, useRef, useState } from 'react';
-import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItemDivider, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent, IonDatetime, IonCheckbox, IonLoading } from '@ionic/react';
+import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItemDivider, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent, IonDatetime, IonCheckbox, IonLoading, IonTitle } from '@ionic/react';
 import { Photo, usePhotoGallery } from "../hooks/usePhotoGallery";
 import { base64FromPath } from '@ionic/react-hooks/filesystem';
 import { b64toBlob } from '../utilidades/b64toBlob';
@@ -385,29 +385,23 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
             <div id="contenderCentralOrden">
             <h1>ORDEN DE SERVICIO</h1>
 
-                <IonCard id="cardOrdenTicket">
+                <IonCard id="ionCard-Orden">
                     <IonCardHeader>
                     <IonCardTitle> NÚMERO DE TICKET: {ticket.current} </IonCardTitle>
                     <IonCardTitle>STATUS: SOLICITUD ENVIADA </IonCardTitle>
-                      
+                    <p id="p-estado">En espera de confirmación por parte del proveedor </p>
                     </IonCardHeader>
-                    <p>En espera de confirmación por parte del proveedor </p>
-
-                    
-                    
-                </IonCard>
-                <div id="tituloCardPRoveedor">
-                    <strong>PROVEEDOR</strong>
-                </div>
-                <IonCard id="ionCard-CardProveedor">
-                        <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.data.picture}></img>
-                        <IonCardTitle> {props.data.nombre} </IonCardTitle>
-                        <IonCardTitle  > {props.data.items} </IonCardTitle>
-                        <IonItem id="CardProveedorItem" lines="none"> {props.data.calificacion} </IonItem>
                 </IonCard>
 
+                <IonTitle>PROVEEDOR</IonTitle>  
+                <IonCard id="ionCard-Orden">
+                    <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.data.picture}></img>
+                    <IonCardTitle> {props.data.nombre} </IonCardTitle>
+                    <IonCardTitle  > {props.data.items} </IonCardTitle>
+                    <IonItem id="CardProveedorItem" lines="none"> {props.data.calificacion} </IonItem>
+                </IonCard>
             </div>
-            </div>
+        </div>
                
         </IonContent>
         )
