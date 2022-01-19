@@ -466,6 +466,8 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
 
     const [mensaje1, setMensaje1] = useState("")
     const [mensaje2, setMensaje2] = useState("")
+
+
     useEffect(() => {
 
     if (props.status=="ENV"){
@@ -489,9 +491,12 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
       setMensaje1("EL PROVEEDOR ESTÁ EN CAMINO!")
     }else if(props.status=="ENS"){
       setEstado("EN SITIO")
+    }else if(props.status=="RED"){
+      setEstado("ORDEN DE TRABAJO FINALIZADA")
+      setMensaje1("CALIFIQUE AL PROVEEDOR DEL SERVICIO")
     }
 
-  }, [])
+  }, [props.status])
 
       return (
         <IonCard id="ionCard-explorerContainer-Cliente" onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>

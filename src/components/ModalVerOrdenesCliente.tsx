@@ -457,6 +457,7 @@ const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEst
       if(res.data=="ok"){
           props.setEstado("ORDEN ACEPTADA")
           props.setVista("enEsperaDelPRoveedor")
+          props.datos.status="ACE"
       }
 
       

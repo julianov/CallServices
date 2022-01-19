@@ -41,6 +41,8 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
     const [showAlertInconvenienteChat, setShowAlertInconvenienteChat] = useState(false)
     const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
 
+    const presupuestoValor = useRef("0")
+
 
     const precio = useRef ("")
 
@@ -58,6 +60,8 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
                 }
                })
             }else if(props.datos.status=="REC"){
+              setEstado("RECIBIDO")
+            }else if(props.datos.status=="ABI"){
               setEstado("RECIBIDO")
             }else if(props.datos.status=="PEI"){
               setEstado("PEDIDO INFORMACION")
@@ -105,13 +109,12 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
   } else if (vista=="preaceptada") {
     return (
     
-        
-        <Presupuestar setVista={setVista} setEstado={setEstado} ticket={props.datos.ticket} setVolver={props.setVolver} />
+    <Presupuestar setVista={setVista} datos={props.datos} setEstado={setEstado} ticket={props.datos.ticket} setVolver={props.setVolver}  />
       
     )
   }else if(vista=="PRESUPUESTADA"){
     return (
-      < Presupuestada datos={props.datos} estado={estado} setVolver={props.setVolver} setVista={setVista} rechazarOrden={rechazarOrden}  />
+      < Presupuestada datos={props.datos} estado={estado} setVolver={props.setVolver} setVista={setVista} rechazarOrden={rechazarOrden} />
     )
   }else if(vista=="PEDIDO INFORMACION"){
     return (
@@ -186,6 +189,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
             if(resp.data!="bad"){
               props.setEstado("ORDEN EN PROGRESO")
               setShowAlertOrdenAceptada(true)
+              props.datos.status="ABI"
             }
     
 
@@ -308,7 +312,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
 
 
 
-const Presupuestar = (props: {setVista:any,setEstado:any,setVolver:any, ticket:any}) => {
+const Presupuestar = (props: {setVista:any, datos:any,setEstado:any,setVolver:any, ticket:any}) => {
 
   const [presupuestar, setPresupuestar]= useState(true)
   const precio=useRef ("0")
@@ -320,6 +324,7 @@ const Presupuestar = (props: {setVista:any,setEstado:any,setVolver:any, ticket:a
 
     if (precio.current!="0"){
       setShowLoading(true)
+      props.datos.presupuesto_inicial=precio.current
       var formDataToUpload = new FormData();
       formDataToUpload.append("precio", precio.current)
       formDataToUpload.append("ticket", props.ticket)
@@ -337,6 +342,7 @@ const Presupuestar = (props: {setVista:any,setEstado:any,setVolver:any, ticket:a
             if(res.data!="bad"){
               props.setEstado("PRE")
               props.setVista("PRESUPUESTADA")
+              props.datos.status="PRE"
             }
     }).catch((error: any) =>{
       setShowLoading(false)
@@ -351,6 +357,7 @@ const Presupuestar = (props: {setVista:any,setEstado:any,setVolver:any, ticket:a
 
     if (informacion.current!=""){
       var formDataToUpload = new FormData();
+      props.datos.pedido_mas_información=informacion.current
       formDataToUpload.append("masInfo", informacion.current)
       formDataToUpload.append("ticket", props.ticket)
       formDataToUpload.append("estado", "PEI")
@@ -367,6 +374,7 @@ const Presupuestar = (props: {setVista:any,setEstado:any,setVolver:any, ticket:a
         if(res.data!="bad"){
           props.setEstado("PEI")
           props.setVista("PEDIDO INFORMACION")
+          props.datos.status="PEI"
         }
     }).catch((error: any) =>{
 //              setVista(0)
@@ -512,6 +520,7 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
             if(res.data!="bad"){
               props.setEstado("PRE")
               props.setVista("PRESUPUESTADA")
+              props.datos.status="PRE"
             }
     }).catch((error: any) =>{
       setShowLoading(false)
@@ -751,6 +760,8 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
 const Presupuestada = (props:{datos:any, estado:any, setVolver:any, setVista:any, rechazarOrden:any})=> {
 
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false) 
+
+  
   return (
 
     <IonContent>
@@ -870,6 +881,7 @@ const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any
       if(resp.data!="bad"){
         props.setEstado("EN VIAJE")
         props.setVista("EN VIAJE")
+        props.datos.status="EVI"
       }
      })
   }
@@ -1141,6 +1153,7 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
       if(resp.data!="bad"){
         props.setEstado("EN SITIO")
         props.setVista("EN SITIO")
+        props.datos.status="ENS"
       }
      })
   }
@@ -1778,10 +1791,11 @@ const VerDatosCliente = (props:{ticket:any, tipo:any,latitud:any, longitud:any,s
       </div>
       <IonCard id="ionCard-explorerContainer-Proveedor">
         <img id="img-orden" src={datosCliente.imagen}></img>
+        <div id="divSentencias">
         <p>NOMBRE: {datosCliente.nombre}</p>
         <p>APELLIDO: {datosCliente.apellido}</p>
         <p>CALIFICACIÓN: {datosCliente.calificacion}</p>
-
+        </div>
         <IonGrid>
             <IonRow>
             <IonCol id="ioncol-homecliente"  onClick={() => verUbicacion(props.latitud, props.longitud) }  >
