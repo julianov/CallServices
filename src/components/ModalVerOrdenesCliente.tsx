@@ -1055,6 +1055,7 @@ const Finalizada = ( props:{datos:any, setVolver:any, setVista:any, setEstado:an
   
         console.log(res.data)
         if(res.data=="ok"){
+            props.datos.status="RED"
             props.setVolver(false)
         }else{
           setShowAlertConexion(true)
