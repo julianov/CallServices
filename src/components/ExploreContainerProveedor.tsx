@@ -7,7 +7,7 @@ import {Geoposition} from "@ionic-native/geolocation";
 import { Geolocation } from '@capacitor/core/dist/esm/web/geolocation';
 import { useEffect } from 'react';
 import { ordenes } from '../pages/HomeProveedor';
-import OrdenSimple from '../pages/Orden';
+import OrdenSimple from '../pages/PedirOrden';
 import axios from 'axios';
 import Https from '../utilidades/HttpsURL';
 import ModalVerOrdenes from './ModalVerOrdenesProveedor';

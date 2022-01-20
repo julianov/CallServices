@@ -1,11 +1,15 @@
 
 
+#ReseñaColor{
+    background-color: #f3f2ef;
+}
+
 #contenedorCentralReseñas{
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-   
+      
 }
 #contenedorPrincipal{
     width: 100%;

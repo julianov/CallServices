@@ -5,7 +5,7 @@ import { getItem, removeItem, setItem } from "./Storage";
 import './CardProveedor.css';
 import Estrellas from "./Estrellas";
 import { contractSharp } from "ionicons/icons";
-import OrdenSimple from "../pages/Orden";
+import OrdenSimple from "../pages/PedirOrden";
 import Resenas from "./Resenas";
 
 

@@ -1,5 +1,5 @@
 import { IonActionSheet, IonAlert, IonButton, IonCol, IonContent, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonTitle, IonToolbar } from "@ionic/react";
-import { arrowBack, person, close,receipt, help, chatbubble, camera, trash } from "ionicons/icons";
+import { arrowBack, person, close,receipt, help, chatbubble, camera, trash, trendingUpOutline } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router";
 import { getItem, removeItem, setItem } from "../utilidades/Storage";
@@ -13,6 +13,7 @@ import { useRef } from "react";
 import Completarinfo from "../pages/Completarinfo";
 import Estrellas from "../utilidades/Estrellas";
 import Https from "../utilidades/HttpsURL";
+import VerOrdenesCliente from "../pages/VerOrdenes";
 
 const url=Https
 
@@ -75,20 +76,10 @@ const ModalCliente: React.FC<{setIsReg:any, onClose: any; tipoVista: string;
       );
     }
     else{
+
+
       return (
-        <>
-        <IonHeader>
-          <IonToolbar>
-          <IonIcon icon={arrowBack} onClick={() => onClose(null)} slot="start" id="flecha-volver">  </IonIcon>
-  
-          </IonToolbar>
-        </IonHeader>
-        <IonContent>
-          <div id="contenedor-central">
-            <strong>Programados</strong>
-          </div>
-        </IonContent>
-      </>
+        <VerOrdenesCliente clienteEmail={email} setCerrar={onClose} ></VerOrdenesCliente>
       );
     }
    

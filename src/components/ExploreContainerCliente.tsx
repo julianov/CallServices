@@ -1,5 +1,5 @@
 import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonChip, IonCol, IonGrid, IonIcon, IonItem, IonItemDivider, IonLabel, IonList, IonModal, IonRow } from '@ionic/react';
-import { chevronDown, closeCircle } from 'ionicons/icons';
+import { chevronDown, closeCircle, trendingUpOutline } from 'ionicons/icons';
 import React, { useMemo, useRef, useState } from 'react';
 import {Adsense} from '@ctrl/react-adsense';
 
@@ -13,10 +13,11 @@ import { createStore, getDB } from '../utilidades/dataBase';
 import { datosGeneralesVariosProveedores, ordenesCliente, proveedorBuscado } from '../pages/HomeCliente';
 import ModalVerCardProveedor from './ModalVerCardProveedor';
 import ModalVerOrdenesCliente from './ModalVerOrdenesCliente';
-import OrdenSimple from '../pages/Orden';
+import OrdenSimple from '../pages/PedirOrden';
 import Resenas from '../utilidades/Resenas';
 import { datosOrden } from '../utilidades/CardProveedor';
 import axios from 'axios';
+import { type } from 'os';
 
 const getLocation = async () => {
   try {
@@ -53,6 +54,8 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
   const [verProveedor,setVerProveedor]= useState(false);
   const [pediOrden, setPediOrden] = useState(false);
   const [verReseña, setVerReseña] = useState(false);
+
+  const tiipo = useRef("")
 
   const [datosDeOrdenes,setDatosDeOrdenes]=useState<datosOrden>(
     {
@@ -141,7 +144,8 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
             <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={proveedores}  setVerOrden={setVerOrden} setPosicion={setPosicion}></MisOrdenes>
             <h1 id="explorerContainerCliente-titulo">PROVEEDORES DE SERVICIOS EN LA ZONA </h1>             
             <Elements  proveedores={props.proveedores!} setVerEmail={setVerEmail} setItem={setItem} 
-             setPediOrden={setPediOrden}  setVerReseña={setVerReseña}  setVerProveedor={setVerProveedor}/>
+             setPediOrden={setPediOrden}  setVerReseña={setVerReseña}  setVerProveedor={setVerProveedor}
+             tiipo={tiipo} />
           </div>
   
   
@@ -169,7 +173,7 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
               isOpen={verReseña}
               onDidDismiss={() =>setVerReseña(false )} >
               <Resenas
-                tipo={datosDeOrdenes.tipo}
+                tipo={tiipo.current}
                 email_a_ver_reseñas={verEmail}
                 setVolver={setVerReseña} />
           </IonModal>
@@ -241,7 +245,7 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
 
 
 const Elements = (props:{ proveedores: Array<datosGeneralesVariosProveedores> , setVerEmail:any, 
-  setItem:any,setPediOrden:any,  setVerReseña:any, setVerProveedor:any}) => {
+  setItem:any,setPediOrden:any,  setVerReseña:any, setVerProveedor:any,tiipo:any}) => {
 
   var i=0
   //if (props.proveedores!=[]){
@@ -251,7 +255,8 @@ const Elements = (props:{ proveedores: Array<datosGeneralesVariosProveedores> , 
           i=i+1
           //item, imagen personal, distancia, calificación, email, nombre, apellido, tipo
           return (<CardVistaVariosProveedores key={i} item={a.item} personalImg={a.imagenPersonal} distancia={a.distancia} calificacion={a.calificacion} email={a.email} nombre={a.nombre} apellido={a.apellido} tipo={a.tipo} setVerEmail={props.setVerEmail} setItem={props.setItem} 
-            setPediOrden={props.setPediOrden}  setVerReseña={props.setVerReseña} setVerProveedor={props.setVerProveedor}></CardVistaVariosProveedores> ) 
+            setPediOrden={props.setPediOrden}  setVerReseña={props.setVerReseña} setVerProveedor={props.setVerProveedor} 
+            tiipo={props.tiipo} ></CardVistaVariosProveedores> ) 
         })
         }
     </div>
@@ -265,7 +270,7 @@ const Elements = (props:{ proveedores: Array<datosGeneralesVariosProveedores> , 
 
 const CardVistaVariosProveedores= (props:{item:any, personalImg:any ,distancia: any, calificacion:any, 
   email:any, nombre: any, apellido:any, tipo:any, setVerEmail:any, setItem:any,
-  setPediOrden:any,  setVerReseña:any, setVerProveedor:any }) => {
+  setPediOrden:any,  setVerReseña:any, setVerProveedor:any, tiipo:any }) => {
     
     //console.log(props.email + " - "+ props.item)
 
@@ -291,6 +296,8 @@ const CardVistaVariosProveedores= (props:{item:any, personalImg:any ,distancia: 
     const verReseñas = ()=> {
       props.setVerEmail(props.email)
       props.setItem(props.item)
+      console.log("EL TIPO ES: "+props.tipo)
+      props.tiipo.current=props.tipo
       props.setVerReseña(true)
       console.log("y esto se ejecuta mucho?")
 

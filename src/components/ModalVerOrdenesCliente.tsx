@@ -8,7 +8,7 @@ import './Modal.css';
 
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import axios from "axios";
-import { TomarFotografia } from "../pages/Orden";
+import { TomarFotografia } from "../pages/PedirOrden";
 import { Calificacion } from "./ModalVerOrdenesProveedor";
 
 const url=Https
@@ -62,7 +62,6 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
               setEstado("PROVEEDOR EN SITIO")
             }else if(props.datos.status=="RED"){
               setVista("finalizada")
-
             }
         
       }, [])

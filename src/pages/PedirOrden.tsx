@@ -1,4 +1,4 @@
-import './Orden.css';
+import './PedirOrden.css';
 import axios from "axios";
 import Estrellas from "../utilidades/Estrellas";
 
@@ -88,9 +88,6 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
     const enviar =() => {
 
         if (posicionCliente.current!=""){
-
-            console.log("latitud: "+latitudCliente.current)
-            console.log("longitudCliente: "+longitudCliente.current)
 
             setShowLoading(true)
          
@@ -271,8 +268,6 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                         <IonGrid>
                             <IonRow>
                                 <IonCol >
-
-                                
 
                                 <IonItem id="item-completarInfo">
                                         <IonLabel position="floating">DÍAS DISPONIBLES DEL PROVEEDOR</IonLabel>                                    

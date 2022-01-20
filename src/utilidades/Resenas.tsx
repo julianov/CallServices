@@ -9,32 +9,40 @@ import './Resenas.css';
 
 const url=Https
 
-interface reseñados{
-    calificación:string,
-    reseña:string,
-   
-     }
+export interface reseñados{
+  calificación:any
+  resena:any
+}
 
-let reseñas = new Array<reseñados>();
+let resenas = new Array<reseñados>();
 
 
 const Resenas = (props:{email_a_ver_reseñas:any,  tipo:any, setVolver:any}) => {
 
     const [sinReseñas, setSinReseñas] = useState(false)
-    console.log("llego a reseña")
+
 
    //tipo puede ser: "cliente", Proveedor de servicio independiente o Empresa de servicios
-    axios.get(url+"resena/"+props.email_a_ver_reseñas+"/0/"+props.tipo.current).then((resp: { data: any; }) => {
+   useEffect(() => { 
+   axios.get(url+"resena/"+props.email_a_ver_reseñas+"/0/"+props.tipo).then((resp: { data: any; }) => {
       if (resp.data!="bad"){
+        
+        resenas= []
             for (let i=0; i<resp.data.length;i++){               
-                reseñas.push({calificación: resp.data[i].calificación, reseña: resp.data[i].reseña })
+                resenas.push({calificación:resp.data[i].calificación,resena:resp.data[i].resena})
+                
               }
+              setSinReseñas(false)
+              console.log("arreglo: "+JSON.stringify(resenas))
+              console.log("arreglo: "+JSON.stringify(resenas[0]))
         }
         else{
             setSinReseñas(true)
         }
 
       })
+    }, [])
+
       if(sinReseñas){
         return (
             <IonContent >
@@ -57,12 +65,14 @@ const Resenas = (props:{email_a_ver_reseñas:any,  tipo:any, setVolver:any}) => 
       }else{
         return (
             <IonContent >
+              <div id="ReseñaColor">
                 <div id="modalProveedor-flechaVolver">
                     <IonIcon icon={arrowBack} onClick={() => props.setVolver( false)} slot="start" id="flecha-volver">  </IonIcon>
                 </div>
                 <div id="contenedorCentralReseñas">
 
-                <Elementos reseñas={reseñas} />
+                <Elementos reseñas={resenas!} />
+                </div>
                 </div>
             </IonContent>
         
@@ -83,7 +93,7 @@ const Elementos = (props:{ reseñas: Array<reseñados> }) => {
             //item, imagen personal, distancia, calificación, email, nombre, apellido, tipo
             return (
                 
-            <Card key={i} calificación={a.calificación} reseña={a.reseña} ></Card> 
+            <Card key={i} calificacion={a.calificación} reseña={a.resena} ></Card> 
             
             ) 
           })
@@ -94,18 +104,32 @@ const Elementos = (props:{ reseñas: Array<reseñados> }) => {
         
   }
 
-  const Card = (props:{ calificación: string, reseña:string }) => {
+  const Card = (props:{ calificacion: string, reseña:string }) => {
 
-    return(
+    if (props.reseña!=""){
+      return(
         <IonCard id="ionCardOrden">
         <div id="contenedorCamposCentro">
         <h2>CALIFICACIÓN:</h2>
-        <Estrellas calificacion={props.calificación}></Estrellas>
+        <Estrellas calificacion={props.calificacion}></Estrellas>
         <h2>RESEÑA:</h2> 
         <p> {props.reseña} </p>
         </div>
         </IonCard>
     )
+    }else{
+      return(
+        <IonCard id="ionCardOrden">
+        <div id="contenedorCamposCentro">
+        <h2>CALIFICACIÓN:</h2>
+        <Estrellas calificacion={props.calificacion}></Estrellas>
+        <h2>RESEÑA:</h2> 
+        <p>SIN RESEÑA DE CLIENTE</p>
+        </div>
+        </IonCard>
+    )
+    }
+    
 
   }
 export default Resenas;
