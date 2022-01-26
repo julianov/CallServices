@@ -45,7 +45,7 @@ const Resenas = (props:{email_a_ver_reseñas:any,  tipo:any, setVolver:any}) => 
 
       if(sinReseñas){
         return (
-            <IonContent >
+            <IonContent>
             <div id="contenedorCentralReseñas">
 
               <div id="contenedorPrincipal">

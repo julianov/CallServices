@@ -36,6 +36,7 @@
     width: 100%;
     margin-left: 10%;
     margin-right: 10%;
+    margin-top: 25px;
     
 }
 
@@ -82,4 +83,10 @@
 
 #p-estado{
     font-size: small;
+}
+
+#subtituloPedirOrden{
+    font-size: 1.2em;
+    margin-top: 10px;
+    color:black;
 }

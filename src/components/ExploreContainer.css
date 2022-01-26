@@ -205,3 +205,17 @@ height: 100%;
   margin-bottom: 5px;
     
 }
+
+
+#iconoNuevaStatus{
+  color: red;
+  width: 24px;
+  height: 24px;
+}
+
+#iconoDerecha{
+  display: flex;
+  width: 100%;
+  justify-content: right;
+  align-items: right;
+}

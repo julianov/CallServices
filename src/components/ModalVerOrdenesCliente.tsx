@@ -10,6 +10,7 @@ import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import axios from "axios";
 import { TomarFotografia } from "../pages/PedirOrden";
 import { Calificacion } from "./ModalVerOrdenesProveedor";
+import { createStore, removeDB } from "../utilidades/dataBase";
 
 const url=Https
 
@@ -75,6 +76,9 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
           .then((resp: { data: any; }) => {
             if(resp.data!="bad"){
               setEstado("ORDEN RECHAZADA")
+              createStore("ordenesActivas")
+              removeDB(props.datos.ticket.toString())
+              props.setVolver(false)
             }
            })
         
@@ -1056,6 +1060,8 @@ const Finalizada = ( props:{datos:any, setVolver:any, setVista:any, setEstado:an
         if(res.data=="ok"){
             props.datos.status="RED"
             props.setVolver(false)
+            createStore("ordenesActivas")
+            removeDB(props.datos.ticket.toString())
         }else{
           setShowAlertConexion(true)
         }

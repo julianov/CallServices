@@ -15,6 +15,7 @@ import { arrowBack, camera, trash } from 'ionicons/icons';
 import { isSetAccessorDeclaration } from 'typescript';
 import { allowedNodeEnvironmentFlags } from 'process';
 import { BotonDia } from './CompletarRubros';
+import { setDB } from '../utilidades/dataBase';
 
 const url=Https+"orden/"
 
@@ -135,6 +136,8 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                     if(res.data!="bad" && res.data!="ya hay una orden"){
                         ticket.current=res.data
                         setShowAlertOrdenCreada(true)
+                        setDB(res.data.toString(), "ENV")
+
 
                     }
                     else{
@@ -176,7 +179,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
 
                     </div>
                     <div id="contenedorCamposCentro">
-                    <p>INGRESE UN TÍTULO PARA EL SERVICIO</p>
+                    <p id="subtituloPedirOrden">INGRESE UN TÍTULO PARA EL SERVICIO</p>
                     </div>
                     <div id="contenedorCamposIzquierda">
                         <IonItem id="item-Orden">
@@ -185,7 +188,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                         </IonItem>
                         </div>
                         <div id="contenedorCamposCentro">
-                        <p>INGRESE UNA BREVE DESCRIPCIÓN DEL PROBLEMA</p>
+                        <p id="subtituloPedirOrden">INGRESE UNA BREVE DESCRIPCIÓN DEL PROBLEMA</p>
                     </div>
                     <div id="contenedorCamposIzquierda">
  
@@ -374,7 +377,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
 
             <div id="GenerarOrdenContainer">
             <div id="modalProveedor-flechaVolver">
-            <IonIcon icon={arrowBack} onClick={() => props.setVolver({ isOpen: false })} slot="start" id="flecha-volver">  </IonIcon>
+            <IonIcon icon={arrowBack} onClick={() => props.setVolver( false )} slot="start" id="flecha-volver">  </IonIcon>
             </div>
 
             <div id="contenderCentralOrden">
@@ -555,9 +558,7 @@ const LocacionServicio = ( props:{direccion:any, posicionCliente:any, latitudCli
         if(siEsElLugar){
             props.latitudCliente.current=props.posicionCliente.current.split("/")[0]
             props.longitudCliente.current=props.posicionCliente.current.split("/")[1]
-            console.log("es el lugar")
-            console.log("latitud: "+props.latitudCliente.current)
-            console.log("longitudCliente: "+props.longitudCliente.current)
+
     
         }else{
             props.latitudCliente.current="0"
@@ -581,8 +582,8 @@ const LocacionServicio = ( props:{direccion:any, posicionCliente:any, latitudCli
             
             <div id="contenedorCamposCentro">
 
-            <p>ESPECIFIQUE LA DIRECCIÓN DE LA LOCACIÓN DONDE SOLICITA EL SERVICIO</p>
-            <p >La misma debe ser lo más específica posible en cuanto a dirección y numeración de calle</p>
+            <p >ESPECIFIQUE LA DIRECCIÓN DE LA LOCACIÓN DONDE SOLICITA EL SERVICIO</p>
+            <p id="subtituloPedirOrden" >La misma debe ser lo más específica posible en cuanto a dirección y numeración de calle</p>
             </div>
             <div id="contenedorCamposIzquierda">
             <IonItem id="item-Orden">

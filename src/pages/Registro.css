@@ -122,6 +122,7 @@ ion-button{
 #register-title{
     position: relative;
     font-weight: bold;
+    font-size: 0.9em;
 }
 
 #registro-iongrid{
@@ -164,5 +165,10 @@ ion-button{
 
 #boton-registro{
     width: 95%;
+    margin-top: 15px;
+}
+
+#boton-registro-2{
+    width: 75%;
     margin-top: 15px;
 }

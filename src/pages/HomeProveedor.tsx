@@ -1,4 +1,4 @@
-import { IonAvatar, IonButton, IonButtons, IonChip, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonItemOptions, IonItemSliding, IonLabel, IonList, IonLoading, IonMenuButton, IonModal, IonPage, IonRow, IonSearchbar, IonTitle, IonToolbar} from '@ionic/react';
+import { IonAlert, IonAvatar, IonButton, IonButtons, IonChip, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonItemOptions, IonItemSliding, IonLabel, IonList, IonLoading, IonMenuButton, IonModal, IonPage, IonRow, IonSearchbar, IonTitle, IonToolbar} from '@ionic/react';
 import { Icon } from 'ionicons/dist/types/components/icon/icon';
 import React, { Component, useEffect, useRef, useState } from 'react';
 import ExploreContainer from '../components/ExploreContainerCliente';
@@ -81,6 +81,9 @@ const HomeProveedor = (props:{setIsReg:any,
 
   const [showInicializando,setShowInicializando]=useState(false)
 
+  const [showAlertUbicación, setShowAlertUbicación] = useState(false)
+
+
   getLocation()
 
   const [misOrdenes, setMisOrdenes] = useState <ordenes>(
@@ -113,11 +116,30 @@ const HomeProveedor = (props:{setIsReg:any,
 
   useEffect(() => {
 
+    const ubicacion = getLocation();
+      ubicacion.then((value)=>{
+      
+      if (value==0){
+
+        setShowAlertUbicación(true)
+
+      }else{
+        axios.get(url+"proveedor/ubicacion/"+props.email+"/"+value).then((resp: { data: any; }) => {
+
+          if (resp.data!="bad"){
+
+           
+          }else{
+            setShowAlertUbicación(true)
+          }
+        });  
+      }
+    })
+
         axios.get(url+"orden/misordenes/"+"proveedor/"+props.email).then((resp: { data: any; }) => {
           if (resp.data!="bad"){
             setMisOrdenes(resp.data)            
           }
-
         })
    
   }, []);
@@ -186,6 +208,16 @@ const HomeProveedor = (props:{setIsReg:any,
           
           <ExploreContainerProveedor  ordenes={misOrdenes} emailProveedor={props.email} />
          
+
+          <IonAlert 
+            isOpen={showAlertUbicación} 
+            onDidDismiss={() => setShowAlertUbicación(false)} 
+            cssClass='my-custom-class'
+            header={'Habilitar acceso ubicación'}
+            subHeader={''}
+            message={'Debe habilitar el acceso a la ubicación en el dispositivo'}
+            buttons={['OK']}
+                />
 
 
           </div>

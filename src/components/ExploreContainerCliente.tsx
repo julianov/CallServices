@@ -1,5 +1,5 @@
 import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonChip, IonCol, IonGrid, IonIcon, IonItem, IonItemDivider, IonLabel, IonList, IonModal, IonRow } from '@ionic/react';
-import { chevronDown, closeCircle, trendingUpOutline } from 'ionicons/icons';
+import { alert, chevronDown, closeCircle, trendingUpOutline } from 'ionicons/icons';
 import React, { useMemo, useRef, useState } from 'react';
 import {Adsense} from '@ctrl/react-adsense';
 
@@ -9,7 +9,7 @@ import { Geolocation } from '@capacitor/core/dist/esm/web/geolocation';
 import { useEffect } from 'react';
 import Estrellas from '../utilidades/Estrellas';
 import ResultadoBusqueda from '../utilidades/ResultadoBusqueda';
-import { createStore, getDB } from '../utilidades/dataBase';
+import { createStore, getDB, setDB } from '../utilidades/dataBase';
 import { datosGeneralesVariosProveedores, ordenesCliente, proveedorBuscado } from '../pages/HomeCliente';
 import ModalVerCardProveedor from './ModalVerCardProveedor';
 import ModalVerOrdenesCliente from './ModalVerOrdenesCliente';
@@ -180,10 +180,7 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
           )
     
         }else if(pediOrden){
-    
-       
-      
-         
+
           return (
     
             <IonModal
@@ -474,8 +471,14 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
     const [mensaje1, setMensaje1] = useState("")
     const [mensaje2, setMensaje2] = useState("")
 
+    createStore("ordenesActivas")
+
+    const ticketeck = useRef <string>("")
+    const [nuevoStatus,setNuevoStatus]=useState(false)
 
     useEffect(() => {
+
+      ticketeck.current= props.ticket 
 
     if (props.status=="ENV"){
       setEstado("PEDIDO DE TRABAJO ENVIADO")
@@ -503,10 +506,33 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
       setMensaje1("CALIFIQUE AL PROVEEDOR DEL SERVICIO")
     }
 
+    getDB(ticketeck.current.toString( )).then(res => {
+      if(res!=undefined || res!=null){
+       //arreglo.push(res)
+       //aca copia todo, el numero 1 del arreglo no es el rubro sino la primer letra del rubro y así.
+        console.log("LO QUE HAY EN ESTA BASE DE DATOS ES: "+ res)
+        if(res!=props.status){
+          setNuevoStatus(true)
+          setDB(ticketeck.current, props.status)
+
+        }  
+        
+      }else{
+        setDB(ticketeck.current, props.status)
+      }
+
+    })
+
   }, [props.status])
 
+
+    if(nuevoStatus){
       return (
         <IonCard id="ionCard-explorerContainer-Cliente" onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
+
+        <div id="iconoDerecha">            
+          <IonIcon icon={alert} id="iconoNuevaStatus" ></IonIcon>
+        </div > 
           <IonGrid>
             <IonRow  id="row-busqueda">
               <IonCol   id="col-explorerContainerCliente">
@@ -529,6 +555,34 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
           </IonGrid>
         </IonCard>
       )    
+    }else{
+      return (
+        <IonCard id="ionCard-explorerContainer-Cliente" onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
+
+          <IonGrid>
+            <IonRow  id="row-busqueda">
+              <IonCol   id="col-explorerContainerCliente">
+                <img id="imgOrden" src={props.imagen}></img>
+              </IonCol>
+            </IonRow>
+            <IonRow  id="row-busqueda">
+              <IonCol   id="col-explorerContainerCliente">
+                <IonCardSubtitle>TIPO: {props.tipo.toUpperCase( )}</IonCardSubtitle>
+                <IonCardSubtitle>STATUS: {estado}</IonCardSubtitle>
+                <IonCardSubtitle>TICKET: {props.ticket}</IonCardSubtitle>  
+              </IonCol>
+            </IonRow>
+            <IonRow  id="row-busqueda">
+              <IonCol   id="col-explorerContainerCliente">
+                <IonCardSubtitle>{mensaje1}</IonCardSubtitle>
+                <IonCardSubtitle>{mensaje2}</IonCardSubtitle>
+              </IonCol>
+            </IonRow> 
+          </IonGrid>
+        </IonCard>
+      )    
+    }
+      
 }
 
 export const Categorias: React.FC = () => {

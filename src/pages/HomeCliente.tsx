@@ -1,4 +1,4 @@
-import { IonAvatar, IonButton, IonButtons, IonChip, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonItemOptions, IonItemSliding, IonLabel, IonList, IonLoading, IonMenuButton, IonModal, IonPage, IonPopover, IonRow, IonSearchbar, IonTitle, IonToolbar} from '@ionic/react';
+import { IonAlert, IonAvatar, IonButton, IonButtons, IonChip, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonItemOptions, IonItemSliding, IonLabel, IonList, IonLoading, IonMenuButton, IonModal, IonPage, IonPopover, IonRow, IonSearchbar, IonTitle, IonToolbar} from '@ionic/react';
 import { Icon } from 'ionicons/dist/types/components/icon/icon';
 import React, { Component, useEffect, useMemo, useRef, useState } from 'react';
 import ExploreContainer from '../components/ExploreContainerCliente';
@@ -18,14 +18,18 @@ import Https from '../utilidades/HttpsURL';
 
 import { Database } from '@ionic/storage';
 import { clearDB, createStore, getDB, removeDB, setDB } from '../utilidades/dataBase';
+import { LocationAccuracy } from '@ionic-native/location-accuracy';
 
 
 const url=Https
 
 let posicion: string | number;
 
+
 const getLocation = async () => {
+  
   try {
+      Geolocation.watchPosition()
       const position = await Geolocation.getCurrentPosition();
       posicion=position.coords.latitude +"/"+ position.coords.longitude
       return posicion;
@@ -106,6 +110,8 @@ const HomeCliente = (props:{setIsReg:any,
 
   const [reload,setRealad]=useState(false)
 
+  const [showAlertUbicación, setShowAlertUbicación] = useState(false)
+
   const [misOrdenes, setMisOrdenes] = useState <ordenesCliente>(
     {
       tipo:"",
@@ -152,30 +158,30 @@ const HomeCliente = (props:{setIsReg:any,
         const ubicacion = getLocation();
         ubicacion.then((value)=>{
           
-          console.log(value)
+          console.log("muestra:"+value)
+          if (value==0){
+            setShowCargandoProveedores(false)
+
+            setShowAlertUbicación(true)
+
+          }
           axios.get(url+"home/cliente/"+value).then((resp: { data: any; }) => {
 
-            
+            console.log("esto es lo que devolvió: "+resp.data)
             if (resp.data!="bad"){
 
               proveedores= []
-
               for (let i=0; i<resp.data.length;i++){               
                 proveedores.push({email: resp.data[i].email, nombre: resp.data[i].nombre , apellido: resp.data[i].apellido , imagenPersonal: resp.data[i].certificado, item: resp.data[i].item , tipo: resp.data[i].tipo, distancia:resp.data[i].distancia, calificacion:resp.data[i].calificacion})
               }
-
               setDB("proveedores", JSON.stringify(proveedores))
               setShowCargandoProveedores(false)
-              
             }else{
               if (primeraVezProveedores.current==undefined || primeraVezProveedores ){
                 setShowCargandoProveedores(false)
               }
-    
             }
-            
           });  
-        
         });
 
         axios.get(url+"orden/misordenes/"+"cliente/"+props.email).then((resp: { data: any; }) => {
@@ -263,6 +269,17 @@ const HomeCliente = (props:{setIsReg:any,
           busquedaDatosProveedores={proveedorBuscadoHook}
           setShowModal={setShowModal}
           setTipoDeVistaEnModal={setTipoDeVistaEnModal } />
+
+          <IonAlert 
+            isOpen={showAlertUbicación} 
+            onDidDismiss={() => setShowAlertUbicación(false)} 
+            cssClass='my-custom-class'
+            header={'HABILITAR ACCESO A UBICACIÓN'}
+            animated={true}
+            subHeader={''}
+            message={'Debe habilitar el acceso a la ubicación en el dispositivo'}
+            buttons={['ENTENDIDO']}
+                />
 
           </div>
         </IonContent>

@@ -298,17 +298,17 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
         <a onClick={()=>setCount("registro inicio")} id="flechaIngresar">
               <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro">  </IonIcon>
         </a>
-
         <div id="contenedorPrincipal">
           <div id="contenedorHijoCentrado">
        
             <IonTitle id="register-title">SELECCIONE TIPO DE PROVEEDOR DE SERVICIO</IonTitle>
        
       
-          <IonButton shape="round" onClick={() => { setCount("proveedor independiente"); } } id="boton-registro">Proveedor de servicio independiente</IonButton>
-          <IonButton shape="round" onClick={() => { setCount("proveedor empresa"); } } id="boton-registro">Empresa proveedora de servicio</IonButton>
+          <IonButton shape="round" onClick={() => { setCount("proveedor independiente"); } } id="boton-registro-2">Proveedor independiente</IonButton>
+          <IonButton shape="round" onClick={() => { setCount("proveedor empresa"); } } id="boton-registro-2">Empresa de servicio</IonButton>
         </div>
         </div>
+        
         </>
     );
   }
