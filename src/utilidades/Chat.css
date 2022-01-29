@@ -1,0 +1,55 @@
+
+
+
+
+#p-textoMensaje{
+    font-size:smaller
+}
+
+#contenedorMensajesChat{
+   
+    width: 100%;
+}
+
+#cardMensajeChat{
+    width: auto;
+    height: 70%;
+}
+
+#col1{
+    width: 35%;
+    border:solid;
+    border-color: red;
+}
+
+#col2{
+    width: 75%;
+    border:solid;
+    border-color: red;
+}
+
+
+#div1{
+    float: left;
+    width: 80%;
+}
+
+#div2{
+    float: right;
+    width: 20%;
+}
+
+#chatContenedorPrincipal{
+    height: max-content;
+    border: solid;
+    border-color: red;
+
+}
+
+
+#ionCardMensaje{
+    overflow: auto;
+    height:400px;
+    display:flex;
+    flex-direction:column-reverse;
+}

@@ -11,6 +11,7 @@ import axios from "axios";
 import { TomarFotografia } from "../pages/PedirOrden";
 import { Calificacion } from "./ModalVerOrdenesProveedor";
 import { createStore, removeDB } from "../utilidades/dataBase";
+import Chat from "../utilidades/Chat";
 
 const url=Https
 
@@ -134,25 +135,10 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
         )
       }else if (vista=="chat") {
         return(
-        <><Chatear estado={estado} email_proveedor={props.datos.email_proveedor} email_cliente={props.emailCliente} setVista={setVista} setAlert={setShowAlertInconvenienteChat} />
+        <>
+        <Chat email={props.emailCliente}  ticket={props.datos.ticket} setVolver={props.setVolver} />
         
-        <IonAlert
-            isOpen={showAlertInconvenienteChat}
-            onDidDismiss={() => setShowAlertInconvenienteChat(false)}
-            cssClass='my-custom-class'
-            header={'NO ES POSIBLE ABRIR COMUNICACIÓN CON EL PROVEEDOR'}
-            subHeader={''}
-            message={'Para poder dialogar con el proveedor este debe aceptar la orden de trabajo'}
-            buttons={[
-              {
-                text: 'OK',
-                role: 'cancel',
-                cssClass: 'secondary',
-                handler: blah => {
-                  setVista("primero");
-                }
-              }
-            ]} /></>
+        </>
         )
       }else{
 
