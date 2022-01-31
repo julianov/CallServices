@@ -7,7 +7,7 @@ import CardProveedor from "../utilidades/CardProveedor";
 import { removeItem } from "../utilidades/Storage";
 import Https from "../utilidades/HttpsURL";
 import React, { useEffect, useRef, useState } from 'react';
-import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItemDivider, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent, IonDatetime, IonCheckbox, IonLoading, IonTitle } from '@ionic/react';
+import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItemDivider, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent, IonDatetime, IonCheckbox, IonLoading, IonTitle, IonSegment, IonSegmentButton } from '@ionic/react';
 import { Photo, usePhotoGallery } from "../hooks/usePhotoGallery";
 import { base64FromPath } from '@ionic/react-hooks/filesystem';
 import { b64toBlob } from '../utilidades/b64toBlob';
@@ -549,21 +549,25 @@ export const TomarFotografia = (props: {imagen:any, setFilepath:any}) => {
 const LocacionServicio = ( props:{direccion:any, posicionCliente:any, latitudCliente:any, longitudCliente:any } ) =>{
 
     const [siEsElLugar, setSiEsElLugar] = useState(true)
+    const [domicilio, setDomicilio] = useState("enmicasa")
+
 
   //  useEffect(() => {
      /*   console.log("estamos en useEffects")
         props.latitudCliente.current=props.posicionCliente.current.split("/")[0]
         props.longitudCliente.current=props.posicionCliente.current.split("/")[1]
         */
-        if(siEsElLugar){
-            props.latitudCliente.current=props.posicionCliente.current.split("/")[0]
-            props.longitudCliente.current=props.posicionCliente.current.split("/")[1]
 
-    
-        }else{
-            props.latitudCliente.current="0"
-            props.longitudCliente.current="0"
-        }
+      
+    if(domicilio=="enmicasa"){
+        props.latitudCliente.current=props.posicionCliente.current.split("/")[0]
+        props.longitudCliente.current=props.posicionCliente.current.split("/")[1]
+    }else{
+        props.latitudCliente.current="0"
+        props.longitudCliente.current="0"
+    }
+        
+     
     //}, [siEsElLugar]);
 
    
@@ -572,14 +576,19 @@ const LocacionServicio = ( props:{direccion:any, posicionCliente:any, latitudCli
 
         <div id="contenedorCamposCentro">
             <p>¿SE ENCUENTRA ACTUALMENTE EN EL DOMICILIO DONDE SE REALIZARÁ EL SERVICIO?</p>
-            </div>
+            
        
         
-            <IonItem id="item-Orden">
-                <IonLabel>SI</IonLabel>
-                <IonCheckbox checked={siEsElLugar} onIonChange={e => setSiEsElLugar(e.detail.checked)} /> 
-            </IonItem >
-            
+         
+            <IonSegment mode="ios" value={domicilio} select-on-focus={true} onIonChange={e => setDomicilio(  e.detail.value!)} >
+                <IonSegmentButton value="enmicasa">
+                    <IonLabel>SERVICIO EN MI DOMICILIO</IonLabel>
+                </IonSegmentButton>
+                <IonSegmentButton value="otrolugar">
+                    <IonLabel>SERVICIO EN OTRO LUGAR</IonLabel>
+                </IonSegmentButton>
+            </IonSegment>
+            </div>
             <div id="contenedorCamposCentro">
 
             <p >ESPECIFIQUE LA DIRECCIÓN DE LA LOCACIÓN DONDE SOLICITA EL SERVICIO</p>

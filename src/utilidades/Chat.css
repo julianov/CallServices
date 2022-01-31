@@ -6,14 +6,30 @@
     font-size:smaller
 }
 
-#contenedorMensajesChat{
-   
-    width: 100%;
+#p-textoMensaje2{
+    font-size:smaller
 }
+
 
 #cardMensajeChat{
     width: auto;
-    height: 70%;
+    max-width: 75%;
+    height: auto;
+    float:right;
+    text-align: right;
+    padding: 5px;
+    background-color: #75C9F1;
+}
+
+#cardMensajeChat2{
+    width: auto;
+    max-width: 75%;
+    height: auto;
+    float:left;
+    background-color:#0BE754;
+    text-align: left;
+    padding: 5px;
+
 }
 
 #col1{
@@ -41,15 +57,60 @@
 
 #chatContenedorPrincipal{
     height: max-content;
-    border: solid;
-    border-color: red;
-
+   
 }
 
+
+
+
+#p-textoMensajehora{
+    color: black;
+    font-size:x-small;
+    justify-content: right;
+}
+
+
+#contenedorMensajesFecha{
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+}
+
+/*-----------------------------------------------------------*/
 
 #ionCardMensaje{
     overflow: auto;
     height:400px;
     display:flex;
+    flex-direction:column;
+    padding-bottom: 25px;
+}
+
+#Mensajes{
+    display: flex;
     flex-direction:column-reverse;
+    width: 100%;
+    overflow: auto;
+    height:400px;
+   
+}
+
+#p-textoMensaje-dia1{
+    color: black;
+    font-size:small;
+    justify-content: center;
+    float: center;
+}
+
+#contenedorMensajesChat{
+    width: 90%;
+    float: right;
+}
+
+#contenedorMensajesChat2{
+ width: 90%;
+ float: left;
 }

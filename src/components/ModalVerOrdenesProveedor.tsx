@@ -7,6 +7,7 @@ import Https from "../utilidades/HttpsURL";
 import './Modal.css';
 
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
+import Chat from "../utilidades/Chat";
 
 const url=Https
 
@@ -84,9 +85,6 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
 
 
       const rechazarOrden = ()=> {
-
-        if (estado=="RECIBIDO"){
-
           axios.get(url+"orden/cambiarestado/"+props.datos.ticket+"/"+props.datos.tipo+"/"+"REX", {timeout: 7000})
           .then((resp: { data: any; }) => {
 
@@ -94,9 +92,8 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
               setEstado("ORDEN RECHAZADA")
             }
     
-
            })
-        }
+        
 
       }
    
@@ -143,8 +140,9 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
   }else if (vista=="chat") {
     return(
       <>
-      <Chatear estado={estado} email_proveedor={props.emailProveedor} email_cliente={props.datos.email_cliente} setVista={setVista} setAlert={setShowAlertInconvenienteChat} />
-        
+
+      <Chat email={props.emailProveedor}  ticket={props.datos.ticket} setVolver={props.setVolver} />
+
       <IonAlert
             isOpen={showAlertInconvenienteChat}
             onDidDismiss={() => setShowAlertInconvenienteChat(false)}
@@ -785,6 +783,11 @@ const Presupuestada = (props:{datos:any, estado:any, setVolver:any, setVista:any
                   <IonIcon icon={eye} /> </IonRow>
                   <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENTE</small></IonRow>
                 </IonCol>
+                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={chatbox} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
+                </IonCol>
               </IonRow>
             </IonGrid>
         </IonCard>
@@ -910,7 +913,12 @@ const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any
                 <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
                   <IonRow id="ionrow-homecliente">
                   <IonIcon icon={eye} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENT</small></IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENTE</small></IonRow>
+                </IonCol>
+                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={chatbox} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
                 </IonCol>
               </IonRow>
             </IonGrid>
@@ -1035,7 +1043,12 @@ const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any
                 <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
                   <IonRow id="ionrow-homecliente">
                   <IonIcon icon={eye} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENT</small></IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENTE</small></IonRow>
+                </IonCol>
+                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={chatbox} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
                 </IonCol>
               </IonRow>
             </IonGrid>
@@ -1184,7 +1197,12 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
                 <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
                   <IonRow id="ionrow-homecliente">
                   <IonIcon icon={eye} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENT</small></IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENTE</small></IonRow>
+                </IonCol>
+                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={chatbox} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
                 </IonCol>
               </IonRow>
             </IonGrid>
@@ -1309,7 +1327,12 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
                 <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
                   <IonRow id="ionrow-homecliente">
                   <IonIcon icon={eye} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENT</small></IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENTE</small></IonRow>
+                </IonCol>
+                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={chatbox} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
                 </IonCol>
               </IonRow>
             </IonGrid>
@@ -1450,7 +1473,12 @@ const EnSitio  = (props:{datos:any, setVolver:any, setVista:any, estado:any, set
                 <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
                   <IonRow id="ionrow-homecliente">
                   <IonIcon icon={eye} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENT</small></IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENTE</small></IonRow>
+                </IonCol>
+                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={chatbox} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
                 </IonCol>
               </IonRow>
             </IonGrid>
@@ -1576,7 +1604,12 @@ const EnSitio  = (props:{datos:any, setVolver:any, setVista:any, estado:any, set
                 <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
                   <IonRow id="ionrow-homecliente">
                   <IonIcon icon={eye} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENT</small></IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENTE</small></IonRow>
+                </IonCol>
+                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={chatbox} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
                 </IonCol>
               </IonRow>
             </IonGrid>
