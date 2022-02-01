@@ -33,6 +33,7 @@ const Chat = (props:{email:any,  ticket:any, setVolver:any}) => {
 
         axios.get(url+"chat/"+props.ticket).then((resp: { data: any; }) => {
             if (resp.data!="bad"){
+                console.log("lo que llego es: "+JSON.stringify(resp.data))
                 for (let i=0; i<resp.data.length;i++){
                     let dia=""
                     if(i==0){
@@ -42,11 +43,10 @@ const Chat = (props:{email:any,  ticket:any, setVolver:any}) => {
                         dia=resp.data[i].dia
                     }    
                     
-                    msg.push({usuario:resp.data[i].user,mensaje:resp.data[i].mensaje, dia:dia, hora:resp.data[i].hora}) 
-                    //arregloMensajes.push({usuario:resp.data[i].user,mensaje:resp.data[i].mensaje, dia:dia, hora:resp.data[i].hora})
-                                      
-                    
-                   
+                   msg.push({usuario:resp.data[i].user,mensaje:resp.data[i].mensaje, dia:dia, hora:resp.data[i].hora}) 
+
+                    //setArregloMensajes([...arregloMensajes, {usuario:resp.data[i].user,mensaje:resp.data[i].mensaje, dia:dia, hora:resp.data[i].hora} ] )
+
                 }
                 setMensaje("")
                 setArregloMensajes(msg.reverse())
@@ -67,12 +67,14 @@ const Chat = (props:{email:any,  ticket:any, setVolver:any}) => {
             axios.get(url+"chat/mensaje/"+props.email+"/"+props.ticket+"/"+mensaje+"/"+dia+"/"+hora).then((resp: { data: any; }) => {
                 
                 if (resp.data!="bad"){
-                    msg.push({usuario:props.email,mensaje:mensaje, dia:date.getDate()+"-"+date.getMonth()+1+"-"+date.getFullYear() , hora:date.getHours()+":"+date.getMinutes()}) 
+                    //msg=msg.reverse()
+                    //msg.push({usuario:props.email,mensaje:mensaje, dia:date.getDate()+"-"+date.getMonth()+1+"-"+date.getFullYear() , hora:date.getHours()+":"+date.getMinutes()}) 
+                    
+                    setArregloMensajes([ {usuario:props.email,mensaje:mensaje, dia:date.getDate()+"-"+date.getMonth()+1+"-"+date.getFullYear() , hora:date.getHours()+":"+date.getMinutes()} , ...arregloMensajes] )
                 }
               }); 
               //setNuevoMensaje(nuevoMensaje+1)
-              console.log(msg)
-              setArregloMensajes(msg)
+             
               setHayMensajes(true)
               setMensaje("")
         }
@@ -144,16 +146,13 @@ const Chat = (props:{email:any,  ticket:any, setVolver:any}) => {
 
 const ElementosMensaje = (props:{miemail:string,mensajes: Array<mensajes> }) => {
 
-
-
-
+    console.log("el arreglo es: "+JSON.stringify(props.mensajes))
     var i=0
       return (
         <div id="Mensajes">
           {props.mensajes.map((a) => {
             i=i+1
             
-            console.log(a.mensaje)
             if(props.miemail==a.usuario){
                 return (
                     <Card key={i} usuario={a.usuario} mensaje={a.mensaje} dia={a.dia} hora={a.hora} ></Card> 
