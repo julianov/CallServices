@@ -1,4 +1,4 @@
-import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCheckbox, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonLoading, IonRow, IonTitle } from "@ionic/react";
+import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCheckbox, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonLoading, IonRow, IonSegment, IonSegmentButton, IonTitle } from "@ionic/react";
 import { arrowBack, chatbox, eye, location } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import { isConstructorDeclaration, isSetAccessorDeclaration } from "typescript";
@@ -47,15 +47,15 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
 
     const precio = useRef ("")
 
+    const desdeDondeEstoy=useRef("")
+
 
     useEffect(() => {
-            console.log("EL ESTADO ES: "+props.datos.status)
             if (props.datos.status=="ENV"){
               setEstado("GENERADO POR CLIENTE")
               axios.get(url+"orden/cambiarestado/"+props.datos.ticket+"/"+props.datos.tipo+"/"+"REC", {timeout: 7000})
               .then((resp: { data: any; }) => {
 
-                console.log("lo que llego al cambiar el estado de la orden es: "+resp.data)
                 if(resp.data!="bad"){
                   setEstado("RECIBIDO")
                 }
@@ -99,33 +99,44 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
    
   if(vista=="primero"){
 
+    desdeDondeEstoy.current="primero"
     return (
 
       <Primero datos={props.datos} setVolver={props.setVolver} estado={estado} setEstado={setEstado} setVista={setVista} rechazarOrden={rechazarOrden} />
       )
   } else if (vista=="preaceptada") {
+    desdeDondeEstoy.current="preaceptada"
+
     return (
-    
     <Presupuestar setVista={setVista} datos={props.datos} setEstado={setEstado} ticket={props.datos.ticket} setVolver={props.setVolver}  />
       
     )
   }else if(vista=="PRESUPUESTADA"){
+    desdeDondeEstoy.current="PRESUPUESTADA"
+
     return (
       < Presupuestada datos={props.datos} estado={estado} setVolver={props.setVolver} setVista={setVista} rechazarOrden={rechazarOrden} />
     )
   }else if(vista=="PEDIDO INFORMACION"){
+    desdeDondeEstoy.current="PEDIDO INFORMACION"
     return (
       < NuevaInfo datos={props.datos} estado={estado} setVista={setVista} setEstado={setEstado} setVolver={props.setVolver} rechazarOrden={rechazarOrden} />
     )
   }else if(vista=="ACEPTADA"){
+    desdeDondeEstoy.current="ACEPTADA"
+
     return(
       < OrdenAceptada datos={props.datos} setVolver={props.setVolver} setVista={setVista} estado={estado} setEstado={setEstado} />
     )
   }else if(vista=="EN VIAJE"){
+    desdeDondeEstoy.current="EN VIAJE"
+
     return(
       < EnViaje datos={props.datos} setVolver={props.setVolver} setVista={setVista} estado={estado} setEstado={setEstado} />
     )
   }else if(vista=="EN SITIO"){
+    desdeDondeEstoy.current="EN SITIO"
+
     return(
       < EnSitio datos={props.datos} setVolver={props.setVolver} setVista={setVista} estado={estado} setEstado={setEstado} />
     )
@@ -141,7 +152,7 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
     return(
       <>
 
-      <Chat email={props.emailProveedor}  ticket={props.datos.ticket} setVolver={props.setVolver} />
+      <Chat email={props.emailProveedor}  ticket={props.datos.ticket} setVolver={props.setVolver} setVista={setVista} desdeDondeEstoy={desdeDondeEstoy.current} />
 
       <IonAlert
             isOpen={showAlertInconvenienteChat}
@@ -312,7 +323,8 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
 
 const Presupuestar = (props: {setVista:any, datos:any,setEstado:any,setVolver:any, ticket:any}) => {
 
-  const [presupuestar, setPresupuestar]= useState(true)
+  const [presupuestar, setPresupuestar]= useState("SI")
+
   const precio=useRef ("0")
   const informacion= useRef("")
 
@@ -338,7 +350,7 @@ const Presupuestar = (props: {setVista:any, datos:any,setEstado:any,setVolver:an
           }).then(function(res: any){
             setShowLoading(false)
             if(res.data!="bad"){
-              props.setEstado("PRE")
+              props.setEstado("PRESUPUESTADA")
               props.setVista("PRESUPUESTADA")
               props.datos.status="PRE"
             }
@@ -370,7 +382,7 @@ const Presupuestar = (props: {setVista:any, datos:any,setEstado:any,setVolver:an
       }).then(function(res: any){
 
         if(res.data!="bad"){
-          props.setEstado("PEI")
+          props.setEstado("PEDIDO DE INFORMACION")
           props.setVista("PEDIDO INFORMACION")
           props.datos.status="PEI"
         }
@@ -383,7 +395,7 @@ const Presupuestar = (props: {setVista:any, datos:any,setEstado:any,setVolver:an
     
   }
 
-  if (presupuestar){
+  if (presupuestar=="SI"){
     
     return (
       <IonContent>
@@ -404,11 +416,17 @@ const Presupuestar = (props: {setVista:any, datos:any,setEstado:any,setVolver:an
 
         <p>¿ESTÁ EN CONDICIONES DE PRESUPUESTAR EL TRABAJO?</p>
         <div id="contenederCentrarItem">
-          <IonItem id="item-Orden">
-            <IonLabel>SI</IonLabel>
-            <IonCheckbox checked={presupuestar} onIonChange={e => setPresupuestar(e.detail.checked)} />
-          </IonItem>
-          </div>
+
+          <IonSegment mode="ios" value={presupuestar} select-on-focus={true} onIonChange={e => setPresupuestar(  e.detail.value!)} >
+            <IonSegmentButton value="SI">
+              <IonLabel>SI</IonLabel>
+            </IonSegmentButton>
+            <IonSegmentButton value="NO">
+              <IonLabel>NO</IonLabel>
+            </IonSegmentButton>
+          </IonSegment>
+
+        </div>
           <p>INGRESE PRECIO ESTIMATIVO</p>
           <div id="contenederCentrarItem">
           <IonItem id="item-Orden">
@@ -454,10 +472,16 @@ const Presupuestar = (props: {setVista:any, datos:any,setEstado:any,setVolver:an
 
         <p>¿ESTÁ EN CONDICIONES DE PRESUPUESTAR EL TRABAJO?</p>
         <div id="contenederCentrarItem">
-          <IonItem id="item-Orden">
-            <IonLabel>SI</IonLabel>
-            <IonCheckbox checked={presupuestar} onIonChange={e => setPresupuestar(e.detail.checked)} />
-          </IonItem>
+
+          <IonSegment mode="ios" value={presupuestar} select-on-focus={true} onIonChange={e => setPresupuestar(  e.detail.value!)} >
+            <IonSegmentButton value="SI">
+              <IonLabel>SI</IonLabel>
+            </IonSegmentButton>
+            <IonSegmentButton value="NO">
+              <IonLabel>NO</IonLabel>
+            </IonSegmentButton>
+          </IonSegment>
+
           </div>
           <p>INDIQUE LA INFORMACIÓN QUE NECESITA DEL CLIENTE PARA PRESUPUESTAR</p>
           <div id="contenederCentrarItem">
@@ -516,7 +540,7 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
           }).then(function(res: any){
             setShowLoading(false)
             if(res.data!="bad"){
-              props.setEstado("PRE")
+              props.setEstado("PRESUPUESTADA")
               props.setVista("PRESUPUESTADA")
               props.datos.status="PRE"
             }
@@ -562,6 +586,11 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
                   <IonRow id="ionrow-homecliente">
                   <IonIcon icon={location} /> </IonRow>
                   <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DEL CLIENTE</small></IonRow>
+                </IonCol>
+                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={chatbox} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
                 </IonCol>
               </IonRow>
             </IonGrid>
@@ -666,6 +695,11 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
                   <IonRow id="ionrow-homecliente">
                   <IonIcon icon={eye} /> </IonRow>
                   <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENTE</small></IonRow>
+                </IonCol>
+                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={chatbox} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
                 </IonCol>
               </IonRow>
             </IonGrid>
@@ -1727,7 +1761,6 @@ const Finalizar  = (props:{datos:any, setVolver:any, setVista:any, estado:any, s
           data:formDataToUpload
       }).then(function(res: any){
   
-        console.log(res.data)
         if(res.data=="ok"){
             props.setVolver(false)
         }else{
@@ -1837,13 +1870,6 @@ const VerDatosCliente = (props:{ticket:any, tipo:any,latitud:any, longitud:any,s
             <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
           </IonCol>
 
-          <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
-            <IonRow id="ionrow-homecliente">
-            <IonIcon icon={chatbox} /> </IonRow>
-            <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
-          </IonCol>
-
-
             </IonRow>
           </IonGrid>
 
@@ -1855,24 +1881,7 @@ const VerDatosCliente = (props:{ticket:any, tipo:any,latitud:any, longitud:any,s
 }
 
 
-const Chatear = (props:{estado:any, email_proveedor:any, email_cliente:any, setVista:any, setAlert:any})=>{
 
-
-  if (props.estado!="RECIBIDO" || props.estado!="GENERADO POR CLIENTE"){
-    props.setAlert(true)
-    return(
-      <IonContent>
-       
-      </IonContent>
-    )
-  }else{
-    return(
-      <IonContent>
-      </IonContent>
-    )
-  }
-
-}
 
 
 

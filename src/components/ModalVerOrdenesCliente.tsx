@@ -36,9 +36,10 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
 
     const [showAlertInconvenienteChat, setShowAlertInconvenienteChat] = useState(false)
    
+    const desdeDondeEstoy=useRef("")
+
     useEffect(() => {
         
-      console.log("estado: "+props.datos.status)
    
             if (props.datos.status=="ENV"){
               setEstado("GENERADA")
@@ -47,7 +48,6 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
             }else if(props.datos.status=="ABI"){
               setEstado("ORDEN RECIBIDA POR PROVEEDOR")
             }else if(props.datos.status=="PEI"){
-              console.log("esto deberia devolver")
               setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
               setVista("masinfo")
             } else if(props.datos.status=="PRE"){
@@ -87,12 +87,16 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
       }
    
       if(vista=="primero"){
+        desdeDondeEstoy.current="primero"
+
         return (
           < Primero datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
           setVolver={props.setVolver} cancelarOrden={cancelarOrden} />
 
       );
       }else if(vista=="masinfo"){
+        desdeDondeEstoy.current="masinfo"
+
 
         return(
           < PedidoMasInfo datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
@@ -100,6 +104,7 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
         )
 
       } else if (vista=="preaceptada"){
+        desdeDondeEstoy.current="preaceptada"
 
         return(
           <OrdenPreAceptada datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
@@ -107,18 +112,19 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
   
         )
       }else if(vista=="respuestaEnviada"){
+        desdeDondeEstoy.current="respuestaEnviada"
         return(
           <RespuestaEnviada datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
           setVolver={props.setVolver} cancelarOrden={cancelarOrden} />
           )
       } else if (vista=="enEsperaDelPRoveedor"){
-        
+        desdeDondeEstoy.current="enEsperaDelPRoveedor"
         return(
           <EnEsperaDelProveedor datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
           setVolver={props.setVolver} cancelarOrden={cancelarOrden} />
           )
       }else if(vista=="proveedorEnViaje"){
-
+        desdeDondeEstoy.current="proveedorEnViaje"
         return(
           <OrdenEnViaje datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
           setVolver={props.setVolver} cancelarOrden={cancelarOrden} />
@@ -136,7 +142,7 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
       }else if (vista=="chat") {
         return(
         <>
-        <Chat email={props.emailCliente}  ticket={props.datos.ticket} setVolver={props.setVolver} />
+        <Chat email={props.emailCliente}  ticket={props.datos.ticket} setVolver={props.setVolver} setVista={setVista} desdeDondeEstoy={desdeDondeEstoy.current}/>
         
         </>
         )
@@ -293,7 +299,6 @@ const PedidoMasInfo = ( props:{datos:any, setVolver:any, setVista:any, setEstado
                     data:formDataToUpload
                 }).then(function(res: any){
 
-                  console.log(res.data)
                   if(res.data=="ok"){
                    // aca cambiar porque cuando se envia lo que el proveedor requiere aparece como aceptada pero en realidad no está aceptada, solo se envio lo que pedía el proveedor
                    props.setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
@@ -442,7 +447,6 @@ const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEst
         data:formDataToUpload
     }).then(function(res: any){
 
-      console.log(res.data)
       if(res.data=="ok"){
           props.setEstado("ORDEN ACEPTADA")
           props.setVista("enEsperaDelPRoveedor")
@@ -866,7 +870,6 @@ const OrdenEnViaje = ( props:{datos:any, setVolver:any, setVista:any, setEstado:
     )
   }
   else if(props.datos.pedido_mas_información!="" &&props.datos.presupuesto_inicial=="0"){
-    console.log("aqui debo estar")
       return (
         <IonContent>
           <div id="ionContentModalOrdenes">
@@ -1042,7 +1045,6 @@ const Finalizada = ( props:{datos:any, setVolver:any, setVista:any, setEstado:an
           data:formDataToUpload
       }).then(function(res: any){
   
-        console.log(res.data)
         if(res.data=="ok"){
             props.datos.status="RED"
             props.setVolver(false)

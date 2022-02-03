@@ -158,7 +158,6 @@ const HomeCliente = (props:{setIsReg:any,
         const ubicacion = getLocation();
         ubicacion.then((value)=>{
           
-          console.log("muestra:"+value)
           if (value==0){
             setShowCargandoProveedores(false)
 
@@ -167,7 +166,6 @@ const HomeCliente = (props:{setIsReg:any,
           }
           axios.get(url+"home/cliente/"+value).then((resp: { data: any; }) => {
 
-            console.log("esto es lo que devolvió: "+resp.data)
             if (resp.data!="bad"){
 
               proveedores= []
@@ -299,7 +297,6 @@ const Busqueda = (props:{categorias:any, setCategorias:any, setBuscar:any, setPr
     if(value == "Enter"){
       axios.get(url+"search/palabras/"+palabraBuscar.current).then((resp: { data: any; }) => {
 
-        console.log(resp.data)
         if (resp.data!="bad"){
           
           proveedorBuscado= []         

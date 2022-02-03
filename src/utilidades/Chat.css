@@ -17,7 +17,8 @@
     height: auto;
     float:right;
     text-align: right;
-    padding: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
     background-color: #75C9F1;
 }
 
@@ -28,7 +29,8 @@
     float:left;
     background-color:#0BE754;
     text-align: left;
-    padding: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
 
 }
 

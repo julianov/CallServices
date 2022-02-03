@@ -431,10 +431,8 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
   const [alertCambioFoto, setShowAlertCambioFoto] = useState(false)
 
   const cambiarElemento = (tipo:string) => {
-    console.log(tipo)
     if(props.tipoProveedor=="2"){
       if(tipo=="foto"){
-        console.log("llego a foto")
           setCambiar("foto")
       }
       else if (tipo=="nombre"){
@@ -444,7 +442,6 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
       }
     }else{
       if(tipo=="foto"){
-        console.log("llego a foto")
           setCambiar("foto")
       }
       else if (tipo=="nombre"){
@@ -460,7 +457,6 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
   const enviar = (tipo:string) => {
 
     if(props.tipoProveedor=="2"){
-      console.log("EL EMAIL ES :"+props.email)
       var formDataToUpload = new FormData();
       formDataToUpload.append("tipo", "2")
       formDataToUpload.append("email", props.email)
@@ -486,7 +482,6 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
              if (cambiar=="foto"){
               setShowAlertCambioFoto(true)
              }
-             console.log("SE HA CAMBIADO")
              setCambiar("nada")
              setItem("nombre", nombre.current)
              setItem("apellido", apellido.current)
@@ -496,9 +491,7 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
              props.setApellido(apellido.current)
              props.setFoto(fotoAEnviar)
           }
-          console.log(res)
       }).catch((error: any) =>{
-          console.log(error)
           setCambiar("nada")
           //Network error comes in
       });  
@@ -538,9 +531,7 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
              props.setApellido(descripcion.current)
              props.setFoto(fotoAEnviar)
           }
-          console.log(res)
       }).catch((error: any) =>{
-          console.log(error)
           setCambiar("nada")
           //Network error comes in
       });  
@@ -945,7 +936,6 @@ const CardItemVerRubro= (props:{ pedir:any,rubro:any, setRubro:any, clientType:a
   const siesRubro1oRubro2 = useRef("")
 
   useEffect(() => {
-    console.log("la ciudad es: "+JSON.parse(props.rubro)[6])
     setItem(JSON.parse(props.rubro)[0])
     radius.current=JSON.parse(props.rubro)[1]
     description.current=JSON.parse(props.rubro)[2]
@@ -1115,8 +1105,6 @@ const ModificarDatosRubro = (props:{clientType:any, email:any,rubro:any,setRubro
   siesRubro1oRubro2:any, setDatosListos:any}) =>{
 
   //para volver props.setRubro("")
-
-  console.log("el email a enviar es: "+ props.email)
 
   const blobCertificado = useRef <Blob>()
   const blobFoto1 = useRef <Blob>()
@@ -1451,7 +1439,6 @@ const onClickPhotoData=()=>{
 
 useEffect(() => {
 
-        console.log(props.imagen.current)
         if (props.imagen.current!="" && props.imagen.current!=undefined && props.imagen.current!=null){
             
           setFotoTomada(true)

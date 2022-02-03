@@ -34,7 +34,6 @@ const getLocation = async () => {
 
 const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedorVaALocacion:any}) => {
 
-    console.log("RE RENDER")
     
     const [vista,setVista] = useState ("primeraVista")
 
@@ -550,14 +549,6 @@ const LocacionServicio = ( props:{direccion:any, posicionCliente:any, latitudCli
 
     const [siEsElLugar, setSiEsElLugar] = useState(true)
     const [domicilio, setDomicilio] = useState("enmicasa")
-
-
-  //  useEffect(() => {
-     /*   console.log("estamos en useEffects")
-        props.latitudCliente.current=props.posicionCliente.current.split("/")[0]
-        props.longitudCliente.current=props.posicionCliente.current.split("/")[1]
-        */
-
       
     if(domicilio=="enmicasa"){
         props.latitudCliente.current=props.posicionCliente.current.split("/")[0]
@@ -576,9 +567,6 @@ const LocacionServicio = ( props:{direccion:any, posicionCliente:any, latitudCli
 
         <div id="contenedorCamposCentro">
             <p>¿SE ENCUENTRA ACTUALMENTE EN EL DOMICILIO DONDE SE REALIZARÁ EL SERVICIO?</p>
-            
-       
-        
          
             <IonSegment mode="ios" value={domicilio} select-on-focus={true} onIonChange={e => setDomicilio(  e.detail.value!)} >
                 <IonSegmentButton value="enmicasa">

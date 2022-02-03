@@ -411,9 +411,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
     }, []);
 
     const cambiarElemento = (tipo:string) => {
-      console.log(tipo)
       if(tipo=="foto"){
-        console.log("llego a foto")
           setCambiar("foto")
       }
       else if (tipo=="nombre"){
@@ -444,7 +442,6 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
             headers: {"content-type": "multipart/form-data"},
             data:formDataToUpload
         }).then(function(res: any){
-          console.log("respondio el servidor: "+res.data)
            if(res.data=="ok"){
                //return(<Redirect to="/home" />);
                if (cambiar=="foto"){
@@ -461,7 +458,6 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
                setCambiar("nada")
             }
         }).catch((error: any) =>{
-            console.log(error)
             
             //Network error comes in
         });  

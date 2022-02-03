@@ -188,12 +188,7 @@ const VerOrdenParticular = (props:{ ticket: string }) => {
   useEffect(() => {
 
     axios.get(url+"orden/consultarOrdenParticular/"+props.ticket).then((resp: { data: any; }) => {
-      if (resp.data!="bad"){
-
-          console.log("check what it has come!adsfasdf: "+JSON.stringify(resp.data))
-          
-            
-           
+      if (resp.data!="bad"){           
               setDatosOrdenGeneral(
                 {tipo:resp.data.tipo,
                   status:resp.data.status,

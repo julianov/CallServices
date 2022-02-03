@@ -20,8 +20,9 @@ export interface mensajes{
   let msg = new Array<mensajes>();
 
 
-const Chat = (props:{email:any,  ticket:any, setVolver:any}) => {
+const Chat = (props:{email:any,  ticket:any, setVolver:any, setVista:any, desdeDondeEstoy:string}) => {
 
+   
     const [hayMensajes, setHayMensajes] = useState(false)
     //const [nuevoMensaje, setNuevoMensaje]=useState(0)
 
@@ -33,7 +34,7 @@ const Chat = (props:{email:any,  ticket:any, setVolver:any}) => {
 
         axios.get(url+"chat/"+props.ticket).then((resp: { data: any; }) => {
             if (resp.data!="bad"){
-                console.log("lo que llego es: "+JSON.stringify(resp.data))
+                msg=[]
                 for (let i=0; i<resp.data.length;i++){
                     let dia=""
                     if(i==0){
@@ -86,7 +87,7 @@ const Chat = (props:{email:any,  ticket:any, setVolver:any}) => {
            
             <>
             <div id="modalProveedor-flechaVolver">
-                <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+                <IonIcon icon={arrowBack} onClick={() => props.setVista(props.desdeDondeEstoy)} slot="start" id="flecha-volver">  </IonIcon>
             </div>
             <IonCard id="ionCardMensaje">
             
@@ -116,7 +117,7 @@ const Chat = (props:{email:any,  ticket:any, setVolver:any}) => {
             <IonContent >
                 <div id="chatContenedorPrincipal">
                 <div id="modalProveedor-flechaVolver">
-                    <IonIcon icon={arrowBack} onClick={() => props.setVolver(false )} slot="start" id="flecha-volver">  </IonIcon>
+                    <IonIcon icon={arrowBack} onClick={() =>  props.setVista(props.desdeDondeEstoy )} slot="start" id="flecha-volver">  </IonIcon>
                 </div>
                 <IonCard id="ionCardMensaje">
                     <div id="contenedorCamposCentro">
@@ -146,7 +147,6 @@ const Chat = (props:{email:any,  ticket:any, setVolver:any}) => {
 
 const ElementosMensaje = (props:{miemail:string,mensajes: Array<mensajes> }) => {
 
-    console.log("el arreglo es: "+JSON.stringify(props.mensajes))
     var i=0
       return (
         <div id="Mensajes">

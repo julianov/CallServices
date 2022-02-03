@@ -239,7 +239,7 @@ class Busqueda extends Component{
     var input=(document.getElementById("busqueda") as HTMLTextAreaElement).value;
   
     if(input==="hola"){
-      console.log("hola perri");
+      console.log("hola");
     }
   }
    render(){

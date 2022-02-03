@@ -33,8 +33,7 @@ const Resenas = (props:{email_a_ver_reseñas:any,  tipo:any, setVolver:any}) => 
                 
               }
               setSinReseñas(false)
-              console.log("arreglo: "+JSON.stringify(resenas))
-              console.log("arreglo: "+JSON.stringify(resenas[0]))
+             
         }
         else{
             setSinReseñas(true)

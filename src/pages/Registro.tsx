@@ -13,8 +13,6 @@ import { type } from 'os';
 import Https from '../utilidades/HttpsURL';
 import { useMemo } from 'react';
 
-//const url='http://127.0.0.1:8000/registro/';
-//const url="https://callservicesvps.online:443/registro/"
 
 const url=Https+"registro/"
 
@@ -31,48 +29,43 @@ const Registro = (props:{setIsReg:any, setCliente:any, setTipoCliente:any ,setEm
     <IonPage>
       
       <IonContent text-center >
-
-      <div id="ionContentRegistro">
+        <div id="ionContentRegistro">
   
+          <RegistroNuevaCuenta setIsReg={props.setIsReg} setCliente={props.setCliente} setTipoCliente={props.setTipoCliente} setEmail={props.setEmail} setShowAlertUsuarioRegistrado={setShowAlertUsuarioRegistrado} setShowAlertPassworNoIgual={setShowAlertPassworNoIgual} setShowAlertPasswordWeak={setShowAlertPasswordWeak} setShowAlertServerConnection={setShowAlertServerConnection} setShowAlertEmailSending={setShowAlertEmailSending} ></RegistroNuevaCuenta>
+        
+          <IonAlert isOpen={showAlertServerConnection} onDidDismiss={() => setShowAlertServerConnection(false)} cssClass='my-custom-class'
+                  header={'Respuesta del servidor'}
+                  subHeader={''}
+                  message={'No ha sido posible comunicarse con el servidor. Intente más tarde'}
+                  buttons={['OK']}
+                  />
+              
+          <IonAlert
+            isOpen={showAlertUsuarioRegistrado} onDidDismiss={() => setShowAlertUsuarioRegistrado(false)} cssClass='my-custom-class'
+            header={'Usuario ya registrado'}
+            subHeader={''}
+            message={'Ya se ha registrado un usuario con el mismo email'}
+            buttons={['OK']}/>   
 
-        <RegistroNuevaCuenta setIsReg={props.setIsReg} setCliente={props.setCliente} setTipoCliente={props.setTipoCliente} setEmail={props.setEmail} setShowAlertUsuarioRegistrado={setShowAlertUsuarioRegistrado} setShowAlertPassworNoIgual={setShowAlertPassworNoIgual} setShowAlertPasswordWeak={setShowAlertPasswordWeak} setShowAlertServerConnection={setShowAlertServerConnection} setShowAlertEmailSending={setShowAlertEmailSending} ></RegistroNuevaCuenta>
-      
-        <IonAlert isOpen={showAlertServerConnection} onDidDismiss={() => setShowAlertServerConnection(false)} cssClass='my-custom-class'
-                header={'Respuesta del servidor'}
-                subHeader={''}
-                message={'No ha sido posible comunicarse con el servidor. Intente más tarde'}
-                buttons={['OK']}
-                />
-             
-        <IonAlert
-          isOpen={showAlertUsuarioRegistrado} onDidDismiss={() => setShowAlertUsuarioRegistrado(false)} cssClass='my-custom-class'
-          header={'Usuario ya registrado'}
-          subHeader={''}
-          message={'Ya se ha registrado un usuario con el mismo email'}
-          buttons={['OK']}
-        />   
+          <IonAlert isOpen={showAlertPassworNoIgual} onDidDismiss={() => setShowAlertPassworNoIgual(false)} cssClass='my-custom-class'
+            header={'Contraseña'}
+            subHeader={''}
+            message={'Las contraseñas no son iguales'}
+            buttons={['OK']}/>  
 
-        <IonAlert isOpen={showAlertPassworNoIgual} onDidDismiss={() => setShowAlertPassworNoIgual(false)} cssClass='my-custom-class'
-          header={'Contraseña'}
-          subHeader={''}
-          message={'Las contraseñas no son iguales'}
-          buttons={['OK']}
-        />  
-        <IonAlert isOpen={showAlertPasswordWeak} onDidDismiss={() => setShowAlertPasswordWeak(false)} cssClass='my-custom-class'
-          header={'Contraseña'}
-          subHeader={''}
-          message={"La constraseña no cumple con los requisitos de poseer al menos 8 caracteres y poseer números y letras"}
-          buttons={['OK']}
-        />  
+          <IonAlert isOpen={showAlertPasswordWeak} onDidDismiss={() => setShowAlertPasswordWeak(false)} cssClass='my-custom-class'
+            header={'Contraseña'}
+            subHeader={''}
+            message={"La constraseña no cumple con los requisitos de poseer al menos 8 caracteres y poseer números y letras"}
+            buttons={['OK']}/>  
 
-        <IonLoading  isOpen={showAlertEmailSending}   onDidDismiss={() => setShowAlertEmailSending(false)}
-          cssClass='my-custom-class'
-          message={'Esperando respuesta del servidor...'}
-          duration={10000}
-        />
-    </div>
-      </IonContent>
-    </IonPage>
+          <IonLoading  isOpen={showAlertEmailSending}   onDidDismiss={() => setShowAlertEmailSending(false)}
+            cssClass='my-custom-class'
+            message={'Esperando respuesta del servidor...'}
+            duration={10000}/>
+      </div>
+    </IonContent>
+  </IonPage>
   );
 };
 
@@ -110,25 +103,19 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
 
     if (password.current!=password2.current){
       props.setShowAlertPassworNoIgual(true)
-    }
-    else if(password.current.length<=8){
+    }else if(password.current.length<=8){
       props.setShowAlertPasswordWeak(true)
     }else{
       props.setShowAlertEmailSending(true)
 
       const axios = require('axios');
-      axios.get(url+tipoUsuario.current+"/"+email.current+"/"+password.current)
-      .then((res: { data: any; }) => {
+      axios.get(url+tipoUsuario.current+"/"+email.current+"/"+password.current).then((res: { data: any; }) => {
         const resquest = res.data;
-        console.log(res.data)
         if(resquest==="User alredy taken"){
           props.setShowAlertUsuarioRegistrado(true);
           props.setShowAlertEmailSending(false)
-
-        }
-        else{
+        }else{
             /*Se guarda que el usuario se registró*/
-            
             setItem("isRegistered", email.current).then( () => {
               setItem("personalInfoCompleted", false).then( () =>{
                 setItem("clientType", tipoUsuario.current).then(() => {
@@ -144,7 +131,6 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
         }
       }).catch((err: any) => {
         // what now?
-       // console.log(err);
         props.setShowAlertServerConnection(true)
         props.setShowAlertEmailSending(false)
 
@@ -156,7 +142,6 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
   const completarRegistro =()=>{
 
     if(codigo.current==codigo_agregado.current){
-      console.log("el email que se registra es: "+email.current)
       props.setEmail(email.current)
       setCount("registro completo");
     }else{
@@ -166,7 +151,6 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
 
   if (tipo=="registro inicio"){
     return (
-      
       <>
           <IonAlert
             isOpen={alertCuentaUsuario}
@@ -242,50 +226,51 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
    return (
 
     <>
-            <a onClick={()=>setCount("registro inicio")} id="flechaIngresar">
-              <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro">  </IonIcon>
-            </a>
-            <div id="registro_header">
-            
-            <IonGrid id="registro-iongrid">
-           <IonRow><IonCol>
-
-           <IonTitle id="register-title">COMPLETE SUS DATOS</IonTitle>
-           </IonCol></IonRow>
-           </IonGrid>
-           </div>
-
-       <div id="registro_contenedor_central">
-
-       <IonGrid>
-
-           <IonRow><IonCol>
-             <IonItem id="item-registro">
-               <IonLabel position="floating">E-mail</IonLabel>
-               <IonInput type="email" onIonInput={(e: any) => email.current = e.target.value}></IonInput>
+      <a onClick={()=>setCount("registro inicio")} id="flechaIngresar">
+        <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro">  </IonIcon>
+      </a>
+      <div id="registro_header">    
+        <IonGrid id="registro-iongrid">
+          <IonRow>
+            <IonCol>
+              <IonTitle id="register-title">COMPLETE SUS DATOS</IonTitle>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </div>
+      <div id="registro_contenedor_central">
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+               <IonItem id="item-registro">
+                  <IonLabel position="floating">E-mail</IonLabel>
+                  <IonInput autocomplete="email" type="email" onIonInput={(e: any) => email.current = e.target.value}></IonInput>
+                </IonItem>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <IonItem id="item-registro">
+                <IonLabel position="floating">Contraseña</IonLabel>
+                <IonInput type="password" onIonInput={(e: any) => password.current = (e.target.value)}></IonInput>
              </IonItem>
-           </IonCol></IonRow>
-
-           <IonRow><IonCol>
-             <IonItem id="item-registro">
-               <IonLabel position="floating">Contraseña</IonLabel>
-               <IonInput type="password" onIonInput={(e: any) => password.current = (e.target.value)}></IonInput>
-             </IonItem>
-           </IonCol></IonRow>
-
-           <IonRow><IonCol>
-             <IonItem id="item-registro">
-               <IonLabel position="floating">Repita la Contraseña</IonLabel>
-               <IonInput type="password" id="contraseña2" onIonInput={(e: any) => password2.current = (e.target.value)}></IonInput>
-             </IonItem>
-           </IonCol></IonRow>
-           <IonRow></IonRow>
-           <IonRow></IonRow>
-         </IonGrid>
-         <IonButton id="boton" shape="round" onClick={enviarRegistro}>
-           CONTINUAR
-         </IonButton>
-       </div></>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <IonItem id="item-registro">
+                <IonLabel position="floating">Repita la Contraseña</IonLabel>
+                <IonInput type="password" id="contraseña2" onIonInput={(e: any) => password2.current = (e.target.value)}></IonInput>
+              </IonItem>
+            </IonCol>
+          </IonRow>
+          <IonRow></IonRow>
+          <IonRow></IonRow>
+        </IonGrid>
+         
+        <IonButton id="boton" shape="round" onClick={enviarRegistro}>CONTINUAR</IonButton>
+      </div>
+    </>
       
     );
   }
@@ -296,20 +281,16 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
     return (
       <>
         <a onClick={()=>setCount("registro inicio")} id="flechaIngresar">
-              <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro">  </IonIcon>
+          <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro">  </IonIcon>
         </a>
         <div id="contenedorPrincipal">
           <div id="contenedorHijoCentrado">
-       
-            <IonTitle id="register-title">SELECCIONE TIPO DE PROVEEDOR DE SERVICIO</IonTitle>
-       
-      
-          <IonButton shape="round" onClick={() => { setCount("proveedor independiente"); } } id="boton-registro-2">Proveedor independiente</IonButton>
-          <IonButton shape="round" onClick={() => { setCount("proveedor empresa"); } } id="boton-registro-2">Empresa de servicio</IonButton>
-        </div>
-        </div>
-        
-        </>
+            <IonTitle id="register-title">SELECCIONE TIPO DE PROVEEDOR DE SERVICIO</IonTitle>      
+            <IonButton shape="round" onClick={() => { setCount("proveedor independiente"); } } id="boton-registro-2">Proveedor independiente</IonButton>
+            <IonButton shape="round" onClick={() => { setCount("proveedor empresa"); } } id="boton-registro-2">Empresa de servicio</IonButton>
+          </div>
+        </div>  
+      </>
     );
   }
   if(tipo=="proveedor independiente"){
@@ -318,63 +299,10 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
     */
    tipoUsuario.current="2";
    return (
-
     <>
-    <a onClick={()=>setCount("cuenta proveedor")} id="flechaIngresar">
-      <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro">  </IonIcon>
-     </a>
-    <div id="registro_header">
-       <IonGrid id="registro-iongrid">
-         <IonRow><IonCol>
-           <IonTitle id="register-title">COMPLETE SUS DATOS</IonTitle>
-         </IonCol></IonRow>
-       </IonGrid>
-     </div>
-       <div id="registro_contenedor_central">
-         <IonGrid>
-           <IonRow><IonCol>
-             <IonItem id="item-registro">
-               <IonLabel position="floating">E-mail</IonLabel>
-               <IonInput type="email" onIonInput={(e: any) => email.current = (e.target.value)}></IonInput>
-             </IonItem>
-           </IonCol></IonRow>
-
-           <IonRow><IonCol>
-             <IonItem id="item-registro">
-               <IonLabel position="floating">Contraseña</IonLabel>
-               <IonInput type="password" onIonInput={(e: any) => password.current = (e.target.value)}></IonInput>
-             </IonItem>
-           </IonCol></IonRow>
-
-           <IonRow><IonCol>
-             <IonItem id="item-registro">
-               <IonLabel position="floating">Repita la Contraseña</IonLabel>
-               <IonInput type="password" id="contraseña2" onIonInput={(e: any) => password2.current = (e.target.value)}></IonInput>
-             </IonItem>
-           </IonCol></IonRow>
-
-           <IonRow></IonRow>
-           <IonRow><IonCol>
-           </IonCol></IonRow>
-
-         </IonGrid>
-         <IonButton id="boton" shape="round" onClick={enviarRegistro}>
-           CONTINUAR
-         </IonButton>
-       </div></>        
-    );
-  }
-  if (tipo=="proveedor empresa"){
-    /*
-    Si es empresa
-    */
-   tipoUsuario.current="3";
-    return (
-
-      <>
       <a onClick={()=>setCount("cuenta proveedor")} id="flechaIngresar">
-      <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro">  </IonIcon>
-     </a>
+        <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro">  </IonIcon>
+      </a>
       <div id="registro_header">
         <IonGrid id="registro-iongrid">
           <IonRow><IonCol>
@@ -387,7 +315,58 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
             <IonRow><IonCol>
               <IonItem id="item-registro">
                 <IonLabel position="floating">E-mail</IonLabel>
-                <IonInput type="email" onIonInput={(e: any) => email.current = (e.target.value)}></IonInput>
+                <IonInput autocomplete="email" type="email" onIonInput={(e: any) => email.current = (e.target.value)}></IonInput>
+              </IonItem>
+            </IonCol></IonRow>
+
+            <IonRow><IonCol>
+              <IonItem id="item-registro">
+                <IonLabel position="floating">Contraseña</IonLabel>
+                <IonInput type="password" onIonInput={(e: any) => password.current = (e.target.value)}></IonInput>
+              </IonItem>
+            </IonCol></IonRow>
+
+            <IonRow><IonCol>
+              <IonItem id="item-registro">
+                <IonLabel position="floating">Repita la Contraseña</IonLabel>
+                <IonInput type="password" id="contraseña2" onIonInput={(e: any) => password2.current = (e.target.value)}></IonInput>
+              </IonItem>
+            </IonCol></IonRow>
+            <IonRow></IonRow>
+            <IonRow><IonCol>
+            </IonCol></IonRow>
+
+          </IonGrid>
+          <IonButton id="boton" shape="round" onClick={enviarRegistro}>
+            CONTINUAR
+          </IonButton>
+        </div>
+      </>        
+    );
+  }
+  if (tipo=="proveedor empresa"){
+    /*
+    Si es empresa
+    */
+   tipoUsuario.current="3";
+    return (
+      <>
+      <a onClick={()=>setCount("cuenta proveedor")} id="flechaIngresar">
+      <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro">  </IonIcon>
+     </a>
+      <div id="registro_header">
+        <IonGrid id="registro-iongrid">
+          <IonRow><IonCol>
+            <IonTitle id="register-title">COMPLETE SUS DATOS</IonTitle>
+          </IonCol></IonRow>
+        </IonGrid>
+      </div>
+      <div id="registro_contenedor_central">
+          <IonGrid>
+            <IonRow><IonCol>
+              <IonItem id="item-registro">
+                <IonLabel position="floating">E-mail</IonLabel>
+                <IonInput autocomplete="email" type="email" onIonInput={(e: any) => email.current = (e.target.value)}></IonInput>
               </IonItem>
             </IonCol></IonRow>
 

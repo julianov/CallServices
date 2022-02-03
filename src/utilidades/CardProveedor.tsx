@@ -505,7 +505,6 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
       )
     }
     else if(props.picture1!="" && props.picture2=="" &&props.picture3==""){
-      console.log("entonces debe mostrar esto una sola")
       return(
         <div id="CardProveedoresImg"><img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture1}></img>
         </div>

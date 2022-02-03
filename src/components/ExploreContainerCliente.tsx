@@ -1,7 +1,6 @@
 import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonChip, IonCol, IonGrid, IonIcon, IonItem, IonItemDivider, IonLabel, IonList, IonModal, IonRow } from '@ionic/react';
 import { alert, chevronDown, closeCircle, trendingUpOutline } from 'ionicons/icons';
 import React, { useMemo, useRef, useState } from 'react';
-import {Adsense} from '@ctrl/react-adsense';
 
 import './ExploreContainer.css';
 
@@ -18,6 +17,8 @@ import Resenas from '../utilidades/Resenas';
 import { datosOrden } from '../utilidades/CardProveedor';
 import axios from 'axios';
 import { type } from 'os';
+
+import {Adsense} from '@ctrl/react-adsense';
 
 const getLocation = async () => {
   try {
@@ -207,7 +208,6 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
           )
         }
         else{
-          console.log("aca debería llegar para el return")
           setVerEmail("") 
            setItem ("") 
            return(<></>)
@@ -269,11 +269,7 @@ const CardVistaVariosProveedores= (props:{item:any, personalImg:any ,distancia: 
   email:any, nombre: any, apellido:any, tipo:any, setVerEmail:any, setItem:any,
   setPediOrden:any,  setVerReseña:any, setVerProveedor:any, tiipo:any }) => {
     
-    //console.log(props.email + " - "+ props.item)
-
-
     const verProveedor = ()=> {
-      console.log(props.email + " - "+ props.item)
       //if(props.email=="" && props.item==""){
         props.setVerEmail(props.email)
         props.setVerProveedor(true)
@@ -293,10 +289,8 @@ const CardVistaVariosProveedores= (props:{item:any, personalImg:any ,distancia: 
     const verReseñas = ()=> {
       props.setVerEmail(props.email)
       props.setItem(props.item)
-      console.log("EL TIPO ES: "+props.tipo)
       props.tiipo.current=props.tipo
       props.setVerReseña(true)
-      console.log("y esto se ejecuta mucho?")
 
     }
 
@@ -510,7 +504,6 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
       if(res!=undefined || res!=null){
        //arreglo.push(res)
        //aca copia todo, el numero 1 del arreglo no es el rubro sino la primer letra del rubro y así.
-        console.log("LO QUE HAY EN ESTA BASE DE DATOS ES: "+ res)
         if(res!=props.status){
           setNuevoStatus(true)
           setDB(ticketeck.current, props.status)

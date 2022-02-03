@@ -1,6 +1,6 @@
 
 import { Geolocation } from "@capacitor/core";
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCheckbox, IonCol, IonDatetime, IonGrid, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonSelect, IonSelectOption, IonIcon, IonFabButton, IonImg, IonActionSheet, IonRange, IonTextarea, IonItemSliding } from "@ionic/react";
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCheckbox, IonCol, IonDatetime, IonGrid, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonSelect, IonSelectOption, IonIcon, IonFabButton, IonImg, IonActionSheet, IonRange, IonTextarea, IonItemSliding, IonSegment, IonSegmentButton } from "@ionic/react";
 import { base64FromPath } from "@ionic/react-hooks/filesystem/utils";
 import { setServers } from "dns";
 import { arrowBack, camera, trash,close, volumeLowSharp, imageOutline, terminalOutline } from "ionicons/icons";
@@ -1085,8 +1085,7 @@ const AgregarRadio = (props:{setVista: any, radio:any, setRadio:any, setPosicion
         props.setVista(3)
     }
     const siguiente = () =>{
-            props.setVista(5)
-       
+            props.setVista(5)   
     }
 
     const ubicacion = getLocation();
@@ -1094,85 +1093,87 @@ const AgregarRadio = (props:{setVista: any, radio:any, setRadio:any, setPosicion
         props.setPosicion(value)
     });
 
-    const [domicilio, setDomicilio] = useState(false);
+    const [domicilio, setDomicilio] = useState("voyadomicilio");
 
     return(
         <div className="contenedor_central">
-     
-     <div className="caja">
-     <IonTitle>DATOS DOMICILIO</IonTitle>
+            <div className="caja">
+                <IonTitle>DATOS DOMICILIO</IonTitle>
+                <IonItem id="item-rubro-domicilio">
+                    <IonLabel position="floating">País</IonLabel>
+                    <IonInput autocomplete="country" onIonInput={(e: any) => props.pais.current=(e.target.value)}></IonInput>
+                </IonItem>
+                <IonItem id="item-rubro-domicilio">
+                    <IonLabel position="floating">Provincia / Departamento</IonLabel>
+                    <IonInput onIonInput={(e: any) => props.provincia.current=(e.target.value)}></IonInput>
+                </IonItem>
+                <IonItem id="item-rubro-domicilio">
+                    <IonLabel position="floating">Ciudad</IonLabel>
+                    <IonInput onIonInput={(e: any) => props.ciudad.current=(e.target.value)}></IonInput>
+                </IonItem>
+                <IonGrid>
+                    <IonRow>
+                        <IonCol >
+                            <IonItem id="item-rubro-domicilio">
+                                <IonLabel position="floating">Calle</IonLabel>
+                                <IonInput onIonInput={(e: any) => props.domicilio_calle.current=(e.target.value)}></IonInput>
+                            </IonItem>
+                        </IonCol>
+                        <IonCol >
+                            <IonItem id="item-rubro-domicilio">
+                                <IonLabel position="floating">Numeración</IonLabel>
+                                <IonInput onIonInput={(e: any) => props.domicilio_numeracion.current=(e.target.value)}></IonInput>
+                            </IonItem>
+                        </IonCol>
+                    </IonRow>
+                </IonGrid>
+            </div>
+            <div className="caja">
+                <IonTitle>LOCACIÓN A CLIENTES</IonTitle>
+                <div>
+                    <p>Ingrese si va a la locación de clientes</p>    
+                    <p>En caso de que no se desplace a locación de clientes no seleccione la casilla de verificación y presion siguiente</p>
+                </div>
+                <IonItem>
+                    <IonGrid>
+                        <IonRow>
+                            <IonCol>
+                                <IonLabel ion-list-lines="none">¿Va a locación o domicilio de clientes?</IonLabel>
+                            </IonCol>
+                            <IonCol>
+                            <IonSegment mode="ios" value={domicilio} select-on-focus={true} onIonChange={e => setDomicilio(  e.detail.value!)} >
+                                <IonSegmentButton value="voyadomicilio">
+                                    <IonLabel>SI</IonLabel>
+                                </IonSegmentButton>
+                                <IonSegmentButton value="NOvoyadomicilio">
+                                    <IonLabel>NO</IonLabel>
+                                </IonSegmentButton>
+                            </IonSegment>
 
-     <IonItem id="item-rubro-domicilio">
-     <IonLabel position="floating">País</IonLabel>
-     <IonInput onIonInput={(e: any) => props.pais.current=(e.target.value)}></IonInput>
-     </IonItem>
-
-     <IonItem id="item-rubro-domicilio">
-     <IonLabel position="floating">Provincia / Departamento</IonLabel>
-     <IonInput onIonInput={(e: any) => props.provincia.current=(e.target.value)}></IonInput>
-     </IonItem>
-
-     <IonItem id="item-rubro-domicilio">
-     <IonLabel position="floating">Ciudad</IonLabel>
-     <IonInput onIonInput={(e: any) => props.ciudad.current=(e.target.value)}></IonInput>
-     </IonItem>
-
-     <IonGrid>
-     <IonRow>
-     <IonCol >
-     <IonItem id="item-rubro-domicilio">
-     <IonLabel position="floating">Calle</IonLabel>
-     <IonInput onIonInput={(e: any) => props.domicilio_calle.current=(e.target.value)}></IonInput>
-     </IonItem>
-     </IonCol>
-     <IonCol >
-     <IonItem id="item-rubro-domicilio">
-     <IonLabel position="floating">Numeración</IonLabel>
-     <IonInput onIonInput={(e: any) => props.domicilio_numeracion.current=(e.target.value)}></IonInput>
-     </IonItem>
-     </IonCol>
-     </IonRow>
-     </IonGrid>
-     </div>
-            
-    
-      <div className="caja">
-      <IonTitle>LOCACIÓN A CLIENTES</IonTitle>
-      
-      <div>
-        <p>Ingrese si va a la locación de clientes</p>    
-        <p>En caso de que no se desplace a locación de clientes no seleccione la casilla de verificación y presion siguiente</p>
-      </div>
-      <IonItem>
-      <IonGrid>
-      <IonRow>
-      <IonCol><IonLabel ion-list-lines="none">¿Va a locación o domicilio de clientes?</IonLabel></IonCol>
-      <IonCol><IonCheckbox  checked={domicilio} onIonChange={e => setDomicilio(e.detail.checked)} /></IonCol>
-            </IonRow>
-    </IonGrid>
-     </IonItem>
-        <Range domicilio={domicilio} radius={props.radio} setRadio={props.setRadio} />
-    </div>
-
-    <div className="caja">
-                        <IonGrid>
-                            <IonRow>
-                                <IonCol className="columna">
-                                    <IonButton shape="round" onClick={() => { volver(); } }>VOLVER</IonButton>
-                                </IonCol>
-                                <IonCol className="columna">
-                                    <IonButton shape="round" onClick={() => { siguiente(); } }>SIGUIENTE</IonButton>
-
-                                </IonCol>
-                            </IonRow>
-                        </IonGrid>
-                        </div> 
-                        </div>
+                            </IonCol>
+                        </IonRow>
+                    </IonGrid>
+                </IonItem>
+                <Range domicilio={domicilio} radius={props.radio} setRadio={props.setRadio} />
+            </div>
+            <div className="caja">
+                <IonGrid>
+                    <IonRow>
+                        <IonCol className="columna">
+                            <IonButton shape="round" onClick={() => { volver(); } }>VOLVER</IonButton>
+                        </IonCol>
+                        <IonCol className="columna">
+                            <IonButton shape="round" onClick={() => { siguiente(); } }>SIGUIENTE</IonButton>
+                        </IonCol>
+                    </IonRow>
+                </IonGrid>
+            </div> 
+        </div>
     )
 }
 
-const Range = (props:{domicilio:boolean, radius:any, setRadio:any})=>{
-    if(props.domicilio){
+const Range = (props:{domicilio:string, radius:any, setRadio:any})=>{
+    if(props.domicilio=="voyadomicilio"){
         return(
             <div>
             <IonGrid>

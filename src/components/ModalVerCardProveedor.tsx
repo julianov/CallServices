@@ -8,7 +8,6 @@ import CardProveedor from "../utilidades/CardProveedor";
 
 const ModalVerCardProveedor = (props:{caracteres:any, imagenes:any, emailCliente:String, email:any, proveedorEmail:string, setVerEmail:any, setItem:any})  =>{
 
-    console.log("ha llegado a este modal")
     return(
       <IonContent>
 

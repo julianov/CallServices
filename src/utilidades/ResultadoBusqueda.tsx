@@ -45,7 +45,6 @@ const url2=Https
 const ResultadoBusqueda =  (props:{arreglo_ultimos:any, emailCliente:any, arreglo_categorias:any, busquedaDatosProveedores:any})=> {
 
     var ultimos=props.arreglo_ultimos
-    console.log(ultimos)
     if (props.arreglo_ultimos.length>4){
         ultimos.length=4 //solamente muestro las últimas 4 busquedas recientes
     }
@@ -100,7 +99,6 @@ const ResultadoBusqueda =  (props:{arreglo_ultimos:any, emailCliente:any, arregl
         const axios = require('axios');
         const ubicacion = getLocation();
 
-        //console.log("a ver que se busca:"+valor)
         ubicacion.then((value)=>{
             axios.get(url2+"home/cliente/pedirdatos/"+valor+"/"+"caracteres"+"/"+value, {timeout: 5000}).then((resp: { data: any; }) => {
                 

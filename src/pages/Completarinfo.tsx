@@ -71,13 +71,13 @@ const CompletarInformacion =  (props:{setIsReg:any,tipoCliente:any,
   /*  const [clientType,setClientType]=useState(0);
     const [email,setEmail]=useState<String>();
 */
-    const [email,setEmail]=useState<String>();
+    //const [email,setEmail]=useState<String>();
     
-    const [renderizar, setRenderizar]=useState(false)
+    //const [renderizar, setRenderizar]=useState(false)
 
-    const { deletePhoto, photos, takePhoto } = usePhotoGallery();
+   // const { deletePhoto, photos, takePhoto } = usePhotoGallery();
 
-    const[path,setPath]=useState<String>()
+   // const[path,setPath]=useState<String>()
    
     if(provedores==0){
             return(<CompletarInformacionPersonal  setIsReg={props.setIsReg} tipoCliente={props.tipoCliente} setNombre={props.setNombre} setApellido={props.setApellido} setFoto={props.setFoto} tipoProveedor={provedores} setTipoProveedor={setProveedores} clientType={props.tipoCliente} email={props.email}></CompletarInformacionPersonal>);
@@ -173,7 +173,6 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
 
     const enviarInformacion =async ()=>{
 
-        console.log("el tipo del cliente es: "+props.tipoCliente)
         if(props.tipoCliente=="1"){
 
              if(props.email!="-" && props.email!=null && nombre!=null && apellido!=null && imagen_a_enviar.current!=null){
@@ -195,7 +194,6 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                      data:formDataToUpload
                  }).then(function(res: any){
                     setShowLoading(false);
-                    console.log("llego: "+res.data)
                     if(res.data=="todo ok"){
                         setItem("personalInfoCompleted", true);
                         setItem("nombre", nombre)
@@ -210,9 +208,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                         setItem("personalInfoCompleted", false);
 
                     }
-                     console.log(res)
                  }).catch((error: any) =>{
-                     console.log(error)
                      setItem("personalInfoCompleted", false);
                      //Network error comes in
                  });       
@@ -251,7 +247,6 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                      data:formDataToUpload
                  }).then(function(res: any){
                     setShowLoading(false) 
-                    console.log("lo que llego es: "+res.data)
                     if(res.data=="todo ok"){
                         setItem("personalInfoCompleted", true);
                         setItem("nombre", nombre)
@@ -267,7 +262,6 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                         setItem("personalInfoCompleted", false);
                     }
                  }).catch((error: any) =>{
-                     console.log(error)
                      setItem("personalInfoCompleted", false);
                      //Network error comes in
                  });       
@@ -287,7 +281,6 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
          }
  
          if(props.tipoCliente=="3"){
-             console.log(props.email+" - "+nombre+" - "+descripcion + " - "+filepath2)
              if(props.email!="-" && props.email!=null && nombre!=null && descripcion!=null && imagen_a_enviar.current!=null){
                  setShowLoading(true)
                  
@@ -322,7 +315,6 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                         setItem("personalInfoCompleted", false);
                     }
                  }).catch((error: any) =>{
-                     console.log(error)
                      setItem("personalInfoCompleted", false);
                      //Network error comes in
                  });       
@@ -386,7 +378,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                             <IonCol>
                                 <IonItem id="item-completarInfo">
                                     <IonLabel position="floating">Nombre  </IonLabel>
-                                    <IonInput onIonInput={(e: any) => setNombre(e.target.value)}></IonInput>
+                                    <IonInput autocomplete="name" onIonInput={(e: any) => setNombre(e.target.value)}></IonInput>
                                 </IonItem>
                             </IonCol>
                         </IonRow>
@@ -394,7 +386,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                             <IonCol>
                                 <IonItem id="item-completarInfo">
                                     <IonLabel position="floating">Apellido</IonLabel>
-                                    <IonInput onIonInput={(e: any) => setApellido(e.target.value)}></IonInput>
+                                    <IonInput autocomplete="family-name" onIonInput={(e: any) => setApellido(e.target.value)}></IonInput>
                                 </IonItem>
                             </IonCol>
                         </IonRow>
@@ -479,7 +471,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                             <IonCol>
                                 <IonItem id="item-completarInfo">
                                     <IonLabel position="floating">Nombre </IonLabel>
-                                    <IonInput onIonInput={(e: any) => setNombre(e.target.value)}></IonInput>
+                                    <IonInput autocomplete="name" onIonInput={(e: any) => setNombre(e.target.value)}></IonInput>
                                 </IonItem>
                             </IonCol>
                         </IonRow>
@@ -487,7 +479,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                             <IonCol>
                                 <IonItem id="item-completarInfo">
                                     <IonLabel position="floating">Apellido</IonLabel>
-                                    <IonInput onIonInput={(e: any) => setApellido(e.target.value)}></IonInput>
+                                    <IonInput autocomplete="family-name" onIonInput={(e: any) => setApellido(e.target.value)}></IonInput>
                                 </IonItem>
                             </IonCol>
                         </IonRow>
@@ -585,7 +577,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                     <IonRow>
                         <IonCol>
                             <IonItem id="item-completarInfo">
-                                <IonLabel position="floating">Description</IonLabel>
+                                <IonLabel position="floating">Descripción</IonLabel>
                                 <IonTextarea placeholder="Breve descripción" onIonInput={(e: any) => setDescripcion(e.target.value!)}></IonTextarea>
                             </IonItem>
 
