@@ -80,15 +80,17 @@ import { isPropertySignature } from 'typescript';
   const Menu = ( props:{email:any, foto:any, setIsReg:any }) => {
    // const axios = require('axios');
 
-   console.log("foto en menú: "+props.email)
     const location = useLocation();
 
-  
+    const [imagen, setImagen] = useState (props.foto)
 
-    const [done,setDone]=useState(false)
-
- 
-
+    useEffect(() => {
+    if (props.foto==""|| props.foto==null || props.foto==undefined){
+      setImagen ("./assets/icon/nuevoUsuario.png") 
+    }else{
+      setImagen(props.foto)
+    }
+  }, [props.foto]);
 
   const cerrarSesion = ()=>{
 
@@ -139,11 +141,12 @@ import { isPropertySignature } from 'typescript';
       </IonMenu>
     );
   }else{
+   
     return (
       <IonMenu contentId="main" type="overlay">
         <IonContent>
           <IonList id="inbox-list">
-          <div ><img src={props.foto} id="foto_usuario" />
+          <div ><img src={imagen} id="foto_usuario" />
           </div>
           <IonNote id="user">{props.email}</IonNote>
 

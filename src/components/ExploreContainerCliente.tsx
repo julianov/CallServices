@@ -32,7 +32,8 @@ const getLocation = async () => {
 }
 var ultimos: never[]=[]
 
-let proveedores = new Array<ordenesCliente>();
+//let proveedores = new Array<ordenesCliente>();
+
 
 
 const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGeneralesVariosProveedores>, url:string, setShowCargandoProveedores:any, 
@@ -44,6 +45,8 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
   
   const [verEmail, setVerEmail]=useState("")
   const[item, setItem]=useState("")
+
+  const [arregloOrdenesCliente, setArregloOrdenesCliente] =  useState <ordenesCliente []> ( [])
 
   const [hayOrdenes, setHayOrdenes]=useState(false)
   const [verOrden, setVerOrden] = useState( false );
@@ -76,7 +79,7 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
 
     for (let i=0; i<props.ordenes.length;i++){     
 
-        proveedores.push({ tipo:props.ordenes[i].tipo,
+      setArregloOrdenesCliente([...arregloOrdenesCliente,{ tipo:props.ordenes[i].tipo,
         status:props.ordenes[i].status,
         fecha_creacion:props.ordenes[i].fecha_creacion,
         ticket:props.ordenes[i].ticket,
@@ -95,7 +98,7 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
         respuesta_cliente_pedido_mas_información:props.ordenes[i].respuesta_cliente_pedido_mas_información,
         picture1_mas_información:props.ordenes[i].picture1_mas_información,
         picture2_mas_información:props.ordenes[i].picture2_mas_información
-      })
+      }])
 
     }
 
@@ -142,9 +145,9 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
           <>
           <div id="container-principal-ExplorerContainer-Cliente">  
             <Tabs setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal} ></Tabs>
-            <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={proveedores}  setVerOrden={setVerOrden} setPosicion={setPosicion}></MisOrdenes>
+            <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={arregloOrdenesCliente}  setVerOrden={setVerOrden} setPosicion={setPosicion}></MisOrdenes>
             <h1 id="explorerContainerCliente-titulo">PROVEEDORES DE SERVICIOS EN LA ZONA </h1>             
-            <Elements  proveedores={props.proveedores!} setVerEmail={setVerEmail} setItem={setItem} 
+            <ProveedoresEnZona  proveedores={props.proveedores!} setVerEmail={setVerEmail} setItem={setItem} 
              setPediOrden={setPediOrden}  setVerReseña={setVerReseña}  setVerProveedor={setVerProveedor}
              tiipo={tiipo} />
           </div>
@@ -156,7 +159,7 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
             onDidDismiss={() => setVerOrden( false )}
             >
             <ModalVerOrdenesCliente 
-              datos={proveedores[posicion-1]}
+              datos={arregloOrdenesCliente[posicion-1]}
               setVolver={setVerOrden}
               emailCliente={props.emailCliente}
             />  
@@ -223,7 +226,7 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
   
   else{
 
-    createStore("UltimosProveedores")
+    //createStore("UltimosProveedores")
 
     getDB("UltimosProveedores").then(res => {
       if(res!=null){
@@ -241,14 +244,16 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
 
 
 
-const Elements = (props:{ proveedores: Array<datosGeneralesVariosProveedores> , setVerEmail:any, 
+const ProveedoresEnZona = (props:{ proveedores: Array<datosGeneralesVariosProveedores> , setVerEmail:any, 
   setItem:any,setPediOrden:any,  setVerReseña:any, setVerProveedor:any,tiipo:any}) => {
 
   var i=0
   //if (props.proveedores!=[]){
+
+    console.log("VEAMOS QUE HAY AQUI QUE DA PROBLEMA PUE: "+props.proveedores)
     return (
       <div id="elementos">
-        {props.proveedores.map((a) => {
+        {(props.proveedores || []).map((a) => {
           i=i+1
           //item, imagen personal, distancia, calificación, email, nombre, apellido, tipo
           return (<CardVistaVariosProveedores key={i} item={a.item} personalImg={a.imagenPersonal} distancia={a.distancia} calificacion={a.calificacion} email={a.email} nombre={a.nombre} apellido={a.apellido} tipo={a.tipo} setVerEmail={props.setVerEmail} setItem={props.setItem} 
@@ -465,7 +470,7 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
     const [mensaje1, setMensaje1] = useState("")
     const [mensaje2, setMensaje2] = useState("")
 
-    createStore("ordenesActivas")
+   // createStore("ordenesActivas")
 
     const ticketeck = useRef <string>("")
     const [nuevoStatus,setNuevoStatus]=useState(false)

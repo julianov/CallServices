@@ -14,25 +14,32 @@ export interface reseñados{
   resena:any
 }
 
-let resenas = new Array<reseñados>();
+//let resenas = new Array<reseñados>();
 
 
 const Resenas = (props:{email_a_ver_reseñas:any,  tipo:any, setVolver:any}) => {
 
     const [sinReseñas, setSinReseñas] = useState(false)
 
+    const [reseñas, setReseñas] =  useState <reseñados []> ( [])
 
    //tipo puede ser: "cliente", Proveedor de servicio independiente o Empresa de servicios
    useEffect(() => { 
    axios.get(url+"resena/"+props.email_a_ver_reseñas+"/0/"+props.tipo).then((resp: { data: any; }) => {
       if (resp.data!="bad"){
         
-        resenas= []
+      /*  resenas= []
             for (let i=0; i<resp.data.length;i++){               
                 resenas.push({calificación:resp.data[i].calificación,resena:resp.data[i].resena})
                 
-              }
-              setSinReseñas(false)
+              }*/
+
+        setReseñas(resp.data.map((d: { calificación: any; resena: any; }) => ({
+          calificación:d.calificación,
+          resena:d.resena
+                }))
+              );
+              //setSinReseñas(false)
              
         }
         else{
@@ -41,6 +48,16 @@ const Resenas = (props:{email_a_ver_reseñas:any,  tipo:any, setVolver:any}) => 
 
       })
     }, [])
+
+    useEffect(() => { 
+
+      if(reseñas.length > 0){
+        setSinReseñas(false)
+      }else{
+        setSinReseñas(true)
+      }
+
+    }, [reseñas])
 
       if(sinReseñas){
         return (
@@ -70,7 +87,7 @@ const Resenas = (props:{email_a_ver_reseñas:any,  tipo:any, setVolver:any}) => 
                 </div>
                 <div id="contenedorCentralReseñas">
 
-                <Elementos reseñas={resenas!} />
+                <Elementos reseñas={reseñas!} />
                 </div>
                 </div>
             </IonContent>

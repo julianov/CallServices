@@ -1,24 +1,15 @@
 import { IonAlert, IonAvatar, IonButton, IonButtons, IonChip, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonItemOptions, IonItemSliding, IonLabel, IonList, IonLoading, IonMenuButton, IonModal, IonPage, IonPopover, IonRow, IonSearchbar, IonTitle, IonToolbar} from '@ionic/react';
-import { Icon } from 'ionicons/dist/types/components/icon/icon';
 import React, { Component, useEffect, useMemo, useRef, useState } from 'react';
-import ExploreContainer from '../components/ExploreContainerCliente';
 import './Home.css';
-import {person, home , closeCircle, chevronDown, arrowBack, receipt, help, chatbubble} from 'ionicons/icons';
-import Registro from './Registro';
 import axios from 'axios';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 
-import { Plugins } from '@capacitor/core';
-import { getItem , clear, setItem, removeItem} from '../utilidades/Storage';
-import { Redirect } from 'react-router';
+
 import ModalCliente from '../components/ModalCliente';
-import { createEmitAndSemanticDiagnosticsBuilderProgram } from 'typescript';
 import ExploreContainerCliente from '../components/ExploreContainerCliente';
 import Https from '../utilidades/HttpsURL';
 
-import { Database } from '@ionic/storage';
 import { clearDB, createStore, getDB, removeDB, setDB } from '../utilidades/dataBase';
-import { LocationAccuracy } from '@ionic-native/location-accuracy';
 
 
 const url=Https
@@ -84,17 +75,20 @@ export interface datosGeneralesVariosProveedores {
       picture2_mas_información:string
       }
 
-  let proveedores = new Array<datosGeneralesVariosProveedores>();
+  //let proveedores = new Array<datosGeneralesVariosProveedores>();
 
-  let proveedorBuscado = new Array<proveedorBuscado>();
+ // let proveedorBuscado = new Array<proveedorBuscado>();
 
 
 const HomeCliente = (props:{setIsReg:any,  
   email:any, foto:any, clientType:any, 
   nombre:any, apellido:any, calificacion:any, setFoto:any, setNombre:any, setApellido:any, }) => {
 
+  const axios = require('axios');
+
   const [categorias, setCategorias] = useState ([])
-  const [proveedorBuscadoHook,setProveedorBuscadoHook]= useState ([])
+  //const [proveedorBuscadoHook,setProveedorBuscadoHook]= useState ([])
+  const [proveedorBuscadoHook, setProveedorBuscadoHook] =  useState < proveedorBuscado []> ( [])
   const [buscar, setBuscar]=useState("")
   
   const [showModal, setShowModal] = useState({ isOpen: false });
@@ -102,94 +96,93 @@ const HomeCliente = (props:{setIsReg:any,
 
   const completarInfoPersonal = useRef (false)
 
+  const [showAlertUbicación, setShowAlertUbicación] = useState(false)
   const [showInicializando,setShowInicializando]=useState(false)
-
   const [showCargandoProveedores,setShowCargandoProveedores]=useState(false)
 
   const primeraVezProveedores = useRef()
 
-  const [reload,setRealad]=useState(false)
+  const [proveedoresEnZona, setProveedoresEnZona] = useState <datosGeneralesVariosProveedores []> ( [])
+  const [misOrdenes, setMisOrdenes] = useState <ordenesCliente []>([]);
 
-  const [showAlertUbicación, setShowAlertUbicación] = useState(false)
 
-  const [misOrdenes, setMisOrdenes] = useState <ordenesCliente>(
-    {
-      tipo:"",
-      status:"",
-      fecha_creacion:"",
-      ticket: "",
-      dia: "",
-      hora:"",
-      titulo:"",
-      descripcion:"",
-      email_proveedor:"",
-      imagen_proveedor:"",
-      location_lat:"",
-      location_long:"",
-      picture1:"",
-      picture2:"",
-      presupuesto_inicial:"",
-      pedido_mas_información:"",
-      respuesta_cliente_pedido_mas_información:"",
-      picture1_mas_información:"",
-      picture2_mas_información:"",
-      }
-);
-
-  const axios = require('axios');
-
-  createStore("listaProveedores")
-
+  //createStore("listaProveedores")
 
   useEffect(() => {
 
-        setShowCargandoProveedores(true)
+    if(proveedoresEnZona.length > 0){
+      setDB("proveedores", (proveedoresEnZona))
+    }
 
-        getDB("proveedores").then(res => {
-          if(res!=undefined || res!=null){
-           //arreglo.push(res)
-           //aca copia todo, el numero 1 del arreglo no es el rubro sino la primer letra del rubro y así.
-            proveedores=JSON.parse(res)    
-            setShowCargandoProveedores(false)
-          }
+  }, [proveedoresEnZona]);
 
-        })
+  useEffect(() => {
+
+    setShowCargandoProveedores(true)
+
+    getDB("proveedores").then(res => {
+      if( res.length > 0){
+        setShowCargandoProveedores(false)   
+        setProveedoresEnZona(res)
+      }
+    })
         
-        const ubicacion = getLocation();
-        ubicacion.then((value)=>{
-          
-          if (value==0){
+    const ubicacion = getLocation();
+    ubicacion.then((value)=>{
+      if (value==0){
+        setShowCargandoProveedores(false)
+        setShowAlertUbicación(true)
+      }
+      axios.get(url+"home/cliente/"+value).then((resp: { data: any; }) => {
+        if (resp.data!="bad"){
+          setProveedoresEnZona(resp.data.map((d: { email: any; nombre: any; apellido: any; certificado: any; item: any; tipo: any; distancia: any; calificacion: any; }) => ({
+            email:d.email,
+            nombre:d.nombre,
+            apellido:d.apellido,
+            imagenPersonal: d.certificado,
+            item: d.item,
+            tipo:d.tipo,
+            distancia:d.distancia,
+            calificacion:d.calificacion
+            }))
+          );
+          setShowCargandoProveedores(false)
+        }else{
+          if (primeraVezProveedores.current==undefined || primeraVezProveedores ){
             setShowCargandoProveedores(false)
-
-            setShowAlertUbicación(true)
-
           }
-          axios.get(url+"home/cliente/"+value).then((resp: { data: any; }) => {
+        }
+      });  
+    });
 
-            if (resp.data!="bad"){
+    axios.get(url+"orden/misordenes/"+"cliente/"+props.email).then((resp: { data: any; }) => {
+      if (resp.data!="bad"){
+        setMisOrdenes(    
+            resp.data.map((d: { tipo: any; status: any; fecha_creacion: any; ticket: any; dia: any; hora: any; titulo: any; descripcion: any; email_proveedor: any; imagen_proveedor: any; lacation_lat: any; location_long: any; picture1: any; picture2: any; presupuesto_inicial: any; pedido_mas_información: any; respuesta_cliente_pedido_mas_información: any; picture1_mas_información: any; picutre2_mas_información: any; }) => ({
+              tipo:d.tipo,
+              status:d.status,
+              fecha_creacion:d.fecha_creacion,
+              ticket:d.ticket,
+              dia:d.dia,
+              hora:d.hora,
+              titulo:d.titulo,
+              descripcion:d.descripcion,
+              email_proveedor:d.email_proveedor,
+              imagen_proveedor:d.imagen_proveedor,
+              location_lat:d.lacation_lat,
+              location_long:d.location_long,
+              picture1:d.picture1,
+              picture2:d.picture2,
+              presupuesto_inicial:d.presupuesto_inicial,
+              pedido_mas_información:d.pedido_mas_información,
+              respuesta_cliente_pedido_mas_información:d.respuesta_cliente_pedido_mas_información,
+              picture1_mas_información:d.picture1_mas_información,
+              picture2_mas_información:d.picutre2_mas_información
+            }))  
+        )      
+      }
 
-              proveedores= []
-              for (let i=0; i<resp.data.length;i++){               
-                proveedores.push({email: resp.data[i].email, nombre: resp.data[i].nombre , apellido: resp.data[i].apellido , imagenPersonal: resp.data[i].certificado, item: resp.data[i].item , tipo: resp.data[i].tipo, distancia:resp.data[i].distancia, calificacion:resp.data[i].calificacion})
-              }
-              setDB("proveedores", JSON.stringify(proveedores))
-              setShowCargandoProveedores(false)
-            }else{
-              if (primeraVezProveedores.current==undefined || primeraVezProveedores ){
-                setShowCargandoProveedores(false)
-              }
-            }
-          });  
-        });
-
-        axios.get(url+"orden/misordenes/"+"cliente/"+props.email).then((resp: { data: any; }) => {
-          if (resp.data!="bad"){
-            setMisOrdenes(resp.data)            
-          }
-
-        })
-   
-   
+    })
   }, []);
 
     return (
@@ -209,83 +202,68 @@ const HomeCliente = (props:{setIsReg:any,
         </IonHeader>
         
         <IonContent >
-          
-        <div id="ionContentHome">
+          <div id="ionContentHome">
+            <IonLoading
+              cssClass='my-custom-class'
+              isOpen={showInicializando}
+              onDidDismiss={() => setShowInicializando(false)}
+              message={'Inicializando...'}
+              duration={5000}/>
 
-        <IonLoading
-                    cssClass='my-custom-class'
-                    isOpen={showInicializando}
-                    onDidDismiss={() => setShowInicializando(false)}
-                    message={'Inicializando...'}
-                    duration={5000}
-                />
+            <IonLoading
+              cssClass='my-custom-class'
+              isOpen={showCargandoProveedores}
+              onDidDismiss={() => setShowCargandoProveedores(false)}
+              message={'Cargando proveedores...'}
+              duration={5000}/>
 
-          <IonLoading
-                    cssClass='my-custom-class'
-                    isOpen={showCargandoProveedores}
-                    onDidDismiss={() => setShowCargandoProveedores(false)}
-                    message={'Cargando proveedores...'}
-                    duration={5000}
-                />
-
-        <IonModal
-            animated={true}
-            isOpen={showModal.isOpen}
-            onDidDismiss={() => setShowModal({ isOpen: false })}
-          >
-            <ModalCliente 
-               setIsReg={props.setIsReg}
-               email={props.email}
-               tipoVista={tipoDeVistaEnModal}
-
-               fotoPersonal={props.foto}
-               nombre={props.nombre}
-               apellido={props.apellido}
-               calificacion={props.calificacion}
-               
-               setFoto={props.setFoto}
-               setNombre={props.setNombre}
-               setApellido={props.setApellido}
-
-               completarInfoPersonal={completarInfoPersonal.current}
-               
-               onClose={(value: React.SetStateAction<null>) => {
+            <IonModal
+              animated={true}
+              isOpen={showModal.isOpen}
+              onDidDismiss={() => setShowModal({ isOpen: false })}>
+              <ModalCliente 
+                setIsReg={props.setIsReg}
+                email={props.email}
+                tipoVista={tipoDeVistaEnModal}
+                fotoPersonal={props.foto}
+                nombre={props.nombre}
+                apellido={props.apellido}
+                calificacion={props.calificacion}
+                setFoto={props.setFoto}
+                setNombre={props.setNombre}
+                setApellido={props.setApellido}
+                completarInfoPersonal={completarInfoPersonal.current}
+                onClose={(value: React.SetStateAction<null>) => {
                 setShowModal({ isOpen: false });
-               // value ? setRetVal(value) : setRetVal(null);
-              }} 
-            />  
-          </IonModal>
+                }} />  
+            </IonModal>
           
-         
-          <ExploreContainerCliente setShowCargandoProveedores={setShowCargandoProveedores} 
-          ordenes={misOrdenes}
-          proveedores={proveedores}
-          emailCliente={props.email}
-          url={url} 
-          buscar={buscar}
-          busqueda_categorias={categorias}
-          busquedaDatosProveedores={proveedorBuscadoHook}
-          setShowModal={setShowModal}
-          setTipoDeVistaEnModal={setTipoDeVistaEnModal } />
+            <ExploreContainerCliente setShowCargandoProveedores={setShowCargandoProveedores} 
+              ordenes={misOrdenes}
+              proveedores={proveedoresEnZona}
+              emailCliente={props.email}
+              url={url} 
+              buscar={buscar}
+              busqueda_categorias={categorias}
+              busquedaDatosProveedores={proveedorBuscadoHook}
+              setShowModal={setShowModal}
+              setTipoDeVistaEnModal={setTipoDeVistaEnModal } />
 
-          <IonAlert 
-            isOpen={showAlertUbicación} 
-            onDidDismiss={() => setShowAlertUbicación(false)} 
-            cssClass='my-custom-class'
-            header={'HABILITAR ACCESO A UBICACIÓN'}
-            animated={true}
-            subHeader={''}
-            message={'Debe habilitar el acceso a la ubicación en el dispositivo'}
-            buttons={['ENTENDIDO']}
-                />
-
+            <IonAlert 
+              isOpen={showAlertUbicación} 
+              onDidDismiss={() => setShowAlertUbicación(false)} 
+              cssClass='my-custom-class'
+              header={'HABILITAR ACCESO A UBICACIÓN'}
+              animated={true}
+              subHeader={''}
+              message={'Debe habilitar el acceso a la ubicación en el dispositivo'}
+              buttons={['ENTENDIDO']}/>
           </div>
         </IonContent>
       </IonPage>
   );
 }
 
-//var arreglo_buscado=new Array()
 
 const Busqueda = (props:{categorias:any, setCategorias:any, setBuscar:any, setProveedorBuscadoHook:any}) =>{
   
@@ -299,12 +277,26 @@ const Busqueda = (props:{categorias:any, setCategorias:any, setBuscar:any, setPr
 
         if (resp.data!="bad"){
           
-          proveedorBuscado= []         
+          /*proveedorBuscado= []         
           for (let i=0; i<resp.data.length;i++){
             proveedorBuscado.push({item:resp.data[i].item,tipo:resp.data[i].tipo,nombre:resp.data[i].nombre,apellido:resp.data[i].apellido,imagen:resp.data[i].imagen,calificacion:resp.data[i].calificacion,email:resp.data[i].email})
           }
 
           props.setProveedorBuscadoHook(proveedorBuscado)
+
+*/
+          props.setProveedorBuscadoHook(resp.data.map((d: { item: any; tipo: any; nombre: any; apellido: any; imagen: any; calificacion: any; email: any; }) => ({
+            item:d.item,
+    	      tipo:d.tipo,
+            nombre:d.nombre,
+            apellido:d.apellido,
+            imagen:d.imagen,
+            calificacion:d.calificacion,
+            email:d.email
+            }))
+          );
+
+
         }
       })
 
@@ -323,8 +315,8 @@ const Busqueda = (props:{categorias:any, setCategorias:any, setBuscar:any, setPr
     if(value.length==0){
       props.setCategorias([])
       palabraBuscar.current=""
-      proveedorBuscado=[]
-      props.setProveedorBuscadoHook(proveedorBuscado)
+     // proveedorBuscado=[]
+      props.setProveedorBuscadoHook([])
 
     }else{
       for (var j=0; j < value.length;j++) {
@@ -359,5 +351,3 @@ const Busqueda = (props:{categorias:any, setCategorias:any, setBuscar:any, setPr
   
   
   export default HomeCliente
-
-

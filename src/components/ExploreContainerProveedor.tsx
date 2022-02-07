@@ -27,7 +27,7 @@ const getLocation = async () => {
   }
 }
 
-let proveedores = new Array<ordenes>();
+//let proveedores = new Array<ordenes>();
 
 
 const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any} ) => {
@@ -41,11 +41,15 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any} ) =
 
   const [posicion, setPosicion] = useState(0)
 
+  //const [arregloOrdenes, setArregloOrdenes] =  useState <ordenes []> ( [])
+
+
   useEffect(() => {
 
-    for (let i=0; i<props.ordenes.length;i++){     
+  /*  for (let i=0; i<props.ordenes.length;i++){     
 
-        proveedores.push({ tipo:props.ordenes[i].tipo,
+
+      setArregloOrdenes([...arregloOrdenes, { tipo:props.ordenes[i].tipo,
         status:props.ordenes[i].status,
         fecha_creacion:props.ordenes[i].fecha_creacion,
         ticket:props.ordenes[i].ticket,
@@ -64,9 +68,9 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any} ) =
         respuesta_cliente_pedido_mas_información:props.ordenes[i].respuesta_cliente_pedido_mas_información,
         picture1_mas_información:props.ordenes[i].picture1_mas_información,
         picture2_mas_información:props.ordenes[i].picture2_mas_información
-      })
+      }])
 
-    }
+    }*/
 
     if(props.ordenes.length > 0){
       setHayOrdenes(true)
@@ -81,7 +85,7 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any} ) =
          
             <h1 id="textoCentrado"> ORDENES DE TRABAJO ACTIVAS </h1>
 
-            <Elements proveedores={proveedores} setVerOrden={setVerOrden} setPosicion={setPosicion} />
+            <Elements proveedores={props.ordenes} setVerOrden={setVerOrden} setPosicion={setPosicion} />
           
           <CampanaPublicidad></CampanaPublicidad>
         </div>
@@ -92,7 +96,7 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any} ) =
       onDidDismiss={() => setVerOrden( false )}
     >
       <ModalVerOrdenesProveedor 
-        datos={proveedores[posicion-1]}
+        datos={props.ordenes[posicion-1]}
         setVolver={setVerOrden}
         emailProveedor={props.emailProveedor}
         

@@ -77,7 +77,7 @@ const HomeProveedor = (props:{setIsReg:any,
   const clientType=useRef("");
   //const foto=useRef("");
   
-  //const [primeraVez, setprimeraVez]=useState(true)
+  const [imagen, setImagen] = useState (props.foto)
 
   const [showInicializando,setShowInicializando]=useState(false)
 
@@ -86,7 +86,8 @@ const HomeProveedor = (props:{setIsReg:any,
 
   getLocation()
 
-  const [misOrdenes, setMisOrdenes] = useState <ordenes>(
+  const [misOrdenes, setMisOrdenes] = useState <ordenes []>( [])
+ /* const [misOrdenes, setMisOrdenes] = useState <ordenes>(
     {
       tipo:"",
       status:"",
@@ -108,7 +109,7 @@ const HomeProveedor = (props:{setIsReg:any,
       picture1_mas_información:"",
       picture2_mas_información:"",
       }
-);
+);*/
 
 
   const axios = require('axios');
@@ -138,95 +139,110 @@ const HomeProveedor = (props:{setIsReg:any,
 
         axios.get(url+"orden/misordenes/"+"proveedor/"+props.email).then((resp: { data: any; }) => {
           if (resp.data!="bad"){
-            setMisOrdenes(resp.data)            
+            //setMisOrdenes(resp.data) 
+            setMisOrdenes(resp.data.map((d: { tipo: any; status: any; fecha_creacion: any; ticket: any; dia: any; time: any; titulo: any; descripcion: any; email_cliente: any; imagen_cliente: any; location_lat: any; location_long: any; picture1: any; picture2: any; presupuesto: any; pedidoMasInformacion: any; respuesta_cliente_pedido_mas_información: any; picture1_mas_información: any; picture2_mas_información: any; }) => ({
+              tipo:d.tipo,
+              status:d.status,
+              fecha_creacion:d.fecha_creacion,
+              ticket:d.ticket,
+              dia:d.dia,
+              hora:d.time,
+              titulo:d.titulo,
+              descripcion:d.descripcion,
+              email_cliente:d.email_cliente,
+              imagen_cliente:d.imagen_cliente,
+              location_lat:d.location_lat,
+              location_long:d.location_long,
+              picture1:d.picture1,
+              picture2:d.picture2,
+              presupuesto_inicial:d.presupuesto,
+              pedido_mas_información:d.pedidoMasInformacion,
+              respuesta_cliente_pedido_mas_información:d.respuesta_cliente_pedido_mas_información,
+              picture1_mas_información:d.picture1_mas_información,
+              picture2_mas_información:d.picture2_mas_información,
+                    }))
+                  );           
           }
         })
+
+        if (props.foto==""|| props.foto==null || props.foto==undefined){
+          setImagen ("./assets/icon/nuevoUsuario.png") 
+        }else{
+          setImagen(props.foto)
+        }
    
   }, []);
 
 
-    return (
-      <IonPage>
-        <IonHeader>
-          <IonToolbar>
-            <IonGrid>
-              <IonRow id="header">
-                <IonCol id="columna" size="1.5"><IonButtons ><IonMenuButton /> </IonButtons></IonCol>
-                <IonCol id="columna2" ><Busqueda /></IonCol>
-                <IonCol id="columna3" size="2"> 
-                    <img src={props.foto} id="foto-usuario" onClick={() => {  setShowModal({ isOpen: true});  setTipoDeVistaEnModal("datosUsuario")}}/>
-                 </IonCol>
-              </IonRow>
-            </IonGrid>
-          </IonToolbar>
-        </IonHeader>
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonGrid>
+            <IonRow id="header">
+              <IonCol id="columna" size="1.5">
+                <IonButtons ><IonMenuButton /> </IonButtons>
+              </IonCol>
+              <IonCol id="columna2" ></IonCol>
+              <IonCol id="columna3" size="2"> 
+                <img src={imagen} id="foto-usuario" onClick={() => {  setShowModal({ isOpen: true});  setTipoDeVistaEnModal("datosUsuario")}}/>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </IonToolbar>
+      </IonHeader>
         
-        <IonContent >
+      <IonContent >
         <div id="ionContentHome">
+          <IonLoading
+            cssClass='my-custom-class'
+            isOpen={showInicializando}
+            onDidDismiss={() => setShowInicializando(false)}
+            message={'Inicializando...'}
+            duration={5000}/>
 
-        <IonLoading
-                    cssClass='my-custom-class'
-                    isOpen={showInicializando}
-                    onDidDismiss={() => setShowInicializando(false)}
-                    message={'Inicializando...'}
-                    duration={5000}
-                />
-
-        <IonModal
+          <IonModal
             animated={true}
             isOpen={showModal.isOpen}
-            onDidDismiss={() => setShowModal({ isOpen: false })}
-          >
+            onDidDismiss={() => setShowModal({ isOpen: false })}>
             <ModalProveedor 
-               setIsReg={props.setIsReg}
-               email={props.email}
-               tipoVista={tipoDeVistaEnModal}
-               fotoPersonal={props.foto}
-               
-               nombre={props.nombre}
-               apellido={props.apellido}
-               
-               setFoto={props.setFoto}
-               setNombre={props.setNombre}
-               setApellido={props.setApellido}
-               calificacion={props.calificacion}
-
-               rubro1={props.rubro1}
-               rubro2={props.rubro2}
-               setRubro1={props.setRubro1}
-               setRubro2={props.setRubro2}
-               
-               tipoProveedor={props.tipodeCliente}
-               completarInfoPersonal={completarInfoPersonal}
-               onClose={(value: React.SetStateAction<null>) => {
-                setShowModal({ isOpen: false });
-                value ? setRetVal(value) : setRetVal(null);
-              }} 
-            />  
+              setIsReg={props.setIsReg}
+              email={props.email}
+              tipoVista={tipoDeVistaEnModal}
+              fotoPersonal={props.foto}
+              nombre={props.nombre}
+              apellido={props.apellido}
+              setFoto={props.setFoto}
+              setNombre={props.setNombre}
+              setApellido={props.setApellido}
+              calificacion={props.calificacion}
+              rubro1={props.rubro1}
+              rubro2={props.rubro2}
+              setRubro1={props.setRubro1}
+              setRubro2={props.setRubro2} 
+              tipoProveedor={props.tipodeCliente}
+              completarInfoPersonal={completarInfoPersonal}
+              onClose={(value: React.SetStateAction<null>) => {
+              setShowModal({ isOpen: false });
+              value ? setRetVal(value) : setRetVal(null);
+              }} />  
           </IonModal>
 
-          
           <ExploreContainerProveedor  ordenes={misOrdenes} emailProveedor={props.email} />
          
-
           <IonAlert 
             isOpen={showAlertUbicación} 
             onDidDismiss={() => setShowAlertUbicación(false)} 
+            mode="ios"
             cssClass='my-custom-class'
             header={'Habilitar acceso ubicación'}
             subHeader={''}
             message={'Debe habilitar el acceso a la ubicación en el dispositivo'}
-            buttons={['OK']}
-                />
-
-
-          </div>
-        </IonContent>
-      </IonPage>
-  );
-
-
-  
+            buttons={['OK']}/>
+        </div>
+      </IonContent>
+    </IonPage>
+  ); 
 }
 
 

@@ -38,6 +38,7 @@ import CompletarRubro from './pages/CompletarRubros';
 import HomeCliente from './pages/HomeCliente';
 import HomeProveedor from './pages/HomeProveedor';
 import CompletarRubros from './pages/CompletarRubros';
+import { createStore } from './utilidades/dataBase';
 
 /*
 Device's var:
@@ -90,6 +91,8 @@ const App: React.FC = () => {
  //removeItem("clientType");
 
   useEffect(() => {
+
+    createStore("dbDispositivo")
 
     getItem("isRegistered").then(res => {
       if (res!=null){
@@ -178,15 +181,6 @@ return(
 
 );
 };
-/*
-const RegistroCompleto = (props:{setIsReg:any,setCliente:any, setTipoCliente:any,setEmail:any}) => {
 
-  if (registroFinalizado){
-    return (<Registro setIsReg={props.setIsReg} setCliente={props.setCliente} setTipoCliente={props.setTipoCliente} setEmail={props.setEmail } ></Registro>)
-  }else{
-    <Completarinfo setIsReg={props.setIsReg} email={props.email} tipoCliente={props.tipoCliente} setNombre={props.setNombre} setApellido={props.setApellido} setFoto={props.setFoto} rubro1={props.rubro1} rubro2={props.rubro2} setRubro1={props.setRubro1} setRubro2={props.setRubro2} />
-
-  }
-}*/
 
 export default App;
