@@ -27,7 +27,6 @@ import Ingresar from './pages/Ingresar';
 import Menu from './pages/Menu';
 import MisServicios from './pages/MisServicios';
 import Favoritos from './pages/Favoritos';
-import HistorialServicios from './pages/HistorialServicios';
 import Tab2 from './pages/Tabs2';
 import Completarinfo from './pages/Completarinfo';
 
@@ -158,12 +157,10 @@ return(
                                                       :<HomeProveedor  setIsReg={setIsReg} email={email } tipodeCliente={tipoCliente} nombre={nombre} apellido={apellido} calificacion={calificacion} setNombre={setNombre} setApellido={setApellido} foto={foto} setFoto={setFoto} rubro1={rubro1} rubro2={rubro2} setRubro1={setRubro1} setRubro2={setRubro2} /> ) 
                                           :<Ingresar setIsReg={setIsReg} setCliente={setCliente} setEmail={setEmail} setFoto={setFoto} setTipoCliente={setTipoCliente} setNombre={setNombre} setApellido={setApellido} setCalificacion={setCalificacion} setRubro1={setRubro1} setRubro2={setRubro2} />} /> 
     
-    <Route path="/MisServicios" component={MisServicios} exact={true}></Route>
+    <Route path="/MisServicios" render={() => <MisServicios cliente={cliente} email={email}  ></MisServicios>}></Route>
     
     <Route path="/Favoritos" component={Favoritos} exact={true}></Route>
-    
-    <Route path="/HistorialServicios" component={HistorialServicios} exact={true}></Route>
-    
+        
     <Route path="/Completarinfo" render={() => <Completarinfo setIsReg={setIsReg} email={email} tipoCliente={tipoCliente} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} rubro1={rubro1} rubro2={rubro2} setRubro1={setRubro1} setRubro2={setRubro2} /> }  />
     
     <Route path="/CompletarRubros" render={() => <CompletarRubros email={email} clientType={tipoCliente} setIsReg={setIsReg} setRubro1={setRubro1} setRubro2={setRubro2} rubro1={rubro1} rubro2={rubro2}  />  }  />   

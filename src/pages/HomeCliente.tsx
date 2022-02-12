@@ -121,9 +121,10 @@ const HomeCliente = (props:{setIsReg:any,
     setShowCargandoProveedores(true)
 
     getDB("proveedores").then(res => {
-      if( res.length > 0){
+      if( res!= null ){
+        if (res.length > 0){
         setShowCargandoProveedores(false)   
-        setProveedoresEnZona(res)
+        setProveedoresEnZona(res)}
       }
     })
         
@@ -308,9 +309,15 @@ const Busqueda = (props:{categorias:any, setCategorias:any, setBuscar:any, setPr
     palabraBuscar.current=value
     props.setBuscar(value)
       
-    var arreglo_categorias=["CARPINTERIA","CERRAJERIA","CONSTRUCCIÓN","ELECTRICIDAD","ELECTRONICA","FLETE","GASISTA","HERRERIA","INFORMATICA",
-    "JARDINERÍA","MECANICA","PLOMERIA","REFRIGERACION","REMOLQUES - GRÚAS","TELEFONIA CELULAR"]
+    var arreglo_categorias=["CARPINTERIA","CERRAJERIA","CONSTRUCCIÓN","CONTADURÍA","ELECTRICIDAD","ELECTRONICA","ESTÉTICA","FLETE","FUMIGACIÓN","GASISTA","HERRERIA","INFORMATICA","JARDINERÍA","MECANICA","MODA","PASEADOR DE MASCOTAS","PINTOR","PLOMERIA","REFRIGERACION","REMOLQUES - GRÚAS","TELEFONIA CELULAR","TEXTIL"]
 
+    //Agregar subcategorías, por ejemplo en moda:  Estética 
+   //Depilación
+   //Pedicura
+  // Manicuría
+   //Maquillaje
+   //Peluquería 
+  // Masajes
     
     if(value.length==0){
       props.setCategorias([])

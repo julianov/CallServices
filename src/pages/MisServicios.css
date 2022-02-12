@@ -25,3 +25,28 @@
   position: absolute;
   left: 0px;
 }
+
+
+#padre {
+ 
+  height: 100%;
+  width: 100%;
+  /* IMPORTANTE */
+  display: table;
+}
+
+#hijo {
+  /* IMPORTANTE */
+  display: table-cell;
+  vertical-align: middle;
+}
+
+#noHayOrdenes{
+  font-size: 1em;
+}
+
+#segmentoMisServicios{
+
+  height: 12%;
+}
+

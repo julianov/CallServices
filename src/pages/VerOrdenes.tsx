@@ -18,31 +18,38 @@ export interface informacionOrdenes{
     ticket:string
   }
   
-  let informacion = new Array<informacionOrdenes>();
+  //let informacion = new Array<informacionOrdenes>();
 
-const VerOrdenesCliente = (props:{clienteEmail:any , setCerrar:any}) => {
+const VerOrdenesCliente = (props:{clienteEmail:any , tipo:string, setCerrar:any}) => {
 
-    const [hayOrdenes, setHayOrdenes] = useState (false)
+    //const [hayOrdenes, setHayOrdenes] = useState (false)
     const [ticket, setTicket] = useState ("")
+
+    const [informacion, setInformacion] =  useState <informacionOrdenes []> ( [])
 
     useEffect(() => {
 
-        axios.get(url+"orden/consultarOrdenes/"+props.clienteEmail).then((resp: { data: any; }) => {
+        axios.get(url+"orden/consultarOrdenes/"+props.tipo+"/"+props.clienteEmail).then((resp: { data: any; }) => {
             if (resp.data!="bad"){
                 
-                for (let i=0; i<resp.data.length;i++){               
+              /*  for (let i=0; i<resp.data.length;i++){               
                     informacion.push({rubro:resp.data[i].rubro,status:resp.data[i].status, fecha:resp.data[i].fecha, ticket:resp.data[i].ticket})
-                    
-                  }
-                  setHayOrdenes(true)
-             
+                  }*/
+                  setInformacion(resp.data.map((d: { rubro: any; status: any; fecha: any; ticket: any; }) => ({
+                    rubro:d.rubro,
+                    status:d.status,
+                    fecha:d.fecha,
+                    ticket:d.ticket
+                     }))
+                   );     
+                 // setHayOrdenes(true)
               }
             })
 
     }, [])
 
     if(ticket==""){
-      if(hayOrdenes){
+      if(informacion.length>0){
         return( 
             <IonContent>
                 <div id="flechaVolver">
@@ -83,10 +90,7 @@ const VerOrdenesCliente = (props:{clienteEmail:any , setCerrar:any}) => {
             </div>
         </IonContent>
     )
-
     }
-    
-    
 
 }
 
@@ -97,7 +101,7 @@ const MostrarOrdenes = (props:{ informacion:Array<informacionOrdenes>,setCerrar:
     //if (props.proveedores!=[]){
       return (
         <div id="elementos">
-          {informacion.map((a) => {
+          {props.informacion.map((a) => {
             i=i+1
             //item, imagen personal, distancia, calificación, email, nombre, apellido, tipo
             return (

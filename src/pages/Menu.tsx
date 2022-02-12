@@ -50,14 +50,7 @@ import { isPropertySignature } from 'typescript';
       iosIcon: heart,
       mdIcon: heart
     },
-    {
-      title: 'Historial de servicios',
-      url: '/HistorialServicios',
-      src:"./assets/icon/historial.png",
-
-      iosIcon: book,
-      mdIcon: book
-    },
+   
     {
       title: 'Mis direcciones',
       url: '/Outbox',

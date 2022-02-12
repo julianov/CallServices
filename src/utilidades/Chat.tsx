@@ -33,6 +33,7 @@ const Chat = (props:{email:any,  ticket:any, setVolver:any, setVista:any, desdeD
     useEffect(() => {
 
         axios.get(url+"chat/"+props.ticket).then((resp: { data: any; }) => {
+            
             if (resp.data!="bad"){
                 msg=[]
                 for (let i=0; i<resp.data.length;i++){
@@ -62,7 +63,9 @@ const Chat = (props:{email:any,  ticket:any, setVolver:any, setVista:any, desdeD
 
         if (mensaje!=""){
             let date: Date = new Date();
-            const dia=date.getDate()+"-"+date.getMonth()+1+"-"+date.getFullYear()
+            const mes=(date.getMonth()+1)
+
+            const dia=date.getDate()+"-"+mes+"-"+date.getFullYear()
             const hora=date.getHours()+":"+date.getMinutes()
 
             axios.get(url+"chat/mensaje/"+props.email+"/"+props.ticket+"/"+mensaje+"/"+dia+"/"+hora).then((resp: { data: any; }) => {
@@ -71,7 +74,7 @@ const Chat = (props:{email:any,  ticket:any, setVolver:any, setVista:any, desdeD
                     //msg=msg.reverse()
                     //msg.push({usuario:props.email,mensaje:mensaje, dia:date.getDate()+"-"+date.getMonth()+1+"-"+date.getFullYear() , hora:date.getHours()+":"+date.getMinutes()}) 
                     
-                    setArregloMensajes([ {usuario:props.email,mensaje:mensaje, dia:date.getDate()+"-"+date.getMonth()+1+"-"+date.getFullYear() , hora:date.getHours()+":"+date.getMinutes()} , ...arregloMensajes] )
+                    setArregloMensajes([ {usuario:props.email,mensaje:mensaje, dia:dia , hora:date.getHours()+":"+date.getMinutes()} , ...arregloMensajes] )
                 }
               }); 
               //setNuevoMensaje(nuevoMensaje+1)

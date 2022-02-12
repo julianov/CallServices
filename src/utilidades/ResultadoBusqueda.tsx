@@ -16,7 +16,7 @@ import { removeItem } from "./Storage";
 import Https from "../utilidades/HttpsURL";
 
 
-var arreglo_resultado_busqueda=new Array()
+//var arreglo_resultado_busqueda=new Array()
 
 let posicion: string | number;
 
@@ -41,20 +41,37 @@ const getLocation = async () => {
 const url=Https+"search/"
 const url2=Https
 
+export interface categoriaBuscada{
+    item:string
+    tipo:string
+    nombre:string
+    apellido:string
+    imagen:any
+    calificacion:any
+    email:string
+}
 
 const ResultadoBusqueda =  (props:{arreglo_ultimos:any, emailCliente:any, arreglo_categorias:any, busquedaDatosProveedores:any})=> {
 
-    var ultimos=props.arreglo_ultimos
+    //var ultimos=props.arreglo_ultimos
+
+    const [ultimos, setUltimos] =  useState <categoriaBuscada []> ( props.arreglo_ultimos)
+
+    const [arreglo_resultado_busqueda, set_arreglo_resultado_busqueda] =  useState <categoriaBuscada []> ( [])
+
     if (props.arreglo_ultimos.length>4){
         ultimos.length=4 //solamente muestro las últimas 4 busquedas recientes
     }
 
 
+   /* useEffect(() => {   
+        console.log("los ultimos son: "+JSON.stringify(props.arreglo_ultimos))
+
+    }, [ultimos])*/
+
     const [showLoading, setShowLoading]=useState(false)
 
     const deDondeProviene=useRef("nada")
-
-
     //const proveedor=useRef()
     const [caracteres,setCaracteres]=useState()
     const [imagenes,setImagenes]=useState()
@@ -69,21 +86,18 @@ const ResultadoBusqueda =  (props:{arreglo_ultimos:any, emailCliente:any, arregl
         const axios = require('axios');
         axios.get(url+valor).then((resp: { data: any; }) => {
             if (resp.data!="bad"){
-                arreglo_resultado_busqueda=[]
-                if(resp.data.length!=0){
-                    for (var i=0 ; i<resp.data.length;i++){
-                        var aux=[]
-                        aux.push(resp.data[i].item )
-                        aux.push(resp.data[i].tipo )
-                        aux.push(resp.data[i].nombre)
-                        aux.push(resp.data[i].apellido)
-                        aux.push(resp.data[i].imagen)
-                        aux.push(resp.data[i].calificacion)
-                        aux.push(resp.data[i].email)
-                        arreglo_resultado_busqueda.push(aux)
-                    }
+                set_arreglo_resultado_busqueda(resp.data.map((d: { item: any; tipo: any; nombre: any; apellido: any; imagen: any; calificacion: any; email: any; }) => ({
+                    item:d.item,
+                    tipo:d.tipo,
+                    nombre:d.nombre,
+                    apellido:d.apellido,
+                    imagen:d.imagen,
+                    calificacion:d.calificacion,
+                    email:d.email
+                    }))
+                )
                     setLista("proveedores")
-                }
+                
                 
             }else{
                 setShowLoading(false)
@@ -116,7 +130,7 @@ const ResultadoBusqueda =  (props:{arreglo_ultimos:any, emailCliente:any, arregl
 
                 }else{
                     for (var i=0; i <ultimos.length; i++){
-                        if(ultimos[i][0]==email.current){
+                        if(ultimos[i].email==email.current){
                             ultimos.splice(i)
                         }
                         setLista("nada")
@@ -126,7 +140,7 @@ const ResultadoBusqueda =  (props:{arreglo_ultimos:any, emailCliente:any, arregl
             }).catch((err: any) => {
 
                 for (var i=0;i<ultimos.length;i++){
-                    if (ultimos[i][0]==email.current){
+                    if (ultimos[i].email==email.current){
                         ultimos.splice(i)
                     }
                 }
@@ -149,13 +163,13 @@ const ResultadoBusqueda =  (props:{arreglo_ultimos:any, emailCliente:any, arregl
                 {arreglo_resultado_busqueda.map((a) => {
                     i=i+1
                     return (
-                        <IonItem key={i} id="item-busqueda" onClick={() => BuscarProveedor(a[6]+"/"+a[0])}>
+                        <IonItem key={i} id="item-busqueda" onClick={() => BuscarProveedor(a.email+"/"+a.item)}>
                             <IonGrid>
-                                <IonRow id="row-busqueda"><IonTitle id="titulo-busqueda">{a[2].toUpperCase()+" "+a[3].toUpperCase()}</IonTitle></IonRow>
-                                <IonRow id="row-busqueda"><img id="imagen-busqueda" src= {a[4]}></img></IonRow>
-                                <IonRow id="row-busqueda"><p id="descripción-busqueda">RUBRO: {a[0]}</p></IonRow>
-                                <IonRow id="row-busqueda"><p id="descripción-busqueda">{a[1]}</p></IonRow>
-                                <Estrellas  calificacion={a[5]}   ></Estrellas> 
+                                <IonRow id="row-busqueda"><IonTitle id="titulo-busqueda">{a.nombre.toUpperCase()+" "+a.apellido.toUpperCase()}</IonTitle></IonRow>
+                                <IonRow id="row-busqueda"><img id="imagen-busqueda" src= {a.imagen}></img></IonRow>
+                                <IonRow id="row-busqueda"><p id="descripción-busqueda">RUBRO: {a.item}</p></IonRow>
+                                <IonRow id="row-busqueda"><p id="descripción-busqueda">{a.tipo}</p></IonRow>
+                                <Estrellas  calificacion={a.calificacion}   ></Estrellas> 
 
                             </IonGrid>
                         </IonItem>
@@ -178,14 +192,15 @@ const ResultadoBusqueda =  (props:{arreglo_ultimos:any, emailCliente:any, arregl
 
         return(
             <>
-
-            <div id="volver-contenedor-ExplorerContainer">
-            <IonIcon icon={arrowBack} onClick={() => setLista(deDondeProviene.current)} id="volver-busqueda"> </IonIcon>
-          </div> 
+                <div id="volver-contenedor-ExplorerContainer">
+                    <IonIcon icon={arrowBack} onClick={() => setLista(deDondeProviene.current)} id="volver-busqueda"> </IonIcon>
+                </div> 
 
                 <div id="contenedorCentral-busqueda">
                     <CardProveedor data={caracteres} imagenes={imagenes} emailCliente={email.current} proveedorEmail={email.current} ></CardProveedor>
-                </div></>)
+                </div>
+            </>
+        )
 
     }else if(lista=="sin-resultado"){
         return(<div id="contenedorCentral-busqueda">
@@ -200,20 +215,19 @@ const ResultadoBusqueda =  (props:{arreglo_ultimos:any, emailCliente:any, arregl
                 <div id="contenedorCentral-busqueda">
                     <IonTitle id="titulo-busqueda">BÚSQUEDAS RECIENTES</IonTitle>
                     <IonCard>
-                    {ultimos.map((a: any[]) => {
+                    {ultimos.map((a) => {
                         i=i+1
-                        if (a[1]!=null && a[2]!=null ){
-
+                        
                             return (
-                                <IonItem id="item-busqueda" onClick={() => BuscarProveedor(a[0]+"/"+a[6])}>
+                                <IonItem key={i} id="item-busqueda" onClick={() => BuscarProveedor(a.item+"/"+a.email)}>
                                 <IonGrid>
                                     <IonRow id="row-busqueda">
-                                        <IonCol size="auto" id="col-img"><img id="imagen-busqueda" src= {a[4]}></img></IonCol>
+                                        <IonCol size="auto" id="col-img"><img id="imagen-busqueda" src= {a.imagen}></img></IonCol>
                                         <IonCol size="auto" id="col-busqueda">
-                                            <IonTitle id="titulo-busqueda">{a[1].toUpperCase()+" "+a[2].toUpperCase()}</IonTitle>
-                                            <p id="descripción-busqueda">RUBRO: {a[6]}</p>
-                                            <p id="descripción-busqueda">{a[3]}</p>
-                                            <Estrellas  calificacion={a[5]}   ></Estrellas>
+                                            <IonTitle id="titulo-busqueda">{a.nombre.toUpperCase()+" "+a.apellido.toUpperCase()}</IonTitle>
+                                            <p id="descripción-busqueda">RUBRO: {a.item}</p>
+                                            <p id="descripción-busqueda">{a.tipo}</p>
+                                            <Estrellas  calificacion={a.calificacion}   ></Estrellas>
                                         </IonCol>
                                     </IonRow>
                                     <IonRow > 
@@ -222,7 +236,7 @@ const ResultadoBusqueda =  (props:{arreglo_ultimos:any, emailCliente:any, arregl
                             </IonItem>
                             );
 
-                        }
+                        
                         
                     })}
                 </IonCard>
@@ -307,7 +321,6 @@ const ProveedoresBuscardo =  (props:{busquedaDatosProveedores:any, BuscarProveed
         return (
             <>    
                 <IonTitle id="titulo-busqueda">RESULTADO DE BÚSQUEDA</IonTitle>
-                
                 <IonCard>
                 {props.busquedaDatosProveedores.map((a: any[]) => {
                     return (

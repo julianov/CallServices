@@ -7,7 +7,7 @@ import './ExploreContainer.css';
 import { Geolocation } from '@capacitor/core/dist/esm/web/geolocation';
 import { useEffect } from 'react';
 import Estrellas from '../utilidades/Estrellas';
-import ResultadoBusqueda from '../utilidades/ResultadoBusqueda';
+import ResultadoBusqueda, { categoriaBuscada } from '../utilidades/ResultadoBusqueda';
 import { createStore, getDB, setDB } from '../utilidades/dataBase';
 import { datosGeneralesVariosProveedores, ordenesCliente, proveedorBuscado } from '../pages/HomeCliente';
 import ModalVerCardProveedor from './ModalVerCardProveedor';
@@ -30,7 +30,7 @@ const getLocation = async () => {
     return 0;
   }
 }
-var ultimos: never[]=[]
+//var ultimos: never[]=[]
 
 //let proveedores = new Array<ordenesCliente>();
 
@@ -60,6 +60,9 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
   const [verReseña, setVerReseña] = useState(false);
 
   const tiipo = useRef("")
+
+  const [ultimos, setUltimos] =  useState <categoriaBuscada []> ( [])
+
 
   const [datosDeOrdenes,setDatosDeOrdenes]=useState<datosOrden>(
     {
@@ -138,6 +141,26 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
   }, [props.ordenes, pediOrden]);
 
   
+  useEffect(() => {
+
+
+    getDB("UltimosProveedores").then(res => {
+      if(res!=null){
+        setUltimos(res.map((d: { item: any; tipo: any; nombre: any; apellido: any; imagen: any; calificacion: any; email: any; }) => ({
+          item:d.item,
+          tipo:d.tipo,
+          nombre:d.nombre,
+          apellido:d.apellido,
+          imagen:d.imagen,
+          calificacion:d.calificacion,
+          email:d.email
+           }))
+         );       
+       
+      }
+    })
+
+  }, [ props.busqueda_categorias]);
 
   if (props.busqueda_categorias.length == 0 && props.buscar=="" ){
       if (verEmail=="" && item =="" ){
@@ -221,18 +244,9 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
       }
 
     
-    }
+    }else{
 
-  
-  else{
-
-    //createStore("UltimosProveedores")
-
-    getDB("UltimosProveedores").then(res => {
-      if(res!=null){
-        ultimos= JSON.parse(res)
-      }
-    })
+   
     return (
       <div id="container-principal-ExplorerContainer-Cliente">   
         <ResultadoBusqueda emailCliente={props.emailCliente} arreglo_categorias={props.busqueda_categorias} arreglo_ultimos={ultimos} busquedaDatosProveedores={props.busquedaDatosProveedores} ></ResultadoBusqueda>
@@ -250,7 +264,6 @@ const ProveedoresEnZona = (props:{ proveedores: Array<datosGeneralesVariosProvee
   var i=0
   //if (props.proveedores!=[]){
 
-    console.log("VEAMOS QUE HAY AQUI QUE DA PROBLEMA PUE: "+props.proveedores)
     return (
       <div id="elementos">
         {(props.proveedores || []).map((a) => {

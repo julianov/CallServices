@@ -57,6 +57,24 @@ const getLocation = async () => {
     }
   }
 
+export interface rubro {
+    rubro:string
+    radius:string
+    descripcion:string
+    calificacion:string
+    dias:string
+    horaInicio:string
+    horaFin:string
+    certificacion:string
+    picture1:string
+    picture2:string
+    picture3:string
+    pais:string
+    provincia:string
+    ciudad:string
+    domicilio_calle:string
+    domicilio_numeración:string
+}
 
 const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any, 
     rubro1:any, rubro2:any, setRubro1:any, setRubro2:any}) => {
@@ -167,7 +185,6 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
 
             //Lo siguiente corresponde a la calificación
             arreglo.push(String(0))
-
 
             formDataToUpload.append("days_of_works", dias.current);
             arreglo.push(dias.current)
@@ -462,7 +479,7 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
               </IonHeader>
               <IonContent fullscreen>
 
-                      <IonAlert
+            <IonAlert
                 isOpen={showAlertIngreseFoto}
                 onDidDismiss={() => setShowAlertIngreseFoto(false)}
                 cssClass='my-custom-class'
@@ -484,6 +501,7 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
                     foto1={foto1}  foto2={foto2}  foto3={foto3} 
                     foto1Mostrar={foto1Mostrar} foto2Mostrar={foto2Mostrar} foto3Mostrar={foto3Mostrar}
                     setShowAlertIngreseFoto={setShowAlertIngreseFoto}  />
+
               </IonContent>
             </IonPage>
           );
@@ -970,14 +988,23 @@ const AgregarTipoRubro =  (props:{setVista:any, rubro:any, dias:any,horaInicio:a
                 <IonItem onClick={()=> {props.rubro.current="CONSTRUCCIÓN";setRubroSeleccionado("RUBRO SELECCIONADO: CONSTRUCCIÓN"); setSeleccionDeRubro("vistaCompleta")}}>
                 <IonLabel id="laberCompletarRubrosRubros">CONSTRUCCIÓN</IonLabel>
                 </IonItem>
+                <IonItem onClick={()=> {props.rubro.current="CONTADURÍA";setRubroSeleccionado("RUBRO SELECCIONADO: CONTADURÍA"); setSeleccionDeRubro("vistaCompleta")}}>
+                <IonLabel id="laberCompletarRubrosRubros">CONTADURÍA</IonLabel>
+                </IonItem>
                 <IonItem onClick={()=> {props.rubro.current="ELECTRICIDAD";setRubroSeleccionado("RUBRO SELECCIONADO: ELECTRICIDAD"); setSeleccionDeRubro("vistaCompleta")}}>
                 <IonLabel id="laberCompletarRubrosRubros">ELECTRICIDAD</IonLabel>
                 </IonItem>
                 <IonItem onClick={()=> {props.rubro.current="ELECTRONICA";setRubroSeleccionado("RUBRO SELECCIONADO: ELECTRONICA"); setSeleccionDeRubro("vistaCompleta")}}>
                 <IonLabel id="laberCompletarRubrosRubros">ELECTRÓNICA</IonLabel>
                 </IonItem>
+                <IonItem onClick={()=> {props.rubro.current="ESTÉTICA";setRubroSeleccionado("RUBRO SELECCIONADO: ESTÉTICA"); setSeleccionDeRubro("vistaCompleta")}}>
+                <IonLabel id="laberCompletarRubrosRubros">ESTÉTICA</IonLabel>
+                </IonItem>
                 <IonItem onClick={()=> {props.rubro.current="FLETE";setRubroSeleccionado("RUBRO SELECCIONADO: FLETE"); setSeleccionDeRubro("vistaCompleta")}}>
                 <IonLabel id="laberCompletarRubrosRubros">FLETE</IonLabel>
+                </IonItem>
+                <IonItem onClick={()=> {props.rubro.current="FUMIGACIÓN";setRubroSeleccionado("RUBRO SELECCIONADO: FUMIGACIÓN"); setSeleccionDeRubro("vistaCompleta")}}>
+                <IonLabel id="laberCompletarRubrosRubros">FUMIGACIÓN</IonLabel>
                 </IonItem>
                 <IonItem onClick={()=> {props.rubro.current="GASISTA";setRubroSeleccionado("RUBRO SELECCIONADO: GASISTA");setSeleccionDeRubro("vistaCompleta")}}>
                 <IonLabel id="laberCompletarRubrosRubros">GASISTA</IonLabel>
@@ -993,6 +1020,15 @@ const AgregarTipoRubro =  (props:{setVista:any, rubro:any, dias:any,horaInicio:a
                 </IonItem>
                 <IonItem onClick={()=> {props.rubro.current="MECANICA";setRubroSeleccionado("RUBRO SELECCIONADO: MECANICA");setSeleccionDeRubro("vistaCompleta")}}>
                 <IonLabel id="laberCompletarRubrosRubros">MECÁNICA</IonLabel>
+                </IonItem>
+                <IonItem onClick={()=> {props.rubro.current="MODA";setRubroSeleccionado("RUBRO SELECCIONADO: MODA");setSeleccionDeRubro("vistaCompleta")}}>
+                <IonLabel id="laberCompletarRubrosRubros">MODA</IonLabel>
+                </IonItem>
+                <IonItem onClick={()=> {props.rubro.current="PASEADOR DE MASCOTAS";setRubroSeleccionado("RUBRO SELECCIONADO: PASEADOR DE MASCOTAS"); setSeleccionDeRubro("vistaCompleta")}}>
+                <IonLabel id="laberCompletarRubrosRubros">PASEADOR DE MASCOTAS</IonLabel>
+                </IonItem>
+                <IonItem onClick={()=> {props.rubro.current="PINTOR";setRubroSeleccionado("RUBRO SELECCIONADO: PINTOR"); setSeleccionDeRubro("vistaCompleta")}}>
+                <IonLabel id="laberCompletarRubrosRubros">PINTOR</IonLabel>
                 </IonItem>
                 <IonItem onClick={()=> {props.rubro.current="PLOMERIA";setRubroSeleccionado("RUBRO SELECCIONADO: PLOMERIA"); setSeleccionDeRubro("vistaCompleta")}}>
                 <IonLabel id="laberCompletarRubrosRubros">PLOMERÍA</IonLabel>

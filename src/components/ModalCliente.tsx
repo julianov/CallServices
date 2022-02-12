@@ -1,4 +1,4 @@
-import { IonActionSheet, IonAlert, IonButton, IonCol, IonContent, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonTitle, IonToolbar } from "@ionic/react";
+import { IonActionSheet, IonAlert, IonButton, IonCard, IonCol, IonContent, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonTitle, IonToolbar } from "@ionic/react";
 import { arrowBack, person, close,receipt, help, chatbubble, camera, trash, trendingUpOutline } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router";
@@ -14,8 +14,28 @@ import Completarinfo from "../pages/Completarinfo";
 import Estrellas from "../utilidades/Estrellas";
 import Https from "../utilidades/HttpsURL";
 import VerOrdenesCliente from "../pages/VerOrdenes";
+import { categoriaBuscada } from "../utilidades/ResultadoBusqueda";
+
+import { Geolocation, Geoposition } from '@ionic-native/geolocation';
+import { isPropertySignature } from "typescript";
+import CardProveedor from "../utilidades/CardProveedor";
+
 
 const url=Https
+
+let posicion: string | number;
+
+const getLocation = async () => {
+  try {
+      const position = await Geolocation.getCurrentPosition();
+      posicion=position.coords.latitude +"/"+ position.coords.longitude
+      return posicion;
+
+  } catch (e) {
+    return 0;
+  }
+}
+
 
 const ModalCliente: React.FC<{setIsReg:any, onClose: any; tipoVista: string; 
   email:any; completarInfoPersonal:boolean, fotoPersonal:any
@@ -24,6 +44,7 @@ const ModalCliente: React.FC<{setIsReg:any, onClose: any; tipoVista: string;
     nombre, apellido, setFoto, setNombre,setApellido }) => {
                    
   
+    
     if(tipoVista=="datosUsuario"){
       return (
         <>
@@ -47,7 +68,7 @@ const ModalCliente: React.FC<{setIsReg:any, onClose: any; tipoVista: string;
         <IonHeader>
           <IonToolbar>
           <IonIcon icon={arrowBack} onClick={() => onClose(null)} slot="start" id="flecha-volver">  </IonIcon>
-  
+          
           </IonToolbar>
         </IonHeader>
         <IonContent>
@@ -61,17 +82,9 @@ const ModalCliente: React.FC<{setIsReg:any, onClose: any; tipoVista: string;
     if(tipoVista=="categorias"){
       return (
         <>
-        <IonHeader>
-          <IonToolbar>
-          <IonIcon icon={arrowBack} onClick={() => onClose(null)} slot="start" id="flecha-volver">  </IonIcon>
-  
-          </IonToolbar>
-        </IonHeader>
-        <IonContent>
-          <div id="contenedor-central">
-            <strong>Categorías</strong>
-          </div>
-        </IonContent>
+          <IonContent>
+            <Categorias emailCliente={email} onClose={onClose} ></Categorias>
+            </IonContent>
       </>
       );
     }
@@ -79,7 +92,7 @@ const ModalCliente: React.FC<{setIsReg:any, onClose: any; tipoVista: string;
 
 
       return (
-        <VerOrdenesCliente clienteEmail={email} setCerrar={onClose} ></VerOrdenesCliente>
+        <VerOrdenesCliente clienteEmail={email} tipo={"cliente"} setCerrar={onClose} ></VerOrdenesCliente>
       );
     }
    
@@ -618,5 +631,190 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
   }
 
 
+  const Categorias = (props: {emailCliente:string, onClose:any}) => {
+
+    const arreglo_categorias=["CARPINTERIA","CERRAJERIA","CONSTRUCCIÓN","CONTADURÍA","ELECTRICIDAD","ELECTRONICA","ESTÉTICA","FLETE","FUMIGACIÓN","GASISTA","HERRERIA","INFORMATICA","JARDINERÍA","MECANICA","MODA","PASEADOR DE MASCOTAS","PINTOR","PLOMERIA","REFRIGERACION","REMOLQUES - GRÚAS","TELEFONIA CELULAR","TEXTIL"]
+    var i=0
+
+    const[ categoriaABuscar, setCategoriaABuscar] = useState("")
+
+    const [showLoading, setShowLoading]=useState(false)
+
+
+    if (categoriaABuscar==""){
+      return (
+      
+        <IonContent>
+          <div id="headerModalFlechas">
+          <IonIcon icon={close} onClick={() => props.onClose(null)} slot="start" id="flecha-cerrar">  </IonIcon>
+        </div>
+        <div id="contenedorCentral-busqueda">
+
+            <IonTitle id="titulo-busqueda">CATEGORÍAS</IonTitle>
+            <IonCard>
+              {arreglo_categorias.map((a) => {
+                i = i + 1;
+                return (
+                  <IonItem key={i} id="item-busqueda" onClick={() => setCategoriaABuscar(a)}>
+                    <IonTitle id="titulo-busqueda">{a}</IonTitle>
+                  </IonItem>
+                );
+              })}
+            </IonCard>
+
+          </div>
+          </IonContent>
+        )
+    }else{
+      
+      return (
+        <>
+        
+        <div id="headerModalFlechas">
+            <IonIcon icon={arrowBack} onClick={() => setCategoriaABuscar("")} id="flecha-volver">  </IonIcon>
+            <IonIcon icon={close} onClick={() => props.onClose(null)}  id="flecha-cerrar">  </IonIcon>
+          </div>
+          <div id="contenedorCentral-busqueda">
+          <Rubros rubro={categoriaABuscar} setRubro={setCategoriaABuscar} emailCliente={ props.emailCliente} setShowLoading={setShowLoading} ></Rubros>
+          <IonLoading
+                  cssClass='my-custom-class'
+                  isOpen={showLoading}
+                  onDidDismiss={() => setShowLoading(false)}
+                  message={'Cargado datos...'}
+                  duration={5000}
+              />
+        </div>
+        
+        </>
+        )
+    }
+    
+  }
+
+  //con setRubro vuelvo atrás si es igual a ""
+  const Rubros = (props:{rubro:string, setRubro:any, emailCliente:string,setShowLoading:any}) => {
+
+    const [arregloRubroBuscado, setArregloRubroBuscado] =  useState <categoriaBuscada []> ( [])
+    const [proveedorEncontrado, BuscarProveedor] = useState("")
+
+    const [caracteres,setCaracteres]=useState()
+    const [imagenes,setImagenes]=useState()
+
+
+    useEffect(() => {
+      const axios = require('axios');
+      props.setShowLoading(true)
+      axios.get(url+"search/categoria/"+props.rubro).then((resp: { data: any; }) => {
+
+        if (resp.data!="bad"){
+          setArregloRubroBuscado(resp.data.map((d: { item: any; tipo: any; nombre: any; apellido: any; imagen: any; calificacion: any; email: any; }) => ({
+            item:d.item,
+            tipo:d.tipo,
+            nombre:d.nombre,
+            apellido:d.apellido,
+            imagen:d.imagen,
+            calificacion:d.calificacion,
+            email:d.email
+            }))
+          )
+          props.setShowLoading(false)
+        }else{
+          props.setShowLoading(false)
+                //show error
+        }
+      })
+    }, []);
+
+    useEffect(() => {
+     
+      props.setShowLoading(true)
+        const axios = require('axios');
+        if(proveedorEncontrado!=""){
+          const ubicacion = getLocation();
+
+          ubicacion.then((value)=>{
+              axios.get(url+"home/cliente/pedirdatos/"+proveedorEncontrado+"/"+"caracteres"+"/"+value, {timeout: 5000}).then((resp: { data: any; }) => {
+                  
+                  if (resp.data!="bad"){
+                    props.setShowLoading(false)
+
+                      setCaracteres(resp.data)
+                     // email.current=proveedorEncontrado.split("/")[0]
+                      axios.get(url+"home/cliente/pedirdatos/"+proveedorEncontrado+"/"+"imagenes"+"/"+value, {timeout: 5000}).then((resp: { data: any; }) => {
+                          if(resp.data!="bad"){
+                              setImagenes(resp.data)
+                          }
+                          
+                      })
+  
+  
+                  }else{
+                      }
+                      
+                  
+              }).catch((err: any) => {
+  
+                  
+              })
+          })    
+        }
+       
+
+
+    }, [proveedorEncontrado]);
+
+    if ( arregloRubroBuscado.length > 0 ){
+      if(proveedorEncontrado==""){
+        var i=0
+        return (
+          <div id="contenedorCentral-busqueda">
+              <IonTitle id="titulo-busqueda">RESULTADO DE BUSQUEDA</IonTitle>
+              <IonCard>
+              {arregloRubroBuscado.map((a) => {
+                  i=i+1
+                  return (
+                    <IonItem key={i} id="item-busqueda" onClick={() => BuscarProveedor(a.email+"/"+a.item)}>
+                    <IonGrid>
+                        <IonRow id="row-busqueda"><IonTitle id="titulo-busqueda">{a.nombre.toUpperCase()+" "+a.apellido.toUpperCase()}</IonTitle></IonRow>
+                        <IonRow id="row-busqueda"><img id="imagen-busqueda" src= {a.imagen}></img></IonRow>
+                        <IonRow id="row-busqueda"><p id="descripción-busqueda">RUBRO: {a.item}</p></IonRow>
+                        <IonRow id="row-busqueda"><p id="descripción-busqueda">{a.tipo}</p></IonRow>
+                        <Estrellas  calificacion={a.calificacion}   ></Estrellas> 
+  
+                    </IonGrid>
+                </IonItem>
+                  );
+              })}
+              </IonCard>
+              
+  
+              </div>
+          )
+      }else{
+        return(
+          <>
+              
+
+              <div id="contenedorCentral-busqueda">
+                  <CardProveedor data={caracteres} imagenes={imagenes} emailCliente={props.emailCliente} proveedorEmail={proveedorEncontrado.split("/")[0]} ></CardProveedor>
+              </div>
+          </>
+      )
+      }
+     
+    }else{
+      return(
+      
+     
+      <div id="padreModal">
+        <div id="hijoModal">
+          <IonTitle id="titulo-busqueda">NO HAY PROVEDORES EN SU ZONA</IonTitle>
+        </div>
+      </div>
+      
+      
+)
+    }
+  }
   
   export default ModalCliente;

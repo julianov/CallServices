@@ -7,6 +7,7 @@ import Estrellas from "./Estrellas";
 import { contractSharp } from "ionicons/icons";
 import OrdenSimple from "../pages/PedirOrden";
 import Resenas from "./Resenas";
+import { categoriaBuscada } from "./ResultadoBusqueda";
 
 
 
@@ -60,6 +61,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
   const [showModalOrden, setShowModalOrden] = useState( false );
   const [showModalVerReseñas, setShowModalVerReseñas] = useState( false );
 
+  const [ultimos, setUltimos] =  useState <categoriaBuscada []> ( [])
 
   const proveedorVaALocacion = useRef(true)
   
@@ -113,61 +115,148 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
       //en último tiene que ir:
       //"Juan Carlos","Electricidad","Proveedor de servicio independiente"
       // mas el email y una imagen
-     
-      const guardarUltimoProveedor = () => {
-        createStore("UltimosProveedores")
 
-        getDB("UltimosProveedores").then(res => {
-          if(res!=null){
-            var ultimos= JSON.parse(res)
+   // const [arreglo_resultado_busqueda, set_arreglo_resultado_busqueda] =  useState <categoriaBuscada []> ( [])
 
-            if(ultimos.length<5){
+ 
+    useEffect(() => {
+      
+      var location=""
+      if(props.data!=undefined){   
+        
+        if(props.data.radio<=1){
+          location=("EL PROVEEDOR NO SE DESPLAZA A LOCACIONES DE CLIENTES")
+          proveedorVaALocacion.current=(false)
+        }else{
+          location=("EL PROVEEDOR SE DESPLAZA A LOCACIONES DE CLIENTES")
+          proveedorVaALocacion.current=(true)
 
-              let igual=false
+        }
 
-              for (var i=0;i < ultimos.length;i++){
-                if(ultimos[i]==[props.proveedorEmail, datosProveedoresArray.nombre,datosProveedoresArray.last_name,tipo,datosProveedoresArray.picture,datosProveedoresArray.qualification,datosProveedoresArray.items]){
-                  igual=true
-                }
+      //  console.log("la calificación que llego es: "+props.data.qualification)
+      //  console.log("el tipo de la calificación es: "+typeof(props.data.qualification))
+        
+        setDatosProveedores({nombre:props.data.name,
+          last_name:props.data.last_name,
+          tipo:props.data.tipo,
+          picture:props.data.picture,
+          distancia:props.data.distancia,
+          items:props.data.items,
+          qualification:props.data.qualification,
+          locacion:location,
+          days_of_works:props.data.days_of_works,
+          hour_init:props.data.hour_init,
+          hour_end:props.data.hour_end,
+          description:props.data.description,
+          pais:props.data.pais,
+          provincia:props.data.provincia,
+          ciudad:props.data.ciudad,
+          calle:props.data.calle,
+          numeracion:props.data.numeracion})
 
-              }
-              if(!igual){
-                ultimos.push([props.proveedorEmail, datosProveedoresArray.nombre,datosProveedoresArray.last_name,tipo,datosProveedoresArray.picture,datosProveedoresArray.qualification,datosProveedoresArray.items])
-                setDB("UltimosProveedores", JSON.stringify(ultimos))
-              }
-              
-            }else{
+      }
+      
+      if(props.imagenes!=undefined){
 
-              let igual=false
-
-              for (var i=0;i < ultimos.length;i++){
-                if(ultimos[i]==[props.proveedorEmail, datosProveedoresArray.nombre,datosProveedoresArray.last_name,tipo,datosProveedoresArray.picture,datosProveedoresArray.qualification,datosProveedoresArray.items]){
-                  igual=true
-                }
-              }
-
-              if(!igual){
-                ultimos.shift() //elimino el primer elemento del array
-                ultimos.push([props.proveedorEmail, datosProveedoresArray.nombre,datosProveedoresArray.last_name,tipo,datosProveedoresArray.picture,datosProveedoresArray.qualification,datosProveedoresArray.items])
-                setDB("UltimosProveedores", JSON.stringify(ultimos))
-              }
-
-            }
-            
-          }else{
-
-            var arreglo_guardar=[]
-            arreglo_guardar.push([props.proveedorEmail,datosProveedoresArray.nombre,datosProveedoresArray.last_name,tipo,datosProveedoresArray.picture, datosProveedoresArray.qualification,datosProveedoresArray.items])
-            setDB("UltimosProveedores", JSON.stringify(arreglo_guardar))
-          
+        var certificado=""
+        var imagen1=""
+        var imagen2=""
+        var imagen3=""
+        if (props.imagenes.certificate!=undefined){
+          certificado=props.imagenes.certificate
+        }
+        if (props.imagenes.picture1!=undefined){
+          imagen1=props.imagenes.picture1
+        }
+        if (props.imagenes.picture2!=undefined){
+          imagen2=props.imagenes.picture2
+        }
+        if (props.imagenes.picture3!=undefined){
+          imagen3=props.imagenes.picture3
+        }
+        setImagenesProveedores(
+          {
+            certificate:certificado,
+            picture1:imagen1,
+            picture2:imagen2,
+            picture3:imagen3
           }
-        })
+        )
+
       }
 
-
-      if (datosProveedoresArray.nombre!="nombre" && datosProveedoresArray.last_name!="apellido" && tipo!="" && datosProveedoresArray.picture!="" && datosProveedoresArray.qualification!=0 && datosProveedoresArray.items!=""){
+   /*   if(props.proveedorEmail!="" && props.data!=undefined && datosProveedoresArray.nombre!="nombre" && datosProveedoresArray.last_name!="apellido" && datosProveedoresArray.qualification!=undefined){
+        
         guardarUltimoProveedor()
-      }
+
+      }*/
+    }, [props.data, props.imagenes])
+    
+
+    
+     
+    useEffect(() => {   
+
+      if (datosProveedoresArray.nombre!="nombre" && datosProveedoresArray.last_name!="apellido" && datosProveedoresArray.picture!="" && datosProveedoresArray.qualification!=undefined && datosProveedoresArray.items!=""){
+        console.log("tiene que haberse ejecutado getDB")
+        getDB("UltimosProveedores").then(res => {
+          // console.log("veamos entonces lo que es res: "+JSON.stringify(res))
+           if(res!=null){
+            /* setUltimos(res.map((d: { item: any; tipo: any; nombre: any; apellido: any; imange: any; calificacion: any; email: any; }) => ({
+               item:d.item,
+               tipo:d.tipo,
+               nombre:d.nombre,
+               apellido:d.apellido,
+               imagen:d.imange,
+               calificacion:d.calificacion,
+               email:d.email
+                }))
+              );       */
+  
+              console.log("TIENE QUE HABER ENTRADO ACÁ"+res.length)
+             if(res.length<5){
+               if ( ! ultimos.includes(  {item:datosProveedoresArray.items,tipo:datosProveedoresArray.tipo,nombre:datosProveedoresArray.nombre,apellido:datosProveedoresArray.last_name,imagen:datosProveedoresArray.picture,calificacion:datosProveedoresArray.qualification.toString(),email:props.proveedorEmail}  ) )
+               {
+                 console.log("TIENE QUE HABER ENTRADO ACÁ")
+  
+                 setUltimos([...ultimos, {item:datosProveedoresArray.items,tipo:datosProveedoresArray.tipo,nombre:datosProveedoresArray.nombre,apellido:datosProveedoresArray.last_name,imagen:datosProveedoresArray.picture,calificacion:datosProveedoresArray.qualification.toString(),email:props.proveedorEmail} ] )
+                 setDB("UltimosProveedores", ultimos)
+               }              
+             }else{
+               if ( ! ultimos.includes(  {item:datosProveedoresArray.items,tipo:datosProveedoresArray.tipo,nombre:datosProveedoresArray.nombre,apellido:datosProveedoresArray.last_name,imagen:datosProveedoresArray.picture,calificacion:datosProveedoresArray.qualification.toString(),email:props.proveedorEmail}  ) )
+               {
+                 ultimos.shift() //elimino el primer elemento del array
+                 setUltimos([...ultimos, {item:datosProveedoresArray.items,tipo:datosProveedoresArray.tipo,nombre:datosProveedoresArray.nombre,apellido:datosProveedoresArray.last_name,imagen:datosProveedoresArray.picture,calificacion:datosProveedoresArray.qualification.toString(),email:props.proveedorEmail} ] )
+               setDB("UltimosProveedores", JSON.stringify(ultimos))
+               }
+              
+             }
+           }else{
+  
+             console.log("entonces no hay nada che")
+            // var arreglo_guardar=[]
+            // arreglo_guardar.push([props.proveedorEmail,datosProveedoresArray.nombre,datosProveedoresArray.last_name,tipo,datosProveedoresArray.picture, datosProveedoresArray.qualification,datosProveedoresArray.items])
+            setUltimos([{item:datosProveedoresArray.items,tipo:datosProveedoresArray.tipo,nombre:datosProveedoresArray.nombre,apellido:datosProveedoresArray.last_name,imagen:datosProveedoresArray.picture,calificacion:datosProveedoresArray.qualification!.toString(),email:props.proveedorEmail} ] )
+  
+            setDB("UltimosProveedores", ultimos)
+           
+           }
+         })    }
+    
+      }, [datosProveedoresArray])
+  
+      useEffect(() => {
+  
+        console.log("LLEGO AQUI "+  (ultimos) )
+        if (ultimos.length  > 0 ){
+          setDB("UltimosProveedores", (ultimos))
+  
+        }
+  
+        }, [ultimos])
+  
+
+
 
       const contratar = () =>{
 
@@ -188,77 +277,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
     
       }
 
-    
-
-      useEffect(() => {
-        
-        var location=""
-        if(props.data!=undefined){   
-          
-          if(props.data.radio<=1){
-            location=("EL PROVEEDOR NO SE DESPLAZA A LOCACIONES DE CLIENTES")
-            proveedorVaALocacion.current=(false)
-          }else{
-            location=("EL PROVEEDOR SE DESPLAZA A LOCACIONES DE CLIENTES")
-            proveedorVaALocacion.current=(true)
-
-          }
-          
-          setDatosProveedores({nombre:props.data.name,
-            last_name:props.data.last_name,
-            tipo:props.data.tipo,
-            picture:props.data.picture,
-            distancia:props.data.distancia,
-            items:props.data.items,
-            qualification:props.data.qualification,
-            locacion:location,
-            days_of_works:props.data.days_of_works,
-            hour_init:props.data.hour_init,
-            hour_end:props.data.hour_end,
-            description:props.data.description,
-            pais:props.data.pais,
-            provincia:props.data.provincia,
-            ciudad:props.data.ciudad,
-            calle:props.data.calle,
-            numeracion:props.data.numeracion})
-
-        }
-        
-        if(props.imagenes!=undefined){
-
-          var certificado=""
-          var imagen1=""
-          var imagen2=""
-          var imagen3=""
-          if (props.imagenes.certificate!=undefined){
-            certificado=props.imagenes.certificate
-          }
-          if (props.imagenes.picture1!=undefined){
-            imagen1=props.imagenes.picture1
-          }
-          if (props.imagenes.picture2!=undefined){
-            imagen2=props.imagenes.picture2
-          }
-          if (props.imagenes.picture3!=undefined){
-            imagen3=props.imagenes.picture3
-          }
-          setImagenesProveedores(
-            {
-              certificate:certificado,
-              picture1:imagen1,
-              picture2:imagen2,
-              picture3:imagen3
-            }
-          )
-
-        }
-
-        if(props.proveedorEmail!="" && props.data!=undefined && datosProveedoresArray.nombre!="nombre" && datosProveedoresArray.last_name!="apellido"){
-          
-          guardarUltimoProveedor()
-  
-        }
-      }, [props.data, props.imagenes])
+     
       
       if(datosProveedoresArray.tipo=="Proveedor de servicio independiente"){
         return (

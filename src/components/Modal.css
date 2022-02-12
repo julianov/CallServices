@@ -171,20 +171,42 @@ ion-col{
   #elementos{
     text-align: center;
     justify-content: center;
+    
+
   }
   
+  #headerModalFlechas{
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  #contenedor-flecha-volver{
+    float:left;
+    text-align: left;
+  }
+
   #flecha-volver{
     height: 32px;
     width: 32px;
     margin-top:5px;
     margin-left: 5px;
+    float: left;
+    position: relative;
+  }
+
+  #contenedor-flecha-cerrar{
+    float:right;
+    text-align: right;
   }
   #flecha-cerrar{
     height: 32px;
     width: 32px;
     margin-top:5px;
     margin-right: 5px;
-    
+    float: right;
+    position: relative;
+   
+
   }
   
   #contenedor-izquierda{
@@ -451,4 +473,20 @@ width: 95%;
 #titulo{
   margin-top: 20px;
   align-items: center;
+}
+
+
+#padreModal{
+ 
+  height:100vh;
+  width: 100%;
+  /* IMPORTANTE */
+  display: table;
+  
+}
+
+#hijoModal {
+  /* IMPORTANTE */
+  display: table-cell;
+  vertical-align: middle;
 }
