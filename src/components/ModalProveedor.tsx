@@ -272,6 +272,16 @@ const DatosPersonales =(props:{setIsReg:any, completarInfoPersonal:any; closeSes
   const [showAlertDatosPersonales, setShowAlertDatosPersonales]=useState(false)
   const [rubros,setRubros]=useState(false) //igual a true para mostrar rubros
 
+  const [imagen, setImagen] = useState (props.foto)
+
+  useEffect(() => {
+    if (props.foto==""|| props.foto==null || props.foto==undefined){
+      setImagen ("./assets/icon/nuevoUsuario.png") 
+    }else{
+      setImagen(props.foto)
+    }
+  }, [props.foto]);
+
   if(props.completarInfoPersonal){
 
     return(
@@ -355,53 +365,51 @@ const DatosPersonales =(props:{setIsReg:any, completarInfoPersonal:any; closeSes
 
             }else{
               return (
-                <>
+            
+              <IonContent>
+                <div id="contenedorPrincipalModal">
+                  <header id="headerModal">
+                    <IonIcon icon={close} onClick={() => props.onClose(null)} slot="right" id="flecha-cerrar">  </IonIcon>
+                  </header>
+                  <article>
+
+                  <div id="contenedorCentralModal">
+                    <img onClick={() =>props.setDatosPersonales(true)} src={imagen} id="foto-usuario-grande"/>
+                    <IonList>
+                        <IonItem id="item-modal" button onClick={() => { props.setDatosPersonales(true)}}>
+                                  <IonLabel>DATOS PERSONALES</IonLabel>
+                                  <IonIcon className="iconosModal" icon={person} ></IonIcon>
+                        </IonItem>
+                        <IonItem id="item-modal" button onClick={() => { setRubros(true)}}>
+                                  <IonLabel>MIS RUBROS</IonLabel>
+                                  <IonIcon className="iconosModal" icon={construct} ></IonIcon>
+                        </IonItem>
                 
-                <IonContent>
-                <div className="header">
-                  <IonIcon icon={close} onClick={() => props.onClose(null)} slot="right" id="flecha-cerrar">  </IonIcon>
-                </div>
-    
-                  <div id="contenedor-central">
-    
-                  <IonGrid>
-                  <IonRow><IonCol> <img onClick={() =>props.setDatosPersonales(true)} src={props.foto} id="foto-usuario-grande"/></IonCol></IonRow>
-  
-                  <IonList>
-                  <IonRow><IonCol className="col"><IonItem id="item-modal" button onClick={() => { props.setDatosPersonales(true)}}>
-                      <IonLabel>DATOS PERSONALES</IonLabel>
-                      <IonIcon className="iconosModal" icon={person} ></IonIcon>
-                    </IonItem></IonCol></IonRow>
+                        <IonItem  id="item-modal" button onClick={() => { }}>
+                                  <IonLabel>MIS TICKETS</IonLabel>
+                                  <IonIcon className="iconosModal" icon={receipt} ></IonIcon>
+                        </IonItem>
+                    
+                        <IonItem id="item-modal" button onClick={() => { }}>
+                                  <IonLabel >PREGUNTAS</IonLabel>
+                                  <IonIcon className="iconosModal" icon={help} ></IonIcon>
+                        </IonItem>
+                
+                        <IonItem id="item-modal" button onClick={() => { }}>
+                                  <IonLabel>SOPORTE</IonLabel>
+                                  <IonIcon className="iconosModal" icon={chatbubble} ></IonIcon>
+                        </IonItem>
+                    
+                    </IonList>  
+                    </div>
+                    </article>
 
-                    <IonRow><IonCol className="col"><IonItem id="item-modal" button onClick={() => { setRubros(true)}}>
-                      <IonLabel>MIS RUBROS</IonLabel>
-                      <IonIcon className="iconosModal" icon={construct} ></IonIcon>
-                    </IonItem></IonCol></IonRow>
-    
-                    <IonRow><IonCol className="col"><IonItem  id="item-modal" button onClick={() => { }}>
-                      <IonLabel>MIS TICKETS</IonLabel>
-                      <IonIcon className="iconosModal" icon={receipt} ></IonIcon>
-                    </IonItem></IonCol></IonRow>
-        
-                    <IonRow><IonCol className="col"> <IonItem id="item-modal" button onClick={() => { }}>
-                      <IonLabel >PREGUNTAS</IonLabel>
-                      <IonIcon className="iconosModal" icon={help} ></IonIcon>
-                    </IonItem></IonCol></IonRow>
-    
-                    <IonRow><IonCol className="col"><IonItem id="item-modal" button onClick={() => { }}>
-                      <IonLabel>SOPORTE</IonLabel>
-                      <IonIcon className="iconosModal" icon={chatbubble} ></IonIcon>
-                    </IonItem></IonCol></IonRow>
-
-                    <IonRow><IonCol className="col">
+                    <footer id="footerModal">
                     <button  onClick={() => { props.closeSesion () } } className="cerrarsesion" >CERRAR SESIÓN</button>
-                    </IonCol></IonRow>
-    
-                  </IonList>  
-                  </IonGrid>
-                  </div>
-                </IonContent>
-              </>
+                    </footer>
+                </div>
+              </IonContent>
+
               );
             }
             
@@ -429,6 +437,16 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
   const [pedirDatos, setPedirDatos]=useState(0)
 
   const [alertCambioFoto, setShowAlertCambioFoto] = useState(false)
+
+  const [imagen, setImagen] = useState (props.foto)
+
+  useEffect(() => {
+    if (props.foto==""|| props.foto==null || props.foto==undefined){
+      setImagen ("./assets/icon/nuevoUsuario.png") 
+    }else{
+      setImagen(props.foto)
+    }
+  }, [props.foto]);
 
   const cambiarElemento = (tipo:string) => {
     if(props.tipoProveedor=="2"){
@@ -565,7 +583,7 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
 
             <IonGrid>
             <IonRow><IonCol ><IonItem lines="none" id="itemFoto" onClick={()=> cambiarElemento("foto") }>
-            <img  src={props.foto} id="foto-usuario-grande"/>
+            <img  src={imagen} id="foto-usuario-grande"/>
             </IonItem></IonCol></IonRow>
             <IonRow><IonCol></IonCol></IonRow>
             
@@ -812,49 +830,57 @@ const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:
     if (verRubro==""){
       if((props.rubro1!=""&& props.rubro1!=null )&& (props.rubro2=="" || props.rubro2==null )){
         return(
-            
-            <div id="centro"><div id="modalProveedor-flechaVolver">
+
+          <div id="contenedorCompletarRubro">
+          <header id="headerRegistro">
+          <div id="modalProveedor-flechaVolver">
             <IonIcon icon={arrowBack} onClick={() => props.setRubros(false)} slot="start" id="flecha-volver">  </IonIcon>
             <IonIcon icon={close} onClick={() => props.onClose(null)} slot="end" id="flecha-cerrar">  </IonIcon>
-          </div><div id="contenedorPrincipal">
+          </div>
+            <IonTitle id="register-title">MIS RUBROS CARGADOS</IonTitle>
+          </header>
+    
+          <div id="contenedorCompletarRubro">
+            <IonItem id="item-modalRubro" onClick={() => (verRubros(props.rubro1))}>
+              <strong> {JSON.parse(props.rubro1)[0]} </strong>
+            </IonItem>
+          </div>
+    
+          <footer id="footerCompletarRubro">
+          <IonButton id="botonAgregarRubro" shape="round" onClick={() => setAgregarOtroRubro(true)}> AGREGAR OTRO RUBRO  </IonButton>
+          </footer>
+        </div> 
 
-              <div id="contenedorHijoCentrado">
 
-
-                <IonTitle>MIS RUBROS CARGADOS</IonTitle>
-
-
-                <div id="contenederCentrarItemModal">
-                  <IonItem id="item-modalRubro" onClick={() => (verRubros(props.rubro1))}>
-                    <strong> {JSON.parse(props.rubro1)[0]} </strong>
-                  </IonItem>
-                </div>
-                <IonButton id="botonAgregarRubro" shape="round" onClick={() => setAgregarOtroRubro(true)}> AGREGAR OTRO RUBRO  </IonButton>
-
-              </div>
-            </div></div>
           
      );
       }
       else if((props.rubro1!=""&&props.rubro1!=null )&& (props.rubro2!="" && props.rubro2!=null )){
         return(
-          <>
-           <div id="modalProveedor-flechaVolver">
+          <div id="contenedorCompletarRubro">
+          <header id="headerRegistro">
+          <div id="modalProveedor-flechaVolver">
             <IonIcon icon={arrowBack} onClick={() => props.setRubros(false)} slot="start" id="flecha-volver">  </IonIcon>
             <IonIcon icon={close} onClick={() => props.onClose(null)} slot="end" id="flecha-cerrar">  </IonIcon>
-          </div> 
-          <IonTitle>MIS RUBROS CARGADOS</IonTitle>  
-          <IonGrid>
-          <IonRow><IonCol><IonItem id="item-modalRubro" onClick={()=> verRubros(props.rubro1) }>
-          <strong> {JSON.parse(props.rubro1)[0]} </strong>
-          </IonItem></IonCol></IonRow><IonRow><IonCol></IonCol></IonRow>
-          <IonRow><IonCol><IonItem id="item-modalRubro" onClick={()=> verRubros(props.rubro2) } >
-          <strong >{JSON.parse(props.rubro2)[0]} </strong>
-          </IonItem></IonCol></IonRow>
-          <IonRow>
-          </IonRow>
-          </IonGrid>
-      </>);
+          </div>
+            <IonTitle id="register-title">MIS RUBROS CARGADOS</IonTitle>
+          </header>
+    
+          <div id="contenedorCompletarRubro">
+            <IonItem id="item-modalRubro" onClick={() => (verRubros(props.rubro1))}>
+              <strong> {JSON.parse(props.rubro1)[0]} </strong>
+            </IonItem>
+            <IonItem id="item-modalRubro" onClick={()=> verRubros(props.rubro2) } >
+              <strong >{JSON.parse(props.rubro2)[0]} </strong>
+            </IonItem>
+          </div>
+    
+          <footer id="footerCompletarRubro">
+          </footer>
+        </div> 
+
+       
+      );
       }else{
         return (
           <>

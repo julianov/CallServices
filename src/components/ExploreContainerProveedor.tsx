@@ -12,6 +12,7 @@ import axios from 'axios';
 import Https from '../utilidades/HttpsURL';
 import ModalVerOrdenes from './ModalVerOrdenesProveedor';
 import ModalVerOrdenesProveedor from './ModalVerOrdenesProveedor';
+import { Adsense } from '@ctrl/react-adsense';
 
 const url=Https
 
@@ -88,6 +89,13 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any} ) =
             <Elements proveedores={props.ordenes} setVerOrden={setVerOrden} setPosicion={setPosicion} />
           
           <CampanaPublicidad></CampanaPublicidad>
+          <Adsense
+              client="ca-pub-3241473434204149"
+              key="-6t+ed+2i-1n-4w"              
+              slot="5931330098"
+              style={{ width: 500, height: 300 }}
+              format=""
+            />
         </div>
         
         <IonModal

@@ -255,12 +255,16 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
         <IonCard id="ionCard-explorerContainer-Proveedor">
               < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}   ></Imagenes>
         </IonCard>
-        <IonGrid>
-              <IonRow>
-                <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton></IonCol>
-                <IonCol><IonButton shape="round" color="warning"  id="botonContratar" onClick={() => aceptarOrden()} >ACEPTAR ORDEN</IonButton></IonCol>
-              </IonRow>
-        </IonGrid>
+       
+        <div id="botonCentral">
+          <div id="botonCentralIzquierda">
+            <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton>
+          </div>
+          <div id="botonCentralDerecha"> 
+            <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => aceptarOrden()} >ACEPTAR ORDEN</IonButton>
+          </div>
+        </div>
+        
         <IonAlert
               isOpen={showAlertOrdenAceptada}
               onDidDismiss={() => setShowAlertOrdenAceptada(false)}
@@ -398,58 +402,61 @@ const Presupuestar = (props: {setVista:any, datos:any,setEstado:any,setVolver:an
   if (presupuestar=="SI"){
     
     return (
-      <IonContent>
       <div id="ionContentModalOrdenes">
-
+      <div id="contenedorPrincipalModal">
+        <header id="headerModal">
         <div id="modalProveedor-flechaVolver">
             <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
         </div>
+        <IonCardTitle id="ionCardTituloVerORden">PRESUPUESTO</IonCardTitle>
+        </header>
+        <article>
 
-        <div id="contenedorPrincipal">
-        <div id="contenedorHijoCentrado">
-        <IonCardTitle>PRESUPUESTO</IonCardTitle>
-        </div></div>
-      <IonCard id="ionCardModalCentro">
+        <div id="contenedorCentralModal">
+          <IonCard id="ionCardModalCentro">
 
-        <div id="contenedorPrincipal">
-      <div id="contenedorHijoCentrado">
+            <div id="contenedorPrincipal">
+            <div id="contenedorHijoCentrado">
 
-        <p>¿ESTÁ EN CONDICIONES DE PRESUPUESTAR EL TRABAJO?</p>
-        <div id="contenederCentrarItem">
+            <p>¿ESTÁ EN CONDICIONES DE PRESUPUESTAR EL TRABAJO?</p>
+            <div id="contenederCentrarItem">
 
-          <IonSegment mode="ios" value={presupuestar} select-on-focus={true} onIonChange={e => setPresupuestar(  e.detail.value!)} >
-            <IonSegmentButton value="SI">
-              <IonLabel>SI</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="NO">
-              <IonLabel>NO</IonLabel>
-            </IonSegmentButton>
-          </IonSegment>
+              <IonSegment mode="ios" value={presupuestar} select-on-focus={true} onIonChange={e => setPresupuestar(  e.detail.value!)} >
+                <IonSegmentButton value="SI">
+                  <IonLabel>SI</IonLabel>
+                </IonSegmentButton>
+                <IonSegmentButton value="NO">
+                  <IonLabel>NO</IonLabel>
+                </IonSegmentButton>
+              </IonSegment>
 
-        </div>
-          <p>INGRESE PRECIO ESTIMATIVO</p>
-          <div id="contenederCentrarItem">
-          <IonItem id="item-Orden">
-            <IonLabel  position="floating">PRECIO</IonLabel>
-            <IonInput type="number" onIonInput={(e: any) => precio.current = (e.target.value)}></IonInput>
-          </IonItem>
+            </div>
+              <p>INGRESE PRECIO ESTIMATIVO</p>
+              <div id="contenederCentrarItem">
+              <IonItem id="item-Orden">
+                <IonLabel  position="floating">PRECIO</IonLabel>
+                <IonInput type="number" onIonInput={(e: any) => precio.current = (e.target.value)}></IonInput>
+              </IonItem>
+              </div>
+            </div>
+            </div>
+          </IonCard>
+
+          <IonLoading
+              cssClass='my-custom-class'
+              isOpen={showLoading}
+              onDidDismiss={() => setShowLoading(false)}
+              message={'Enviando respuesta...'}
+              duration={7000}
+            />
           </div>
-        </div>
-        </div>
-    </IonCard>
+          </article>
 
-    <IonLoading
-            cssClass='my-custom-class'
-            isOpen={showLoading}
-            onDidDismiss={() => setShowLoading(false)}
-            message={'Enviando respuesta...'}
-            duration={7000}
-          />
-
-    <IonCol><IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviarPresupuesto()} >ENVIAR PRESUPUESTO</IonButton></IonCol>
-
-    </div>
-    </IonContent>
+          <footer id="footerModal">
+          <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviarPresupuesto()} >ENVIAR PRESUPUESTO</IonButton>            
+          </footer>
+      </div>
+</div>
   )
   }else{
     return(
@@ -635,13 +642,14 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
               duration={7000}
             />
           
-  
-          <IonGrid>
-                <IonRow>
-                  <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton></IonCol>
-                  <IonCol><IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviarPresupuesto()} >ENVIAR PRESUPUESTO</IonButton></IonCol>
-                </IonRow>
-          </IonGrid>
+          <div id="botonCentral">
+ <div id="botonCentralIzquierda">
+          <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton>
+          </div>
+            <div id="botonCentralDerecha"> 
+          <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviarPresupuesto()} >ENVIAR PRESUPUESTO</IonButton>
+          </div>
+          </div>    
           
          <IonAlert
                 isOpen={showAlertRechazarOrden}
@@ -747,13 +755,14 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
               duration={7000}
             />
           
-  
-          <IonGrid>
-                <IonRow>
-                  <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton></IonCol>
-                  <IonCol><IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviarPresupuesto()} >ENVIAR PRESUPUESTO</IonButton></IonCol>
-                </IonRow>
-          </IonGrid>
+          <div id="botonCentral">
+ <div id="botonCentralIzquierda">
+          <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton>
+          </div>
+            <div id="botonCentralDerecha">  
+          <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviarPresupuesto()} >ENVIAR PRESUPUESTO</IonButton>
+          </div>
+          </div>    
           
          <IonAlert
                 isOpen={showAlertRechazarOrden}
@@ -860,7 +869,7 @@ const Presupuestada = (props:{datos:any, estado:any, setVolver:any, setVista:any
         <IonCard id="ionCard-explorerContainer-Proveedor">
           < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}   ></Imagenes>
         </IonCard>
-        <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton></IonCol>
+        <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton>
 
         <IonAlert
             isOpen={showAlertRechazarOrden}
@@ -994,65 +1003,16 @@ const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any
           < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}   ></Imagenes>
         </IonCard>
 
-        <IonGrid>
-        <IonRow>
-        <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton></IonCol>   
-        <IonCol><IonButton shape="round" color="warning"  id="botonContratar" onClick={() => setShowAlertEnViaje(true)} >EN VIAJE</IonButton></IonCol>   
-        </IonRow>
-        </IonGrid>
-        <IonAlert
-            isOpen={showAlertEnViaje}
-            onDidDismiss={() => setShowAlertEnViaje(false)}
-            cssClass='my-custom-class'
-            header={'EN VIAJE'}
-            subHeader={''}
-            message={'¿Se está dirigiendo a la locación del cliente?'}
-            buttons={[
-              {
-                text: 'SI',
-                role: 'cancel',
-                cssClass: 'secondary',
-                handler: blah => {
-                  enviaje();
-                },  
-               
-              },
-              {
-                text: 'NO',
-                role: 'cancel',
-                cssClass: 'secondary',
-                handler: blah => {
-                  setShowAlertEnViaje(false);
-                }
-              }
-            ]} />
+        <div id="botonCentral">
+ <div id="botonCentralIzquierda">
+            <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton>
+            </div>
+            <div id="botonCentralDerecha"> 
+            <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => setShowAlertEnViaje(true)} >EN VIAJE</IonButton> 
+            </div>
+          </div>
 
-        <IonAlert
-            isOpen={showAlertRechazarOrden}
-            onDidDismiss={() => setShowAlertRechazarOrden(false)}
-            cssClass='my-custom-class'
-            header={'¿DESEA RECHAZAR LA ORDEN?'}
-            subHeader={''}
-            message={'Agregar una indicación de por qué es mala rechazar ordenes'}
-            buttons={[
-              {
-                text: 'SI',
-                role: 'cancel',
-                cssClass: 'secondary',
-                handler: blah => {
-                  rechazarOrden();
-                },  
-               
-              },
-              {
-                text: 'NO',
-                role: 'cancel',
-                cssClass: 'secondary',
-                handler: blah => {
-                  setShowAlertRechazarOrden(false);
-                }
-              }
-            ]} />
+      
        </div>
         </IonContent>
     )
@@ -1111,12 +1071,15 @@ const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any
       <IonCard id="ionCard-explorerContainer-Proveedor">
         < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}   ></Imagenes>
       </IonCard>
-      <IonGrid>
-        <IonRow>
-        <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton></IonCol>   
-        <IonCol><IonButton shape="round" color="warning"  id="botonContratar" onClick={() => setShowAlertEnViaje(true)} >EN VIAJE</IonButton></IonCol>   
-        </IonRow>
-        </IonGrid>
+
+      <div id="botonCentral">
+ <div id="botonCentralIzquierda">
+      <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton> 
+      </div>
+            <div id="botonCentralDerecha">  
+       <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => setShowAlertEnViaje(true)} >EN VIAJE</IonButton>
+       </div>
+          </div>
         <IonAlert
             isOpen={showAlertEnViaje}
             onDidDismiss={() => setShowAlertEnViaje(false)}
@@ -1278,12 +1241,15 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
           < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}   ></Imagenes>
         </IonCard>
 
-        <IonGrid>
-        <IonRow>
-        <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton></IonCol>   
-        <IonCol><IonButton shape="round" color="warning"  id="botonContratar" onClick={() => setShowAlertEnSitio(true)} >EN SITIO</IonButton></IonCol>   
-        </IonRow>
-        </IonGrid>
+        <div id="botonCentral">
+ <div id="botonCentralIzquierda">
+       <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton>  
+       </div>
+            <div id="botonCentralDerecha"> 
+    <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => setShowAlertEnSitio(true)} >EN SITIO</IonButton>
+    </div>
+          </div>
+
         <IonAlert
             isOpen={showAlertEnSitio}
             onDidDismiss={() => setShowAlertEnSitio(false)}
@@ -1395,12 +1361,16 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
       <IonCard id="ionCard-explorerContainer-Proveedor">
         < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}   ></Imagenes>
       </IonCard>
-      <IonGrid>
-        <IonRow>
-        <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton></IonCol>   
-        <IonCol><IonButton shape="round" color="warning"  id="botonContratar" onClick={() => setShowAlertEnSitio(true)} >EN SITIO</IonButton></IonCol>   
-        </IonRow>
-        </IonGrid>
+      
+      <div id="botonCentral">
+ <div id="botonCentralIzquierda">
+       <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton> 
+       </div>
+       <div id="botonCentralDerecha">  
+       <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => setShowAlertEnSitio(true)} >EN SITIO</IonButton>
+       </div>
+          </div>
+
         <IonAlert
             isOpen={showAlertEnSitio}
             onDidDismiss={() => setShowAlertEnSitio(false)}
@@ -1555,12 +1525,15 @@ const EnSitio  = (props:{datos:any, setVolver:any, setVista:any, estado:any, set
           < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}   ></Imagenes>
         </IonCard>
 
-        <IonGrid>
-        <IonRow>
-        <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton></IonCol>   
-        <IonCol><IonButton shape="round" color="warning"  id="botonContratar" onClick={() => setShowAlertFinalizar(true)} >TRABAJO FINALIZADO</IonButton></IonCol>   
-        </IonRow>
-        </IonGrid>
+        <div id="botonCentral">
+ <div id="botonCentralIzquierda">
+        <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton>  
+        </div>
+            <div id="botonCentralDerecha">   
+        <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => setShowAlertFinalizar(true)} >TRABAJO FINALIZADO</IonButton> 
+        </div>
+          </div>
+
         <IonAlert
             isOpen={showAlertFinalizar}
             onDidDismiss={() => setShowAlertFinalizar(false)}
@@ -1672,12 +1645,16 @@ const EnSitio  = (props:{datos:any, setVolver:any, setVista:any, estado:any, set
       <IonCard id="ionCard-explorerContainer-Proveedor">
         < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}   ></Imagenes>
       </IonCard>
-      <IonGrid>
-        <IonRow>
-        <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton></IonCol>   
-        <IonCol><IonButton shape="round" color="warning"  id="botonContratar" onClick={() => setShowAlertFinalizar(true)} >TRABAJO FINALIZADO</IonButton></IonCol>   
-        </IonRow>
-        </IonGrid>
+
+      <div id="botonCentral">
+ <div id="botonCentralIzquierda">
+      <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton>
+      </div>
+            <div id="botonCentralDerecha">
+        <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => setShowAlertFinalizar(true)} >TRABAJO FINALIZADO</IonButton>
+        </div>
+          </div>
+          
         <IonAlert
             isOpen={showAlertFinalizar}
             onDidDismiss={() => setShowAlertFinalizar(false)}

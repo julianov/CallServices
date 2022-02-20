@@ -12,6 +12,7 @@ import { TomarFotografia } from "../pages/PedirOrden";
 import { Calificacion } from "./ModalVerOrdenesProveedor";
 import { createStore, removeDB } from "../utilidades/dataBase";
 import Chat from "../utilidades/Chat";
+import { dashToPascalCase } from "@ionic/react/dist/types/components/utils";
 
 const url=Https
 
@@ -34,13 +35,13 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
 
     const [estado, setEstado] =useState("Enviada")
 
-    const [showAlertInconvenienteChat, setShowAlertInconvenienteChat] = useState(false)
+   // const [showAlertInconvenienteChat, setShowAlertInconvenienteChat] = useState(false)
    
     const desdeDondeEstoy=useRef("")
 
+    
     useEffect(() => {
         
-   
             if (props.datos.status=="ENV"){
               setEstado("GENERADA")
             }else if(props.datos.status=="REC"){
@@ -382,8 +383,14 @@ const PedidoMasInfo = ( props:{datos:any, setVolver:any, setVista:any, setEstado
             </IonGrid>
           </IonCard>
 
-        <IonButton color="warning" id="botonContratar" onClick={() => enviarMasInfo()}>RESPONDER</IonButton>
-        <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton></IonCol>
+          <div id="botonCentral">
+            <div id="botonCentralIzquierda">
+              <IonButton color="warning" id="botonContratar" onClick={() => enviarMasInfo()}>RESPONDER</IonButton>
+            </div>
+            <div id="botonCentralDerecha">  
+              <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton>
+            </div>
+          </div>
 
         <IonAlert
         isOpen={showAlertRechazarOrden}
@@ -467,11 +474,11 @@ const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEst
       <IonContent>
         <div id="ionContentModalOrdenes">
           <div id="modalProveedor-flechaVolver">
-        <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
-      </div>
+            <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+          </div>
 
       <IonTitle>SOLICITUD PRESUPUESTADA</IonTitle>  
-      <IonCard id="ionCardModalCentro">
+      <IonCard id="ionCard-explorerContainer-Proveedor">
         <div id="divSentencias">
           <p>TIPO: {props.datos.tipo}</p>
           <p>STATUS: {props.estado}</p>
@@ -506,46 +513,48 @@ const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEst
       <IonCard id="ionCard-explorerContainer-Proveedor">
         <div id="divSentencias">
           <p>PRESUPUESTO:</p>
-          <p>{props.datos.presupuesto_inicial}</p>
+          <p>{props.datos.presupuesto}</p>
         </div>
       </IonCard>
 
-    <IonGrid>
-    <IonRow>
-    <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton></IonCol>
-
-    <IonCol><IonButton shape="round" color="warning" id="botonContratar" onClick={() => aceptarPresupuesto()}>ACEPTAR PRESUPUESTO</IonButton></IonCol>
-    </IonRow>
-    </IonGrid>
-
-<IonAlert
-  isOpen={showAlertRechazarOrden}
-  onDidDismiss={() => setShowAlertRechazarOrden(false)}
-  cssClass='my-custom-class'
-  header={'¿DESEA CANCELAR LA ORDEN?'}
-  subHeader={''}
-  message={'Agregar una indicación de por qué es mala rechazar ordenes'}
-  buttons={[
-    {
-      text: 'SI',
-      role: 'cancel',
-      cssClass: 'secondary',
-      handler: blah => {
-          props.cancelarOrden();
-      },  
+      <div id="botonCentral">
+        <div id="botonCentralIzquierda">
+          <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton>
+        </div>
+        <div id="botonCentralDerecha">  
+          <IonButton shape="round" color="warning" id="botonContratar" onClick={() => aceptarPresupuesto()}>ACEPTAR PRESUPUESTO</IonButton>
+        </div>
+     </div>
      
-    },
-    {
-      text: 'NO',
-      role: 'cancel',
-      cssClass: 'secondary',
-      handler: blah => {
-        setShowAlertRechazarOrden(false);
-      }
-    }
-  ]} />
 
-<IonAlert
+      <IonAlert
+        isOpen={showAlertRechazarOrden}
+        onDidDismiss={() => setShowAlertRechazarOrden(false)}
+        cssClass='my-custom-class'
+        header={'¿DESEA CANCELAR LA ORDEN?'}
+        subHeader={''}
+        message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+        buttons={[
+          {
+            text: 'SI',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: blah => {
+                props.cancelarOrden();
+            },  
+          
+          },
+          {
+            text: 'NO',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: blah => {
+              setShowAlertRechazarOrden(false);
+            }
+          }
+        ]} />
+
+      <IonAlert
               isOpen={showAlertUbicacion}
               onDidDismiss={() => setShowAlertUbicacion(false)}
               cssClass='my-custom-class'
@@ -636,8 +645,7 @@ const RespuestaEnviada  = (props:{datos:any, setVolver:any, setVista:any, setEst
           <Imagenes2 picture1={props.datos.picture1_mas_información} picture2={props.datos.picture2_mas_información} />
         </IonCard>
   
-        <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => props.setVista("chat")} >CHAT</IonButton>      
-        <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton></IonCol>
+        <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton>
         
         <IonAlert
             isOpen={showAlertRechazarOrden}
@@ -738,9 +746,8 @@ const EnEsperaDelProveedor = (props:{datos:any, setVolver:any, setVista:any, set
           < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
         </IonCard>
   
-        <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => props.setVista("chat")} >CHAT</IonButton>
         
-        <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton></IonCol>
+        <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton>
         
         <IonAlert
             isOpen={showAlertRechazarOrden}
@@ -789,7 +796,7 @@ const OrdenEnViaje = ( props:{datos:any, setVolver:any, setVista:any, setEstado:
   const [showAlertCancelarOrden,setShowAlertCancelarOrden] = useState(false)
 
 
-  if(props.datos.pedido_mas_información=="" &&props.datos.presupuesto_inicial!="0" ){
+  if(props.datos.pedido_mas_información=="" &&props.datos.presupuesto!="0" ){
     //ACA ACEPTAR PRESUPUESTO 
     return (
       <IonContent>
@@ -833,7 +840,7 @@ const OrdenEnViaje = ( props:{datos:any, setVolver:any, setVista:any, setEstado:
           <strong>PRESUPUESTO DEL TRABAJO</strong>
       </div>
       <IonCard id="ionCard-explorerContainer-Proveedor">
-      <p>PRESUPUESTO: {props.datos.presupuesto_inicial}</p>
+      <p>PRESUPUESTO: {props.datos.presupuesto}</p>
       </IonCard>
       <IonButton color="warning" id="botonContratar" onClick={() => setShowAlertCancelarOrden(true)}>CANCELAR ORDEN</IonButton>
 
@@ -869,7 +876,7 @@ const OrdenEnViaje = ( props:{datos:any, setVolver:any, setVista:any, setEstado:
 
     )
   }
-  else if(props.datos.pedido_mas_información!="" &&props.datos.presupuesto_inicial=="0"){
+  else if(props.datos.pedido_mas_información!="" &&props.datos.presupuesto=="0"){
       return (
         <IonContent>
           <div id="ionContentModalOrdenes">
@@ -1186,26 +1193,6 @@ const [showAlertUbicacion,setShowAlertUbicacion] =useState(false)
        
 );
 }
-
-const Chatear = (props:{estado:any, email_proveedor:any, email_cliente:any, setVista:any, setAlert:any})=>{
-
-
-  if (props.estado!="RECIBIDO" || props.estado!="GENERADO POR CLIENTE"){
-    props.setAlert(true)
-    return(
-      <IonContent>
-       
-      </IonContent>
-    )
-  }else{
-    return(
-      <IonContent>
-      </IonContent>
-    )
-  }
-
-}
-
 
 
 

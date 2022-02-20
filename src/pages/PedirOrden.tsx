@@ -372,15 +372,18 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
     }else{
        // aca tengo que cambiar que la flecha valla al home
         return(
-        <IonContent>
 
-            <div id="GenerarOrdenContainer">
-            <div id="modalProveedor-flechaVolver">
-            <IonIcon icon={arrowBack} onClick={() => props.setVolver( false )} slot="start" id="flecha-volver">  </IonIcon>
-            </div>
+            <IonContent>
+            <div id="contenedorPrincipalModal">
+              <header id="headerModal">
+                <div id="modalProveedor-flechaVolver">
+                    <IonIcon icon={arrowBack} onClick={() => props.setVolver( false )} slot="start" id="flecha-volver">  </IonIcon>
+                </div>
+              </header>
+              <article>
 
-            <div id="contenderCentralOrden">
-            <h1>ORDEN DE SERVICIO</h1>
+              <div id="contenedorCentralModal">
+                <h1>ORDEN DE SERVICIO</h1>
 
                 <IonCard id="ionCard-Orden">
                     <IonCardHeader>
@@ -389,18 +392,22 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                     <p id="p-estado">En espera de confirmación por parte del proveedor </p>
                     </IonCardHeader>
                 </IonCard>
+                </div>
+                </article>
 
-                <IonTitle>PROVEEDOR</IonTitle>  
-                <IonCard id="ionCard-Orden">
-                    <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.data.picture}></img>
-                    <IonCardTitle> {props.data.nombre} </IonCardTitle>
-                    <IonCardTitle  > {props.data.items} </IonCardTitle>
-                    <IonItem id="CardProveedorItem" lines="none"> {props.data.calificacion} </IonItem>
-                </IonCard>
+                <footer id="footerModal">
+                    <IonTitle>PROVEEDOR</IonTitle>  
+                    <IonCard id="ionCard-Orden">
+                        <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.data.picture}></img>
+                        <IonCardTitle> {props.data.nombre} </IonCardTitle>
+                        <IonCardTitle  > {props.data.items} </IonCardTitle>
+                        <IonItem id="CardProveedorItem" lines="none"> {props.data.calificacion} </IonItem>
+                    </IonCard>                
+                </footer>
             </div>
-        </div>
-               
-        </IonContent>
+          </IonContent>
+
+
         )
     }
    

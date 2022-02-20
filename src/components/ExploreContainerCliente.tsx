@@ -96,13 +96,12 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
         location_long:props.ordenes[i].location_long,
         picture1:props.ordenes[i].picture1,
         picture2:props.ordenes[i].picture2,
-        presupuesto_inicial:props.ordenes[i].presupuesto,
+        presupuesto:props.ordenes[i].presupuesto,
         pedido_mas_información:props.ordenes[i].pedidoMasInformacion,
         respuesta_cliente_pedido_mas_información:props.ordenes[i].respuesta_cliente_pedido_mas_información,
         picture1_mas_información:props.ordenes[i].picture1_mas_información,
         picture2_mas_información:props.ordenes[i].picture2_mas_información
       }])
-
     }
 
     if(props.ordenes.length > 0){
@@ -112,7 +111,6 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
     const ubicacion = getLocation();
     ubicacion.then((value)=>{
       if (value!=0){
-
         setLocacion(value)
       }
     })
@@ -287,6 +285,9 @@ const CardVistaVariosProveedores= (props:{item:any, personalImg:any ,distancia: 
   email:any, nombre: any, apellido:any, tipo:any, setVerEmail:any, setItem:any,
   setPediOrden:any,  setVerReseña:any, setVerProveedor:any, tiipo:any }) => {
     
+
+    const [imagen, setImagen] = useState (props.personalImg)
+
     const verProveedor = ()=> {
       //if(props.email=="" && props.item==""){
         props.setVerEmail(props.email)
@@ -318,12 +319,20 @@ const CardVistaVariosProveedores= (props:{item:any, personalImg:any ,distancia: 
     }else{
       surname.current=""
     } 
+
+    useEffect(() => {
+      if (props.personalImg==""|| props.personalImg==null || props.personalImg==undefined){
+        setImagen ("./assets/icon/nuevoUsuario.png") 
+      }else{
+        setImagen(props.personalImg)
+      }
+    }, [props.personalImg]);
     
     return (
     <IonCard id="ionCard-explorerContainer-Cliente">
       <IonGrid>
       <IonRow  id="row-busqueda">
-        <IonCol size="auto"  id="col-explorerContainerCliente"><img id="img-explorerContainerCliente" src={props.personalImg}></img></IonCol>
+        <IonCol size="auto"  id="col-explorerContainerCliente"><img id="img-explorerContainerCliente" src={imagen}></img></IonCol>
         <IonCol size="auto" id="col-explorerContainerCliente">
           <IonCardTitle id="explorerContainerClienteTitulo">{props.nombre.toUpperCase() +" "+ surname.current}</IonCardTitle>
           <IonCardSubtitle>Rubro: {props.item}</IonCardSubtitle>
@@ -460,7 +469,7 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , hayOrdenes:any,
             i = i + 1;
             return (<CardVistaVariasOrdenes key={i} posicion={i} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket}
               dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_proveedor} setVerOrden={props.setVerOrden} setPosicion={props.setPosicion}
-              presupuesto={a.presupuesto_inicial} masInfo={a.pedido_mas_información}
+              presupuesto={a.presupuesto} masInfo={a.pedido_mas_información}
             ></CardVistaVariasOrdenes>);
           })}
         </div></>
@@ -487,6 +496,17 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
 
     const ticketeck = useRef <string>("")
     const [nuevoStatus,setNuevoStatus]=useState(false)
+
+    const [imagen,setImagen]=useState ("")
+
+    useEffect(() => {
+      if (props.imagen==""|| props.imagen==null || props.imagen==undefined){
+        setImagen ("./assets/icon/nuevoUsuario.png") 
+      }else{
+        setImagen(props.imagen)
+      }
+    }, [props.imagen]);
+  
 
     useEffect(() => {
 
@@ -530,6 +550,7 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
         
       }else{
         setDB(ticketeck.current, props.status)
+        setNuevoStatus(false)
       }
 
     })
@@ -547,7 +568,7 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
           <IonGrid>
             <IonRow  id="row-busqueda">
               <IonCol   id="col-explorerContainerCliente">
-                <img id="imgOrden" src={props.imagen}></img>
+                <img id="imgOrden" src={imagen}></img>
               </IonCol>
             </IonRow>
             <IonRow  id="row-busqueda">

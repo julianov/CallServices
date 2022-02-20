@@ -268,11 +268,22 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
 
   const [showAlertDatosPersonales, setShowAlertDatosPersonales]=useState(false)
 
+  const [imagen, setImagen] = useState (props.foto)
+
+  useEffect(() => {
+    if (props.foto==""|| props.foto==null || props.foto==undefined){
+      setImagen ("./assets/icon/nuevoUsuario.png") 
+    }else{
+      setImagen(props.foto)
+    }
+  }, [props.foto]);
+
   useEffect(() => {
     if (props.nombre==null || props.apellido==null){
     //  aca tengo que buscar los nombres en lo guardado che sino pedirlo al servidor
       props.setNombre("Debe ingresar nombre")
       props.setApellido("Debe ingresar apellido")
+      console.log("a ver que figura en completar información personal: "+props.completarInfoPersonal)
     }
   },[])
   
@@ -353,50 +364,55 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
     );
   }else{
     return (
-      <>
+      
+      
       <IonContent>
-        
-      <div className="header">
+        <div id="contenedorPrincipalModal">
+      <header id="headerModal">
         <IonIcon icon={close} onClick={() => props.onClose(null)} slot="right" id="flecha-cerrar">  </IonIcon>
-      </div>
-        
-        <div id="contenedor-central">
+      </header>
+      <article>
 
-        <IonGrid>
-        <IonRow><IonCol>
-          <img onClick={() => props.setDatosPersonales(true)} src={props.foto} id="foto-usuario-grande"/>
-          </IonCol></IonRow>
+      <div id="contenedorCentralModal">
+        <img onClick={() => props.setDatosPersonales(true)} src={imagen} id="foto-usuario-grande"/>
 
         <IonList>
      
-         <IonRow><IonCol className="col"> <IonItem id="item-modal" button onClick={() => { props.setDatosPersonales(true)}}>
-            <IonLabel>DATOS PERSONALES</IonLabel>
+        <IonItem id="item-modal" button onClick={() => { props.setDatosPersonales(true)}}>
+            <IonLabel >DATOS PERSONALES</IonLabel>
             <IonIcon className="iconosModal" icon={person} ></IonIcon>
-          </IonItem></IonCol></IonRow>
+          </IonItem>
 
-          <IonRow><IonCol className="col"><IonItem id="item-modal" button onClick={() => { }}>
+        <IonItem id="item-modal" button onClick={() => { }}>
             <IonLabel>MIS TICKETS</IonLabel>
             <IonIcon className="iconosModal" icon={receipt} ></IonIcon>
-          </IonItem></IonCol></IonRow>
+          </IonItem>
 
-          <IonRow><IonCol className="col"><IonItem id="item-modal" button onClick={() => { }}>
+          <IonItem id="item-modal" button onClick={() => { }}>
             <IonLabel>PREGUNTAS</IonLabel>
             <IonIcon className="iconosModal" icon={help} ></IonIcon>
-          </IonItem></IonCol></IonRow>
+          </IonItem>
 
-          <IonRow><IonCol className="col"><IonItem id="item-modal" button onClick={() => { }}>
+         <IonItem id="item-modal" button onClick={() => { }}>
             <IonLabel>SOPORTE</IonLabel>
             <IonIcon className="iconosModal" icon={chatbubble} ></IonIcon>
-          </IonItem></IonCol></IonRow>
+          </IonItem>
 
-          <IonRow><IonCol className="col">
-                    <button  onClick={() => { props.closeSesion () } } className="cerrarsesion" >CERRAR SESIÓN</button>
-                    </IonCol></IonRow>
+        
         </IonList>  
-        </IonGrid>
+    
+
+     
+
+        </div>
+        </article>
+
+        <footer id="footerModal">
+        <button  onClick={() => { props.closeSesion () } } className="cerrarsesion" >CERRAR SESIÓN</button>
+        </footer>
         </div>
       </IonContent>
-    </>
+   
     );
   }
 }
@@ -420,8 +436,16 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
     
     const [alertCambioFoto, setShowAlertCambioFoto] = useState(false)
 
+    const [imagen, setImagen] = useState (props.foto)
+
+
     useEffect(() => {
-    }, []);
+      if (props.foto==""|| props.foto==null || props.foto==undefined){
+        setImagen ("./assets/icon/nuevoUsuario.png") 
+      }else{
+        setImagen(props.foto)
+      }
+    }, [props.foto]);
 
     const cambiarElemento = (tipo:string) => {
       if(tipo=="foto"){
@@ -497,7 +521,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
             <IonRow>
               <IonCol>
                 <IonItem lines="none" id="itemFoto"  onClick={()=> cambiarElemento("foto") }>
-                  <img  src={props.foto} id="foto-usuario-grande"/>
+                  <img  src={imagen} id="foto-usuario-grande"/>
                 </IonItem>
               </IonCol>
             </IonRow><IonRow><IonCol></IonCol></IonRow>

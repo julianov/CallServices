@@ -14,10 +14,10 @@ export interface mensajes{
     mensaje:any
     dia:any
     hora:any
-  }
+}
 
 
-  let msg = new Array<mensajes>();
+let msg = new Array<mensajes>();
 
 
 const Chat = (props:{email:any,  ticket:any, setVolver:any, setVista:any, desdeDondeEstoy:string}) => {
@@ -32,7 +32,7 @@ const Chat = (props:{email:any,  ticket:any, setVolver:any, setVista:any, desdeD
 
     useEffect(() => {
 
-        axios.get(url+"chat/"+props.ticket).then((resp: { data: any; }) => {
+        axios.get(url+"chat/"+props.ticket+"/"+props.email).then((resp: { data: any; }) => {
             
             if (resp.data!="bad"){
                 msg=[]
@@ -203,5 +203,8 @@ const Card2 = (props:{ usuario:string, mensaje:string, dia:string, hora:string  
             </>
     )
 }
+
+
+
 
 export default Chat;

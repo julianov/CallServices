@@ -18,17 +18,14 @@ import Https from '../utilidades/HttpsURL';
 
 
 /*
-
 CompletarInformacion
 | 
 |->  CompletarInformacionPersonal
-
 */
 
 /*
 Compressorjs
 npm install compressorjs
-
 */
 
 //const url='http://127.0.0.1:8000/completarinfo/';
@@ -41,11 +38,7 @@ rubro1:any, rubro2:any, setRubro1:any, setRubro2:any}) => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>ServiceYA</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+     
       <IonContent fullscreen id="main-container">
 
       <div id="ionContentCompletarInfo">
@@ -341,21 +334,27 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                 isOpen={showLoading}
                 onDidDismiss={() => setShowLoading(false)}
                 message={'Cargando datos...'}
-                duration={15000} /><IonAlert
+                duration={15000} />
+                <IonAlert
+                mode='ios'
                     isOpen={showAlertNombre}
                     onDidDismiss={() => setShowAlertNombre(false)}
                     cssClass='my-custom-class'
                     header={'Complete el campo Nombre'}
                     subHeader={''}
                     message={'Ingrese su nombre personal'}
-                    buttons={['OK']} /><IonAlert
+                    buttons={['OK']} />
+                <IonAlert
+                    mode='ios'
                     isOpen={showAlertApellido}
                     onDidDismiss={() => setShowAlertApellido(false)}
                     cssClass='my-custom-class'
                     header={'Complete el campo Apellido'}
                     subHeader={''}
                     message={'Ingrese su apellido personal'}
-                    buttons={['OK']} /><IonAlert
+                    buttons={['OK']} />
+                    <IonAlert
+                    mode='ios'
                     isOpen={showAlertFoto}
                     onDidDismiss={() => setShowAlertFoto(false)}
                     cssClass='my-custom-class'
@@ -365,12 +364,10 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                     buttons={['OK']} />
                     
                     <div id="personalInfo_header">
-                    <IonGrid id="completarInfo-iongrid">
-                        <IonRow><IonCol>
-                            <IonTitle id="completarInfo-title">COMPLETE SU INFORMACIÓN PERSONAL</IonTitle>
-                        </IonCol></IonRow>
-                    </IonGrid>
-                </div>
+                 
+                    <IonTitle id="completarInfo-title">INFORMACIÓN PERSONAL</IonTitle>
+                       
+                    </div>
                 <div id="personalInfo_contenedor_central">
 
                     <IonGrid>
@@ -441,20 +438,25 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
         return (
             
                  <><IonAlert
+                mode='ios'
                 isOpen={showAlertNombre}
                 onDidDismiss={() => setShowAlertNombre(false)}
                 cssClass='my-custom-class'
                 header={'Complete el campo Nombre'}
                 subHeader={''}
                 message={'Ingrese su nombre personal'}
-                buttons={['OK']} /><IonAlert
+                buttons={['OK']} />
+                <IonAlert
+                    mode='ios'
                     isOpen={showAlertApellido}
                     onDidDismiss={() => setShowAlertApellido(false)}
                     cssClass='my-custom-class'
                     header={'Complete el campo Apellido'}
                     subHeader={''}
                     message={'Ingrese su apellido personal'}
-                    buttons={['OK']} /><IonAlert
+                    buttons={['OK']} />
+                <IonAlert
+                    mode='ios'
                     isOpen={showAlertFoto}
                     onDidDismiss={() => setShowAlertFoto(false)}
                     cssClass='my-custom-class'
@@ -463,7 +465,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                     message={'Agregue foto personal para continuar'}
                     buttons={['OK']} />
                 
-                <IonTitle id="tituloCompletarInfo" >COMPLETE INFORMACIÓN PERSONAL</IonTitle>
+                <IonTitle id="tituloCompletarInfo" >INFORMACIÓN PERSONAL</IonTitle>
 
                 <div id="personalInfo_contenedor_central">
                     <IonGrid>
@@ -535,20 +537,25 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
         return (
                 
                 <><IonAlert
+                mode='ios'
                 isOpen={showAlertNombreEmpresa}
                 onDidDismiss={() => setShowAlertNombreEmpresa(false)}
                 cssClass='my-custom-class'
                 header={'Complete el campo Nombre de empresa'}
                 subHeader={''}
                 message={'Ingrese nombre oficial de la emrpesa'}
-                buttons={['OK']} /><IonAlert
+                buttons={['OK']} />
+                <IonAlert
+                    mode='ios'
                     isOpen={showAlertDescripcion}
                     onDidDismiss={() => setShowAlertDescripcion(false)}
                     cssClass='my-custom-class'
                     header={'Complete la descripción de la empresa'}
                     subHeader={''}
                     message={'Ingrese una descripción o presentación de la empresa'}
-                    buttons={['OK']} /><IonAlert
+                    buttons={['OK']} />
+                <IonAlert
+                    mode='ios'
                     isOpen={showAlertFoto}
                     onDidDismiss={() => setShowAlertFoto(false)}
                     cssClass='my-custom-class'
@@ -560,7 +567,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
             <div id="personalInfo_header">
                     <IonGrid id="completarInfo-iongrid">
                         <IonRow><IonCol>
-                            <IonTitle id="completarInfo-title">COMPLETE SU INFORMACIÓN PERSONAL</IonTitle>
+                            <IonTitle id="completarInfo-title">INFORMACIÓN PERSONAL</IonTitle>
                         </IonCol></IonRow>
                     </IonGrid>
             </div>
@@ -690,12 +697,7 @@ const TomarFotografia = (props: {setFilepath:any, setFoto:any}) => {
     if(fotoTomada){
         return(
             <><IonGrid>
-                <IonRow>
-                    <IonCol>
-                        <strong>Seleccionar foto de galería o tomar fotografia</strong>
-                    </IonCol>
-                </IonRow>
-            
+                          
                 <IonRow>
                     <IonCol>
                      <IonImg id="foto" onClick={() => onClickPhotoData()} src={imagen.current} />

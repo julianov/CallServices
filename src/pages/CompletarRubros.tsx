@@ -62,6 +62,7 @@ export interface rubro {
     radius:string
     descripcion:string
     calificacion:string
+    hace_orden_emergencia:string
     dias:string
     horaInicio:string
     horaFin:string
@@ -76,11 +77,15 @@ export interface rubro {
     domicilio_numeración:string
 }
 
+
+
 const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any, 
     rubro1:any, rubro2:any, setRubro1:any, setRubro2:any}) => {
 
 
-    const [ver,setVer]=useState("*")
+   // const [ver,setVer]=useState("*")
+
+   const [arregloRubro, setArregloRubros] =  useState <rubro []> ( [])
 
     const [vista,setVista]=useState(0)
 
@@ -97,6 +102,7 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
     const [radius, setRadius] = useState(1);
    // const radius=useRef(0)
 
+    const hace_orden_emergencia=useRef("no")
     const pais = useRef("")
     const provincia = useRef("")
     const ciudad = useRef("")
@@ -116,10 +122,10 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
     const foto2= useRef <Blob>()
     const foto3= useRef <Blob>()
    
-    const certificacionMostrar= useRef <String>()
-    const foto1Mostrar= useRef <String>()
-    const foto2Mostrar= useRef <String>()
-    const foto3Mostrar= useRef <String>()
+    const certificacionMostrar= useRef ("")
+    const foto1Mostrar= useRef ("")
+    const foto2Mostrar= useRef ("")
+    const foto3Mostrar= useRef ("")
 
     //Fin de elementos a enviar
 
@@ -132,37 +138,39 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
     const [reload,setReload] = useState(false)
 
     useEffect(() => {
-        //setRubro("");
-        rubro.current=""
-        setRadius (0);
-        dias.current=""
-        //setDias("");
-        horaInicio.current= '06:00'
-        //setHoraInicio('06:00');
-        horaFin.current='15:00'
-        //setHoraFin('15:00');
-        descripcion.current=""
-        //setDescripcion("");
+        if(vista==0){
+            //setRubro("");
+            rubro.current=""
+            setRadius (0);
+            dias.current=""
+            //setDias("");
+            horaInicio.current= '06:00'
+            //setHoraInicio('06:00');
+            horaFin.current='15:00'
+            //setHoraFin('15:00');
+            descripcion.current=""
+            //setDescripcion("");
 
-        pais.current=("")
-        provincia.current=("")
-        ciudad.current=("")
-        domicilio_calle.current=("")
-        domicilio_numeración.current=(0)
+            hace_orden_emergencia.current="no"
+            pais.current=("")
+            provincia.current=("")
+            ciudad.current=("")
+            domicilio_calle.current=("")
+            domicilio_numeración.current=(0)
 
-       // setCertificacion(undefined); //en formato base64
-        certificacion.current=undefined
-        foto1.current=undefined
-        foto2.current=undefined
-        foto3.current=undefined
+            // setCertificacion(undefined); //en formato base64
+            certificacion.current=undefined
+            foto1.current=undefined
+            foto2.current=undefined
+            foto3.current=undefined
 
-        certificacionMostrar.current=""
-        foto1Mostrar.current=""
-        foto2Mostrar.current=""
-        foto3Mostrar.current=""
-
-        setReload(false)
-    }, [reload]);
+            certificacionMostrar.current=""
+            foto1Mostrar.current=""
+            foto2Mostrar.current=""
+            foto3Mostrar.current=""
+        }
+        //setReload(false)
+    }, [vista]);
     
 
  const enviarInformacion =async ()=>{
@@ -223,6 +231,32 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
             arreglo.push(domicilio_calle.current)
             formDataToUpload.append("calle-numeracion", String(domicilio_numeración.current));
             arreglo.push(domicilio_numeración.current) 
+
+            formDataToUpload.append("ordenEmergencia", hace_orden_emergencia.current);
+            arreglo.push(hace_orden_emergencia.current)
+
+            setArregloRubros(
+                [{
+                rubro:rubro.current,
+                radius:String(radius),
+                descripcion:descripcion.current,
+                calificacion:String(0),
+                hace_orden_emergencia:hace_orden_emergencia.current,
+                dias:dias.current,
+                horaInicio:horaInicio.current,
+                horaFin:horaFin.current,
+                certificacion:certificacionMostrar.current,
+                picture1:foto1Mostrar.current,
+                picture2:foto2Mostrar.current,
+                picture3:foto3Mostrar.current,
+                pais:pais.current,
+                provincia:provincia.current,
+                ciudad:ciudad.current,
+                domicilio_calle:domicilio_calle.current,
+                domicilio_numeración:String(domicilio_numeración.current),
+            }    ]
+            )
+
            
             const axios = require('axios');
             axios({
@@ -233,6 +267,7 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
             }).then(function(res: any){
 
                 if(res.data=="rubro cargado"){
+                    console.log("SE CARGO EL RUBRO!!!")
                     setItem("rubroLoaded", true).then(() =>{
                         
                         getItem("rubro1").then(res2 => {
@@ -246,7 +281,7 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
                                 setShowLoading(false);
                                 setVista(0)
                                 arreglo = []
-                                setReload(true)
+                                //setReload(true)
                                 })
                             })
                             }
@@ -265,6 +300,8 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
                           })
                     }
                     );
+                }else{
+
                 }
                 //recarga la vista ejecutando el useEffect
 
@@ -290,21 +327,9 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
     if(vista==0){
         return(
             <IonPage>
-              <IonHeader>
-                <IonToolbar>
-             
-
-                <div className="header">
-                <IonTitle>RUBROS</IonTitle></div>
-                                
-                </IonToolbar>
-              </IonHeader>
+           
               <IonContent fullscreen>
-
-                <a href={"/"} id="flechaIngresar">
-                    <IonIcon onClick={()=> volver() } icon={arrowBack}  id="flecha-volver-completar-rubro">  </IonIcon>
-                </a>
-                <Vista1 setIsReg={props.setIsReg} setVista={setVista} email={props.email} clientType={props.clientType} setTituloRubros={setTituloRubros} tituloRubros={tituloRubros} setTituloAVer={setTituloAVer} ></Vista1>
+                <Vista1 setIsReg={props.setIsReg} setVista={setVista} volver={volver} email={props.email} clientType={props.clientType} setTituloRubros={setTituloRubros} tituloRubros={tituloRubros} setTituloAVer={setTituloAVer} ></Vista1>
               </IonContent>
             </IonPage>
           );
@@ -424,6 +449,8 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
 
                 < AgregarRadio setVista={setVista} radio={radius} setRadio={setRadius} 
                 setPosicion={setPosicion} 
+                rubro={rubro.current}
+                ordenesEmergencia={hace_orden_emergencia} 
                 pais={pais} provincia={provincia} ciudad={ciudad} domicilio_calle={domicilio_calle} domicilio_numeracion={domicilio_numeración} />
 
               </IonContent>
@@ -535,11 +562,13 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
 
   // vista=0
 
-  const Vista1 =(props:{ setIsReg:any,setVista:any, email:any, clientType:any, setTituloRubros:any, tituloRubros:any, setTituloAVer:any } ) => {
+  const Vista1 =(props:{ setIsReg:any,setVista:any, volver:any, email:any, clientType:any, setTituloRubros:any, tituloRubros:any, setTituloAVer:any } ) => {
 
     const [tieneCargado, setTieneCargado]=useState (false)
 
+    const [error, setError] = useState(false)
 
+    console.log("llego a vista1")
     useEffect(() =>{
         const axios = require('axios');
         axios.get(url+"rubros/"+"pedir/"+props.clientType+"/"+props.email)
@@ -558,29 +587,74 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
             }
 
           }
-        });
+        }).catch((err: any) => {
+            // what now?
+            setError(true)
+    
+        })
 
     }, []);
 
-    if(tieneCargado){
-        return (
-            <div className="contenedor_central">
-                    <Lista setIsReg={props.setIsReg} setVista={props.setVista} arreglo={props.tituloRubros} clientType={props.clientType} email={props.email} setTituloAVer={props.setTituloAVer} ></Lista>
+
+
+    if (!error){
+        if(tieneCargado){
+            return (
+                <Lista setIsReg={props.setIsReg} setVista={props.setVista} arreglo={props.tituloRubros} clientType={props.clientType} email={props.email} setTituloAVer={props.setTituloAVer} ></Lista>
+                );
+    
+        }else{
+             return (
+                <div id="contenedorCompletarRubro">
+                <header id="headerRegistro">
+                <a href={"/"} id="flechaIngresar">
+                        <IonIcon onClick={()=> props.volver() } icon={arrowBack}  id="flecha-volver-completar-rubro">  </IonIcon>
+                </a>
+                  <IonTitle id="register-title">MIS RUBROS</IonTitle>
+                </header>
+          
+                <div id="contenedorCompletarRubro">
+                    <div className="caja">
+                        <strong>NO POSEE RUBROS CARGADOS</strong>
+                        <p>Cargue un Rubro para poder recibir pedidos de clientes</p>
+                    </div>
                 </div>
+          
+                <footer id="footerCompletarRubro">
+                    <IonButton id="botonCompletarRubros" shape="round" onClick={() => {props.setVista(2)}}>AGREGAR RUBRO</IonButton>
+                </footer>
+              </div> 
+    
+    
+                );
+        }
+    }else{
+
+        return (
+            <div id="contenedorCompletarRubro">
+            <header id="headerRegistro">
+            <a href={"/"} id="flechaIngresar">
+                    <IonIcon onClick={()=> props.volver() } icon={arrowBack}  id="flecha-volver-completar-rubro">  </IonIcon>
+            </a>
+              <IonTitle id="register-title">RUBROS</IonTitle>
+            </header>
+      
+            <div id="contenedorCompletarRubro">
+                <div className="caja">
+                    <strong>ERROR DE CONECTIVIDAD</strong>
+                    <p>Asegúrese de tener conectividad de red o intente más tarde</p>
+                </div>
+            </div>
+      
+            <footer id="footerCompletarRubro">
+            </footer>
+          </div> 
+
+
             );
 
-    }else{
-         return (
-                <div className="contenedor_central">
-            <IonGrid>
-                <IonRow><IonCol><div className="caja">
-                    <strong>NO POSEE RUBROS CARGADOS</strong>
-                    <p>Cargue un Rubro para poder recibir pedidos de clientes</p>
-                </div></IonCol></IonRow>
-                <IonRow><IonCol><IonButton shape="round" onClick={() => {props.setVista(2)}}>AGREGAR RUBRO</IonButton></IonCol></IonRow>
-                </IonGrid></div>
-            );
     }
+   
   
 }
 
@@ -590,16 +664,20 @@ const Lista = (props:{ setIsReg:any,setTituloAVer:any, setVista:any, arreglo:any
     const [datosListos,setDatosListos]=useState(false);
 
     const [termino,setTermino]=useState(false)
+
     if (termino){
        
         props.setIsReg(true) 
+        window.location.reload();
+
         return (
-            <><Redirect push={true} to="/" />
-            
-                </> 
-                )
+            <><Redirect push={true} to="/home" />
+            </> 
+            )
+
     }
 
+    
     const verRubro=( titulo:any) => {
         props.setTituloAVer(titulo)
         props.setVista(1)
@@ -607,41 +685,54 @@ const Lista = (props:{ setIsReg:any,setTituloAVer:any, setVista:any, arreglo:any
 
     if(((props.arreglo!).length)-1==1){
             return(
-                <div id="caja2">
-                <div id="caja2">
-                    <strong>RUBROS CARGADOS:</strong>
-                    <IonGrid >
-                    <IonRow><IonCol ><IonItem id="item-completarRubro-rubro" onClick={()=> ( verRubro(props.arreglo[0])) }>
-                        <strong> {props.arreglo[0]} </strong>
-                    </IonItem></IonCol></IonRow><IonRow><IonCol></IonCol></IonRow>
-                    </IonGrid>
-                </div>
-                    <IonGrid>
-                        <IonRow><IonCol><IonButton shape="round" id="boton-inicialBR" onClick={() => { props.setVista(2)} }>AGREGAR OTRO RUBRO</IonButton></IonCol></IonRow>
-                        <IonRow><IonCol><IonButton shape="round" id="boton-inicialBR" onClick={()=> setTermino(true) } >FINALIZAR</IonButton></IonCol></IonRow>
-                    </IonGrid>
+                <div id="contenedorCompletarRubro">
+            <header id="headerRegistro">
+              <IonTitle id="register-title">RUBROS CARGADOS:</IonTitle>
+            </header>
+      
+            <div id="contenedorCompletarRubro">
+                <IonItem id="item-completarRubro-rubro" onClick={()=> ( verRubro(props.arreglo[0])) }>
+                    <strong> {props.arreglo[0]} </strong>
+                </IonItem>
             </div>
+      
+            <footer id="footerCompletarRubro">
+                <IonGrid>
+                    <IonRow><IonCol><IonButton shape="round" id="boton-inicialBR" onClick={() => { props.setVista(2)} }>AGREGAR OTRO RUBRO</IonButton></IonCol></IonRow>
+                    <IonRow><IonCol><IonButton shape="round" id="boton-inicialBR" onClick={()=> setTermino(true) } >FINALIZAR</IonButton></IonCol></IonRow>
+                </IonGrid>
+            </footer>
+          </div> 
+
+
+
             );
         }
         else if(((props.arreglo!).length)-1==2){
             return(
-                <div >
-                <div id="caja2">
-                    <strong>RUBROS CARGADOS</strong>
-                    <IonGrid >
-                    <IonRow><IonCol ><IonItem id="item-completarRubro-rubro" onClick={()=> verRubro(props.arreglo[0]) }>
+
+
+                <div id="contenedorCompletarRubro">
+                <header id="headerRegistro">
+                  <IonTitle id="register-title">RUBROS CARGADOS:</IonTitle>
+                </header>
+          
+                <div id="contenedorCompletarRubro">
+                    <IonItem id="item-completarRubro-rubro" onClick={()=> ( verRubro(props.arreglo[0])) }>
                         <strong> {props.arreglo[0]} </strong>
-                        </IonItem></IonCol></IonRow><IonRow><IonCol></IonCol></IonRow>
-                        <IonRow><IonCol  ><IonItem id="item-completarRubro-rubro" onClick={()=> verRubro(props.arreglo[1]) } >
+                    </IonItem>
+                    <IonItem id="item-completarRubro-rubro" onClick={()=> verRubro(props.arreglo[1]) } >
                         <strong  >{props.arreglo[1]} </strong>
-                        </IonItem></IonCol></IonRow>
-                    </IonGrid>
+                    </IonItem>
                 </div>
-                    <IonGrid>
-                        
-                    <IonRow><IonButton id="boton-inicialBR" shape="round" onClick={()=> setTermino(true) } > FINALIZAR</IonButton></IonRow>
-                    </IonGrid>
-                    </div>
+          
+                <footer id="footerCompletarRubro">
+                <IonButton id="boton-inicialBR" shape="round" onClick={()=> setTermino(true) } >FINALIZAR</IonButton>
+                </footer>
+              </div> 
+    
+
+
             );
         }else{
             return(<div></div>)
@@ -1114,7 +1205,7 @@ const AgregarDescripcion  =(props:{setVista: any, descripcion: any, setShowAlert
 //vista=4 
 
 
-const AgregarRadio = (props:{setVista: any, radio:any, setRadio:any, setPosicion:any,
+const AgregarRadio = (props:{setVista: any, rubro:any, ordenesEmergencia:any, radio:any, setRadio:any, setPosicion:any,
  pais:any, provincia:any,ciudad:any,domicilio_calle:any,domicilio_numeracion:any}) =>{
 
     const volver =()=>{
@@ -1165,7 +1256,7 @@ const AgregarRadio = (props:{setVista: any, radio:any, setRadio:any, setPosicion
                 </IonGrid>
             </div>
             <div className="caja">
-                <IonTitle>LOCACIÓN A CLIENTES</IonTitle>
+                <IonTitle>VISITA A CLIENTES</IonTitle>
                 <div>
                     <p>Ingrese si va a la locación de clientes</p>    
                     <p>En caso de que no se desplace a locación de clientes no seleccione la casilla de verificación y presion siguiente</p>
@@ -1192,6 +1283,9 @@ const AgregarRadio = (props:{setVista: any, radio:any, setRadio:any, setPosicion
                 </IonItem>
                 <Range domicilio={domicilio} radius={props.radio} setRadio={props.setRadio} />
             </div>
+
+            <OrdenesEmergencia rubro={props.rubro} ordenEmergencia={props.ordenesEmergencia} ></OrdenesEmergencia>
+
             <div className="caja">
                 <IonGrid>
                     <IonRow>
@@ -1483,5 +1577,48 @@ const AgregarImagenes = (props:{setVista: any,
                 }
 
 
+const OrdenesEmergencia = (props:{rubro:any, ordenEmergencia:any}) => {
+
+
+    console.log("llego a orden de emergencia")
+    console.log("el rubro que elegi es: "+props.rubro)
+    if (props.rubro=="PLOMERIA" || props.rubro=="GASISTA" || props.rubro=="CERRAJERÍA" || props.rubro=="ELECTRICIDAD" || props.rubro=="FLETE" || props.rubro=="MECANICA" || props.rubro=="REMOLQUES - GRÚAS" ){
+        return( 
+            <div className="caja">
+            <IonTitle>ÓRDENES DE EMERGENCIA</IonTitle>
+            <div>
+                <p>Aceptar órdenes de emergencia implica tener la disponibilidad para asistir a los domicilios de los clientes cuando lo requieran</p>
+                <p>Deberá atender las ordenes de emergencia de manera prioritaria</p>
+    
+            </div>
+            <IonItem>
+                <IonGrid>
+                    <IonRow>
+                        <IonCol>
+                            <IonLabel ion-list-lines="none">¿Realiza órdenes de emergencia?</IonLabel>
+                        </IonCol>
+                        <IonCol>
+                        <IonSegment mode="ios" value={props.ordenEmergencia.current} select-on-focus={true} onIonChange={e => props.ordenEmergencia.current=( e.detail.value!)} >
+                            <IonSegmentButton value="si">
+                                <IonLabel>SI</IonLabel>
+                            </IonSegmentButton>
+                            <IonSegmentButton value="no">
+                                <IonLabel>NO</IonLabel>
+                            </IonSegmentButton>
+                        </IonSegment>
+    
+                        </IonCol>
+                    </IonRow>
+                </IonGrid>
+            </IonItem>
+        </div>
+        )
+    }else{
+        return(
+            <></>
+        )
+    }
+    
+}
 
 export default CompletarRubros;

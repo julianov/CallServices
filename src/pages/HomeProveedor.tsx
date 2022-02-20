@@ -3,7 +3,7 @@ import { Icon } from 'ionicons/dist/types/components/icon/icon';
 import React, { Component, useEffect, useRef, useState } from 'react';
 import ExploreContainer from '../components/ExploreContainerCliente';
 import './Home.css';
-import {person, home , closeCircle, chevronDown, arrowBack, receipt, help, chatbubble} from 'ionicons/icons';
+import {person, home , closeCircle, chevronDown, arrowBack, receipt, help, chatbubble, notificationsOff} from 'ionicons/icons';
 import Registro from './Registro';
 import axios from 'axios';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
@@ -82,35 +82,11 @@ const HomeProveedor = (props:{setIsReg:any,
   const [showInicializando,setShowInicializando]=useState(false)
 
   const [showAlertUbicación, setShowAlertUbicación] = useState(false)
-
+  const [showAlertServidor, setShowAlertServidor]= useState(false)
 
   getLocation()
 
   const [misOrdenes, setMisOrdenes] = useState <ordenes []>( [])
- /* const [misOrdenes, setMisOrdenes] = useState <ordenes>(
-    {
-      tipo:"",
-      status:"",
-      fecha_creacion:"",
-      ticket: "",
-      dia: "",
-      hora:"",
-      titulo:"",
-      descripcion:"",
-      email_cliente:"",
-      imagen_cliente:"",
-      location_lat:"",
-      location_long:"",
-      picture1:"",
-      picture2:"",
-      presupuesto_inicial:"",
-      pedido_mas_información:"",
-      respuesta_cliente_pedido_mas_información:"",
-      picture1_mas_información:"",
-      picture2_mas_información:"",
-      }
-);*/
-
 
   const axios = require('axios');
 
@@ -123,6 +99,8 @@ const HomeProveedor = (props:{setIsReg:any,
       if (value==0){
 
         setShowAlertUbicación(true)
+        console.log("veamos que tenemos en el value de la ubicación: "+value)
+
 
       }else{
         axios.get(url+"proveedor/ubicacion/"+props.email+"/"+value).then((resp: { data: any; }) => {
@@ -131,7 +109,7 @@ const HomeProveedor = (props:{setIsReg:any,
 
            
           }else{
-            setShowAlertUbicación(true)
+            setShowAlertServidor(true)
           }
         });  
       }
@@ -184,6 +162,9 @@ const HomeProveedor = (props:{setIsReg:any,
                 <IonButtons ><IonMenuButton /> </IonButtons>
               </IonCol>
               <IonCol id="columna2" ></IonCol>
+              <IonCol id="columna3" size="1.5"> 
+                  <IonIcon icon={notificationsOff}  id="iconoHomeCampana">  </IonIcon>
+                </IonCol>
               <IonCol id="columna3" size="2"> 
                 <img src={imagen} id="foto-usuario" onClick={() => {  setShowModal({ isOpen: true});  setTipoDeVistaEnModal("datosUsuario")}}/>
               </IonCol>
@@ -239,6 +220,18 @@ const HomeProveedor = (props:{setIsReg:any,
             subHeader={''}
             message={'Debe habilitar el acceso a la ubicación en el dispositivo'}
             buttons={['OK']}/>
+            
+
+            <IonAlert 
+            isOpen={showAlertServidor} 
+            onDidDismiss={() => setShowAlertServidor(false)} 
+            mode="ios"
+            cssClass='my-custom-class'
+            header={'PROBLEMAS DE CONECTIVIDAD'}
+            subHeader={''}
+            message={'Corrobore su conexión a internet o intente nuevamente más tarde'}
+            buttons={['OK']}/>
+
         </div>
       </IonContent>
     </IonPage>
@@ -248,6 +241,8 @@ const HomeProveedor = (props:{setIsReg:any,
 
 
 
+
+/*
 
 class Busqueda extends Component{
 
@@ -263,5 +258,6 @@ class Busqueda extends Component{
        }
     
   };
+*/
 
   export default HomeProveedor;

@@ -1,40 +1,39 @@
-
 ion-toolbar{
-    display: flex;
-    align-items: center;
-    justify-content: center; 
-  
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+
 }
 ion-title{
 text-align: center;
 }
 
 ion-card{
-    align-items: center;
-    justify-content: center; 
+  align-items: center;
+  justify-content: center; 
 }
 ion-grid{
-    height: 100%;
-    width: 100%;
-    text-align: center;
+  height: 100%;
+  width: 100%;
+  text-align: center;
 }
 ion-row{
-    width:100%;
+  width:100%;
 
 }
 ion-col{
-    width:100%;
-    display: flex!important;
-    align-content: center!important;
-    align-items: center!important;
+  width:100%;
+  display: flex!important;
+  align-content: center!important;
+  align-items: center!important;
 
 }
 
 
 
 ion-range{
-    display: inline-block!important;
-    width: 80%!important;
+  display: inline-block!important;
+  width: 80%!important;
 }
 
 .descripcion{
@@ -43,122 +42,123 @@ height: 100px;
 }
 
 #ionContentCompletarInfo{
-  background:  #f3f2ef;  
-  height: 100%;
+background:  #f3f2ef;  
+height: 100%;
 }
 
 #main-container{
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    width: calc(100% - 10px);
-    height: 100%;
-    top: 0;
-  }
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: calc(100% - 10px);
+  height: 100%;
+  top: 0;
+}
 
-  #tituloCompletarInfo{
-    padding-top: 20px;
-  }
+#tituloCompletarInfo{
+  padding-top: 20px;
+}
 
 #personalInfo_header{
-    height: 15%;
-    width: 100%;
-  
-    position: fixed;
-    top: 10%;
-  
-    display: flex;
-    flex-direction: column-reverse;
-    
-    justify-content: flex-start;
+  height: 15%;
+  width: 100%;
 
-  }
+  position: fixed;
+  top: 0%;
+
+  display: flex;
+  flex-direction: column-reverse;
+  
+  justify-content: flex-start;
+
+}
 
 #personalInfo_contenedor_central {
-    height: 50%;
-    width: 100%;
-  
-    position:relative;
-    top:15%;   
-      
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  height: 50%;
+  width: 100%;
+
+  position:relative;
+  top:15%;   
+    
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
 
-  
+
 }
 
 #personalInfo-footer{
-    height: 25%;
-    width: 100%;
+  height: 25%;
+  width: 100%;
 
-    position:fixed;
-    top:75%;   
-          
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  position:fixed;
+  top:75%;   
+        
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
 
-  }
-  
+}
+
 #completarInfo-iongrid{
-    width: 100%;
-    position: relative;
-    top:25%;
+  width: 100%;
+  position: relative;
+  top:25%;
 }
 
 #completarInfo-title{
-    position: relative;
-    font-weight: bold;
-  }
+  position: relative;
+  font-weight: bold;
+}
 
 #caja2{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .caja {
-    padding-top: 0.5cm;
-    padding-bottom: 0.5cm;
-    margin: 0.5cm;
-    box-shadow: 0px 0px 5px blue;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  padding-top: 0.5cm;
+  padding-bottom: 0.5cm;
+  margin: 0.5cm;
+  box-shadow: 0px 0px 5px blue;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
 }
 .inputFoto{
-    position: absolute;
-    opacity: 0;
-  }
-  
-  .BotonFalso{
-    width: 100%;
-    background-color: #3880ff;
-    color:white;
-    padding: 5px;
-    border-radius: 5px 20px 5px;
+  position: absolute;
+  opacity: 0;
+}
 
-  }
+.BotonFalso{
+  width: 100%;
+  background-color: #3880ff;
+  color:white;
+  padding: 5px;
+  border-radius: 5px 20px 5px;
 
-  p {
-    font-size: 10px;
-    color:#1053c7;
-    line-height: 100%;
-  }
+}
 
-  ion-button{
-    width: 100%;
+p {
+  font-size: 10px;
+  color:#1053c7;
+  line-height: 100%;
+}
+
+ion-button{
+  width: 100%;
 }
 
 #item-completarInfo{
-    width:50%;
-    text-align: left;
-    margin: 0;
+  width:50%;
+  text-align: left;
+  margin: 0;
 }
+

@@ -63,6 +63,8 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
 
   const [ultimos, setUltimos] =  useState <categoriaBuscada []> ( [])
 
+  const [imagen,setImagen]=useState ("")
+
   const proveedorVaALocacion = useRef(true)
   
     const datosDeOrdenes = useRef<datosOrden>(
@@ -79,6 +81,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
          }
     )
 
+    
 
  
   const [datosProveedoresArray, setDatosProveedores] = useState <datosProveedor>(
@@ -100,6 +103,14 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
             calle:"",
             numeracion:""}
   );
+
+  useEffect(() => {
+    if (datosProveedoresArray.picture==""|| datosProveedoresArray.picture==null || datosProveedoresArray.picture==undefined){
+      setImagen ("./assets/icon/nuevoUsuario.png") 
+    }else{
+      setImagen(datosProveedoresArray.picture)
+    }
+  }, [datosProveedoresArray.picture]);
 
   const [imagenesProveedoresArray, setImagenesProveedores] = useState <imagenesProveedor>(
     {
@@ -277,6 +288,9 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
     
       }
 
+
+
+
      
       
       if(datosProveedoresArray.tipo=="Proveedor de servicio independiente"){
@@ -287,7 +301,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
               <IonGrid>
                 <IonRow id="row-busqueda">
                   <IonCol size="auto" id="col-explorerContainerCliente">
-                    <img id="ionCard-explorerContainer-Cliente-Imagen" src={datosProveedoresArray.picture}></img></IonCol>
+                    <img id="ionCard-explorerContainer-Cliente-Imagen" src={imagen}></img></IonCol>
                 </IonRow>
                 <IonRow id="row-busqueda">
                   <IonCol size="auto" id="col-explorerContainerCliente">
@@ -400,7 +414,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
               <IonGrid>
                 <IonRow id="row-busqueda">
                   <IonCol size="auto" id="col-explorerContainerCliente">
-                    <img id="ionCard-explorerContainer-Cliente-Imagen" src={datosProveedoresArray.picture}></img></IonCol>
+                    <img id="ionCard-explorerContainer-Cliente-Imagen" src={imagen}></img></IonCol>
                   <IonCol size="auto" id="col-explorerContainerCliente">
                     <IonCardTitle>{datosProveedoresArray.nombre + " " + datosProveedoresArray.last_name}</IonCardTitle>
                     <IonCardSubtitle>RUBRO: {datosProveedoresArray.items}</IonCardSubtitle>

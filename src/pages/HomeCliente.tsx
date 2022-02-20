@@ -1,4 +1,4 @@
-import { IonAlert, IonAvatar, IonButton, IonButtons, IonChip, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonItemOptions, IonItemSliding, IonLabel, IonList, IonLoading, IonMenuButton, IonModal, IonPage, IonPopover, IonRow, IonSearchbar, IonTitle, IonToolbar} from '@ionic/react';
+import { IonAlert, IonAvatar, IonButton, IonButtons, IonCard, IonChip, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonItemOptions, IonItemSliding, IonLabel, IonList, IonLoading, IonMenuButton, IonModal, IonPage, IonPopover, IonRow, IonSearchbar, IonTitle, IonToolbar} from '@ionic/react';
 import React, { Component, useEffect, useMemo, useRef, useState } from 'react';
 import './Home.css';
 import axios from 'axios';
@@ -10,6 +10,7 @@ import ExploreContainerCliente from '../components/ExploreContainerCliente';
 import Https from '../utilidades/HttpsURL';
 
 import { clearDB, createStore, getDB, removeDB, setDB } from '../utilidades/dataBase';
+import { notifications,notificationsOff } from 'ionicons/icons';
 
 
 const url=Https
@@ -30,8 +31,6 @@ const getLocation = async () => {
   }
 }
 
-//let arreglo=new Array();
-
 export interface datosGeneralesVariosProveedores {
   email:string
   nombre:string
@@ -41,44 +40,44 @@ export interface datosGeneralesVariosProveedores {
   tipo:string
   distancia:string
   calificacion:string
-  }
+}
 
-  export interface proveedorBuscado{
-    item:string
-    tipo:string
-    nombre:string
-    apellido:string
-    imagen:string
-    calificacion:string
-    email:string
-    }
+export interface proveedorBuscado{
+  item:string
+  tipo:string
+  nombre:string
+  apellido:string
+  imagen:string
+  calificacion:string
+  email:string
+}
 
-    export interface ordenesCliente  {
-      tipo:string
-      status:string
-      fecha_creacion:string
-      ticket: string
-      dia: string
-      hora:string
-      titulo:string
-      descripcion:string
-      email_proveedor:string
-      imagen_proveedor:string
-      location_lat:any
-      location_long:any
-      picture1:string
-      picture2:string
-      presupuesto_inicial:any
-      pedido_mas_información:string
-      respuesta_cliente_pedido_mas_información:string
-      picture1_mas_información:string
-      picture2_mas_información:string
-      }
+export interface ordenesCliente  {
+  tipo:string
+  status:string
+  fecha_creacion:string
+  ticket: string
+  dia: string
+  hora:string
+  titulo:string
+  descripcion:string
+  email_proveedor:string
+  imagen_proveedor:string
+  location_lat:any
+  location_long:any
+  picture1:string
+  picture2:string
+  presupuesto:string
+  pedido_mas_información:string
+  respuesta_cliente_pedido_mas_información:string
+  picture1_mas_información:string
+  picture2_mas_información:string
+}
 
-  //let proveedores = new Array<datosGeneralesVariosProveedores>();
-
- // let proveedorBuscado = new Array<proveedorBuscado>();
-
+export interface newMessage{
+  de:string
+  ticket:string
+}
 
 const HomeCliente = (props:{setIsReg:any,  
   email:any, foto:any, clientType:any, 
@@ -87,7 +86,6 @@ const HomeCliente = (props:{setIsReg:any,
   const axios = require('axios');
 
   const [categorias, setCategorias] = useState ([])
-  //const [proveedorBuscadoHook,setProveedorBuscadoHook]= useState ([])
   const [proveedorBuscadoHook, setProveedorBuscadoHook] =  useState < proveedorBuscado []> ( [])
   const [buscar, setBuscar]=useState("")
   
@@ -106,7 +104,12 @@ const HomeCliente = (props:{setIsReg:any,
   const [misOrdenes, setMisOrdenes] = useState <ordenesCliente []>([]);
 
 
-  //createStore("listaProveedores")
+
+  const [notifications, setNotifications] =  useState < newMessage []> ( [])
+  
+ // const [notificaciones, setNotificaciones] = useState(false)
+
+ const [popoverState, setShowPopover] = useState({ showPopover: false, event: undefined });
 
   useEffect(() => {
 
@@ -116,6 +119,7 @@ const HomeCliente = (props:{setIsReg:any,
 
   }, [proveedoresEnZona]);
 
+//General useEffect
   useEffect(() => {
 
     setShowCargandoProveedores(true)
@@ -145,8 +149,7 @@ const HomeCliente = (props:{setIsReg:any,
             tipo:d.tipo,
             distancia:d.distancia,
             calificacion:d.calificacion
-            }))
-          );
+            })));
           setShowCargandoProveedores(false)
         }else{
           if (primeraVezProveedores.current==undefined || primeraVezProveedores ){
@@ -158,8 +161,9 @@ const HomeCliente = (props:{setIsReg:any,
 
     axios.get(url+"orden/misordenes/"+"cliente/"+props.email).then((resp: { data: any; }) => {
       if (resp.data!="bad"){
+
         setMisOrdenes(    
-            resp.data.map((d: { tipo: any; status: any; fecha_creacion: any; ticket: any; dia: any; hora: any; titulo: any; descripcion: any; email_proveedor: any; imagen_proveedor: any; lacation_lat: any; location_long: any; picture1: any; picture2: any; presupuesto_inicial: any; pedido_mas_información: any; respuesta_cliente_pedido_mas_información: any; picture1_mas_información: any; picutre2_mas_información: any; }) => ({
+            resp.data.map((d: { tipo: any; status: any; fecha_creacion: any; ticket: any; dia: any; hora: any; titulo: any; descripcion: any; email_proveedor: any; presupuesto: any; imagen_proveedor: any; lacation_lat: any; location_long: any; picture1: any; picture2: any; pedido_mas_información: any; respuesta_cliente_pedido_mas_información: any; picture1_mas_información: any; picutre2_mas_información: any; }) => ({
               tipo:d.tipo,
               status:d.status,
               fecha_creacion:d.fecha_creacion,
@@ -169,21 +173,32 @@ const HomeCliente = (props:{setIsReg:any,
               titulo:d.titulo,
               descripcion:d.descripcion,
               email_proveedor:d.email_proveedor,
+              presupuesto:d.presupuesto,
               imagen_proveedor:d.imagen_proveedor,
               location_lat:d.lacation_lat,
               location_long:d.location_long,
               picture1:d.picture1,
               picture2:d.picture2,
-              presupuesto_inicial:d.presupuesto_inicial,
               pedido_mas_información:d.pedido_mas_información,
               respuesta_cliente_pedido_mas_información:d.respuesta_cliente_pedido_mas_información,
               picture1_mas_información:d.picture1_mas_información,
               picture2_mas_información:d.picutre2_mas_información
-            }))  
-        )      
+            })))      
+      }
+    })
+
+    axios.get(url+"chatsinleer/"+props.email).then((resp: { data: any; }) => {
+      if (resp.data!="bad"){
+        setNotifications(resp.data.map((d: { de: any; ticket: any; }) => ({
+          de:d.de,
+          ticket:d.ticket,
+          })));
       }
 
     })
+
+
+
   }, []);
 
     return (
@@ -194,6 +209,13 @@ const HomeCliente = (props:{setIsReg:any,
               <IonRow id="header">
                 <IonCol id="columna" size="1.5"><IonButtons ><IonMenuButton /> </IonButtons></IonCol>
                 <IonCol id="columna2" ><Busqueda categorias={categorias} setCategorias={setCategorias} setProveedorBuscadoHook={setProveedorBuscadoHook} setBuscar={setBuscar} /></IonCol>
+                <IonCol id="columna3" size="1.5" onClick={
+        (e: any) => {
+          e.persist();
+          setShowPopover({ showPopover: true, event: e })
+        }}>
+                  <Card notify={notifications}></Card>
+                </IonCol>
                 <IonCol id="columna3" size="1.5"> 
                     <img src={props.foto} id="foto-usuario" onClick={() => {  setShowModal({ isOpen: true});  setTipoDeVistaEnModal("datosUsuario")}}/>
                  </IonCol>
@@ -201,6 +223,7 @@ const HomeCliente = (props:{setIsReg:any,
             </IonGrid>
           </IonToolbar>
         </IonHeader>
+
         
         <IonContent >
           <div id="ionContentHome">
@@ -259,10 +282,79 @@ const HomeCliente = (props:{setIsReg:any,
               subHeader={''}
               message={'Debe habilitar el acceso a la ubicación en el dispositivo'}
               buttons={['ENTENDIDO']}/>
+
+      <IonPopover 
+              event={popoverState.event}
+              isOpen={popoverState.showPopover}
+
+        onDidDismiss={() => setShowPopover({ showPopover: false, event: undefined })}
+        >
+          
+        <IonContent><ListaDeMensajes otra={notifications} /></IonContent>
+      </IonPopover>
           </div>
+
+          
+      
         </IonContent>
       </IonPage>
   );
+}
+
+const ListaDeMensajes = ( props:{otra:any}) =>{
+  var i=0
+  if(props.otra.length >0 ){
+    return(
+      <>
+  
+      {props.otra.map((a: { de: string; ticket: string; }) => {
+        i=i+1
+        return (
+          <IonCard2 key={i} de={a.de} ticket={a.ticket} ></IonCard2> 
+          ) 
+      })
+     }    </>
+     )
+  }else{
+    return(
+      <div id="padre">  
+        <div id="hijo">
+        <IonTitle>SIN MENSAJES</IonTitle> 
+
+        </div>
+      </div>
+     )
+  }
+
+}
+
+const Card = (props:{notify:any}) => {
+ 
+  if (props.notify.length>0){
+    return (
+      <div>  
+        <span className="dot"></span>
+
+    <IonIcon icon={notifications}  id="iconoHomeCampana">  </IonIcon>
+    </div>
+)
+  }else{
+    return <IonIcon icon={notificationsOff}  id="iconoHomeCampana">  </IonIcon>
+  }
+
+}
+
+const IonCard2 = (props:{de:string, ticket:string}) => {
+
+  return(
+    <IonCard id="ionCard-CardProveedor">
+              <div id="CardProveedorContainer">
+                <IonItem lines="none">MENSAJE DE: {props.de}</IonItem>
+                <IonItem lines="none">ORDEN TICKET Nº: {props.ticket}</IonItem>
+                <p id="p-ionpover">INGRESE A LA ORDEN PARA VER EL CHAT</p>
+              </div>
+            </IonCard>
+  )
 }
 
 

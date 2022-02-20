@@ -237,4 +237,18 @@ Barra de búsqueda
     width: 100%;
   }
 
-  
+  #iconoHomeCampana{
+    height: 24px;
+    width: 24px;
+  }
+
+  .dot {
+    height: 7px;
+    width: 7px;
+    background-color: red;
+    border-radius: 50%;
+    float:right;
+  }
+  #p-ionpover{
+    font-size: smaller;
+  }

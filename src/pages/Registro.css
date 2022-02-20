@@ -14,7 +14,8 @@
 
 
 #item-registro-validacion{
-    width:50%;
+    width:70%;
+    height: auto;
     text-align: center;
     justify-content: center;
     align-items: center;
@@ -120,10 +121,30 @@ ion-button{
 }
 
 #register-title{
-    position: relative;
+    width: 100%;
+    height: auto;
     font-weight: bold;
-    font-size: 0.9em;
+    font-size: 1em;
+ 
 }
+
+#register-title2{
+    width: 100%;
+    height: auto;
+    font-weight: bold;
+    font-size: 0.8em;
+    
+}
+
+#subtitleRegistro{
+    width: 100%;
+    height: auto;
+    font-weight: bold;
+    font-size: 1em;
+    text-align: center;
+     
+}
+
 
 #registro-iongrid{
     position: relative;
@@ -169,6 +190,81 @@ ion-button{
 }
 
 #boton-registro-2{
-    width: 75%;
+    width: 85%;
+    text-align: center;
     margin-top: 15px;
+    margin-bottom: 15px;
+
 }
+
+#contenedorHeaderRegistro{
+    width: 100%;
+    display:flex;
+    flex-direction: column;
+    margin-top: 20px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#contenedorGeneralRegistro{
+    display:flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+
+
+
+#padreRegistro {
+ 
+    height:100vh;
+    width: 100%;
+    /* IMPORTANTE */
+    display: table;
+  
+  }
+  
+  #hijoRegistro {
+    /* IMPORTANTE */
+    display: table-cell;
+    vertical-align: middle;
+    
+  }
+
+  #contenedorPrincipalRegistro{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #headerRegistro{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+  }
+
+  #contenedorCentralRegistro{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;   
+    
+  }
+
+  #footerRegistro{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+   
+  }
