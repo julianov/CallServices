@@ -201,6 +201,16 @@ const HomeCliente = (props:{setIsReg:any,
 
   }, []);
 
+  const [imagen, setImagen] = useState (props.foto)
+
+  useEffect(() => {
+    if (props.foto==""|| props.foto==null || props.foto==undefined){
+      setImagen ("./assets/icon/nuevoUsuario.png") 
+    }else{
+      setImagen(props.foto)
+    }
+  }, [props.foto]);
+
     return (
       <IonPage >
         <IonHeader>
@@ -217,7 +227,7 @@ const HomeCliente = (props:{setIsReg:any,
                   <Card notify={notifications}></Card>
                 </IonCol>
                 <IonCol id="columna3" size="1.5"> 
-                    <img src={props.foto} id="foto-usuario" onClick={() => {  setShowModal({ isOpen: true});  setTipoDeVistaEnModal("datosUsuario")}}/>
+                    <img src={imagen} id="foto-usuario" onClick={() => {  setShowModal({ isOpen: true});  setTipoDeVistaEnModal("datosUsuario")}}/>
                  </IonCol>
               </IonRow>
             </IonGrid>

@@ -253,10 +253,11 @@ const [arregloOrdenes, setArregloOrdenes] =  useState <informacionOrdenes []> ( 
   if(arregloOrdenes.length>0){
     return( 
         <IonContent>
-            
-            <div id="contenedorCentroVerOrdenes">
+            <div id="contenedorMisOrdenesColor">
 
+            <div id="contenedorCentroVerOrdenes">
                 <MostrarOrdenes informacion={arregloOrdenes} setTicket={props.setTicket}  />
+            </div>
             </div>
         </IonContent>
     )
@@ -264,8 +265,8 @@ const [arregloOrdenes, setArregloOrdenes] =  useState <informacionOrdenes []> ( 
     return (
       <IonContent>
      
-     <div id="padre">
-     <div id="hijo">
+     <div id="padreMisServicios">
+     <div id="hijoMisServicios">
                         <IonTitle id="noHayOrdenes">SIN ÓRDENES {tipoDeOrden.current} </IonTitle>
                     </div>
                 </div>
@@ -332,6 +333,8 @@ const Card = (props:{ rubro: string, status:string, fecha:string, ticket:string,
       <p>RUBRO: {props.rubro} </p>
       <p>ESTADO: {estado} </p> 
       <p>FECHA DE ORDEN: {props.fecha} </p>
+      <p>TICKET: {props.ticket} </p>
+
       </div>
       </div>
       </IonCard>
@@ -395,6 +398,32 @@ useEffect(() => {
     })
 
   }, [])
+
+ /* useEffect(() => {
+    if (props.status=="ENV"){
+        setEstado("GENERADA")
+      }else if(props.status=="REC"){
+        setEstado("ORDEN RECIBIDA POR PROVEEDOR")
+      }else if(props.status=="ABI"){
+        setEstado("ORDEN RECIBIDA POR PROVEEDOR")
+      }else if(props.status=="PEI"){
+        setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
+      } else if(props.status=="PRE"){
+        setEstado("ORDEN PRE ACEPTADA POR PROVEEDOR")
+      }else if(props.status=="ACE"){
+        setEstado("ORDEN ACEPTADA")
+      }else if(props.status=="EVI"){
+        setEstado("PROVEEDOR EN VIAJE")
+      }else if(props.status=="ENS"){
+        setEstado("PROVEEDOR EN SITIO")
+      }else if(props.status=="RED"){
+        setEstado("REALIZADA")
+      }else if (props.status=="REX"){
+        setEstado("RECHAZADA")
+      }else if (props.status=="CAN"){
+        setEstado("CANCELADA")
+      }
+    }, [])*/
 
 
   return(

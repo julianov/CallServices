@@ -26,16 +26,22 @@
   left: 0px;
 }
 
-
-#padre {
+#contenedorMisOrdenesColor{
+  background:  #f3f2ef;  
+  height: 100%;
+  width: 100%;
+}
+#padreMisServicios {
  
   height: 100%;
   width: 100%;
   /* IMPORTANTE */
   display: table;
+  background:  #f3f2ef;  
+
 }
 
-#hijo {
+#hijoMisServicios {
   /* IMPORTANTE */
   display: table-cell;
   vertical-align: middle;
