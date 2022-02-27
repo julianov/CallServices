@@ -364,15 +364,7 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
     return(
 
             <IonPage>
-              <IonHeader>
-                <IonToolbar>
-                <IonGrid>
-                    <IonRow>
-                    <IonCol id="columna2" ><IonTitle>CARGAR NUEVO RUBRO</IonTitle></IonCol>
-                    </IonRow>
-                </IonGrid>
-                </IonToolbar>
-              </IonHeader>
+            
               <IonContent fullscreen>
 
                       <IonAlert
@@ -396,15 +388,7 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
     if (vista==3){
             return(
             <IonPage>
-              <IonHeader>
-                <IonToolbar>
-                <IonGrid>
-                    <IonRow>
-                    <IonCol id="columna2" ><IonTitle>CARGAR NUEVO RUBRO</IonTitle></IonCol>
-                    </IonRow>
-                </IonGrid>
-                </IonToolbar>
-              </IonHeader>
+              
               <IonContent fullscreen>
 
                       <IonAlert
@@ -426,15 +410,7 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
     if(vista==4){
         return(
             <IonPage>
-              <IonHeader>
-                <IonToolbar>
-                <IonGrid>
-                    <IonRow>
-                    <IonCol id="columna2" ><IonTitle>CARGAR NUEVO RUBRO</IonTitle></IonCol>
-                    </IonRow>
-                </IonGrid>
-                </IonToolbar>
-              </IonHeader>
+             
               <IonContent fullscreen>
 
                       <IonAlert
@@ -461,15 +437,7 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
     if(vista==6){
                     return(
             <IonPage>
-              <IonHeader>
-                <IonToolbar>
-                <IonGrid>
-                    <IonRow>
-                    <IonCol id="columna2" ><IonTitle>CARGAR NUEVO RUBRO</IonTitle></IonCol>
-                    </IonRow>
-                </IonGrid>
-                </IonToolbar>
-              </IonHeader>
+             
               <IonContent fullscreen>
 
                       <IonAlert
@@ -495,15 +463,7 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
 
         return(
             <IonPage>
-              <IonHeader>
-                <IonToolbar>
-                <IonGrid>
-                    <IonRow>
-                    <IonCol id="columna2" ><IonTitle>CARGAR NUEVO RUBRO</IonTitle></IonCol>
-                    </IonRow>
-                </IonGrid>
-                </IonToolbar>
-              </IonHeader>
+             
               <IonContent fullscreen>
 
             <IonAlert
@@ -991,13 +951,7 @@ const AgregarTipoRubro =  (props:{setVista:any, rubro:any, dias:any,horaInicio:a
 
     if(seleccionDeRubro=="vistaCompleta"){
     return (
-        <><div>
-
-            <a onClick={() => volver()} id="flechaIngresar">
-                <IonIcon icon={arrowBack} slot="icon-only" id="icono-volver-ingresar"></IonIcon>
-            </a>
-
-        </div>
+        <>
             <div className="contenedor_central">
                 <div className="caja">
                     <IonGrid>
@@ -1049,22 +1003,23 @@ const AgregarTipoRubro =  (props:{setVista:any, rubro:any, dias:any,horaInicio:a
                     </IonGrid>
                 </div>
                 <div className="caja">
-                    <IonGrid>
+                <IonGrid>
                         <IonRow>
-                            <IonCol>
+                            <IonCol >
+                                <IonButton shape="round" onClick={() => { volver(); } }>VOLVER</IonButton>
                             </IonCol>
-                            <IonCol>
+                            <IonCol >
                                 <IonButton shape="round" onClick={() => { siguiente(); } }>SIGUIENTE</IonButton>
                             </IonCol>
                         </IonRow>
-                    </IonGrid>
+                    </IonGrid>        
                 </div>
             </div></>
         )}
     else{
         return(
             <div id="contenedor_central_rubros">
-            <strong>LISTA DE RUBROS</strong>
+            <IonTitle>LISTA DE RUBROS</IonTitle>
 
             <IonCard id="ionCard-CardProveedor">
 
@@ -1167,35 +1122,36 @@ const AgregarDescripcion  =(props:{setVista: any, descripcion: any, setShowAlert
     }
 
     return (
-        <div className="contenedor_central">
-          <div className="caja">
-          <IonTitle>DESCRIBA SU TRABAJO</IonTitle>
-          <div><p>Una buena descripción de su trabajo sirve como una guía de referencia para los futuros clientes</p></div>
-          <IonGrid>   
-            <IonRow>
-                <IonCol className="columna">
+        <div id="contenedorCompletarRubro">
+           
+                <div className="contenedor_central">
+                    <div className="caja">
+                        <IonTitle>DESCRIBA SU TRABAJO</IonTitle>
+                    
+                    <p>Una buena descripción de su trabajo sirve como una guía de referencia para los futuros clientes</p>
                     <IonItem id="item-completarRubro-descripcion">
-                        <IonTextarea placeholder="Descripción de su trabajo" onIonInput={(e: any) => props.descripcion.current=(e.target.value)}></IonTextarea>
+                        <IonTextarea id="textArea" autoGrow={true} maxlength={400} placeholder="Descripción de su trabajo" onIonInput={(e: any) => props.descripcion.current=(e.target.value)}></IonTextarea>
                     </IonItem>
-                </IonCol>
-            </IonRow>
-          </IonGrid>
-        </div>
-
-        <div className="caja">
-                            <IonGrid>
-                                <IonRow>
-                                    <IonCol >
-                                        <IonButton shape="round" onClick={() => { volver(); } }>VOLVER</IonButton>
-                                    </IonCol>
-                                    <IonCol >
-                                        <IonButton shape="round" onClick={() => { siguiente(); } }>SIGUIENTE</IonButton>
-                                    </IonCol>
-                                </IonRow>
-                            </IonGrid>
-                            </div> 
-                            </div>
-
+                    </div>
+                 
+                </div>
+           
+    
+            <footer id="footerCompletarRubro">
+                <div className="caja">
+                    <IonGrid>
+                        <IonRow>
+                            <IonCol >
+                                <IonButton shape="round" onClick={() => { volver(); } }>VOLVER</IonButton>
+                            </IonCol>
+                            <IonCol >
+                                <IonButton shape="round" onClick={() => { siguiente(); } }>SIGUIENTE</IonButton>
+                            </IonCol>
+                        </IonRow>
+                    </IonGrid>        
+                </div>
+            </footer>
+        </div> 
     );
 }
 
@@ -1222,43 +1178,47 @@ const AgregarRadio = (props:{setVista: any, rubro:any, ordenesEmergencia:any, ra
 
     const [domicilio, setDomicilio] = useState("voyadomicilio");
 
+
     return(
-        <div className="contenedor_central">
+           
+           <div id="contenedorPrincipalCompletarRubroLocacion">
+              
             <div className="caja">
                 <IonTitle>DATOS DOMICILIO</IonTitle>
                 <IonItem id="item-rubro-domicilio">
                     <IonLabel position="floating">País</IonLabel>
-                    <IonInput autocomplete="country" onIonInput={(e: any) => props.pais.current=(e.target.value)}></IonInput>
+                    <IonInput autocomplete="country" onIonInput={(e: any) => props.pais.current = (e.target.value)}></IonInput>
                 </IonItem>
                 <IonItem id="item-rubro-domicilio">
                     <IonLabel position="floating">Provincia / Departamento</IonLabel>
-                    <IonInput onIonInput={(e: any) => props.provincia.current=(e.target.value)}></IonInput>
+                    <IonInput onIonInput={(e: any) => props.provincia.current = (e.target.value)}></IonInput>
                 </IonItem>
                 <IonItem id="item-rubro-domicilio">
                     <IonLabel position="floating">Ciudad</IonLabel>
-                    <IonInput onIonInput={(e: any) => props.ciudad.current=(e.target.value)}></IonInput>
+                    <IonInput onIonInput={(e: any) => props.ciudad.current = (e.target.value)}></IonInput>
                 </IonItem>
                 <IonGrid>
                     <IonRow>
-                        <IonCol >
+                        <IonCol>
                             <IonItem id="item-rubro-domicilio">
                                 <IonLabel position="floating">Calle</IonLabel>
-                                <IonInput onIonInput={(e: any) => props.domicilio_calle.current=(e.target.value)}></IonInput>
+                                <IonInput onIonInput={(e: any) => props.domicilio_calle.current = (e.target.value)}></IonInput>
                             </IonItem>
                         </IonCol>
-                        <IonCol >
+                        <IonCol>
                             <IonItem id="item-rubro-domicilio">
                                 <IonLabel position="floating">Numeración</IonLabel>
-                                <IonInput onIonInput={(e: any) => props.domicilio_numeracion.current=(e.target.value)}></IonInput>
+                                <IonInput onIonInput={(e: any) => props.domicilio_numeracion.current = (e.target.value)}></IonInput>
                             </IonItem>
                         </IonCol>
                     </IonRow>
                 </IonGrid>
             </div>
+
             <div className="caja">
                 <IonTitle>VISITA A CLIENTES</IonTitle>
                 <div>
-                    <p>Ingrese si va a la locación de clientes</p>    
+                    <p>Ingrese si va a la locación de clientes</p>
                     <p>En caso de que no se desplace a locación de clientes no seleccione la casilla de verificación y presion siguiente</p>
                 </div>
                 <IonItem>
@@ -1268,14 +1228,14 @@ const AgregarRadio = (props:{setVista: any, rubro:any, ordenesEmergencia:any, ra
                                 <IonLabel ion-list-lines="none">¿Va a locación o domicilio de clientes?</IonLabel>
                             </IonCol>
                             <IonCol>
-                            <IonSegment mode="ios" value={domicilio} select-on-focus={true} onIonChange={e => setDomicilio(  e.detail.value!)} >
-                                <IonSegmentButton value="voyadomicilio">
-                                    <IonLabel>SI</IonLabel>
-                                </IonSegmentButton>
-                                <IonSegmentButton value="NOvoyadomicilio">
-                                    <IonLabel>NO</IonLabel>
-                                </IonSegmentButton>
-                            </IonSegment>
+                                <IonSegment mode="ios" value={domicilio} select-on-focus={true} onIonChange={e => setDomicilio(e.detail.value!)}>
+                                    <IonSegmentButton value="voyadomicilio">
+                                        <IonLabel>SI</IonLabel>
+                                    </IonSegmentButton>
+                                    <IonSegmentButton value="NOvoyadomicilio">
+                                        <IonLabel>NO</IonLabel>
+                                    </IonSegmentButton>
+                                </IonSegment>
 
                             </IonCol>
                         </IonRow>
@@ -1284,21 +1244,27 @@ const AgregarRadio = (props:{setVista: any, rubro:any, ordenesEmergencia:any, ra
                 <Range domicilio={domicilio} radius={props.radio} setRadio={props.setRadio} />
             </div>
 
-            <OrdenesEmergencia rubro={props.rubro} ordenEmergencia={props.ordenesEmergencia} ></OrdenesEmergencia>
+                 
+            <OrdenesEmergencia rubro={props.rubro} ordenEmergencia={props.ordenesEmergencia}></OrdenesEmergencia>
+       
+                <div className="caja">
 
-            <div className="caja">
-                <IonGrid>
-                    <IonRow>
-                        <IonCol className="columna">
+                    <div id="botonCentral">
+                        <div id="botonCentralIzquierda">
                             <IonButton shape="round" onClick={() => { volver(); } }>VOLVER</IonButton>
-                        </IonCol>
-                        <IonCol className="columna">
+                        </div>
+                        <div id="botonCentralDerecha">
                             <IonButton shape="round" onClick={() => { siguiente(); } }>SIGUIENTE</IonButton>
-                        </IonCol>
-                    </IonRow>
-                </IonGrid>
-            </div> 
-        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
     )
 }
 
@@ -1482,11 +1448,11 @@ const AgregarCertificado = (props:{setVista: any, certificacion: any, certificac
     }
                 
    return(
-    <div className="contenedor_central">
+    <div id="contenedorPrincipalCompletarRubroLocacion">
 
               <div className="caja">
-              <IonTitle>INGRESE FOTO O CAPTURA DE CERTIFICACIÓN</IonTitle>
-          <div><p>Foto o captura de certificación habilitante para el trabajo o título</p>
+              <IonTitle register-title>INGRESE CERTIFICACIÓN</IonTitle>
+          <div><p>Foto o captura de certificación o título habilitante para el trabajo</p>
           <p>Certificación de curso o título muestra a los clientes sus conocimientos en la materia</p></div>
               <TomarFotografia imagen={props.certificacionMostrar} setFilepath={props.certificacion} ></TomarFotografia>
           </div>
@@ -1527,12 +1493,12 @@ const AgregarImagenes = (props:{setVista: any,
                                 props.setShowAlertIngreseFoto(true)
                             }  
                         }
-                                
+                            
                     return(
-                        <div className="contenedor_central">
+                        <div id="contenedorPrincipalCompletarRubroLocacion">
                         
                            <div className="caja">
-                           <IonTitle>INGRESE FOTOS O CAPTURAS DE SU TRABAJO</IonTitle>
+                           <IonTitle id="register-title">INGRESE IMÁGENES DE SU TRABAJO</IonTitle>
                             <div><p>Dichas fotos serán mostradas a sus clientes</p>
                                 <p>Ingrse fotos o capturas que destaquen lo que hace</p></div>
                                 <IonGrid>
@@ -1584,34 +1550,32 @@ const OrdenesEmergencia = (props:{rubro:any, ordenEmergencia:any}) => {
     console.log("el rubro que elegi es: "+props.rubro)
     if (props.rubro=="PLOMERIA" || props.rubro=="GASISTA" || props.rubro=="CERRAJERÍA" || props.rubro=="ELECTRICIDAD" || props.rubro=="FLETE" || props.rubro=="MECANICA" || props.rubro=="REMOLQUES - GRÚAS" ){
         return( 
-            <div className="caja">
-            <IonTitle>ÓRDENES DE EMERGENCIA</IonTitle>
-            <div>
+            
+            <div className="caja">      <IonTitle>ÓRDENES DE EMERGENCIA</IonTitle><div>
                 <p>Aceptar órdenes de emergencia implica tener la disponibilidad para asistir a los domicilios de los clientes cuando lo requieran</p>
                 <p>Deberá atender las ordenes de emergencia de manera prioritaria</p>
-    
-            </div>
-            <IonItem>
-                <IonGrid>
-                    <IonRow>
-                        <IonCol>
-                            <IonLabel ion-list-lines="none">¿Realiza órdenes de emergencia?</IonLabel>
-                        </IonCol>
-                        <IonCol>
-                        <IonSegment mode="ios" value={props.ordenEmergencia.current} select-on-focus={true} onIonChange={e => props.ordenEmergencia.current=( e.detail.value!)} >
-                            <IonSegmentButton value="si">
-                                <IonLabel>SI</IonLabel>
-                            </IonSegmentButton>
-                            <IonSegmentButton value="no">
-                                <IonLabel>NO</IonLabel>
-                            </IonSegmentButton>
-                        </IonSegment>
-    
-                        </IonCol>
-                    </IonRow>
-                </IonGrid>
-            </IonItem>
-        </div>
+
+            </div><IonItem>
+                    <IonGrid>
+                        <IonRow>
+                            <IonCol>
+                                <IonLabel ion-list-lines="none">¿Realiza órdenes de emergencia?</IonLabel>
+                            </IonCol>
+                            <IonCol>
+                                <IonSegment mode="ios" value={props.ordenEmergencia.current} select-on-focus={true} onIonChange={e => props.ordenEmergencia.current = (e.detail.value!)}>
+                                    <IonSegmentButton value="si">
+                                        <IonLabel>SI</IonLabel>
+                                    </IonSegmentButton>
+                                    <IonSegmentButton value="no">
+                                        <IonLabel>NO</IonLabel>
+                                    </IonSegmentButton>
+                                </IonSegment>
+
+                            </IonCol>
+                        </IonRow>
+                    </IonGrid>
+                </IonItem></div>
+        
         )
     }else{
         return(

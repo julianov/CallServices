@@ -1,4 +1,4 @@
-import { IonAlert, IonAvatar, IonButton, IonButtons, IonChip, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonItemOptions, IonItemSliding, IonLabel, IonList, IonLoading, IonMenuButton, IonModal, IonPage, IonRow, IonSearchbar, IonTitle, IonToolbar} from '@ionic/react';
+import { IonAlert, IonAvatar, IonButton, IonButtons, IonCard, IonCardHeader, IonChip, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonItemOptions, IonItemSliding, IonLabel, IonList, IonLoading, IonMenuButton, IonModal, IonPage, IonRow, IonSearchbar, IonTitle, IonToolbar} from '@ionic/react';
 import { Icon } from 'ionicons/dist/types/components/icon/icon';
 import React, { Component, useEffect, useRef, useState } from 'react';
 import ExploreContainer from '../components/ExploreContainerCliente';
@@ -84,6 +84,8 @@ const HomeProveedor = (props:{setIsReg:any,
   const [showAlertUbicación, setShowAlertUbicación] = useState(false)
   const [showAlertServidor, setShowAlertServidor]= useState(false)
 
+  const[sinRubro,setSinRubro] = useState(false)
+
   getLocation()
 
   const [misOrdenes, setMisOrdenes] = useState <ordenes []>( [])
@@ -105,11 +107,18 @@ const HomeProveedor = (props:{setIsReg:any,
       }else{
         axios.get(url+"proveedor/ubicacion/"+props.email+"/"+value).then((resp: { data: any; }) => {
 
-          if (resp.data!="bad"){
+          if (resp.data=="bad"){
 
-           
-          }else{
             setShowAlertServidor(true)
+
+          }else if(resp.data=="sin rubro"){
+           // aca hay que mostrar el cartel que no tiene rubros cargados
+           setSinRubro(true)
+
+          }else{
+            
+            
+            
           }
         });  
       }
@@ -209,7 +218,17 @@ const HomeProveedor = (props:{setIsReg:any,
               }} />  
           </IonModal>
 
-          <ExploreContainerProveedor  ordenes={misOrdenes} emailProveedor={props.email} />
+          <ExploreContainerProveedor  ordenes={misOrdenes} 
+          emailProveedor={props.email}  
+          sinRubro={sinRubro}
+          
+          setIsReg={props.setIsReg} 
+          tipodeCliente={props.tipodeCliente}  
+          rubro1={props.rubro1} 
+          rubro2={props.rubro2} 
+          setRubro1={props.setRubro1} 
+          setRubro2={props.setRubro2}
+          />
          
           <IonAlert 
             isOpen={showAlertUbicación} 
@@ -259,5 +278,6 @@ class Busqueda extends Component{
     
   };
 */
+
 
   export default HomeProveedor;

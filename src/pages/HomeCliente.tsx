@@ -139,6 +139,8 @@ const HomeCliente = (props:{setIsReg:any,
         setShowAlertUbicación(true)
       }
       axios.get(url+"home/cliente/"+value).then((resp: { data: any; }) => {
+        console.log("ESTO SON LOS PROVEEDORES EN ZONA: "+JSON.stringify(resp.data))
+
         if (resp.data!="bad"){
           setProveedoresEnZona(resp.data.map((d: { email: any; nombre: any; apellido: any; certificado: any; item: any; tipo: any; distancia: any; calificacion: any; }) => ({
             email:d.email,
@@ -219,11 +221,7 @@ const HomeCliente = (props:{setIsReg:any,
               <IonRow id="header">
                 <IonCol id="columna" size="1.5"><IonButtons ><IonMenuButton /> </IonButtons></IonCol>
                 <IonCol id="columna2" ><Busqueda categorias={categorias} setCategorias={setCategorias} setProveedorBuscadoHook={setProveedorBuscadoHook} setBuscar={setBuscar} /></IonCol>
-                <IonCol id="columna3" size="1.5" onClick={
-        (e: any) => {
-          e.persist();
-          setShowPopover({ showPopover: true, event: e })
-        }}>
+                <IonCol id="columna3" size="1.5" onClick={(e: any) => { e.persist(); setShowPopover({ showPopover: true, event: e })}}>
                   <Card notify={notifications}></Card>
                 </IonCol>
                 <IonCol id="columna3" size="1.5"> 

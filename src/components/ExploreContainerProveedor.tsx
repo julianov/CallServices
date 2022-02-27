@@ -13,6 +13,9 @@ import Https from '../utilidades/HttpsURL';
 import ModalVerOrdenes from './ModalVerOrdenesProveedor';
 import ModalVerOrdenesProveedor from './ModalVerOrdenesProveedor';
 import { Adsense } from '@ctrl/react-adsense';
+import { Redirect } from 'react-router';
+import { Link } from 'react-router-dom';
+import CompletarRubros from '../pages/CompletarRubros';
 
 const url=Https
 
@@ -31,7 +34,13 @@ const getLocation = async () => {
 //let proveedores = new Array<ordenes>();
 
 
-const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any} ) => {
+const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any, sinRubro:boolean, 
+  setIsReg:any
+  tipodeCliente:any
+  rubro1:any 
+  rubro2:any
+  setRubro1:any 
+  setRubro2:any} ) => {
 
   //const [proveedores, setProveedores]=useState()
 
@@ -43,8 +52,16 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any} ) =
   const [posicion, setPosicion] = useState(0)
 
   //const [arregloOrdenes, setArregloOrdenes] =  useState <ordenes []> ( [])
+  const [sinRubro, setSinRubro] = useState(false)
 
 
+
+  useEffect(() => {
+    if(props.sinRubro){
+      setSinRubro(true)
+
+    }
+}, [props.sinRubro]);
   useEffect(() => {
 
   /*  for (let i=0; i<props.ordenes.length;i++){     
@@ -80,52 +97,58 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any} ) =
 
   }, [props.ordenes]);
 
-    if(hayOrdenes){
-      return (
-        <><div id="container-principal-ExplorerContainer-Cliente">
-         
-            <h1 id="textoCentrado"> ORDENES DE TRABAJO ACTIVAS </h1>
 
-            <Elements proveedores={props.ordenes} setVerOrden={setVerOrden} setPosicion={setPosicion} />
-          
-          <CampanaPublicidad></CampanaPublicidad>
-          <Adsense
-              client="ca-pub-3241473434204149"
-              key="-6t+ed+2i-1n-4w"              
-              slot="5931330098"
-              style={{ width: 500, height: 300 }}
-              format=""
-            />
-        </div>
-        
-        <IonModal
-      animated={true}
-      isOpen={verOrden}
-      onDidDismiss={() => setVerOrden( false )}
-    >
-      <ModalVerOrdenesProveedor 
-        datos={props.ordenes[posicion-1]}
-        setVolver={setVerOrden}
-        emailProveedor={props.emailProveedor}
-        
-      />  
-    </IonModal>
-    </>
-      )
+  const [cargarRubro, setCargarRubro] = useState(false)
+
+    if(cargarRubro){
+      return (<CompletarRubros setIsReg={props.setIsReg} clientType= {props.tipodeCliente} email={props.emailProveedor} 
+        rubro1={props.rubro1} rubro2={props.rubro2} setRubro1={props.setRubro1} setRubro2={props.setRubro2} ></CompletarRubros>);
     }else{
-      return (
-        <div id="container-principal-ExplorerContainer-Cliente"> 
-            <Solicitudes /> 
-            < CampanaPublicidad ></CampanaPublicidad>
-    
-                    
-      </div>
-      )
-    }
- 
+      if(hayOrdenes){
+        return (
+          <><div id="container-principal-ExplorerContainer-Cliente">
+           
+              <h1 id="textoCentrado"> ORDENES DE TRABAJO ACTIVAS </h1>
   
- 
- 
+              <Elements proveedores={props.ordenes} setVerOrden={setVerOrden} setPosicion={setPosicion} />
+            
+            <CampanaPublicidad></CampanaPublicidad>
+            <Adsense
+                client="ca-pub-3241473434204149"
+                key="-6t+ed+2i-1n-4w"              
+                slot="5931330098"
+                style={{ width: 500, height: 300 }}
+                format=""
+              />
+          </div>
+          
+          <IonModal
+        animated={true}
+        isOpen={verOrden}
+        onDidDismiss={() => setVerOrden( false )}
+      >
+        <ModalVerOrdenesProveedor 
+          datos={props.ordenes[posicion-1]}
+          setVolver={setVerOrden}
+          emailProveedor={props.emailProveedor}
+          
+        />  
+      </IonModal>
+      </>
+        )
+      }else{
+        return (
+          <div id="container-principal-ExplorerContainer-Cliente"> 
+            <SinRubro sinrubro={sinRubro} setCargarRubro={setCargarRubro} />
+            <Solicitudes /> 
+            <CampanaPublicidad ></CampanaPublicidad>
+      
+                      
+        </div>
+        )
+      }
+    }
+
 }
   
 const Solicitudes  = () => {
@@ -134,8 +157,9 @@ const Solicitudes  = () => {
     <>
     <IonCard id="IonCardExplorerContainer">
       <IonCardHeader>
-      <h1 id="textoCentrado" > NO POSEE SOLICITUDES DE TRABAJO ACTUALMENTE </h1 > 
-
+      <div id="contenedorCentrado">
+        <h1 id="tituloNegro"> NO POSEE SOLICITUDES DE TRABAJO ACTUALMENTE </h1 > 
+      </div>
       </IonCardHeader>
    
 
@@ -196,6 +220,7 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
     const [mensaje, setMensaje] = useState("")
 
     const [estado,setEstado]=useState("Enviada")
+
     
     useEffect(() => {
 
@@ -247,6 +272,60 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
 
 }
 
+const SinRubro = (props:{sinrubro:boolean, setCargarRubro:any
+}) => {
+  console.log("esto es loq ue hay: "+props.sinrubro)
+  if (props.sinrubro==true){
+
+    return(
+      <CardSinRubro setCargarRubro={props.setCargarRubro} ></CardSinRubro>
+      
+    )
+
+  }else{
+    return(
+      <> </> 
+    )
+  }
+
+}
+
+
+const CardSinRubro = (props:{ setCargarRubro:any}) => {
+ 
+  const cargarRubro = () => {
+
+   // window.location.reload();
+ /*  window.location.reload();
+
+        return (
+            <><Redirect to="/CompletarRubros" />
+            </> 
+            
+            )*/
+            props.setCargarRubro(true)
+  }
+
+ 
+
+    return (
+      <IonCard id="IonCardExplorerContainer">  
+        <IonCardHeader> 
+          <div id="contenedorCentrado">
+            <img src={"./assets/simboloAlerta.png"} id="imagenSimboloAlerta" />
+          </div>
+        </IonCardHeader> 
+        <IonTitle id="tituloNegro">NO POSEE RUBROS CARGADOS</IonTitle>
+        <div id="contenedorCentrado">
+          <p>Al no tener rubros cargados, no es visible para los clientes</p>
+          <p>Cargue un rubro para comenzar</p>
+          <IonButton color="warning" shape="round" onClick={()=> cargarRubro()}>CARGAR RUBRO</IonButton>
+        </div>
+      </IonCard>
+)
+ 
+
+}
 
 
 export default ExploreContainerProveedor;

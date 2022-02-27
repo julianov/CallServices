@@ -4,10 +4,14 @@
 
 }
 #item-completarRubro-descripcion{
-    width:69%;
-    height: 30%;
-    text-align: center;
-    margin-top: 10px;
+    width:100%;
+    height: auto;
+   
+}
+#textArea{
+    width:100%;
+    height: auto;
+    
 }
 
 #item-completarRubro-rubro{
@@ -104,13 +108,14 @@ height: 100px;
 
 .contenedor_central {
     width: 100%;
-    height: auto;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding-top:25px;
     background:  #f3f2ef;  
+    
 }
 
 #contenedor_central_rubros{
@@ -130,6 +135,7 @@ height: 100px;
 
 #caja2{
     width: 100%;
+    height: auto;
     display: flex;
 
     margin-top: 10px;
@@ -279,6 +285,16 @@ height: 100px;
     flex-direction: column;
     align-items: center;
     
+  }
+
+  #contenedorPrincipalCompletarRubroLocacion{
+      display:flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      height: auto;
+      background:  #f3f2ef; 
+      margin-bottom: 15px;
   }
 
   #headerCompletarRubro{

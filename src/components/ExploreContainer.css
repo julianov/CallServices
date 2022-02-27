@@ -198,6 +198,12 @@ height: 100%;
 #contenedorCentrado{
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 10px;
 }
 
 #imgOrden{
@@ -219,4 +225,13 @@ height: 100%;
   width: 100%;
   justify-content: right;
   align-items: right;
+}
+
+#imagenSimboloAlerta{
+  height: 64px;
+  width: 64px;
+}
+
+#tituloNegro{
+  color: black;
 }
