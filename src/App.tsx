@@ -38,6 +38,7 @@ import HomeCliente from './pages/HomeCliente';
 import HomeProveedor from './pages/HomeProveedor';
 import CompletarRubros from './pages/CompletarRubros';
 import { createStore } from './utilidades/dataBase';
+import UserContext from './Contexts/UserContext';
 
 /*
 Device's var:
@@ -62,10 +63,18 @@ Device's var:
   proveedores
 */
 
-const miemail=React.createContext("algo")
-
 
 const App: React.FC = () => {
+
+ 
+  const usuario={
+    email:"",
+    nombre:"",
+    apellido:"",
+    foto:"",
+    calificacion:0,
+    tipoCliente:"",
+  }
 
   const [isReg, setIsReg] = useState<boolean>  ();
   const [cliente, setCliente] = useState(true);
@@ -97,9 +106,11 @@ const App: React.FC = () => {
       if (res!=null){
         setIsReg(true);
         setEmail(res)
+        usuario.email=res
 
         getItem("clientType").then(res => {
           setTipoCliente(res)
+          usuario.tipoCliente=res
           if (res=="1"){
             setCliente(true)
           }else{
@@ -109,16 +120,20 @@ const App: React.FC = () => {
         })
         getItem("fotoPersonal").then(res2 => {
           setFoto(res2)
+          usuario.foto=(res2)
         })
         getItem("nombre").then(res2 => {
           console.log("SE EJECUTÓ EL NOMBRE, EL CUAL ES: "+ res2)
           setNombre(res2)
+          usuario.nombre=res2
         })
         getItem("apellido").then(res2 => {
           setApellido(res2)
+          usuario.apellido=res2
         })
         getItem("calificacion").then(res2 => {
           setCalificacion(res2)
+          usuario.calificacion=res2
         })
         getItem("infoRubro1").then(res2 => {
           setRubro1(res2)
@@ -135,6 +150,8 @@ const App: React.FC = () => {
 }, []);
 
 return(
+  <UserContext.Provider value={usuario}>
+
 <IonApp>
 <IonReactRouter>
 <IonSplitPane contentId="main" when="(min-width: 4096px)">
@@ -175,6 +192,7 @@ return(
   </IonSplitPane>
 </IonReactRouter>
 </IonApp>
+</UserContext.Provider>
 
 );
 };

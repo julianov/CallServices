@@ -161,60 +161,55 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
     if (vista=="primeraVista"){
         return (
             <IonContent >
-            <div id="GenerarOrdenContainer">
-            <div id="modalProveedor-flechaVolver">
-            <IonIcon icon={arrowBack} onClick={() => props.setVolver( false )} slot="start" id="flecha-volver">  </IonIcon>
-            </div>
-            <div id="contenderCentralOrden">
-            <IonCardTitle>FORMULARIO DE SOLICITUD DE SERVICIO</IonCardTitle>
-
-                <IonCard id="ionCardOrden">
-                    <div id="contenedorCamposCentro">
-                        <h2>RUBRO DE SERVICIO:</h2>
-                        <p>{props.data.items}</p>
-                        <h2>PROVEEDOR DEL SERVICIO:</h2> 
-                        <p> {props.data.nombre} </p>
-                        <Estrellas calificacion={props.data.calificacion}></Estrellas>
-
+                <div id="GenerarOrdenContainer">
+                    <div id="modalProveedor-flechaVolver">
+                    <   IonIcon icon={arrowBack} onClick={() => props.setVolver( false )} slot="start" id="flecha-volver">  </IonIcon>
                     </div>
-                    <div id="contenedorCamposCentro">
-                    <p id="subtituloPedirOrden">INGRESE UN TÍTULO PARA EL SERVICIO</p>
+                    <div id="contenderCentralOrden">
+                        <IonTitle id="tituloPedirOrden">FORMULARIO DE SOLICITUD DE SERVICIO</IonTitle>
+                        <IonCard id="ionCardOrden">
+                            <div id="contenedorCamposCentro">
+                                <h2 id="tituloPedirOrdenEnCard">RUBRO DE SERVICIO:</h2>
+                                <p>{props.data.items}</p>
+                                <h2 id="tituloPedirOrdenEnCard">PROVEEDOR DEL SERVICIO:</h2> 
+                                <p> {props.data.nombre} </p>
+                                <Estrellas calificacion={props.data.calificacion}></Estrellas>
+                            </div>
+                            <div id="contenedorCamposCentro">
+                                <p id="tituloPedirOrdenEnCard">INGRESE UN TÍTULO PARA EL SERVICIO</p>
+                            </div>
+                            <div id="contenedorCamposIzquierda">
+                                <IonItem id="item-Orden">
+                                    <IonLabel position="floating">TÍTULO</IonLabel>
+                                    <IonInput onIonInput={(e: any) => titulo.current = (e.target.value)}></IonInput>
+                                </IonItem>
+                            </div>
+                            <div id="contenedorCamposCentro">
+                                <p id="tituloPedirOrdenEnCard">INGRESE UNA BREVE DESCRIPCIÓN DEL PROBLEMA</p>
+                            </div>
+                            <div id="contenedorCamposIzquierda">
+                                <IonItem id="item-Orden">
+                                    <IonLabel position="floating">DESCRIPCIÓN</IonLabel>
+                                    <IonInput onIonInput={(e: any) => descripcion.current = (e.target.value)}></IonInput>
+                                </IonItem>
+                            </div>
+                        </IonCard>
+                            
+                        <IonCard id="ionCardOrden">
+                            <LocacionServicio direccion={direccion} posicionCliente={posicionCliente} latitudCliente={latitudCliente} longitudCliente={longitudCliente} ></LocacionServicio>
+                        </IonCard>
+
+                        <IonButton shape="round" color="warning" id="botonContratar" onClick={() => irASiguiente()}>SIGUIENTE</IonButton>
                     </div>
-                    <div id="contenedorCamposIzquierda">
-                        <IonItem id="item-Orden">
-                            <IonLabel position="floating">TÍTULO</IonLabel>
-                            <IonInput onIonInput={(e: any) => titulo.current = (e.target.value)}></IonInput>
-                        </IonItem>
+                        <IonAlert
+                            isOpen={showAlertCompletarCampos}
+                            onDidDismiss={() => setShowAlertCompletarCampos(false)}
+                            cssClass='my-custom-class'
+                            header={'Completar campos'}
+                            subHeader={''}
+                            message={'Debe completar todos los campos para continuar'}
+                            buttons={['OK']} />
                         </div>
-                        <div id="contenedorCamposCentro">
-                        <p id="subtituloPedirOrden">INGRESE UNA BREVE DESCRIPCIÓN DEL PROBLEMA</p>
-                    </div>
-                    <div id="contenedorCamposIzquierda">
- 
-                        <IonItem id="item-Orden">
-                            <IonLabel position="floating">DESCRIPCIÓN</IonLabel>
-                            <IonInput onIonInput={(e: any) => descripcion.current = (e.target.value)}></IonInput>
-                        </IonItem>
-                    </div>
-                </IonCard>
-                    
-
-                <IonCard id="ionCard-ionCardOrden">
-                    <LocacionServicio direccion={direccion} posicionCliente={posicionCliente} latitudCliente={latitudCliente} longitudCliente={longitudCliente} ></LocacionServicio>
-                </IonCard>
-
-                <IonButton color="warning" id="botonContratar" onClick={() => irASiguiente()}>SIGUIENTE</IonButton>
-
-            </div>
-                <IonAlert
-                    isOpen={showAlertCompletarCampos}
-                    onDidDismiss={() => setShowAlertCompletarCampos(false)}
-                    cssClass='my-custom-class'
-                    header={'Completar campos'}
-                    subHeader={''}
-                    message={'Debe completar todos los campos para continuar'}
-                    buttons={['OK']} />
-                </div>
         </IonContent>
         )
     }
@@ -223,31 +218,34 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
     return (
         <IonContent>
             <div id="GenerarOrdenContainer">
-            <div id="modalProveedor-flechaVolver">
-                <IonIcon icon={arrowBack} onClick={() => setVista("primeraVista")} slot="start" id="flecha-volver">  </IonIcon>
-            </div>
-        <div id="contenderCentralOrden">
-            <IonCard id="ionCard-CardProveedor">
-                
-                    <IonCardTitle id="tituloOrden">IMÁGENES DE REFERENCIA</IonCardTitle>
-                    <IonCardSubtitle>¿Desea agregar imágenes para que el proveedor tenga referencia del trabajo a realizar?</IonCardSubtitle>
+                <div id="modalProveedor-flechaVolver">
+                    <IonIcon icon={arrowBack} onClick={() => setVista("primeraVista")} slot="start" id="flecha-volver">  </IonIcon>
+                </div>
+                <div id="contenderCentralOrden">
+                    <IonCard id="ionCardOrden">
+                        
+                            <IonCardTitle id="tituloOrden">IMÁGENES DE REFERENCIA</IonCardTitle>
+                            <IonCardSubtitle>¿Desea agregar imágenes para que el proveedor tenga referencia del trabajo a realizar?</IonCardSubtitle>
 
-                    <IonGrid>
-                        <IonRow>
-                            <IonCol >
-                                <TomarFotografia imagen={foto1Mostrar} setFilepath={foto1} />
-                            </IonCol>
-                        </IonRow>
-                        <IonRow>
-                            <IonCol >
-                                <TomarFotografia imagen={foto2Mostrar} setFilepath={foto2} />
-                            </IonCol>
-                        </IonRow>                                              
-                    </IonGrid>
+                            <IonGrid>
+                                <IonRow>
+                                    <IonCol >
+                                        <TomarFotografia imagen={foto1Mostrar} setFilepath={foto1} />
+                                    </IonCol>
+                                </IonRow>
+                                <IonRow>
+                                    <IonCol >
+                                        <TomarFotografia imagen={foto2Mostrar} setFilepath={foto2} />
+                                    </IonCol>
+                                </IonRow>                                              
+                            </IonGrid>
 
-          </IonCard>
-          <IonButton  color="warning"  id="botonContratar" onClick={() => setVista("final")}>SIGUIENTE</IonButton>
-        </div>
+                    </IonCard>
+                    
+
+                </div>
+
+                <IonButton shape="round"  color="warning"  id="botonContratar" onClick={() => setVista("final")}>SIGUIENTE</IonButton>
         </div>
     </IonContent>
     )
@@ -300,7 +298,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                         </IonGrid>
     
               </IonCard>
-              <IonButton  color="warning"  id="botonContratar" onClick={() => enviar()}>SOLICITAR</IonButton>
+              <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviar()}>SOLICITAR</IonButton>
             </div>
 
             <IonLoading
@@ -373,39 +371,34 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
        // aca tengo que cambiar que la flecha valla al home
         return(
 
-            <IonContent>
-            <div id="contenedorPrincipalModal">
-              <header id="headerModal">
-                <div id="modalProveedor-flechaVolver">
-                    <IonIcon icon={arrowBack} onClick={() => props.setVolver( false )} slot="start" id="flecha-volver">  </IonIcon>
+
+            <div id="GenerarOrdenContainer2">
+                <IonIcon icon={arrowBack} onClick={() => props.setVolver( false )} slot="start" id="flecha-volver">  </IonIcon>
+
+                <div id="contenedorOrdenPedida">
+
+                <IonCard id="ionCardOrden">
+                        <IonCardHeader>
+                        <IonCardTitle> NÚMERO DE TICKET: {ticket.current} </IonCardTitle>
+                        <IonCardTitle>STATUS: SOLICITUD ENVIADA </IonCardTitle>
+                        <p id="p-estado">En espera de confirmación por parte del proveedor </p>
+                        </IonCardHeader>
+                    </IonCard>
                 </div>
-              </header>
-              <article>
-
-              <div id="contenedorCentralModal">
-                <h1>ORDEN DE SERVICIO</h1>
-
-                <IonCard id="ionCard-Orden">
-                    <IonCardHeader>
-                    <IonCardTitle> NÚMERO DE TICKET: {ticket.current} </IonCardTitle>
-                    <IonCardTitle>STATUS: SOLICITUD ENVIADA </IonCardTitle>
-                    <p id="p-estado">En espera de confirmación por parte del proveedor </p>
-                    </IonCardHeader>
-                </IonCard>
+                <div id="contenedorOrdenPedidaInferior">
+                        <IonCard id="ionCardOrden">
+                        <IonTitle>PROVEEDOR</IonTitle>  
+                            <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.data.picture}></img>
+                            <IonCardTitle> {props.data.nombre} </IonCardTitle>
+                            <IonCardTitle  > {props.data.items} </IonCardTitle>
+                            <IonItem id="CardProveedorItem" lines="none"> {props.data.calificacion} </IonItem>
+                        </IonCard>        
                 </div>
-                </article>
+          </div> 
 
-                <footer id="footerModal">
-                    <IonTitle>PROVEEDOR</IonTitle>  
-                    <IonCard id="ionCard-Orden">
-                        <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.data.picture}></img>
-                        <IonCardTitle> {props.data.nombre} </IonCardTitle>
-                        <IonCardTitle  > {props.data.items} </IonCardTitle>
-                        <IonItem id="CardProveedorItem" lines="none"> {props.data.calificacion} </IonItem>
-                    </IonCard>                
-                </footer>
-            </div>
-          </IonContent>
+
+
+
 
 
         )
@@ -573,7 +566,7 @@ const LocacionServicio = ( props:{direccion:any, posicionCliente:any, latitudCli
         <div id="contenderCentralOrden">
 
         <div id="contenedorCamposCentro">
-            <p>¿SE ENCUENTRA ACTUALMENTE EN EL DOMICILIO DONDE SE REALIZARÁ EL SERVICIO?</p>
+            <p id="tituloPedirOrdenEnCard">¿SE ENCUENTRA ACTUALMENTE EN EL DOMICILIO DONDE SE REALIZARÁ EL SERVICIO?</p>
          
             <IonSegment mode="ios" value={domicilio} select-on-focus={true} onIonChange={e => setDomicilio(  e.detail.value!)} >
                 <IonSegmentButton value="enmicasa">
@@ -586,7 +579,7 @@ const LocacionServicio = ( props:{direccion:any, posicionCliente:any, latitudCli
             </div>
             <div id="contenedorCamposCentro">
 
-            <p >ESPECIFIQUE LA DIRECCIÓN DE LA LOCACIÓN DONDE SOLICITA EL SERVICIO</p>
+            <p id="tituloPedirOrdenEnCard">ESPECIFIQUE LA DIRECCIÓN DE LA LOCACIÓN DONDE SOLICITA EL SERVICIO</p>
             <p id="subtituloPedirOrden" >La misma debe ser lo más específica posible en cuanto a dirección y numeración de calle</p>
             </div>
             <div id="contenedorCamposIzquierda">

@@ -42,19 +42,22 @@
 
 #col2{
     width: 75%;
-    border:solid;
-    border-color: red;
+    
 }
 
 
 #div1{
     float: left;
-    width: 80%;
+    width: 70%;
 }
 
 #div2{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     float: right;
-    width: 20%;
+    width: 30%;
 }
 
 #chatContenedorPrincipal{
@@ -85,10 +88,11 @@
 
 #ionCardMensaje{
     overflow: auto;
-    height:400px;
+    height:100%;
     display:flex;
     flex-direction:column;
     padding-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 #Mensajes{
@@ -115,4 +119,56 @@
 #contenedorMensajesChat2{
  width: 90%;
  float: left;
+}
+
+
+#contenedorChat{
+    display:flex; 
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    background:  #f3f2ef;  
+}
+
+#modalChat-flechaVolver{
+    display:flex; 
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    justify-content: flex-start;
+    
+}
+
+#modalChat-titulo{
+    display:flex; 
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    justify-content: center;
+    
+}
+
+#modalChat-card{
+    display:flex; 
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    margin-bottom: 15px;
+    margin-top: 15px;
+
+   
+}
+
+#chatFooter{ 
+    clear: both;
+    position:relative;
+    bottom:0;
+    width:100%;
+    height: 100px;
+}
+
+#chatTitulo{
+    color: black;
+    
 }

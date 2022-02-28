@@ -226,6 +226,7 @@ return (
 
           <IonAlert
             isOpen={showAlertRechazarOrden}
+            mode='ios'
             onDidDismiss={() => setShowAlertRechazarOrden(false)}
             cssClass='my-custom-class'
             header={'¿DESEA CANCELAR LA ORDEN?'}

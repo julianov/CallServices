@@ -1,4 +1,4 @@
-import { IonCard, IonChip, IonCol, IonContent, IonFooter, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonRow } from '@ionic/react';
+import { IonCard, IonChip, IonCol, IonContent, IonFooter, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonRow, IonTitle } from '@ionic/react';
 import axios from 'axios';
 import { arrowBack, send } from 'ionicons/icons';
 import React, { Component, useEffect, useRef, useState } from 'react';
@@ -20,7 +20,7 @@ export interface mensajes{
 let msg = new Array<mensajes>();
 
 
-const Chat = (props:{email:any,  ticket:any, setVolver:any, setVista:any, desdeDondeEstoy:string}) => {
+const Chat = (props:{email:any,  ticket:any, setVolver:any, setVista:any, desdeDondeEstoy:any}) => {
 
    
     const [hayMensajes, setHayMensajes] = useState(false)
@@ -88,62 +88,84 @@ const Chat = (props:{email:any,  ticket:any, setVolver:any, setVista:any, desdeD
 
         return (
            
-            <>
-            <div id="modalProveedor-flechaVolver">
-                <IonIcon icon={arrowBack} onClick={() => props.setVista(props.desdeDondeEstoy)} slot="start" id="flecha-volver">  </IonIcon>
-            </div>
-            <IonCard id="ionCardMensaje">
-            
-                <ElementosMensaje miemail={props.email} mensajes={arregloMensajes}  ></ElementosMensaje>
-                    
-            </IonCard>
-            <IonFooter>
-            <IonItemDivider>INGRESE MENSAJE</IonItemDivider>
-            <div id="div1">
-                <IonItem id="item">
-                    <IonInput value={mensaje} placeholder="Mensaje" onIonChange={e => setMensaje (e.detail.value!)} clearInput></IonInput>
-                </IonItem>
-            </div>
-            <div id="div2">
-            <IonChip onClick={() => enviar()}>
-                <IonIcon icon={send} />
-                    <IonLabel>ENVIAR</IonLabel>
-                </IonChip>
+            <><div id="contenedorChat">
+                <div id="modalChat-flechaVolver">
+                    <IonIcon icon={arrowBack} onClick={() => props.setVista(props.desdeDondeEstoy)} slot="start" id="flecha-volver">  </IonIcon>
+                </div>
+                <div id="modalChat-titulo">
+                    <IonTitle id="chatTitulo">CHAT</IonTitle>
+                </div>
+                <div id="modalChat-card">
+
+                <IonCard id="ionCardMensaje">
+
+                    <ElementosMensaje miemail={props.email} mensajes={arregloMensajes}></ElementosMensaje>
+
+                </IonCard>
+                </div>
+                <footer id="chatFooter">
+                    <IonItemDivider>INGRESE MENSAJE</IonItemDivider>
+                    <div id="div1">
+                        <IonItem id="item">
+                            <IonInput value={mensaje} placeholder="Mensaje" onIonChange={e => setMensaje(e.detail.value!)} clearInput></IonInput>
+                        </IonItem>
                     </div>
-                </IonFooter></>
-          
+                    <div id="div2">
+                        <IonChip onClick={() => enviar()}>
+                            <IonIcon icon={send} />
+                            <IonLabel>ENVIAR</IonLabel>
+                        </IonChip>
+                    </div>
+                </footer>
+            </div>
+          </>
         )
 
     }else{
 
         return (
-            <IonContent >
-                <div id="chatContenedorPrincipal">
-                <div id="modalProveedor-flechaVolver">
-                    <IonIcon icon={arrowBack} onClick={() =>  props.setVista(props.desdeDondeEstoy )} slot="start" id="flecha-volver">  </IonIcon>
+
+
+            <><div id="contenedorChat">
+                <div id="modalChat-flechaVolver">
+                    <IonIcon icon={arrowBack} onClick={() => props.setVista(props.desdeDondeEstoy)} slot="start" id="flecha-volver">  </IonIcon>
                 </div>
+                <div id="modalChat-titulo">
+                    <IonTitle id="chatTitulo">CHAT</IonTitle>
+                </div>
+                <div id="modalChat-card">
+
                 <IonCard id="ionCardMensaje">
-                    <div id="contenedorCamposCentro">
+
+                <div id="contenedorCamposCentro">
                     
                     <p> SIN MENSAJES</p>
                     </div>
                 </IonCard>
-                
-                <IonItemDivider>INGRESE MENSAJE</IonItemDivider>
-                <div id="div1">
-                            <IonItem>
-                                <IonInput value={mensaje} placeholder="Mensaje" onIonChange={e => setMensaje(e.detail.value!)} clearInput></IonInput>
-                            </IonItem>
-                </div> 
-                <div id="div2">
-                            <IonChip onClick={() => enviar () } >
-                                <IonIcon icon={send} />
-                                <IonLabel>ENVIAR</IonLabel>
-                            </IonChip>
-                </div>      
-                 
                 </div>
-            </IonContent>
+                <footer id="chatFooter">
+                    <IonItemDivider>INGRESE MENSAJE</IonItemDivider>
+                    <div id="div1">
+                        <IonItem id="item">
+                            <IonInput value={mensaje} placeholder="Mensaje" onIonChange={e => setMensaje(e.detail.value!)} clearInput></IonInput>
+                        </IonItem>
+                    </div>
+                    <div id="div2">
+                        <IonChip onClick={() => enviar()}>
+                            <IonIcon icon={send} />
+                            <IonLabel>ENVIAR</IonLabel>
+                        </IonChip>
+                    </div>
+                </footer>
+            </div>
+          </>
+
+
+
+
+
+
+       
         )
     }
 }

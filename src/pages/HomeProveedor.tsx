@@ -1,4 +1,4 @@
-import { IonAlert, IonAvatar, IonButton, IonButtons, IonCard, IonCardHeader, IonChip, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonItemOptions, IonItemSliding, IonLabel, IonList, IonLoading, IonMenuButton, IonModal, IonPage, IonRow, IonSearchbar, IonTitle, IonToolbar} from '@ionic/react';
+import { IonAlert, IonAvatar, IonButton, IonButtons, IonCard, IonCardHeader, IonChip, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonItemOptions, IonItemSliding, IonLabel, IonList, IonLoading, IonMenuButton, IonModal, IonPage, IonPopover, IonRow, IonSearchbar, IonTitle, IonToolbar} from '@ionic/react';
 import { Icon } from 'ionicons/dist/types/components/icon/icon';
 import React, { Component, useEffect, useRef, useState } from 'react';
 import ExploreContainer from '../components/ExploreContainerCliente';
@@ -14,6 +14,8 @@ import { Redirect } from 'react-router';
 import ModalProveedor from '../components/ModalProveedor';
 import ExploreContainerProveedor from '../components/ExploreContainerProveedor';
 import Https from '../utilidades/HttpsURL';
+import { CardCampanaNotificacion, ListaDeMensajes, newMessage } from './HomeCliente';
+import Chat from '../utilidades/Chat';
 
 
 let posicion: string | number;
@@ -92,6 +94,10 @@ const HomeProveedor = (props:{setIsReg:any,
 
   const axios = require('axios');
 
+  const [popoverState, setShowPopover] = useState({ showPopover: false, event: undefined });
+  const [notifications, setNotifications] =  useState < newMessage []> ( [])
+  const [mostrarChat,setMostrarChat] = useState(false)
+  const ticket = useRef ("")
 
   useEffect(() => {
 
@@ -158,9 +164,28 @@ const HomeProveedor = (props:{setIsReg:any,
           setImagen(props.foto)
         }
    
+        axios.get(url+"chatsinleer/"+props.email).then((resp: { data: any; }) => {
+          if (resp.data!="bad"){
+            setNotifications(resp.data.map((d: { de: any; ticket: any; }) => ({
+              de:d.de,
+              ticket:d.ticket,
+              })));
+          }
+    
+        })
+
   }, []);
 
+  if (mostrarChat){
+    return(
+      <IonContent>
+        <Chat email={props.email}  ticket={ticket.current} setVolver={null} setVista={setMostrarChat} desdeDondeEstoy={false} /> 
 
+      </IonContent>
+
+    )
+
+  }else{
   return (
     <IonPage>
       <IonHeader>
@@ -171,8 +196,8 @@ const HomeProveedor = (props:{setIsReg:any,
                 <IonButtons ><IonMenuButton /> </IonButtons>
               </IonCol>
               <IonCol id="columna2" ></IonCol>
-              <IonCol id="columna3" size="1.5"> 
-                  <IonIcon icon={notificationsOff}  id="iconoHomeCampana">  </IonIcon>
+              <IonCol id="columna3" size="1.5" onClick={(e: any) => { e.persist(); setShowPopover({ showPopover: true, event: e })}}>
+                  <CardCampanaNotificacion notify={notifications} setMostrarChat={setMostrarChat}></CardCampanaNotificacion>
                 </IonCol>
               <IonCol id="columna3" size="2"> 
                 <img src={imagen} id="foto-usuario" onClick={() => {  setShowModal({ isOpen: true});  setTipoDeVistaEnModal("datosUsuario")}}/>
@@ -239,6 +264,15 @@ const HomeProveedor = (props:{setIsReg:any,
             subHeader={''}
             message={'Debe habilitar el acceso a la ubicación en el dispositivo'}
             buttons={['OK']}/>
+
+      <IonPopover 
+        event={popoverState.event}
+        isOpen={popoverState.showPopover}
+        onDidDismiss={() => setShowPopover({ showPopover: false, event: undefined })}
+      >
+          
+        <IonContent><ListaDeMensajes otra={notifications} setMostrarChat={setMostrarChat} ticket={ticket} /></IonContent>
+      </IonPopover>
             
 
             <IonAlert 
@@ -255,6 +289,7 @@ const HomeProveedor = (props:{setIsReg:any,
       </IonContent>
     </IonPage>
   ); 
+}
 }
 
 

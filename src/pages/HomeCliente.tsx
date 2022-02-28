@@ -10,7 +10,8 @@ import ExploreContainerCliente from '../components/ExploreContainerCliente';
 import Https from '../utilidades/HttpsURL';
 
 import { clearDB, createStore, getDB, removeDB, setDB } from '../utilidades/dataBase';
-import { notifications,notificationsOff } from 'ionicons/icons';
+import { chatbox, chatbubble, notifications,notificationsOff } from 'ionicons/icons';
+import Chat from '../utilidades/Chat';
 
 
 const url=Https
@@ -213,6 +214,20 @@ const HomeCliente = (props:{setIsReg:any,
     }
   }, [props.foto]);
 
+
+  const [mostrarChat,setMostrarChat] = useState(false)
+  const ticket = useRef ("")
+
+  if (mostrarChat){
+    return(
+      <IonContent>
+        <Chat email={props.email}  ticket={ticket.current} setVolver={null} setVista={setMostrarChat} desdeDondeEstoy={false} /> 
+
+      </IonContent>
+
+    )
+
+  }else{
     return (
       <IonPage >
         <IonHeader>
@@ -222,7 +237,7 @@ const HomeCliente = (props:{setIsReg:any,
                 <IonCol id="columna" size="1.5"><IonButtons ><IonMenuButton /> </IonButtons></IonCol>
                 <IonCol id="columna2" ><Busqueda categorias={categorias} setCategorias={setCategorias} setProveedorBuscadoHook={setProveedorBuscadoHook} setBuscar={setBuscar} /></IonCol>
                 <IonCol id="columna3" size="1.5" onClick={(e: any) => { e.persist(); setShowPopover({ showPopover: true, event: e })}}>
-                  <Card notify={notifications}></Card>
+                  <CardCampanaNotificacion notify={notifications} setMostrarChat={setMostrarChat}></CardCampanaNotificacion>
                 </IonCol>
                 <IonCol id="columna3" size="1.5"> 
                     <img src={imagen} id="foto-usuario" onClick={() => {  setShowModal({ isOpen: true});  setTipoDeVistaEnModal("datosUsuario")}}/>
@@ -292,13 +307,12 @@ const HomeCliente = (props:{setIsReg:any,
               buttons={['ENTENDIDO']}/>
 
       <IonPopover 
-              event={popoverState.event}
-              isOpen={popoverState.showPopover}
-
+        event={popoverState.event}
+        isOpen={popoverState.showPopover}
         onDidDismiss={() => setShowPopover({ showPopover: false, event: undefined })}
-        >
+      >
           
-        <IonContent><ListaDeMensajes otra={notifications} /></IonContent>
+        <IonContent><ListaDeMensajes otra={notifications} setMostrarChat={setMostrarChat} ticket={ticket} /></IonContent>
       </IonPopover>
           </div>
 
@@ -307,36 +321,41 @@ const HomeCliente = (props:{setIsReg:any,
         </IonContent>
       </IonPage>
   );
+  }
+    
 }
 
-const ListaDeMensajes = ( props:{otra:any}) =>{
+export const ListaDeMensajes = ( props:{otra:any, setMostrarChat:any, ticket:any}) =>{
   var i=0
   if(props.otra.length >0 ){
     return(
       <>
-  
+            <div id="contenedorNotificaciones">  
+
+        <img src={"./assets/sinmensajes.png"} id="idIconoMensajes"></img>
+
       {props.otra.map((a: { de: string; ticket: string; }) => {
         i=i+1
         return (
-          <IonCard2 key={i} de={a.de} ticket={a.ticket} ></IonCard2> 
+          <IonCardNotificaciones key={i} de={a.de} ticket={a.ticket} setMostrarChat={props.setMostrarChat} ticket_={props.ticket}></IonCardNotificaciones> 
           ) 
       })
-     }    </>
+     }   </div>  </>
      )
   }else{
     return(
-      <div id="padre">  
-        <div id="hijo">
+      <div id="contenedorNotificaciones">  
+        
+        <img src={"./assets/sinmensajes.png"} id="idIconoMensajes"></img>
         <IonTitle>SIN MENSAJES</IonTitle> 
 
-        </div>
       </div>
      )
   }
 
 }
 
-const Card = (props:{notify:any}) => {
+export const CardCampanaNotificacion = (props:{notify:any, setMostrarChat:any}) => {
  
   if (props.notify.length>0){
     return (
@@ -352,16 +371,17 @@ const Card = (props:{notify:any}) => {
 
 }
 
-const IonCard2 = (props:{de:string, ticket:string}) => {
+export const IonCardNotificaciones = (props:{de:string, ticket:string, setMostrarChat:any, ticket_:any}) => {
 
+  props.ticket_.current=props.ticket
   return(
-    <IonCard id="ionCard-CardProveedor">
-              <div id="CardProveedorContainer">
-                <IonItem lines="none">MENSAJE DE: {props.de}</IonItem>
-                <IonItem lines="none">ORDEN TICKET Nº: {props.ticket}</IonItem>
-                <p id="p-ionpover">INGRESE A LA ORDEN PARA VER EL CHAT</p>
-              </div>
-            </IonCard>
+    <IonCard id="ionCard-CardProveedor" onClick={()=> props.setMostrarChat(true)}>
+      <div id="CardProveedorContainer">
+        <IonItem lines="none">MENSAJE DE: {props.de}</IonItem>
+        <IonItem lines="none">ORDEN TICKET Nº: {props.ticket}</IonItem>
+        <p id="p-ionpover">INGRESE A LA ORDEN PARA VER EL CHAT</p>
+      </div>
+    </IonCard>
   )
 }
 
