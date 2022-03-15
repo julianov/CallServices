@@ -3,12 +3,11 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createStore, getDB, removeDB, setDB } from "./dataBase";
 import { getItem, removeItem, setItem } from "./Storage";
 import './CardProveedor.css';
-import Estrellas from "./Estrellas";
+import Estrellas from "../components/Estrellas/Estrellas";
 import { contractSharp } from "ionicons/icons";
 import OrdenSimple from "../pages/PedirOrden";
-import Resenas from "./Resenas";
-import { categoriaBuscada } from "./ResultadoBusqueda";
-
+import { categoriaBuscada } from "../components/ResultadoBusqueda/ResultadoBusqueda";
+import Resenas from "../components/Reseñas/Resenas";
 
 
 

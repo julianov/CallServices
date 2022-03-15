@@ -2,18 +2,19 @@ import { IonActionSheet, IonAlert, IonButton, IonCard, IonCardContent, IonCardHe
 import { arrowBack, person, receipt, help, chatbubble, close, trash, camera, construct } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router";
-import { getItem, removeItem, setItem } from "../utilidades/Storage";
 
 import './Modal.css';
 import axios from "axios";
-import { b64toBlob } from "../utilidades/b64toBlob";
 import { base64FromPath } from "@ionic/react-hooks/filesystem";
-import { usePhotoGallery } from "../hooks/usePhotoGallery";
-import CompletarRubros from "../pages/CompletarRubros";
 import { useRef } from "react";
 import { convertTypeAcquisitionFromJson, isPropertySignature } from "typescript";
-import Estrellas from "../utilidades/Estrellas";
-import Https from "../utilidades/HttpsURL";
+import Https from "../../utilidades/HttpsURL";
+import { usePhotoGallery } from "../../hooks/usePhotoGallery";
+import { getItem, removeItem, setItem } from "../../utilidades/Storage";
+import { b64toBlob } from "../../utilidades/b64toBlob";
+import Estrellas from "../Estrellas/Estrellas";
+import CompletarRubros from "../../pages/CompletarRubros/CompletarRubros";
+import { useRubroContext } from "../../Contexts/RubroContext";
 
 //const url='http://127.0.0.1:8000/';
 //const url="https://callservicesvps.online:443/"
@@ -31,10 +32,10 @@ const url2 = Https+"completarinfo/"
 const ModalProveedor: React.FC<{setIsReg:any,  onClose: any; tipoVista:any; 
   email:any; tipoProveedor:any; completarInfoPersonal:boolean, fotoPersonal:any,
   nombre:any, apellido:any, calificacion:any, setFoto:any, setNombre:any,setApellido:any, 
-  rubro1:any, setRubro1:any, rubro2:any, setRubro2:any,
+ 
 }> = ({setIsReg, onClose, tipoVista, email, tipoProveedor, completarInfoPersonal, 
   fotoPersonal, nombre, apellido, calificacion, setFoto, setNombre,setApellido,
-rubro1, setRubro1, rubro2, setRubro2 }) => {
+}) => {
  
 
  if(tipoVista==="datosUsuario"){
@@ -44,7 +45,7 @@ rubro1, setRubro1, rubro2, setRubro2 }) => {
       email={email} tipoProveedor={tipoProveedor} completarInfoPersonal={completarInfoPersonal}
       fotoPersonal={fotoPersonal} onClose={onClose}
       nombre={nombre} apellido={apellido} calificacion={calificacion} setFoto={setFoto} setNombre={setNombre} setApellido={setApellido}
-      rubro1={rubro1} rubro2={rubro2} setRubro1={setRubro1} setRubro2={setRubro2}
+      
       />
     </>
     );
@@ -228,8 +229,7 @@ const TomarFotografia = (props: {imagen:any, setFilepath:any}) => {
 
 const DatosUsuario = (props:{setIsReg:any, 
   email:any,tipoProveedor:string, completarInfoPersonal:any, fotoPersonal:any, onClose:any,
-  nombre:any, apellido:any, calificacion:any, setFoto:any, setNombre:any, setApellido:any,
-  rubro1:any, setRubro1:any, rubro2:any, setRubro2:any }) =>{
+  nombre:any, apellido:any, calificacion:any, setFoto:any, setNombre:any, setApellido:any }) =>{
 
   const [agrandarImagen,setAgrandarImagen]=useState(false)
   const [datosPersonales,seDatosPersonales]=useState(false)
@@ -259,7 +259,7 @@ const DatosUsuario = (props:{setIsReg:any,
       completarInfoPersonal={props.completarInfoPersonal} closeSesion={closeSesion} datosPersonales={datosPersonales} setDatosPersonales={seDatosPersonales} onClose={props.onClose} 
       email={props.email} tipoProveedor={props.tipoProveedor} foto={props.fotoPersonal} 
       nombre={props.nombre} apellido={props.apellido} calificacion={props.calificacion} setFoto={props.setFoto} setNombre={props.setNombre} setApellido={props.setApellido} 
-      rubro1={props.rubro1} rubro2={props.rubro2} setRubro1={props.setRubro1} setRubro2={props.setRubro2} ></DatosPersonales>
+       ></DatosPersonales>
     )
   
 }
@@ -267,7 +267,7 @@ const DatosUsuario = (props:{setIsReg:any,
 
 const DatosPersonales =(props:{setIsReg:any, completarInfoPersonal:any; closeSesion:any;  datosPersonales:any;  setDatosPersonales:any, onClose:any, 
   email:any, tipoProveedor:any, foto:any, nombre:any, apellido:any, calificacion:any, setFoto:any, setNombre:any, setApellido:any,
-  rubro1:any, rubro2:any, setRubro1:any, setRubro2:any}) => {
+  }) => {
 
   const [showAlertDatosPersonales, setShowAlertDatosPersonales]=useState(false)
   const [rubros,setRubros]=useState(false) //igual a true para mostrar rubros
@@ -355,9 +355,7 @@ const DatosPersonales =(props:{setIsReg:any, completarInfoPersonal:any; closeSes
                 <>
                 
                 <IonContent >
-                <MisRubros onClose={props.onClose} setIsReg={props.setIsReg} setRubros={setRubros} email={props.email} tipoProveedor={props.tipoProveedor}  
-                rubro1={props.rubro1} rubro2={props.rubro2} setRubro1={props.setRubro1} setRubro2={props.setRubro2}
-                ></MisRubros>
+                <MisRubros onClose={props.onClose} setIsReg={props.setIsReg} setRubros={setRubros} email={props.email} tipoProveedor={props.tipoProveedor}></MisRubros>
                 </IonContent>
               </>
               );
@@ -805,30 +803,59 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
 }
 
 const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:any,
-  rubro1:any, rubro2:any, setRubro1:any, setRubro2:any, onClose:any}) => {
+  onClose:any}) => {
 
   const[ hayRubros, setHayRubros]=useState("comprobar")
   const[ verRubro, setVerRubro]=useState("")
 
-  const tituloRubros= useRef()
+  //const tituloRubros= useRef()
 
   const [agregarOtroRubro, setAgregarOtroRubro] = useState(false)
 
-  const[showCargandoRubros, setShowCargandoRubros]= useState(false)
+ // const[showCargandoRubros, setShowCargandoRubros]= useState(false)
 
+  const {rubros,setRubro} = useRubroContext ()
 
+  var i=0; 
   const verRubros = (rubro:any)=> {
     setVerRubro(rubro)
   }
 
   if (agregarOtroRubro){
 
-    return(<CompletarRubros  email={props.email} clientType={props.tipoProveedor} setIsReg={props.setIsReg} 
-       rubro1={props.rubro1} rubro2={props.rubro2} setRubro1={props.setRubro1} setRubro2={props.setRubro2} />);
+    return(<CompletarRubros  email={props.email} clientType={props.tipoProveedor} setIsReg={props.setIsReg} />);
 
   }else{
     if (verRubro==""){
-      if((props.rubro1!=""&& props.rubro1!=null )&& (props.rubro2=="" || props.rubro2==null )){
+
+      console.log("LOS RUBROS QUE HAY: "+JSON.stringify(rubros))
+      return( <> 
+      <div id="contenedorCompletarRubro">
+          <header id="headerRegistro">
+          <div id="modalProveedor-flechaVolver">
+            <IonIcon icon={arrowBack} onClick={() => props.setRubros(false)} slot="start" id="flecha-volver">  </IonIcon>
+            <IonIcon icon={close} onClick={() => props.onClose(null)} slot="end" id="flecha-cerrar">  </IonIcon>
+          </div>
+            <IonTitle id="register-title">MIS RUBROS CARGADOS</IonTitle>
+          </header>
+    
+          {rubros.map((a) => {
+                i = i + 1;
+                return (
+                  <IonItem key={a.rubro} id="item-modalRubro" onClick={() => (verRubros(a))}>
+                    <strong> {a.rubro} </strong>
+                  </IonItem>
+                  
+                );
+              })}
+         
+    
+          <footer id="footerCompletarRubro">
+          <IonButton id="botonAgregarRubro" shape="round" onClick={() => setAgregarOtroRubro(true)}> AGREGAR OTRO RUBRO  </IonButton>
+          </footer>
+        </div> 
+      </>)
+      /*if((props.rubro1!=""&& props.rubro1!=null )&& (props.rubro2=="" || props.rubro2==null )){
         return(
 
           <div id="contenedorCompletarRubro">
@@ -902,35 +929,26 @@ const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:
               message={'Buscando rubros...'}
               duration={5000} /></>
       );
-      }
+      }*/
      
+      
     }else{
-      if(verRubro==props.rubro1){
+    
         return(
           < div id="contenedorModalProveedor">
           <div id="modalProveedor-flechaVolver">
           <IonIcon icon={arrowBack} onClick={() => setVerRubro("")} slot="start" id="flecha-volver">  </IonIcon>
           </div>
-          <CardItemVerRubro pedir={setHayRubros} rubro={verRubro} setRubro={props.setRubro1} email={props.email} clientType={props.tipoProveedor} volver={setVerRubro} />
+          <CardItemVerRubro pedir={setHayRubros} rubro={verRubro} email={props.email} clientType={props.tipoProveedor} volver={setVerRubro} />
       </div>);
-      }else{
-        return(
-          <div id="contenedorModalProveedor">  
-          <div id="modalProveedor-flechaVolver">   
-          <IonIcon icon={arrowBack} onClick={() => setVerRubro("")} slot="start" id="flecha-volver">  </IonIcon>
-          </div> 
-          <CardItemVerRubro pedir={setHayRubros} rubro={verRubro} setRubro={props.setRubro2} email={props.email} clientType={props.tipoProveedor} volver={setVerRubro} />
-      </div>);
-      }
-      
-    }
+
   }
   
 
 }
+}
 
-
-const CardItemVerRubro= (props:{ pedir:any,rubro:any, setRubro:any, clientType:any, email:any, volver:any}) => {
+const CardItemVerRubro= (props:{ pedir:any,rubro:any, clientType:any, email:any, volver:any}) => {
 
 
   const [datosListos,setDatosListos]=useState(false);
@@ -1008,12 +1026,12 @@ const CardItemVerRubro= (props:{ pedir:any,rubro:any, setRubro:any, clientType:a
                       if (res!=null || res!= undefined || res!=""){
                           removeItem("rubro2")
                           removeItem("infoRubro2")
-                          props.setRubro(null)
+                          //props.setRubro(null)
                       }
                       else{
                         removeItem("rubro1")
                         removeItem("infoRubro1")
-                        props.setRubro(null)
+                       // props.setRubro(null)
                       }
                     })
                   
@@ -1119,7 +1137,6 @@ if(modificarRubro==""){
   return (  <ModificarDatosRubro 
     clientType={props.clientType} email={props.email}
     rubro={props.rubro} setVolver={setModificarRubro} 
-    setRubro={props.setRubro}
     siesRubro1oRubro2={siesRubro1oRubro2} 
     setDatosListos={setDatosListos} />)
 }
@@ -1127,7 +1144,7 @@ if(modificarRubro==""){
   
 }
 
-const ModificarDatosRubro = (props:{clientType:any, email:any,rubro:any,setRubro:any, setVolver:any,
+const ModificarDatosRubro = (props:{clientType:any, email:any,rubro:any, setVolver:any,
   siesRubro1oRubro2:any, setDatosListos:any}) =>{
 
   //para volver props.setRubro("")
@@ -1274,13 +1291,13 @@ const ModificarDatosRubro = (props:{clientType:any, email:any,rubro:any,setRubro
           setItem("infoRubro1", JSON.stringify(arreglo)).then(() =>{ 
             setShowModificandoRubro(false) 
            // props.setDatosListos(false)
-            props.setRubro(JSON.stringify(arreglo))
+           // props.setRubro(JSON.stringify(arreglo))
             })
         }else if (props.siesRubro1oRubro2.current=="rubro2"){
           setItem("infoRubro2", JSON.stringify(arreglo)).then(() =>{ 
             setShowModificandoRubro(false) 
           //  props.setDatosListos(false)
-            props.setRubro(JSON.stringify(arreglo))
+         //   props.setRubro(JSON.stringify(arreglo))
           })
         }else{
           setShowModificandoRubro(false) 

@@ -1,17 +1,18 @@
 import { IonAlert, IonAvatar, IonButton, IonButtons, IonCard, IonChip, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonItemOptions, IonItemSliding, IonLabel, IonList, IonLoading, IonMenuButton, IonModal, IonPage, IonPopover, IonRow, IonSearchbar, IonTitle, IonToolbar} from '@ionic/react';
-import React, { Component, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Component, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import './Home.css';
 import axios from 'axios';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 
 
-import ModalCliente from '../components/ModalCliente';
-import ExploreContainerCliente from '../components/ExploreContainerCliente';
-import Https from '../utilidades/HttpsURL';
 
-import { clearDB, createStore, getDB, removeDB, setDB } from '../utilidades/dataBase';
 import { chatbox, chatbubble, notifications,notificationsOff } from 'ionicons/icons';
-import Chat from '../utilidades/Chat';
+import Https from '../../utilidades/HttpsURL';
+import { useUserContext } from '../../Contexts/UserContext';
+import { getDB, setDB } from '../../utilidades/dataBase';
+import ModalCliente from '../../components/ModalGeneral/ModalCliente';
+import ExploreContainerCliente from '../../components/ExplorerContainer/ExploreContainerCliente';
+import Chat from '../../components/Chat/Chat';
 
 
 const url=Https
@@ -81,9 +82,10 @@ export interface newMessage{
 }
 
 const HomeCliente = (props:{setIsReg:any,  
-  email:any, foto:any, clientType:any, 
-  nombre:any, apellido:any, calificacion:any, setFoto:any, setNombre:any, setApellido:any, }) => {
+ setFoto:any, setNombre:any, setApellido:any, }) => {
 
+  const  {user,setUser}  = useUserContext()
+  
   const axios = require('axios');
 
   const [categorias, setCategorias] = useState ([])
@@ -103,8 +105,6 @@ const HomeCliente = (props:{setIsReg:any,
 
   const [proveedoresEnZona, setProveedoresEnZona] = useState <datosGeneralesVariosProveedores []> ( [])
   const [misOrdenes, setMisOrdenes] = useState <ordenesCliente []>([]);
-
-
 
   const [notifications, setNotifications] =  useState < newMessage []> ( [])
   
@@ -162,7 +162,7 @@ const HomeCliente = (props:{setIsReg:any,
       });  
     });
 
-    axios.get(url+"orden/misordenes/"+"cliente/"+props.email).then((resp: { data: any; }) => {
+    axios.get(url+"orden/misordenes/"+"cliente/"+user).then((resp: { data: any; }) => {
       if (resp.data!="bad"){
 
         setMisOrdenes(    
@@ -190,7 +190,7 @@ const HomeCliente = (props:{setIsReg:any,
       }
     })
 
-    axios.get(url+"chatsinleer/"+props.email).then((resp: { data: any; }) => {
+    axios.get(url+"chatsinleer/"+user!.email).then((resp: { data: any; }) => {
       if (resp.data!="bad"){
         setNotifications(resp.data.map((d: { de: any; ticket: any; }) => ({
           de:d.de,
@@ -204,15 +204,15 @@ const HomeCliente = (props:{setIsReg:any,
 
   }, []);
 
-  const [imagen, setImagen] = useState (props.foto)
+  const [imagen, setImagen] = useState (user!.foto)
 
   useEffect(() => {
-    if (props.foto==""|| props.foto==null || props.foto==undefined){
+    if (user!.foto==""|| user!.foto==null || user!.foto==undefined){
       setImagen ("./assets/icon/nuevoUsuario.png") 
     }else{
-      setImagen(props.foto)
+      setImagen(user!.foto)
     }
-  }, [props.foto]);
+  }, [imagen]);
 
 
   const [mostrarChat,setMostrarChat] = useState(false)
@@ -221,7 +221,7 @@ const HomeCliente = (props:{setIsReg:any,
   if (mostrarChat){
     return(
       <IonContent>
-        <Chat email={props.email}  ticket={ticket.current} setVolver={null} setVista={setMostrarChat} desdeDondeEstoy={false} /> 
+        <Chat email={user!.email}  ticket={ticket.current} setVolver={null} setVista={setMostrarChat} desdeDondeEstoy={false} /> 
 
       </IonContent>
 
@@ -270,12 +270,12 @@ const HomeCliente = (props:{setIsReg:any,
               onDidDismiss={() => setShowModal({ isOpen: false })}>
               <ModalCliente 
                 setIsReg={props.setIsReg}
-                email={props.email}
+                email={user!.email}
                 tipoVista={tipoDeVistaEnModal}
-                fotoPersonal={props.foto}
-                nombre={props.nombre}
-                apellido={props.apellido}
-                calificacion={props.calificacion}
+                fotoPersonal={user!.foto}
+                nombre={user!.nombre}
+                apellido={user!.apellido}
+                calificacion={user!.calificacion}
                 setFoto={props.setFoto}
                 setNombre={props.setNombre}
                 setApellido={props.setApellido}
@@ -288,7 +288,7 @@ const HomeCliente = (props:{setIsReg:any,
             <ExploreContainerCliente setShowCargandoProveedores={setShowCargandoProveedores} 
               ordenes={misOrdenes}
               proveedores={proveedoresEnZona}
-              emailCliente={props.email}
+              emailCliente={user!.email}
               url={url} 
               buscar={buscar}
               busqueda_categorias={categorias}

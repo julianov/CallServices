@@ -1,8 +1,8 @@
-import { IonCard, IonChip, IonCol, IonContent, IonFooter, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonRow, IonTitle } from '@ionic/react';
+import { IonCard, IonChip,  IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonTitle } from '@ionic/react';
 import axios from 'axios';
 import { arrowBack, send } from 'ionicons/icons';
-import React, { Component, useEffect, useRef, useState } from 'react';
-import Https from './HttpsURL';
+import React, { useEffect, useState } from 'react';
+import Https from '../../utilidades/HttpsURL';
 
 import './Chat.css';
 

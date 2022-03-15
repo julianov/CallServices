@@ -1,6 +1,6 @@
 import './PedirOrden.css';
 import axios from "axios";
-import Estrellas from "../utilidades/Estrellas";
+import Estrellas from "../components/Estrellas/Estrellas";
 
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import CardProveedor from "../utilidades/CardProveedor";
@@ -14,7 +14,7 @@ import { b64toBlob } from '../utilidades/b64toBlob';
 import { arrowBack, camera, trash } from 'ionicons/icons';
 import { isSetAccessorDeclaration } from 'typescript';
 import { allowedNodeEnvironmentFlags } from 'process';
-import { BotonDia } from './CompletarRubros';
+import { BotonDia } from './CompletarRubros/CompletarRubros';
 import { setDB } from '../utilidades/dataBase';
 
 const url=Https+"orden/"

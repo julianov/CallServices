@@ -8,12 +8,11 @@ import { useRef } from "react";
 
 import './ResultadoBusqueda.css';
 import axios from "axios";
-import Estrellas from "./Estrellas";
 
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
-import CardProveedor from "./CardProveedor";
-import { removeItem } from "./Storage";
-import Https from "../utilidades/HttpsURL";
+import Https from "../../utilidades/HttpsURL";
+import Estrellas from "../Estrellas/Estrellas";
+import CardProveedor from "../../utilidades/CardProveedor";
 
 
 //var arreglo_resultado_busqueda=new Array()

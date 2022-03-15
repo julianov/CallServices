@@ -6,19 +6,19 @@ import './ExploreContainer.css';
 
 import { Geolocation } from '@capacitor/core/dist/esm/web/geolocation';
 import { useEffect } from 'react';
-import Estrellas from '../utilidades/Estrellas';
-import ResultadoBusqueda, { categoriaBuscada } from '../utilidades/ResultadoBusqueda';
-import { createStore, getDB, setDB } from '../utilidades/dataBase';
-import { datosGeneralesVariosProveedores, ordenesCliente, proveedorBuscado } from '../pages/HomeCliente';
-import ModalVerCardProveedor from './ModalVerCardProveedor';
-import ModalVerOrdenesCliente from './ModalVerOrdenesCliente';
-import OrdenSimple from '../pages/PedirOrden';
-import Resenas from '../utilidades/Resenas';
-import { datosOrden } from '../utilidades/CardProveedor';
 import axios from 'axios';
 import { type } from 'os';
 
 import {Adsense} from '@ctrl/react-adsense';
+import { datosGeneralesVariosProveedores, ordenesCliente, proveedorBuscado } from '../../pages/Home/HomeCliente';
+import { datosOrden } from '../../utilidades/CardProveedor';
+import { getDB, setDB } from '../../utilidades/dataBase';
+import ModalVerOrdenesCliente from '../VerOrdenes/ModalVerOrdenesCliente';
+import OrdenSimple from '../../pages/PedirOrden';
+import Estrellas from '../Estrellas/Estrellas';
+import ModalVerCardProveedor from '../CardProveedor/ModalVerCardProveedor';
+import ResultadoBusqueda, { categoriaBuscada } from '../ResultadoBusqueda/ResultadoBusqueda';
+import Resenas from '../Reseñas/Resenas';
 
 const getLocation = async () => {
   try {

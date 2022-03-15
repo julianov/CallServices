@@ -1,15 +1,17 @@
 import { IonAlert, IonButton, IonButtons, IonChip, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonListHeader, IonLoading, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonSearchbar, IonTitle, IonToolbar } from '@ionic/react';
 import { render } from '@testing-library/react';
-import React, { Component, useEffect, useRef, useState } from 'react';
-import Menu from './Menu';
+import React, { Component, useContext, useEffect, useRef, useState } from 'react';
+import Menu from '../../components/Menu/Menu';
 import './Ingresar.css';
 import { arrowBack, person, push} from 'ionicons/icons';
-import { setItem } from '../utilidades/Storage';
+import { setItem } from '../../utilidades/Storage';
 import { isPropertySignature, setSyntheticLeadingComments } from 'typescript';
 import { Redirect, Route } from 'react-router';
 import { forceUpdate } from 'ionicons/dist/types/stencil-public-runtime';
-import Home from './HomeCliente';
-import Https from '../utilidades/HttpsURL';
+import Https from '../../utilidades/HttpsURL';
+import { itemRubro, usuario } from '../../Interfaces/interfaces';
+import { useUserContext } from '../../Contexts/UserContext';
+import { useRubroContext } from '../../Contexts/RubroContext';
 
   //const url='http://127.0.0.1:8000/login/';
   //const url="https://callservicesvps.online:443/login/"
@@ -24,7 +26,6 @@ import Https from '../utilidades/HttpsURL';
   const url2=Https
   const url3=Https+"completarinfo/"
   
-
 
   const Ingresar = (props:{setIsReg:any, setCliente:any, setEmail:any, setFoto:any, setTipoCliente:any,
     setNombre:any, setApellido:any, setCalificacion:any,
@@ -54,7 +55,6 @@ import Https from '../utilidades/HttpsURL';
         <IngresarDatos setIsReg={props.setIsReg} setCliente={props.setCliente} 
               setEmail={props.setEmail} setFoto={props.setFoto} setTipoCliente={props.setTipoCliente} 
               setNombre={props.setNombre} setApellido={props.setApellido} setCalificacion={props.setCalificacion}
-              setRubro1={props.setRubro1} setRubro2={props.setRubro2}
               setShowLoading={setShowLoading} setShowAlertUsuarioContraseñaIncorrectos={setShowAlertUsuarioContraseñaIncorrectos} setShowAlertCompletarInfo={setShowAlertCompletarInfo} setShowAlertServerConnection={setShowAlertServerConnection} setShowAlertContraseñaCambiada={setShowAlertContraseñaCambiada} setShowAlertContraseñaNoIguales={setShowAlertContraseñaNoIguales} setShowAlertBadEmail={setShowAlertBadEmail} setShowAlertBadCode={setShowAlertBadCode} ></IngresarDatos>
         </div>
         <div id="cube"></div>
@@ -149,11 +149,11 @@ import Https from '../utilidades/HttpsURL';
   export const IngresarDatos = (props:{setIsReg:any, setCliente:any, 
     setEmail:any, setFoto:any, setTipoCliente:any, 
     setNombre:any, setApellido:any, setCalificacion:any,
-    setRubro1:any, setRubro2:any,
     setShowLoading:any, setShowAlertUsuarioContraseñaIncorrectos:any,  setShowAlertServerConnection:any, setShowAlertCompletarInfo:any, setShowAlertContraseñaCambiada:any, setShowAlertContraseñaNoIguales:any, setShowAlertBadEmail:any, setShowAlertBadCode:any}) => {
   
     const axios = require('axios');
-  
+
+
     const [home, setHome]=useState(false)
   
     const [restaurar, setRestaurar]=useState(0)
@@ -162,11 +162,21 @@ import Https from '../utilidades/HttpsURL';
     const email=useRef("")
     const tipoDeCliente=useRef("")
 
+    const  {user,setUser}  = useUserContext()
+    const {rubros,setRubro} = useRubroContext()
+
+
     if(home){
       props.setIsReg(true)
 
       props.setCliente(tipoDeCliente.current=="1"?true:false)
       props.setEmail(email.current)
+
+      //setUser( (previous: usuario) => ({...previous, email: email.current}))
+      setUser!((state:usuario) => ({ ...state, email: email.current }))
+
+      
+
       //return(<Redirect push={true} to="/home" />);
      
     }
@@ -177,6 +187,7 @@ import Https from '../utilidades/HttpsURL';
       }
       
     }
+
 
 
   const PedirPersonalInfo = ( tipoDeCliente:any)=>{
@@ -192,6 +203,10 @@ import Https from '../utilidades/HttpsURL';
           props.setApellido(resp.data[0].last_name)
           props.setCalificacion(resp.data[0].qualification)
 
+          setUser!((state:usuario) => ({ ...state, nombre: resp.data[0].name }))
+          setUser!((state:usuario) => ({ ...state, apellido: resp.data[0].last_name }))
+          setUser!((state:usuario) => ({ ...state, calificacion: resp.data[0].qualification }))
+
           setItem("nombre",resp.data[0].name )
           setItem("apellido",resp.data[0].last_name )
           setItem("calificacion", resp.data[0].qualification)
@@ -205,15 +220,21 @@ import Https from '../utilidades/HttpsURL';
          setItem("nombre",resp.data[0].name )
          setItem("apellido",resp.data[0].description)
          setItem("calificacion", resp.data[0].qualification)
+
+         setUser!((state:usuario) => ({ ...state, nombre: resp.data[0].name }))
+         setUser!((state:usuario) => ({ ...state, apellido: resp.data[0].last_name }))
+         setUser!((state:usuario) => ({ ...state, calificacion: resp.data[0].qualification }))
         
         }                      
        }
     })
   }
 
+
+
       //////// Función pedir rubro/////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
-    const PedirRubros = (setRubro1:any, setRubro2:any, email:any, tipoDeCliente:any)=>{
+    const PedirRubros = (email:any, tipoDeCliente:any)=>{
       const axios = require('axios');
       axios.get(url3+"rubros/"+"pedir/"+tipoDeCliente.current+"/"+email.current)
       .then((res: { data: any; }) => {
@@ -228,35 +249,78 @@ import Https from '../utilidades/HttpsURL';
                   axios.get(url3+"pedirrubros/"+tipoDeCliente.current+"/"+email.current+"/"+arreglo[i])
                   .then((res: { data: any; }) => {
                     const resquest = res.data;
-                    let array=new Array();
-                    array.push(resquest[0].item)
-                    array.push(resquest[0].radius)
-                    array.push(resquest[0].description)
-                    array.push(resquest[0].qualification)
-                    array.push(resquest[3].pais) 
-                    array.push(resquest[3].provincia) 
-                    array.push(resquest[3].ciudad) 
-                    array.push(resquest[3].calle) 
-                    array.push(resquest[3].numeracion)
-                    array.push(resquest[1].days_of_works)
-                    array.push(resquest[1].hour_init)
-                    array.push(resquest[1].hour_end)
-                    array.push(resquest[2].certificate)
-                    array.push(resquest[2].picture1)
-                    array.push(resquest[2].picture2)
-                    array.push(resquest[2].picture3)
+              
+                    setRubro([{
+                      rubro:resquest.item,
+                      radius:resquest.radius,
+                      description:resquest.description,
+                      hace_orden_emergencia:"nop",
+                      calificacion:Number(resquest.qualification),
+                      pais:resquest.pais,
+                      provincia:resquest.provincia,
+                      ciudad:resquest.ciudad,
+                      calle:resquest.calle,
+                      numeracion:resquest.numeracion,
+                      days_of_works:resquest.days_of_works,
+                      hour_init:resquest.hour_init,
+                      hour_end:resquest.hour_end,
+                      certificate:resquest.certificate,
+                      picture1:resquest.picture1,
+                      picture2:resquest.picture2,
+                      picture3:resquest.picture3
+                    }])
                     
                     if(cantidad==0){
-                      props.setRubro1(JSON.stringify(array))
-                      setItem("rubro1", resquest[0].item).then(() =>{     
-                        setItem("infoRubro1", JSON.stringify(array)).then(() =>{ 
-                          cantidad++;
-                        })
+                     // props.setRubro1(JSON.stringify(array))
+                      setRubro([{
+                        rubro:resquest.item,
+                        radius:resquest.radius,
+                        description:resquest.description,
+                        hace_orden_emergencia:"nop",
+                        calificacion:Number(resquest.qualification),
+                        pais:resquest.pais,
+                        provincia:resquest.provincia,
+                        ciudad:resquest.ciudad,
+                        calle:resquest.calle,
+                        numeracion:resquest.numeracion,
+                        days_of_works:resquest.days_of_works,
+                        hour_init:resquest.hour_init,
+                        hour_end:resquest.hour_end,
+                        certificate:resquest.certificate,
+                        picture1:resquest.picture1,
+                        picture2:resquest.picture2,
+                        picture3:resquest.picture3
+                      }])
+                     
+                      setItem("rubro1", resquest.item).then(() =>{     
+                        
+                      })
+                      setItem("infoRubro1",JSON.stringify(resquest)).then(() =>{ 
+                        cantidad++;
                       })
                     }else{
-                      props.setRubro2(JSON.stringify(array))
-                      setItem("rubro2", resquest[0].item).then(() =>{     
-                        setItem("infoRubro2", JSON.stringify(array)).then(() =>{ 
+                      setRubro([...rubros,{
+                        rubro:resquest.item,
+                        radius:resquest.radius,
+                        description:resquest.description,
+                        hace_orden_emergencia:"nop",
+                        calificacion:Number(resquest.qualification),
+                        pais:resquest.pais,
+                        provincia:resquest.provincia,
+                        ciudad:resquest.ciudad,
+                        calle:resquest.calle,
+                        numeracion:resquest.numeracion,
+                        days_of_works:resquest.days_of_works,
+                        hour_init:resquest.hour_init,
+                        hour_end:resquest.hour_end,
+                        certificate:resquest.certificate,
+                        picture1:resquest.picture1,
+                        picture2:resquest.picture2,
+                        picture3:resquest.picture3
+                      }])
+                     // props.setRubro2(JSON.stringify(array))
+                      setItem("rubro2", resquest.item).then(() =>{     
+                        setItem("infoRubro2", JSON.stringify(resquest)).then(() =>{ 
                           
                         })
                       })
@@ -300,9 +364,12 @@ import Https from '../utilidades/HttpsURL';
                     props.setFoto(person)
                     props.setTipoCliente(resquest[0].clientType)
                     tipoDeCliente.current=resquest[0].clientType
+                    setUser!((state:usuario) => ({ ...state, foto: person}))
+                   
                     //Pedir Rubros
                     if (resquest[0].clientType!="1"){
-                      PedirRubros(props.setRubro1,props.setRubro2, email, tipoDeCliente)
+                      PedirRubros( email, tipoDeCliente)
+                      console.log("debe pedir los rubros")
                     }//Fin pedir Rubros
                     else{
                       props.setCalificacion(resquest[0].calificacion)
@@ -311,6 +378,9 @@ import Https from '../utilidades/HttpsURL';
                     props.setNombre("")
                     props.setApellido("")
                     props.setCalificacion(0)
+                    setUser!((state:usuario) => ({ ...state, nombre: "" }))
+                    setUser!((state:usuario) => ({ ...state, apellido: "" }))
+                    setUser!((state:usuario) => ({ ...state, calificacion: 0}))
 
 
                     setHome(true)
@@ -332,10 +402,11 @@ import Https from '../utilidades/HttpsURL';
                     
                     props.setTipoCliente(tipoDeCliente.current)
                     props.setFoto(resquest[0].picture)
-                    
+                    setUser!((state:usuario) => ({ ...state, foto:resquest[0].picture }))
+
                     PedirPersonalInfo(tipoDeCliente)
                     if (tipoDeCliente.current!="1"){
-                      PedirRubros(props.setRubro1,props.setRubro2, email, tipoDeCliente)
+                      PedirRubros( email, tipoDeCliente)
                     }
 
                     setHome(true)

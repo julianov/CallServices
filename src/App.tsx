@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { createContext, useEffect, useRef, useState } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -22,23 +22,25 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-import Registro from './pages/Registro';
-import Ingresar from './pages/Ingresar';
-import Menu from './pages/Menu';
-import MisServicios from './pages/MisServicios';
+import Ingresar from './pages/Ingresar/Ingresar';
+import Menu from './components/Menu/Menu';
+import MisServicios from './pages/MisServicios/MisServicios';
 import Favoritos from './pages/Favoritos';
 import Tab2 from './pages/Tabs2';
-import Completarinfo from './pages/Completarinfo';
 
 import { getItem ,clear, removeItem} from './utilidades/Storage';
 import { render } from '@testing-library/react';
-import Inicio from './pages/Inicio';
-import CompletarRubro from './pages/CompletarRubros';
-import HomeCliente from './pages/HomeCliente';
-import HomeProveedor from './pages/HomeProveedor';
-import CompletarRubros from './pages/CompletarRubros';
+import Inicio from './pages/Inicio/Inicio';
+
+import CompletarRubros from './pages/CompletarRubros/CompletarRubros';
 import { createStore } from './utilidades/dataBase';
-import UserContext from './Contexts/UserContext';
+import { itemRubro, RubroType, usuario, UsuarioType, } from './Interfaces/interfaces';
+import {  UserContext, UserProvider } from './Contexts/UserContext';
+import HomeCliente from './pages/Home/HomeCliente';
+import HomeProveedor from './pages/Home/HomeProveedor';
+import Completarinfo from './pages/CompletarInformacionPersonal/Completarinfo';
+import Registro from './pages/Registro/Registro';
+import { RubroContext, useRubroContext } from './Contexts/RubroContext';
 
 /*
 Device's var:
@@ -66,16 +68,6 @@ Device's var:
 
 const App: React.FC = () => {
 
- 
-  const usuario={
-    email:"",
-    nombre:"",
-    apellido:"",
-    foto:"",
-    calificacion:0,
-    tipoCliente:"",
-  }
-
   const [isReg, setIsReg] = useState<boolean>  ();
   const [cliente, setCliente] = useState(true);
 
@@ -98,7 +90,23 @@ const App: React.FC = () => {
  //removeItem("primevaCargaProveedores");
  //removeItem("clientType");
 
+ //const [usuario, setUsuario] =  useState <usuario> ()
+
+ const [user,setUser] = useState <usuario> ({
+        email:"",
+        nombre:"",
+        apellido:"",
+        foto:"",
+        calificacion:0,
+        tipoCliente:"",
+ })
+ 
+ const [rubros,setRubro] = useState <itemRubro[] | []> ([])
+
+
   useEffect(() => {
+
+    console.log("EL TIPO ES: "+typeof (rubros))
 
     createStore("dbDispositivo")
 
@@ -106,11 +114,14 @@ const App: React.FC = () => {
       if (res!=null){
         setIsReg(true);
         setEmail(res)
-        usuario.email=res
+        setUser( (previous) => ({...previous, email: res}))
 
+        
         getItem("clientType").then(res => {
           setTipoCliente(res)
-          usuario.tipoCliente=res
+         
+          setUser((previous) => ({...previous, tipoCliente: res}))
+
           if (res=="1"){
             setCliente(true)
           }else{
@@ -120,26 +131,78 @@ const App: React.FC = () => {
         })
         getItem("fotoPersonal").then(res2 => {
           setFoto(res2)
-          usuario.foto=(res2)
+          setUser((previous) => ({...previous, foto: res2}))
+
+          
         })
         getItem("nombre").then(res2 => {
           console.log("SE EJECUTÓ EL NOMBRE, EL CUAL ES: "+ res2)
           setNombre(res2)
-          usuario.nombre=res2
+          setUser((previous) => ({...previous, nombre: res2}))
+
         })
         getItem("apellido").then(res2 => {
           setApellido(res2)
-          usuario.apellido=res2
+          setUser((previous) => ({...previous, apellido: res2}))
+
         })
         getItem("calificacion").then(res2 => {
           setCalificacion(res2)
-          usuario.calificacion=res2
+          setUser((previous) => ({...previous, calificacion: res2}))
+
         })
-        getItem("infoRubro1").then(res2 => {
-          setRubro1(res2)
+        getItem("infoRubro1").then(res4 => {
+          setRubro1((res4))
+          console.log("asdfasdf: -"+(res4))
+          console.log("rubro: "+JSON.parse(res4).rubro)
+          if(res4!=null){
+            setRubro([...rubros,{
+              rubro:JSON.parse(res4).rubro,
+              radius:JSON.parse(res4).radius,
+              description:JSON.parse(res4).description,
+              hace_orden_emergencia:JSON.parse(res4).hace_orden_emergencia,
+              calificacion:JSON.parse(res4).calificacion,
+              pais:JSON.parse(res4).pais,
+              provincia:JSON.parse(res4).provincia,
+              ciudad:JSON.parse(res4).ciudad,
+              calle:JSON.parse(res4).calle,
+              numeracion:JSON.parse(res4).numeracion,
+              days_of_works:JSON.parse(res4).days_of_works,
+              hour_init:JSON.parse(res4).hour_init,
+              hour_end:JSON.parse(res4).hour_end,
+              certificate:JSON.parse(res4).certificate,
+              picture1:JSON.parse(res4).picture1,
+              picture2:JSON.parse(res4).picture2,
+              picture3:JSON.parse(res4).picture3,
+              }])
+          }
+          
         })
-        getItem("infoRubro2").then(res2 => {
-          setRubro2(res2)
+        getItem("infoRubro2").then(res5 => {
+          setRubro2(res5)
+          console.log("infoRubro2: "+(res5))
+          if(res5!=null){
+            setRubro([...rubros, {
+              rubro:JSON.parse(res5).rubro,
+              radius:JSON.parse(res5).radius,
+              description:JSON.parse(res5).description,
+              hace_orden_emergencia:JSON.parse(res5).hace_orden_emergencia,
+              calificacion:JSON.parse(res5).calificacion,
+              pais:JSON.parse(res5).pais,
+              provincia:JSON.parse(res5).provincia,
+              ciudad:JSON.parse(res5).ciudad,
+              calle:JSON.parse(res5).calle,
+              numeracion:JSON.parse(res5).numeracion,
+              days_of_works:JSON.parse(res5).days_of_works,
+              hour_init:JSON.parse(res5).hour_init,
+              hour_end:JSON.parse(res5).hour_end,
+              certificate:JSON.parse(res5).certificate,
+              picture1:JSON.parse(res5).picture1,
+              picture2:JSON.parse(res5).picture2,
+              picture3:JSON.parse(res5).picture3,
+              }])  
+          }
+          
         })
 
       }
@@ -149,29 +212,32 @@ const App: React.FC = () => {
     });
 }, []);
 
+
 return(
-  <UserContext.Provider value={usuario}>
+  <UserContext.Provider  value={ {user,setUser} } >
+    <RubroContext.Provider  value={ {rubros,setRubro} } >
+
 
 <IonApp>
 <IonReactRouter>
 <IonSplitPane contentId="main" when="(min-width: 4096px)">
-      <Menu email={email} foto={foto} setIsReg={setIsReg} />
+      <Menu setIsReg={setIsReg} />
   <IonRouterOutlet id="main">
 
-    <Route path="/" render={() => isReg ?   ( cliente ?  <HomeCliente setIsReg={setIsReg} email={email} foto={foto} clientType={tipoCliente} nombre={nombre} apellido={apellido} calificacion={calificacion} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} /> 
-                                              :<HomeProveedor  setIsReg={setIsReg}  email={email } tipodeCliente={tipoCliente} nombre={nombre} apellido={apellido} calificacion={calificacion} setNombre={setNombre} setApellido={setApellido} foto={foto} setFoto={setFoto} rubro1={rubro1} rubro2={rubro2} setRubro1={setRubro1} setRubro2={setRubro2} /> ) 
+    <Route path="/" render={() => isReg ?   ( cliente ?  <HomeCliente setIsReg={setIsReg}  setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} /> 
+                                              :<HomeProveedor  setIsReg={setIsReg} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto}  /> ) 
                                   :<Inicio  /> } />
     
-    <Route path="/home" render={() =>  isReg ? (cliente ?  <HomeCliente setIsReg={setIsReg} email={email} foto={foto} clientType={tipoCliente} nombre={nombre} apellido={apellido} calificacion={calificacion} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} /> 
-                                                :<HomeProveedor  setIsReg={setIsReg} email={email } tipodeCliente={tipoCliente} nombre={nombre} apellido={apellido} calificacion={calificacion} setNombre={setNombre} setApellido={setApellido} foto={foto} setFoto={setFoto} rubro1={rubro1} rubro2={rubro2} setRubro1={setRubro1} setRubro2={setRubro2} /> )
+    <Route path="/home" render={() =>  isReg ? (cliente ?  <HomeCliente setIsReg={setIsReg} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} /> 
+                                                :<HomeProveedor  setIsReg={setIsReg}  setNombre={setNombre} setApellido={setApellido} setFoto={setFoto}  /> )
                                        :<Inicio /> } ></Route>
     
-    <Route path="/registro" render={() => isReg ?   ( cliente ?  <HomeCliente setIsReg={setIsReg} email={email} foto={foto} clientType={tipoCliente} nombre={nombre} apellido={apellido} calificacion={calificacion} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto}/> 
-                                                      :<HomeProveedor  setIsReg={setIsReg} email={email } tipodeCliente={tipoCliente} nombre={nombre} apellido={apellido} calificacion={calificacion} setNombre={setNombre} setApellido={setApellido} foto={foto} setFoto={setFoto} rubro1={rubro1} rubro2={rubro2} setRubro1={setRubro1} setRubro2={setRubro2} /> ) 
+    <Route path="/registro" render={() => isReg ?   ( cliente ?  <HomeCliente setIsReg={setIsReg} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto}/> 
+                                                      :<HomeProveedor  setIsReg={setIsReg}  setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} /> ) 
                                           :<Registro setIsReg={setIsReg} setCliente={setCliente} setTipoCliente={setTipoCliente} setEmail={setEmail } /> } />
 
-    <Route path="/ingresar" render={() => isReg ?   ( cliente ?  <HomeCliente  setIsReg={setIsReg} email={email} foto={foto} clientType={tipoCliente} nombre={nombre} apellido={apellido} calificacion={calificacion} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto}/> 
-                                                      :<HomeProveedor  setIsReg={setIsReg} email={email } tipodeCliente={tipoCliente} nombre={nombre} apellido={apellido} calificacion={calificacion} setNombre={setNombre} setApellido={setApellido} foto={foto} setFoto={setFoto} rubro1={rubro1} rubro2={rubro2} setRubro1={setRubro1} setRubro2={setRubro2} /> ) 
+    <Route path="/ingresar" render={() => isReg ?   ( cliente ?  <HomeCliente  setIsReg={setIsReg} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto}/> 
+                                                      :<HomeProveedor  setIsReg={setIsReg} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} /> ) 
                                           :<Ingresar setIsReg={setIsReg} setCliente={setCliente} setEmail={setEmail} setFoto={setFoto} setTipoCliente={setTipoCliente} setNombre={setNombre} setApellido={setApellido} setCalificacion={setCalificacion} setRubro1={setRubro1} setRubro2={setRubro2} />} /> 
     
     <Route path="/MisServicios" render={() => <MisServicios cliente={cliente} email={email}  ></MisServicios>}></Route>
@@ -180,10 +246,10 @@ return(
         
     <Route path="/Completarinfo" render={() => <Completarinfo setIsReg={setIsReg} email={email} tipoCliente={tipoCliente} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} rubro1={rubro1} rubro2={rubro2} setRubro1={setRubro1} setRubro2={setRubro2} /> }  />
     
-    <Route path="/CompletarRubros" render={() => <CompletarRubros email={email} clientType={tipoCliente} setIsReg={setIsReg} setRubro1={setRubro1} setRubro2={setRubro2} rubro1={rubro1} rubro2={rubro2}  />  }  />   
+    <Route path="/CompletarRubros" render={() => <CompletarRubros email={email} clientType={tipoCliente} setIsReg={setIsReg}  />  }  />   
 
-    <Route path="/inicio" render={() => isReg ?   ( cliente ?  <HomeCliente  setIsReg={setIsReg} email={email} foto={foto} clientType={tipoCliente} nombre={nombre} apellido={apellido} calificacion={calificacion} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} /> 
-                                                    :<HomeProveedor  setIsReg={setIsReg}  email={email } tipodeCliente={tipoCliente} nombre={nombre} apellido={apellido} calificacion={calificacion} setNombre={setNombre} setApellido={setApellido} foto={foto} setFoto={setFoto} rubro1={rubro1} rubro2={rubro2} setRubro1={setRubro1} setRubro2={setRubro2} /> ) 
+    <Route path="/inicio" render={() => isReg ?   ( cliente ?  <HomeCliente  setIsReg={setIsReg} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} /> 
+                                                    :<HomeProveedor  setIsReg={setIsReg}  setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} /> ) 
                                         :<Inicio /> } />
 
     <Route path="/tab2" component={Tab2} exact={true} />
@@ -192,7 +258,9 @@ return(
   </IonSplitPane>
 </IonReactRouter>
 </IonApp>
-</UserContext.Provider>
+
+</RubroContext.Provider>
+</UserContext.Provider >
 
 );
 };

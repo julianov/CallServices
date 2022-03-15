@@ -2,23 +2,22 @@ import { IonActionSheet, IonAlert, IonButton, IonCard, IonCol, IonContent, IonFa
 import { arrowBack, person, close,receipt, help, chatbubble, camera, trash, trendingUpOutline } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router";
-import { getItem, removeItem, setItem } from "../utilidades/Storage";
+import { getItem, removeItem, setItem } from "../../utilidades/Storage";
 
 import './Modal.css';
 import axios from "axios";
-import { usePhotoGallery } from "../hooks/usePhotoGallery";
-import { b64toBlob } from "../utilidades/b64toBlob";
+import { usePhotoGallery } from "../../hooks/usePhotoGallery";
+import { b64toBlob } from "../../utilidades/b64toBlob";
 import { base64FromPath } from "@ionic/react-hooks/filesystem";
 import { useRef } from "react";
-import Completarinfo from "../pages/Completarinfo";
-import Estrellas from "../utilidades/Estrellas";
-import Https from "../utilidades/HttpsURL";
-import VerOrdenesCliente from "../pages/VerOrdenes";
-import { categoriaBuscada } from "../utilidades/ResultadoBusqueda";
+import Estrellas from "../Estrellas/Estrellas";
+import Https from "../../utilidades/HttpsURL";
+import VerOrdenesCliente from "../../pages/VerOrdenes";
 
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import { isPropertySignature } from "typescript";
-import CardProveedor from "../utilidades/CardProveedor";
+import CardProveedor from "../../utilidades/CardProveedor";
+import { categoriaBuscada } from "../ResultadoBusqueda/ResultadoBusqueda";
 
 
 const url=Https

@@ -6,16 +6,16 @@ import './ExploreContainer.css';
 import {Geoposition} from "@ionic-native/geolocation";
 import { Geolocation } from '@capacitor/core/dist/esm/web/geolocation';
 import { useEffect } from 'react';
-import { ordenes } from '../pages/HomeProveedor';
-import OrdenSimple from '../pages/PedirOrden';
+import OrdenSimple from '../../pages/PedirOrden';
 import axios from 'axios';
-import Https from '../utilidades/HttpsURL';
-import ModalVerOrdenes from './ModalVerOrdenesProveedor';
-import ModalVerOrdenesProveedor from './ModalVerOrdenesProveedor';
+import Https from '../../utilidades/HttpsURL';
 import { Adsense } from '@ctrl/react-adsense';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
-import CompletarRubros from '../pages/CompletarRubros';
+import CompletarRubros from '../../pages/CompletarRubros/CompletarRubros';
+import { ordenes } from '../../pages/Home/HomeProveedor';
+import ModalVerOrdenesProveedor from '../VerOrdenes/ModalVerOrdenesProveedor';
+import { useRubroContext } from '../../Contexts/RubroContext';
 
 const url=Https
 
@@ -37,10 +37,7 @@ const getLocation = async () => {
 const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any, sinRubro:boolean, 
   setIsReg:any
   tipodeCliente:any
-  rubro1:any 
-  rubro2:any
-  setRubro1:any 
-  setRubro2:any} ) => {
+ } ) => {
 
   //const [proveedores, setProveedores]=useState()
 
@@ -100,9 +97,10 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any, sin
 
   const [cargarRubro, setCargarRubro] = useState(false)
 
+
+
     if(cargarRubro){
-      return (<CompletarRubros setIsReg={props.setIsReg} clientType= {props.tipodeCliente} email={props.emailProveedor} 
-        rubro1={props.rubro1} rubro2={props.rubro2} setRubro1={props.setRubro1} setRubro2={props.setRubro2} ></CompletarRubros>);
+      return (<CompletarRubros setIsReg={props.setIsReg} clientType= {props.tipodeCliente} email={props.emailProveedor} ></CompletarRubros>);
     }else{
       if(hayOrdenes){
         return (

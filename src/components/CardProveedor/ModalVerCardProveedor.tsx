@@ -2,7 +2,7 @@ import { IonContent, IonIcon } from "@ionic/react";
 import { arrowBack } from "ionicons/icons";
 import React from "react";
 import { parentPort } from "worker_threads";
-import CardProveedor from "../utilidades/CardProveedor";
+import CardProveedor from "../../utilidades/CardProveedor";
 
 
 

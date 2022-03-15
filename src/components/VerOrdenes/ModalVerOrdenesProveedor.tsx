@@ -3,11 +3,11 @@ import { arrowBack, chatbox, eye, location } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import { isConstructorDeclaration, isSetAccessorDeclaration } from "typescript";
 
-import Https from "../utilidades/HttpsURL";
-import './Modal.css';
+import '../ModalGeneral/Modal.css';
 
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
-import Chat from "../utilidades/Chat";
+import Https from "../../utilidades/HttpsURL";
+import Chat from "../Chat/Chat";
 
 const url=Https
 

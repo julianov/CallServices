@@ -1,20 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonFabButton, IonIcon, IonGrid, IonRow, IonCol, IonImg, IonActionSheet, IonInput, IonItem, IonLabel, IonButton, IonItemDivider, IonRange, IonAlert, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonList, IonSelect, IonSelectOption, IonDatetime, IonLoading, IonTextarea, IonCheckbox } from '@ionic/react';
 import { camera, trash, close, pin, closeCircle, text } from 'ionicons/icons';
-import { Photo, usePhotoGallery } from '../hooks/usePhotoGallery';
 
 import './Completarinfo.css';
 import { Redirect, Route, useParams } from 'react-router-dom';
-import { getItem, removeItem, setItem } from '../utilidades/Storage';
 import { request } from 'https';
-import { b64toBlob, strToBlob } from '../utilidades/b64toBlob';
 import Compressor from 'compressorjs';
 import { base64FromPath } from '@ionic/react-hooks/filesystem';
-import CompletarRubro from './CompletarRubros';
-import CompletarRubros from './CompletarRubros';
-import Inicio from './Inicio';
-import HomeCliente from './HomeCliente';
-import Https from '../utilidades/HttpsURL';
+import Https from '../../utilidades/HttpsURL';
+import CompletarRubros from '../CompletarRubros/CompletarRubros';
+import { Photo, usePhotoGallery } from '../../hooks/usePhotoGallery';
+import { b64toBlob } from '../../utilidades/b64toBlob';
+import { setItem } from '../../utilidades/Storage';
 
 
 /*
@@ -77,7 +74,7 @@ const CompletarInformacion =  (props:{setIsReg:any,tipoCliente:any,
         }else{
             
             return (<CompletarRubros setIsReg={props.setIsReg} clientType= {props.tipoCliente} email={props.email} 
-            rubro1={props.rubro1} rubro2={props.rubro2} setRubro1={props.setRubro1} setRubro2={props.setRubro2} ></CompletarRubros>);
+             ></CompletarRubros>);
         }
    
 }

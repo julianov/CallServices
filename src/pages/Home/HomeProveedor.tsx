@@ -1,21 +1,19 @@
 import { IonAlert, IonAvatar, IonButton, IonButtons, IonCard, IonCardHeader, IonChip, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonItemOptions, IonItemSliding, IonLabel, IonList, IonLoading, IonMenuButton, IonModal, IonPage, IonPopover, IonRow, IonSearchbar, IonTitle, IonToolbar} from '@ionic/react';
 import { Icon } from 'ionicons/dist/types/components/icon/icon';
-import React, { Component, useEffect, useRef, useState } from 'react';
-import ExploreContainer from '../components/ExploreContainerCliente';
+import React, { Component, useContext, useEffect, useRef, useState } from 'react';
 import './Home.css';
 import {person, home , closeCircle, chevronDown, arrowBack, receipt, help, chatbubble, notificationsOff} from 'ionicons/icons';
-import Registro from './Registro';
 import axios from 'axios';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 
 import { Plugins } from '@capacitor/core';
-import { getItem , clear, setItem, removeItem} from '../utilidades/Storage';
 import { Redirect } from 'react-router';
-import ModalProveedor from '../components/ModalProveedor';
-import ExploreContainerProveedor from '../components/ExploreContainerProveedor';
-import Https from '../utilidades/HttpsURL';
 import { CardCampanaNotificacion, ListaDeMensajes, newMessage } from './HomeCliente';
-import Chat from '../utilidades/Chat';
+import Https from '../../utilidades/HttpsURL';
+import { UserContext } from '../../Contexts/UserContext';
+import ExploreContainerProveedor from '../../components/ExplorerContainer/ExploreContainerProveedor';
+import ModalProveedor from '../../components/ModalGeneral/ModalProveedor';
+import Chat from '../../components/Chat/Chat';
 
 
 let posicion: string | number;
@@ -62,9 +60,11 @@ export interface ordenes  {
 
 
 const HomeProveedor = (props:{setIsReg:any, 
-  email:any, tipodeCliente:any, foto:any, setFoto:any, 
-  nombre:any, apellido:any, calificacion:any, setNombre:any, setApellido:any, 
-  rubro1:any, rubro2:any, setRubro1:any, setRubro2:any}) => {
+ setNombre:any, setApellido:any, setFoto:any,
+ }) => {
+
+  
+  const {user,setUser} = useContext(UserContext)
 
   
   const [showModal, setShowModal] = useState({ isOpen: false });
@@ -79,7 +79,7 @@ const HomeProveedor = (props:{setIsReg:any,
   const clientType=useRef("");
   //const foto=useRef("");
   
-  const [imagen, setImagen] = useState (props.foto)
+  const [imagen, setImagen] = useState (user!.foto)
 
   const [showInicializando,setShowInicializando]=useState(false)
 
@@ -111,7 +111,7 @@ const HomeProveedor = (props:{setIsReg:any,
 
 
       }else{
-        axios.get(url+"proveedor/ubicacion/"+props.email+"/"+value).then((resp: { data: any; }) => {
+        axios.get(url+"proveedor/ubicacion/"+user!.email+"/"+value).then((resp: { data: any; }) => {
 
           if (resp.data=="bad"){
 
@@ -130,7 +130,7 @@ const HomeProveedor = (props:{setIsReg:any,
       }
     })
 
-        axios.get(url+"orden/misordenes/"+"proveedor/"+props.email).then((resp: { data: any; }) => {
+        axios.get(url+"orden/misordenes/"+"proveedor/"+user!.email).then((resp: { data: any; }) => {
           if (resp.data!="bad"){
             //setMisOrdenes(resp.data) 
             setMisOrdenes(resp.data.map((d: { tipo: any; status: any; fecha_creacion: any; ticket: any; dia: any; time: any; titulo: any; descripcion: any; email_cliente: any; imagen_cliente: any; location_lat: any; location_long: any; picture1: any; picture2: any; presupuesto: any; pedidoMasInformacion: any; respuesta_cliente_pedido_mas_información: any; picture1_mas_información: any; picture2_mas_información: any; }) => ({
@@ -158,13 +158,13 @@ const HomeProveedor = (props:{setIsReg:any,
           }
         })
 
-        if (props.foto==""|| props.foto==null || props.foto==undefined){
+        if (user!.foto==""|| user!.foto==null || user!.foto==undefined){
           setImagen ("./assets/icon/nuevoUsuario.png") 
         }else{
-          setImagen(props.foto)
+          setImagen(user!.foto)
         }
    
-        axios.get(url+"chatsinleer/"+props.email).then((resp: { data: any; }) => {
+        axios.get(url+"chatsinleer/"+user!.email).then((resp: { data: any; }) => {
           if (resp.data!="bad"){
             setNotifications(resp.data.map((d: { de: any; ticket: any; }) => ({
               de:d.de,
@@ -179,7 +179,7 @@ const HomeProveedor = (props:{setIsReg:any,
   if (mostrarChat){
     return(
       <IonContent>
-        <Chat email={props.email}  ticket={ticket.current} setVolver={null} setVista={setMostrarChat} desdeDondeEstoy={false} /> 
+        <Chat email={user!.email}  ticket={ticket.current} setVolver={null} setVista={setMostrarChat} desdeDondeEstoy={false} /> 
 
       </IonContent>
 
@@ -222,20 +222,16 @@ const HomeProveedor = (props:{setIsReg:any,
             onDidDismiss={() => setShowModal({ isOpen: false })}>
             <ModalProveedor 
               setIsReg={props.setIsReg}
-              email={props.email}
+              email={user!.email}
               tipoVista={tipoDeVistaEnModal}
-              fotoPersonal={props.foto}
-              nombre={props.nombre}
-              apellido={props.apellido}
+              fotoPersonal={user!.foto}
+              nombre={user!.nombre}
+              apellido={user!.apellido}
               setFoto={props.setFoto}
               setNombre={props.setNombre}
               setApellido={props.setApellido}
-              calificacion={props.calificacion}
-              rubro1={props.rubro1}
-              rubro2={props.rubro2}
-              setRubro1={props.setRubro1}
-              setRubro2={props.setRubro2} 
-              tipoProveedor={props.tipodeCliente}
+              calificacion={user!.calificacion} 
+              tipoProveedor={user!.tipoCliente}
               completarInfoPersonal={completarInfoPersonal}
               onClose={(value: React.SetStateAction<null>) => {
               setShowModal({ isOpen: false });
@@ -244,15 +240,12 @@ const HomeProveedor = (props:{setIsReg:any,
           </IonModal>
 
           <ExploreContainerProveedor  ordenes={misOrdenes} 
-          emailProveedor={props.email}  
+          emailProveedor={user!.email}  
           sinRubro={sinRubro}
           
           setIsReg={props.setIsReg} 
-          tipodeCliente={props.tipodeCliente}  
-          rubro1={props.rubro1} 
-          rubro2={props.rubro2} 
-          setRubro1={props.setRubro1} 
-          setRubro2={props.setRubro2}
+          tipodeCliente={user!.tipoCliente}  
+         
           />
          
           <IonAlert 

@@ -1,17 +1,15 @@
 import { IonAlert, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonListHeader, IonLoading, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonSearchbar, IonTitle, IonToolbar } from '@ionic/react';
 import { render } from '@testing-library/react';
 import React, { Component, useEffect, useState } from 'react';
-import Menu from './Menu';
 import './Registro.css';
 import { arrowBack, push} from 'ionicons/icons';
 import { BrowserRouter, Redirect, Route, Switch, useHistory } from 'react-router-dom';
 
-import { getItem, setItem } from '../utilidades/Storage';
 import { useRef } from 'react';
-import Completarinfo from './Completarinfo';
 import { type } from 'os';
-import Https from '../utilidades/HttpsURL';
 import { useMemo } from 'react';
+import Https from '../../utilidades/HttpsURL';
+import { setItem } from '../../utilidades/Storage';
 
 
 const url=Https+"registro/"

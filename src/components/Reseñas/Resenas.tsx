@@ -3,8 +3,8 @@ import { IonCard, IonContent, IonIcon } from "@ionic/react";
 import axios from "axios";
 import { arrowBack } from "ionicons/icons";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import Estrellas from "./Estrellas";
-import Https from "./HttpsURL";
+import Https from "../../utilidades/HttpsURL";
+import Estrellas from "../Estrellas/Estrellas";
 import './Resenas.css';
 
 const url=Https

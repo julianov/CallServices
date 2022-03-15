@@ -13,12 +13,13 @@ import {
     IonRow,
   } from '@ionic/react';
   
-  import React, { useEffect, useRef, useState } from 'react';
+  import React, { useContext, useEffect, useRef, useState } from 'react';
   import { Redirect, useLocation } from 'react-router-dom';
   import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp, heart, build, location, home, time,closeCircle, book, person} from 'ionicons/icons';
   import './Menu.css';
-import { getItem, removeItem, setItem } from '../utilidades/Storage';
+import { getItem, removeItem, setItem } from '../../utilidades/Storage';
 import { isPropertySignature } from 'typescript';
+import { UserContext, useUserContext } from '../../Contexts/UserContext';
   
   interface AppPage {
     url: string;
@@ -70,20 +71,24 @@ import { isPropertySignature } from 'typescript';
   
   const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
   
-  const Menu = ( props:{email:any, foto:any, setIsReg:any }) => {
+  const Menu = ( props:{setIsReg:any }) => {
    // const axios = require('axios');
 
     const location = useLocation();
 
-    const [imagen, setImagen] = useState (props.foto)
+    //const user = useContext(UserContext)
+
+    const  {user,setUser}  = useUserContext()
+
+    const [imagen, setImagen] = useState (user!.foto)
 
     useEffect(() => {
-    if (props.foto==""|| props.foto==null || props.foto==undefined){
+    if (user!.foto==""|| user!.foto==null || user!.foto==undefined){
       setImagen ("./assets/icon/nuevoUsuario.png") 
     }else{
-      setImagen(props.foto)
+      setImagen(user!.foto)
     }
-  }, [props.foto]);
+  });
 
   const cerrarSesion = ()=>{
 
@@ -109,7 +114,7 @@ import { isPropertySignature } from 'typescript';
   }
 
   
-  if( props.email==""|| props.email==null){
+  if( user!.email==""|| user!.email==null){
     return (
       <IonMenu contentId="main" type="overlay">
         <IonContent>
@@ -141,7 +146,7 @@ import { isPropertySignature } from 'typescript';
           <IonList id="inbox-list">
           <div ><img src={imagen} id="foto_usuario" />
           </div>
-          <IonNote id="user">{props.email}</IonNote>
+          <IonNote id="user">{user!.email}</IonNote>
 
             {appPages.map((appPage, index) => {
               return (

@@ -2,9 +2,9 @@ import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardS
 import axios from 'axios';
 import { arrowBack } from 'ionicons/icons';
 import React, { Component, useEffect, useRef, useState } from 'react';
-import Https from '../utilidades/HttpsURL';
+import Https from '../../utilidades/HttpsURL';
 import './MisServicios.css';
-import { informacionOrdenes } from './VerOrdenes';
+import { informacionOrdenes } from '../VerOrdenes';
 
 const url=Https
 

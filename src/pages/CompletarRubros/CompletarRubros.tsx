@@ -8,14 +8,14 @@ import { debugPort } from "process";
 import React, { useEffect, useRef, useState } from "react";
 import { Redirect } from "react-router";
 import { isNumber } from "util";
-import { b64toBlob } from "../utilidades/b64toBlob";
-import Https from "../utilidades/HttpsURL";
-import { getItem, removeItem, setItem } from "../utilidades/Storage";
-import { Photo, usePhotoGallery } from "../hooks/usePhotoGallery";
+import { b64toBlob } from "../../utilidades/b64toBlob";
+import Https from "../../utilidades/HttpsURL";
+import { getItem, removeItem, setItem } from "../../utilidades/Storage";
+import { Photo, usePhotoGallery } from "../../hooks/usePhotoGallery";
 
 import "./CompletarRubros.css";
+import { useRubroContext } from "../../Contexts/RubroContext";
 
-import HomeProveedor from "./HomeProveedor";
 
 
 /*
@@ -79,13 +79,14 @@ export interface rubro {
 
 
 
-const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any, 
-    rubro1:any, rubro2:any, setRubro1:any, setRubro2:any}) => {
+const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any}) => {
 
 
    // const [ver,setVer]=useState("*")
 
-   const [arregloRubro, setArregloRubros] =  useState <rubro []> ( [])
+  // const [arregloRubro, setArregloRubros] =  useState <rubro []> ( [])
+  const {rubros,setRubro} = useRubroContext ()
+
 
     const [vista,setVista]=useState(0)
 
@@ -136,6 +137,8 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
     const [showLoading,setShowLoading]=useState(false)
 
     const [reload,setReload] = useState(false)
+
+
 
     useEffect(() => {
         if(vista==0){
@@ -235,27 +238,7 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
             formDataToUpload.append("ordenEmergencia", hace_orden_emergencia.current);
             arreglo.push(hace_orden_emergencia.current)
 
-            setArregloRubros(
-                [{
-                rubro:rubro.current,
-                radius:String(radius),
-                descripcion:descripcion.current,
-                calificacion:String(0),
-                hace_orden_emergencia:hace_orden_emergencia.current,
-                dias:dias.current,
-                horaInicio:horaInicio.current,
-                horaFin:horaFin.current,
-                certificacion:certificacionMostrar.current,
-                picture1:foto1Mostrar.current,
-                picture2:foto2Mostrar.current,
-                picture3:foto3Mostrar.current,
-                pais:pais.current,
-                provincia:provincia.current,
-                ciudad:ciudad.current,
-                domicilio_calle:domicilio_calle.current,
-                domicilio_numeración:String(domicilio_numeración.current),
-            }    ]
-            )
+            
 
            
             const axios = require('axios');
@@ -267,7 +250,27 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
             }).then(function(res: any){
 
                 if(res.data=="rubro cargado"){
-                    console.log("SE CARGO EL RUBRO!!!")
+                    setRubro(
+                        [{...rubros, 
+                        rubro:rubro.current,
+                        radius:String(radius),
+                        description:descripcion.current,
+                        calificacion:0,
+                        hace_orden_emergencia:hace_orden_emergencia.current,
+                        days_of_works:dias.current,
+                        hour_init:horaInicio.current,
+                        hour_end:horaFin.current,
+                        certificate:certificacionMostrar.current,
+                        picture1:foto1Mostrar.current,
+                        picture2:foto2Mostrar.current,
+                        picture3:foto3Mostrar.current,
+                        pais:pais.current,
+                        provincia:provincia.current,
+                        ciudad:ciudad.current,
+                        calle:domicilio_calle.current,
+                        numeracion:String(domicilio_numeración.current),
+                    }    ]
+                    )
                     setItem("rubroLoaded", true).then(() =>{
                         
                         getItem("rubro1").then(res2 => {
@@ -277,7 +280,7 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
 
                               setItem("rubro1", rubro_a_cargar).then(() =>{     
                                 setItem("infoRubro1", JSON.stringify(arreglo)).then(() =>{ 
-                                props.setRubro1(JSON.stringify(arreglo))
+                                
                                 setShowLoading(false);
                                 setVista(0)
                                 arreglo = []
@@ -288,7 +291,7 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any,
                             else{
                               setItem("rubro2", rubro_a_cargar).then(() =>{   
                                 setItem("infoRubro2", JSON.stringify(arreglo)).then(() =>{
-                                props.setRubro2(JSON.stringify(arreglo))
+                                
                                 
                                 setShowLoading(false);
                                 setVista(0)
