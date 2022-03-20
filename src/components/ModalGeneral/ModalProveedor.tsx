@@ -15,6 +15,8 @@ import { b64toBlob } from "../../utilidades/b64toBlob";
 import Estrellas from "../Estrellas/Estrellas";
 import CompletarRubros from "../../pages/CompletarRubros/CompletarRubros";
 import { useRubroContext } from "../../Contexts/RubroContext";
+import { useUserContext } from "../../Contexts/UserContext";
+import { usuario } from "../../Interfaces/interfaces";
 
 //const url='http://127.0.0.1:8000/';
 //const url="https://callservicesvps.online:443/"
@@ -30,11 +32,8 @@ const url2 = Https+"completarinfo/"
 
 
 const ModalProveedor: React.FC<{setIsReg:any,  onClose: any; tipoVista:any; 
-  email:any; tipoProveedor:any; completarInfoPersonal:boolean, fotoPersonal:any,
-  nombre:any, apellido:any, calificacion:any, setFoto:any, setNombre:any,setApellido:any, 
- 
-}> = ({setIsReg, onClose, tipoVista, email, tipoProveedor, completarInfoPersonal, 
-  fotoPersonal, nombre, apellido, calificacion, setFoto, setNombre,setApellido,
+  email:any; tipoProveedor:any; completarInfoPersonal:boolean, 
+}> = ({setIsReg, onClose, tipoVista, email, tipoProveedor, completarInfoPersonal,
 }) => {
  
 
@@ -43,8 +42,7 @@ const ModalProveedor: React.FC<{setIsReg:any,  onClose: any; tipoVista:any;
     < >
       <DatosUsuario setIsReg={setIsReg}
       email={email} tipoProveedor={tipoProveedor} completarInfoPersonal={completarInfoPersonal}
-      fotoPersonal={fotoPersonal} onClose={onClose}
-      nombre={nombre} apellido={apellido} calificacion={calificacion} setFoto={setFoto} setNombre={setNombre} setApellido={setApellido}
+     onClose={onClose}
       
       />
     </>
@@ -228,8 +226,8 @@ const TomarFotografia = (props: {imagen:any, setFilepath:any}) => {
 }  
 
 const DatosUsuario = (props:{setIsReg:any, 
-  email:any,tipoProveedor:string, completarInfoPersonal:any, fotoPersonal:any, onClose:any,
-  nombre:any, apellido:any, calificacion:any, setFoto:any, setNombre:any, setApellido:any }) =>{
+  email:any,tipoProveedor:string, completarInfoPersonal:any, onClose:any,
+  }) =>{
 
   const [agrandarImagen,setAgrandarImagen]=useState(false)
   const [datosPersonales,seDatosPersonales]=useState(false)
@@ -257,8 +255,8 @@ const DatosUsuario = (props:{setIsReg:any,
     return(
       <DatosPersonales setIsReg={props.setIsReg}
       completarInfoPersonal={props.completarInfoPersonal} closeSesion={closeSesion} datosPersonales={datosPersonales} setDatosPersonales={seDatosPersonales} onClose={props.onClose} 
-      email={props.email} tipoProveedor={props.tipoProveedor} foto={props.fotoPersonal} 
-      nombre={props.nombre} apellido={props.apellido} calificacion={props.calificacion} setFoto={props.setFoto} setNombre={props.setNombre} setApellido={props.setApellido} 
+      email={props.email} tipoProveedor={props.tipoProveedor} 
+      
        ></DatosPersonales>
     )
   
@@ -266,21 +264,23 @@ const DatosUsuario = (props:{setIsReg:any,
 
 
 const DatosPersonales =(props:{setIsReg:any, completarInfoPersonal:any; closeSesion:any;  datosPersonales:any;  setDatosPersonales:any, onClose:any, 
-  email:any, tipoProveedor:any, foto:any, nombre:any, apellido:any, calificacion:any, setFoto:any, setNombre:any, setApellido:any,
+  email:any, tipoProveedor:any,
   }) => {
 
   const [showAlertDatosPersonales, setShowAlertDatosPersonales]=useState(false)
   const [rubros,setRubros]=useState(false) //igual a true para mostrar rubros
 
-  const [imagen, setImagen] = useState (props.foto)
+  const  {user,setUser}  = useUserContext()
+
+  const [imagen, setImagen] = useState ("")
 
   useEffect(() => {
-    if (props.foto==""|| props.foto==null || props.foto==undefined){
+    if (user!.foto==""|| user!.foto==null || user!.foto==undefined){
       setImagen ("./assets/icon/nuevoUsuario.png") 
     }else{
-      setImagen(props.foto)
+      setImagen(user!.foto)
     }
-  }, [props.foto]);
+  }, [user!.foto]);
 
   if(props.completarInfoPersonal){
 
@@ -334,9 +334,8 @@ const DatosPersonales =(props:{setIsReg:any, completarInfoPersonal:any; closeSes
               <IonContent>
                 <div id="contenedor-central-Modal">
                 <MostrarDatosPersonales setShowAlertDatosPersonales={setShowAlertDatosPersonales} setDatosPersonales={props.setDatosPersonales} onClose={props.onClose} 
-                email={props.email} tipoProveedor={props.tipoProveedor} foto={props.foto} 
-                nombre={props.nombre} apellido={props.apellido} calificacion={props.calificacion} setFoto={props.setFoto} 
-                setNombre={props.setNombre} setApellido={props.setApellido}
+                email={props.email} tipoProveedor={props.tipoProveedor} foto={user!.foto} 
+                nombre={user!.nombre} apellido={user!.apellido} calificacion={user!.calificacion} setUser={setUser}
                 ></MostrarDatosPersonales>
                 </div>
 
@@ -419,7 +418,7 @@ const DatosPersonales =(props:{setIsReg:any, completarInfoPersonal:any; closeSes
 }
 
 const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatosPersonales:any, onClose:any, 
-  email:any, tipoProveedor:any, foto:any,nombre:any, apellido:any, calificacion:any, setFoto:any, setNombre:any, setApellido:any}) => {
+  email:any, tipoProveedor:any, foto:any,nombre:any, apellido:any, calificacion:any, setUser:any}) => {
 
   const nombre = useRef(props.nombre)
   const apellido = useRef(props.apellido)
@@ -434,7 +433,6 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
   
   const [pedirDatos, setPedirDatos]=useState(0)
 
-  const [alertCambioFoto, setShowAlertCambioFoto] = useState(false)
 
   const [imagen, setImagen] = useState (props.foto)
 
@@ -495,17 +493,15 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
       }).then(function(res: any){
          if(res.data=="ok"){
              //return(<Redirect to="/home" />);
-             if (cambiar=="foto"){
-              setShowAlertCambioFoto(true)
-             }
+             
              setCambiar("nada")
              setItem("nombre", nombre.current)
              setItem("apellido", apellido.current)
              setItem("fotoPersonal",fotoAEnviar)
 
-             props.setNombre(nombre.current)
-             props.setApellido(apellido.current)
-             props.setFoto(fotoAEnviar)
+             props.setUser!((state:usuario) => ({ ...state, nombre: nombre.current }))
+             props.setUser!((state:usuario) => ({ ...state, apellido: apellido.current }))
+             props.setUser!((state:usuario) => ({ ...state, foto: fotoAEnviar }))
           }
       }).catch((error: any) =>{
           setCambiar("nada")
@@ -535,17 +531,15 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
           data:formDataToUpload
       }).then(function(res: any){
          if(res.data=="ok"){
-          if (cambiar=="foto"){
-            setShowAlertCambioFoto(true)
-           }
+         
            setCambiar("nada")
              setItem("nombre", nombre.current)
              setItem("descripcion", descripcion.current)
              setItem("fotoPersonal",fotoAEnviar)
 
-             props.setNombre(nombre.current)
-             props.setApellido(descripcion.current)
-             props.setFoto(fotoAEnviar)
+             props.setUser!((state:usuario) => ({ ...state, nombre: nombre.current }))
+             props.setUser!((state:usuario) => ({ ...state, apellido: apellido.current }))
+             props.setUser!((state:usuario) => ({ ...state, foto: fotoAEnviar }))
           }
       }).catch((error: any) =>{
           setCambiar("nada")
@@ -595,15 +589,7 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
            
             </IonGrid>
             </div>
-            <IonAlert
-              isOpen={alertCambioFoto}
-              onDidDismiss={() => setShowAlertCambioFoto(false)}
-              cssClass='my-custom-class'
-              header={'Cambio de foto personal'}
-              subHeader={''}
-              message={'Verá reflejado el cambio al cerrar y abrir sesión'}
-              buttons={['OK']}
-              />
+          
         </>
     
         );
@@ -714,15 +700,7 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
 
           </IonGrid>
             </div>
-            <IonAlert
-              isOpen={alertCambioFoto}
-              onDidDismiss={() => setShowAlertCambioFoto(false)}
-              cssClass='my-custom-class'
-              header={'Cambio de foto personal'}
-              subHeader={''}
-              message={'Verá reflejado el cambio al cerrar y abrir sesión'}
-              buttons={['OK']}
-              />
+        
           
         </>
     
@@ -828,7 +806,6 @@ const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:
   }else{
     if (verRubro==""){
 
-      console.log("LOS RUBROS QUE HAY: "+JSON.stringify(rubros))
       return( <> 
       <div id="contenedorCompletarRubro">
           <header id="headerRegistro">
@@ -842,7 +819,7 @@ const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:
           {rubros.map((a) => {
                 i = i + 1;
                 return (
-                  <IonItem key={a.rubro} id="item-modalRubro" onClick={() => (verRubros(a))}>
+                  <IonItem style={{height:"100%"}} key={i} id="item-modalRubro" onClick={() => (verRubros(a))}>
                     <strong> {a.rubro} </strong>
                   </IonItem>
                   
@@ -854,84 +831,7 @@ const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:
           <IonButton id="botonAgregarRubro" shape="round" onClick={() => setAgregarOtroRubro(true)}> AGREGAR OTRO RUBRO  </IonButton>
           </footer>
         </div> 
-      </>)
-      /*if((props.rubro1!=""&& props.rubro1!=null )&& (props.rubro2=="" || props.rubro2==null )){
-        return(
-
-          <div id="contenedorCompletarRubro">
-          <header id="headerRegistro">
-          <div id="modalProveedor-flechaVolver">
-            <IonIcon icon={arrowBack} onClick={() => props.setRubros(false)} slot="start" id="flecha-volver">  </IonIcon>
-            <IonIcon icon={close} onClick={() => props.onClose(null)} slot="end" id="flecha-cerrar">  </IonIcon>
-          </div>
-            <IonTitle id="register-title">MIS RUBROS CARGADOS</IonTitle>
-          </header>
-    
-          <div id="contenedorCompletarRubro">
-            <IonItem id="item-modalRubro" onClick={() => (verRubros(props.rubro1))}>
-              <strong> {JSON.parse(props.rubro1)[0]} </strong>
-            </IonItem>
-          </div>
-    
-          <footer id="footerCompletarRubro">
-          <IonButton id="botonAgregarRubro" shape="round" onClick={() => setAgregarOtroRubro(true)}> AGREGAR OTRO RUBRO  </IonButton>
-          </footer>
-        </div> 
-
-
-          
-     );
-      }
-      else if((props.rubro1!=""&&props.rubro1!=null )&& (props.rubro2!="" && props.rubro2!=null )){
-        return(
-          <div id="contenedorCompletarRubro">
-          <header id="headerRegistro">
-          <div id="modalProveedor-flechaVolver">
-            <IonIcon icon={arrowBack} onClick={() => props.setRubros(false)} slot="start" id="flecha-volver">  </IonIcon>
-            <IonIcon icon={close} onClick={() => props.onClose(null)} slot="end" id="flecha-cerrar">  </IonIcon>
-          </div>
-            <IonTitle id="register-title">MIS RUBROS CARGADOS</IonTitle>
-          </header>
-    
-          <div id="contenedorCompletarRubro">
-            <IonItem id="item-modalRubro" onClick={() => (verRubros(props.rubro1))}>
-              <strong> {JSON.parse(props.rubro1)[0]} </strong>
-            </IonItem>
-            <IonItem id="item-modalRubro" onClick={()=> verRubros(props.rubro2) } >
-              <strong >{JSON.parse(props.rubro2)[0]} </strong>
-            </IonItem>
-          </div>
-    
-          <footer id="footerCompletarRubro">
-          </footer>
-        </div> 
-
-       
-      );
-      }else{
-        return (
-          <>
-          <div id="modalProveedor-flechaVolver">
-            <IonIcon icon={arrowBack} onClick={() => props.setRubros(false)} slot="start" id="flecha-volver">  </IonIcon>
-            <IonIcon icon={close} onClick={() => props.onClose(null)} slot="end" id="flecha-cerrar">  </IonIcon>
-          </div>
-          <IonGrid>
-            <IonRow><div className="caja">
-              <strong>NO POSEE RUBROS CARGADOS</strong>
-              <p>Cargue un Rubro para poder recibir pedidos de clientes</p>
-            </div></IonRow>
-            <IonRow><IonCol><IonButton shape="round" onClick={() => { setAgregarOtroRubro(true); } }>AGREGAR RUBRO</IonButton></IonCol></IonRow>
-          </IonGrid>
-            <IonLoading
-              cssClass='my-custom-class'
-              isOpen={showCargandoRubros }
-              onDidDismiss={() => setShowCargandoRubros(false)}
-              message={'Buscando rubros...'}
-              duration={5000} /></>
-      );
-      }*/
-     
-      
+      </>)      
     }else{
     
         return(
@@ -950,13 +850,11 @@ const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:
 
 const CardItemVerRubro= (props:{ pedir:any,rubro:any, clientType:any, email:any, volver:any}) => {
 
+  const [modificarRubro,setModificarRubro]=useState("")
 
   const [datosListos,setDatosListos]=useState(false);
   const [showCargando, setShowCargando]=useState(true)
   const [showRubroEliminado, setShowRubroEliminado]=useState(false)
-
-  const [modificarRubro,setModificarRubro]=useState("")
-
 
   const [item,setItem] = useState()
   const radius = useRef()
@@ -979,25 +877,30 @@ const CardItemVerRubro= (props:{ pedir:any,rubro:any, clientType:any, email:any,
 
   const siesRubro1oRubro2 = useRef("")
 
+
   useEffect(() => {
-    setItem(JSON.parse(props.rubro)[0])
-    radius.current=JSON.parse(props.rubro)[1]
-    description.current=JSON.parse(props.rubro)[2]
-    calificacion.current=JSON.parse(props.rubro)[3]
-    pais.current=JSON.parse(props.rubro)[4]
-    provincia.current=JSON.parse(props.rubro)[5]
-    ciudad.current=JSON.parse(props.rubro)[6]
-    calle.current=JSON.parse(props.rubro)[7]
-    numeracion.current=JSON.parse(props.rubro)[8]
-    days_of_works.current=JSON.parse(props.rubro)[9]
-    hour_init.current=JSON.parse(props.rubro)[10]
-    hour_end.current=JSON.parse(props.rubro)[11]
-    certificate.current=JSON.parse(props.rubro)[12]
-    picture1.current=JSON.parse(props.rubro)[13]
-    picture2.current=JSON.parse(props.rubro)[14]
-    picture3.current=JSON.parse(props.rubro)[15]   
+    
+    
+    setItem(props.rubro.rubro)
+    radius.current=props.rubro.radius
+    description.current=props.rubro.description
+    calificacion.current=props.rubro.calificacion
+    pais.current=props.rubro.pais
+    provincia.current=props.rubro.provincia
+    ciudad.current=props.rubro.ciudad
+    calle.current=props.rubro.calle
+    numeracion.current=props.rubro.numeracion
+    days_of_works.current=props.rubro.days_of_works
+    hour_init.current=props.rubro.hour_init
+    hour_end.current=props.rubro.hour_end
+    certificate.current=props.rubro.certificate
+    picture1.current=props.rubro.picture1
+    picture2.current=props.rubro.picture2
+    picture3.current=  props.rubro.picture3
 
   }, [modificarRubro]);
+
+  console.log("ASDFASDF+"+ props.rubro.rubro)
 
   const volver = ()=>{
     props.volver("")
@@ -1056,7 +959,6 @@ if(modificarRubro==""){
     return (
       <>
       <div id="cardItemModalProveedor">
-
       <IonCard id="ionCard-CardProveedor">
             <IonCardHeader>
                 <IonCardTitle>{item}</IonCardTitle>
@@ -1134,7 +1036,7 @@ if(modificarRubro==""){
     
 }else{
 
-  return (  <ModificarDatosRubro 
+  return (<ModificarDatosRubro 
     clientType={props.clientType} email={props.email}
     rubro={props.rubro} setVolver={setModificarRubro} 
     siesRubro1oRubro2={siesRubro1oRubro2} 
@@ -1159,22 +1061,22 @@ const ModificarDatosRubro = (props:{clientType:any, email:any,rubro:any, setVolv
   //const radio = useRef()
 
 
-  const item = useRef(JSON.parse(props.rubro)[0])
-  const radius = useRef(JSON.parse(props.rubro)[1])
-  const description = useRef(JSON.parse(props.rubro)[2])
-  const calificacion= useRef(JSON.parse(props.rubro)[3])
-  const pais=useRef(JSON.parse(props.rubro)[4])
-  const provincia=useRef(JSON.parse(props.rubro)[5])
-  const ciudad=useRef(JSON.parse(props.rubro)[6])
-  const calle=useRef(JSON.parse(props.rubro)[7])
-  const numeracion=useRef(JSON.parse(props.rubro)[8])
-  const days_of_works = useRef(JSON.parse(props.rubro)[9])
-  const hour_init = useRef(JSON.parse(props.rubro)[10])
-  const hour_end = useRef(JSON.parse(props.rubro)[11])
-  const certificate = useRef(JSON.parse(props.rubro)[12])
-  const picture1 = useRef(JSON.parse(props.rubro)[13])
-  const picture2 = useRef(JSON.parse(props.rubro)[14])
-  const picture3 = useRef(JSON.parse(props.rubro)[15])
+  const item = useRef(props.rubro.rubro)
+  const radius = useRef(props.rubro.radius)
+  const description = useRef(props.rubro.description)
+  const calificacion= useRef(props.rubro.calificacion)
+  const pais=useRef(props.rubro.pais)
+  const provincia=useRef(props.rubro.provincia)
+  const ciudad=useRef(props.rubro.ciudad)
+  const calle=useRef(props.rubro.calle)
+  const numeracion=useRef(props.rubro.numeracion)
+  const days_of_works = useRef(props.rubro.days_of_works)
+  const hour_init = useRef(props.rubro.hour_init)
+  const hour_end = useRef(props.rubro.hour_end)
+  const certificate = useRef(props.rubro.certificate)
+  const picture1 = useRef(props.rubro.picture1)
+  const picture2 = useRef(props.rubro.picture2)
+  const picture3 = useRef(props.rubro.picture3)
 
   const modificar =()=>{
 
@@ -1288,6 +1190,7 @@ const ModificarDatosRubro = (props:{clientType:any, email:any,rubro:any, setVolv
 
       if(res.data=="rubro modificado"){
         if(props.siesRubro1oRubro2.current=="rubro1"){
+          
           setItem("infoRubro1", JSON.stringify(arreglo)).then(() =>{ 
             setShowModificandoRubro(false) 
            // props.setDatosListos(false)

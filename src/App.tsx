@@ -103,6 +103,8 @@ const App: React.FC = () => {
  
  const [rubros,setRubro] = useState <itemRubro[] | []> ([])
 
+ const [rubrosItem1,setItemRubro1] = useState <itemRubro> ()
+ const [rubrosItem2,setItemRubro2] = useState <itemRubro> ()
 
   useEffect(() => {
 
@@ -153,10 +155,10 @@ const App: React.FC = () => {
         })
         getItem("infoRubro1").then(res4 => {
           setRubro1((res4))
-          console.log("asdfasdf: -"+(res4))
-          console.log("rubro: "+JSON.parse(res4).rubro)
+          console.log("rubro1"+ res4)
+
           if(res4!=null){
-            setRubro([...rubros,{
+            setRubro([{
               rubro:JSON.parse(res4).rubro,
               radius:JSON.parse(res4).radius,
               description:JSON.parse(res4).description,
@@ -173,16 +175,15 @@ const App: React.FC = () => {
               certificate:JSON.parse(res4).certificate,
               picture1:JSON.parse(res4).picture1,
               picture2:JSON.parse(res4).picture2,
-              picture3:JSON.parse(res4).picture3,
+              picture3:JSON.parse(res4).picture3
               }])
           }
           
         })
         getItem("infoRubro2").then(res5 => {
           setRubro2(res5)
-          console.log("infoRubro2: "+(res5))
           if(res5!=null){
-            setRubro([...rubros, {
+            setRubro(rubros => [...rubros, {
               rubro:JSON.parse(res5).rubro,
               radius:JSON.parse(res5).radius,
               description:JSON.parse(res5).description,
@@ -199,7 +200,7 @@ const App: React.FC = () => {
               certificate:JSON.parse(res5).certificate,
               picture1:JSON.parse(res5).picture1,
               picture2:JSON.parse(res5).picture2,
-              picture3:JSON.parse(res5).picture3,
+              picture3:JSON.parse(res5).picture3
               }])  
           }
           

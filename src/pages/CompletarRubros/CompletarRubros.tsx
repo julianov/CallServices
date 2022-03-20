@@ -57,7 +57,7 @@ const getLocation = async () => {
     }
   }
 
-export interface rubro {
+/*export interface rubro {
     rubro:string
     radius:string
     descripcion:string
@@ -75,7 +75,7 @@ export interface rubro {
     ciudad:string
     domicilio_calle:string
     domicilio_numeración:string
-}
+}*/
 
 
 
@@ -239,8 +239,6 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any}) => {
             arreglo.push(hace_orden_emergencia.current)
 
             
-
-           
             const axios = require('axios');
             axios({
                 url:url+"subirrubro",
@@ -249,8 +247,9 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any}) => {
                 data:formDataToUpload
             }).then(function(res: any){
 
+                console.log("entonces hay error: "+res.data)
                 if(res.data=="rubro cargado"){
-                    setRubro(
+                    setRubro(rubros =>
                         [{...rubros, 
                         rubro:rubro.current,
                         radius:String(radius),
@@ -269,38 +268,42 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any}) => {
                         ciudad:ciudad.current,
                         calle:domicilio_calle.current,
                         numeracion:String(domicilio_numeración.current),
-                    }    ]
-                    )
+                    }])
+
+                    getItem("rubro1").then(res2 => {
+                        console.log("*****LO QUE HAY EN RUBRO 1 ES: "+res2) 
+                        if (res2==null){
+
+                            // rubro radius posicion descripcion dias horainicio horafin certificacion foto1 foto2 foto3
+                            console.log("LO QUE HAY EN RUBRO 1 ES: "+res2) 
+
+                          setItem("rubro1", rubro_a_cargar).then(() =>{    
+                            setItem("infoRubro1", JSON.stringify(arreglo)).then(() =>{ 
+
+                            setShowLoading(false);
+                            setVista(0)
+                            arreglo = []
+                            //setReload(true)
+                            })
+                        })
+                        }
+                        else{
+                          setItem("rubro2", rubro_a_cargar).then(() =>{   
+                            setItem("infoRubro2", JSON.stringify(arreglo)).then(() =>{
+                            
+                            
+                            setShowLoading(false);
+                            setVista(0)
+                            arreglo = []
+                            setReload(true)
+                        })
+                        })
+                        }
+                      })
+
                     setItem("rubroLoaded", true).then(() =>{
                         
-                        getItem("rubro1").then(res2 => {
-                            if (res2==null){
-
-                                // rubro radius posicion descripcion dias horainicio horafin certificacion foto1 foto2 foto3
-
-                              setItem("rubro1", rubro_a_cargar).then(() =>{     
-                                setItem("infoRubro1", JSON.stringify(arreglo)).then(() =>{ 
-                                
-                                setShowLoading(false);
-                                setVista(0)
-                                arreglo = []
-                                //setReload(true)
-                                })
-                            })
-                            }
-                            else{
-                              setItem("rubro2", rubro_a_cargar).then(() =>{   
-                                setItem("infoRubro2", JSON.stringify(arreglo)).then(() =>{
-                                
-                                
-                                setShowLoading(false);
-                                setVista(0)
-                                arreglo = []
-                                setReload(true)
-                            })
-                            })
-                            }
-                          })
+                       
                     }
                     );
                 }else{
@@ -525,36 +528,51 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any}) => {
 
   // vista=0
 
+
+
   const Vista1 =(props:{ setIsReg:any,setVista:any, volver:any, email:any, clientType:any, setTituloRubros:any, tituloRubros:any, setTituloAVer:any } ) => {
 
     const [tieneCargado, setTieneCargado]=useState (false)
 
     const [error, setError] = useState(false)
 
-    console.log("llego a vista1")
+    const {rubros,setRubro} = useRubroContext ()
+
+
     useEffect(() =>{
-        const axios = require('axios');
-        axios.get(url+"rubros/"+"pedir/"+props.clientType+"/"+props.email)
-        .then((res: { data: any; }) => {
-          const resquest = res.data;
+        
+        console.log("RUBROS: "+rubros[0].rubro)
+        //console.log("RUBROS2: "+rubros[1].rubro)
 
-          if(resquest!="No usuario registrado"){
-            if(resquest=="No hay rubros cargados"){
-                setTieneCargado(false)
-            }else{
+        if(rubros!=undefined || rubros!=undefined || rubros!={}){
 
-                /* Por aquí agregar */
-                
-                setTieneCargado(true)
-                props.setTituloRubros(resquest.split("-"));
-            }
+            setTieneCargado(true)
+            props.setTituloRubros(rubros);
 
-          }
-        }).catch((err: any) => {
-            // what now?
-            setError(true)
+        }else{
+            const axios = require('axios');
+            axios.get(url+"rubros/"+"pedir/"+props.clientType+"/"+props.email)
+            .then((res: { data: any; }) => {
+              const resquest = res.data;
+              if(resquest!="No usuario registrado"){
+                if(resquest=="No hay rubros cargados"){
+                    setTieneCargado(false)
+                }else{
     
-        })
+                    /* Por aquí agregar */
+                    
+                    setTieneCargado(true)
+                    props.setTituloRubros(resquest.split("-"));
+                }
+    
+              }
+            }).catch((err: any) => {
+                // what now?
+                setError(true)
+        
+            })
+        }
+        
 
     }, []);
 
@@ -628,6 +646,7 @@ const Lista = (props:{ setIsReg:any,setTituloAVer:any, setVista:any, arreglo:any
 
     const [termino,setTermino]=useState(false)
 
+    console.log("LLEGO A LISTA"+((props.arreglo!).length))
     if (termino){
        
         props.setIsReg(true) 
@@ -646,7 +665,7 @@ const Lista = (props:{ setIsReg:any,setTituloAVer:any, setVista:any, arreglo:any
         props.setVista(1)
     }
 
-    if(((props.arreglo!).length)-1==1){
+    if(((props.arreglo!).length)==1){
             return(
                 <div id="contenedorCompletarRubro">
             <header id="headerRegistro">
@@ -654,8 +673,8 @@ const Lista = (props:{ setIsReg:any,setTituloAVer:any, setVista:any, arreglo:any
             </header>
       
             <div id="contenedorCompletarRubro">
-                <IonItem id="item-completarRubro-rubro" onClick={()=> ( verRubro(props.arreglo[0])) }>
-                    <strong> {props.arreglo[0]} </strong>
+                <IonItem id="item-completarRubro-rubro" onClick={()=> ( verRubro(props.arreglo[0].rubro)) }>
+                    <strong> {props.arreglo[0].rubro} </strong>
                 </IonItem>
             </div>
       
@@ -671,7 +690,7 @@ const Lista = (props:{ setIsReg:any,setTituloAVer:any, setVista:any, arreglo:any
 
             );
         }
-        else if(((props.arreglo!).length)-1==2){
+        else if(((props.arreglo!).length)==2){
             return(
 
 
@@ -681,10 +700,10 @@ const Lista = (props:{ setIsReg:any,setTituloAVer:any, setVista:any, arreglo:any
                 </header>
           
                 <div id="contenedorCompletarRubro">
-                    <IonItem id="item-completarRubro-rubro" onClick={()=> ( verRubro(props.arreglo[0])) }>
+                    <IonItem id="item-completarRubro-rubro" onClick={()=> ( verRubro(props.arreglo[0].rubro)) }>
                         <strong> {props.arreglo[0]} </strong>
                     </IonItem>
-                    <IonItem id="item-completarRubro-rubro" onClick={()=> verRubro(props.arreglo[1]) } >
+                    <IonItem id="item-completarRubro-rubro" onClick={()=> verRubro(props.arreglo[1].rubro) } >
                         <strong  >{props.arreglo[1]} </strong>
                     </IonItem>
                 </div>

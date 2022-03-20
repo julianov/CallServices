@@ -246,85 +246,55 @@ import { useRubroContext } from '../../Contexts/RubroContext';
               let cantidad=0
               for (let i in arreglo) {
                 if (arreglo[i]!=""){
+                  console.log("pidiendo.... "+arreglo[i])
                   axios.get(url3+"pedirrubros/"+tipoDeCliente.current+"/"+email.current+"/"+arreglo[i])
                   .then((res: { data: any; }) => {
-                    const resquest = res.data;
-              
-                    setRubro([{
-                      rubro:resquest.item,
-                      radius:resquest.radius,
-                      description:resquest.description,
-                      hace_orden_emergencia:"nop",
-                      calificacion:Number(resquest.qualification),
-                      pais:resquest.pais,
-                      provincia:resquest.provincia,
-                      ciudad:resquest.ciudad,
-                      calle:resquest.calle,
-                      numeracion:resquest.numeracion,
-                      days_of_works:resquest.days_of_works,
-                      hour_init:resquest.hour_init,
-                      hour_end:resquest.hour_end,
-                      certificate:resquest.certificate,
-                      picture1:resquest.picture1,
-                      picture2:resquest.picture2,
-                      picture3:resquest.picture3
-                    }])
-                    
-                    if(cantidad==0){
-                     // props.setRubro1(JSON.stringify(array))
-                      setRubro([{
-                        rubro:resquest.item,
-                        radius:resquest.radius,
-                        description:resquest.description,
-                        hace_orden_emergencia:"nop",
-                        calificacion:Number(resquest.qualification),
-                        pais:resquest.pais,
-                        provincia:resquest.provincia,
-                        ciudad:resquest.ciudad,
-                        calle:resquest.calle,
-                        numeracion:resquest.numeracion,
-                        days_of_works:resquest.days_of_works,
-                        hour_init:resquest.hour_init,
-                        hour_end:resquest.hour_end,
-                        certificate:resquest.certificate,
-                        picture1:resquest.picture1,
-                        picture2:resquest.picture2,
-                        picture3:resquest.picture3
-                      }])
-                     
-                      setItem("rubro1", resquest.item).then(() =>{     
-                        
-                      })
-                      setItem("infoRubro1",JSON.stringify(resquest)).then(() =>{ 
-                        cantidad++;
-                      })
-                    }else{
-                      setRubro([...rubros,{
-                        rubro:resquest.item,
-                        radius:resquest.radius,
-                        description:resquest.description,
-                        hace_orden_emergencia:"nop",
-                        calificacion:Number(resquest.qualification),
-                        pais:resquest.pais,
-                        provincia:resquest.provincia,
-                        ciudad:resquest.ciudad,
-                        calle:resquest.calle,
-                        numeracion:resquest.numeracion,
-                        days_of_works:resquest.days_of_works,
-                        hour_init:resquest.hour_init,
-                        hour_end:resquest.hour_end,
-                        certificate:resquest.certificate,
-                        picture1:resquest.picture1,
-                        picture2:resquest.picture2,
-                        picture3:resquest.picture3
-                      }])
-                     // props.setRubro2(JSON.stringify(array))
-                      setItem("rubro2", resquest.item).then(() =>{     
-                        setItem("infoRubro2", JSON.stringify(resquest)).then(() =>{ 
+                    const resquest = (res.data);
+
+                    console.log("LOS RUBROS QUE LLEGARON SON**: - "+ resquest.item)
+                    console.log("LOS RUBROS QUE LLEGARON SON: - "+ JSON.stringify(resquest))
+                    if(resquest!=undefined){
+                      setRubro(res.data)
+                      
+                      if(cantidad==0){
+                       // props.setRubro1(JSON.stringify(array))
+                        setRubro(res.data)
+                       
+                        setItem("rubro1", resquest.item).then(() =>{     
                           
                         })
-                      })
+                        setItem("infoRubro1",JSON.stringify(resquest)).then(() =>{ 
+                          cantidad++;
+                        })
+                      }else{
+                        setRubro([...rubros,{
+                          rubro:resquest.item,
+                          radius:resquest.radius,
+                          description:resquest.description,
+                          hace_orden_emergencia:"nop",
+                          calificacion:Number(resquest.qualification),
+                          pais:resquest.pais,
+                          provincia:resquest.provincia,
+                          ciudad:resquest.ciudad,
+                          calle:resquest.calle,
+                          numeracion:resquest.numeracion,
+                          days_of_works:resquest.days_of_works,
+                          hour_init:resquest.hour_init,
+                          hour_end:resquest.hour_end,
+                          certificate:resquest.certificate,
+                          picture1:resquest.picture1,
+                          picture2:resquest.picture2,
+                          picture3:resquest.picture3
+                        }])
+                       // props.setRubro2(JSON.stringify(array))
+                        setItem("rubro2", resquest.item).then(() =>{     
+                          setItem("infoRubro2", JSON.stringify(resquest)).then(() =>{ 
+                            
+                          })
+                        })
+                      }
                     }
+                   
   
                   })
                 

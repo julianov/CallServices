@@ -14,6 +14,7 @@ import { UserContext } from '../../Contexts/UserContext';
 import ExploreContainerProveedor from '../../components/ExplorerContainer/ExploreContainerProveedor';
 import ModalProveedor from '../../components/ModalGeneral/ModalProveedor';
 import Chat from '../../components/Chat/Chat';
+import { useRubroContext } from '../../Contexts/RubroContext';
 
 
 let posicion: string | number;
@@ -98,6 +99,11 @@ const HomeProveedor = (props:{setIsReg:any,
   const [notifications, setNotifications] =  useState < newMessage []> ( [])
   const [mostrarChat,setMostrarChat] = useState(false)
   const ticket = useRef ("")
+
+  const {rubros,setRubro} = useRubroContext()
+
+  console.log("muestro la longitud: "+rubros.length)
+
 
   useEffect(() => {
 
@@ -224,13 +230,6 @@ const HomeProveedor = (props:{setIsReg:any,
               setIsReg={props.setIsReg}
               email={user!.email}
               tipoVista={tipoDeVistaEnModal}
-              fotoPersonal={user!.foto}
-              nombre={user!.nombre}
-              apellido={user!.apellido}
-              setFoto={props.setFoto}
-              setNombre={props.setNombre}
-              setApellido={props.setApellido}
-              calificacion={user!.calificacion} 
               tipoProveedor={user!.tipoCliente}
               completarInfoPersonal={completarInfoPersonal}
               onClose={(value: React.SetStateAction<null>) => {
