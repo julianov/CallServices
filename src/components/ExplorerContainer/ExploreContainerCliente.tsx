@@ -18,7 +18,7 @@ import Estrellas from '../Estrellas/Estrellas';
 import ModalVerCardProveedor from '../CardProveedor/ModalVerCardProveedor';
 import ResultadoBusqueda, { categoriaBuscada } from '../ResultadoBusqueda/ResultadoBusqueda';
 import Resenas from '../Reseñas/Resenas';
-import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonChip, IonCol, IonGrid, IonIcon, IonItem, IonItemDivider, IonLabel, IonList, IonModal, IonRow } from '@ionic/react';
+import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonChip, IonCol, IonGrid, IonIcon, IonItem, IonItemDivider, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal, IonRow, IonSlide, IonSlides } from '@ionic/react';
 
 const getLocation = async () => {
   try {
@@ -465,13 +465,17 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , hayOrdenes:any,
         <>
         <h1>SERVICIOS EN CURSO</h1>
         <div>
+        <IonSlides >
           {props.misOrdenes.map((a) => {
             i = i + 1;
-            return (<CardVistaVariasOrdenes key={i} posicion={i} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket}
-              dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_proveedor} setVerOrden={props.setVerOrden} setPosicion={props.setPosicion}
-              presupuesto={a.presupuesto} masInfo={a.pedido_mas_información}
-            ></CardVistaVariasOrdenes>);
+            return (
+              <IonSlide>
+                <CardVistaVariasOrdenes key={i} posicion={i} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket}
+                  dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_proveedor} setVerOrden={props.setVerOrden} setPosicion={props.setPosicion}
+                  presupuesto={a.presupuesto} masInfo={a.pedido_mas_información}></CardVistaVariasOrdenes>
+            </IonSlide>);
           })}
+        </IonSlides>
         </div></>
     )
     }else{
@@ -685,5 +689,8 @@ const Tabs= (props:{setShowModal:any,setTipoDeVistaEnModal:any  }) => {
   )
 
 }
+
+
+
   
 export default ExploreContainerCliente;

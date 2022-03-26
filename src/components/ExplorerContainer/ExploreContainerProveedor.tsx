@@ -15,7 +15,7 @@ import CompletarRubros from '../../pages/CompletarRubros/CompletarRubros';
 import { ordenes } from '../../pages/Home/HomeProveedor';
 import ModalVerOrdenesProveedor from '../VerOrdenes/ModalVerOrdenesProveedor';
 import { useRubroContext } from '../../Contexts/RubroContext';
-import { IonButton, IonCard, IonCardHeader, IonCardSubtitle, IonCol, IonGrid, IonModal, IonRow, IonTitle } from '@ionic/react';
+import { IonButton, IonCard, IonCardHeader, IonCardSubtitle, IonCol, IonGrid, IonModal, IonRow, IonSlide, IonSlides, IonTitle } from '@ionic/react';
 
 const url=Https
 
@@ -169,13 +169,19 @@ const Elements = (props:{ proveedores: Array <ordenes> , setVerOrden:any,setPosi
   //if (props.proveedores!=[]){
     return (
       <div  >
+        <IonSlides >
+
         {props.proveedores.map((a) => {
           i=i+1
-          return (<CardVistaVariasOrdenes key={i} posicion={i} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket} 
-            dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_cliente} setVerOrden={props.setVerOrden} setPosicion={props.setPosicion}
-           ></CardVistaVariasOrdenes> ) 
+          return (
+          <IonSlide>
+            <CardVistaVariasOrdenes key={i} posicion={i} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket} 
+            dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_cliente} setVerOrden={props.setVerOrden} setPosicion={props.setPosicion}></CardVistaVariasOrdenes>
+           </IonSlide>
+           ) 
         })
         }
+        </IonSlides>
     </div>
   )
   //}
