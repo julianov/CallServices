@@ -1,4 +1,3 @@
-import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonChip, IonCol, IonGrid, IonIcon, IonItem, IonItemDivider, IonLabel, IonList, IonModal, IonRow } from '@ionic/react';
 import { alert, chevronDown, closeCircle, trendingUpOutline } from 'ionicons/icons';
 import React, { useMemo, useRef, useState } from 'react';
 
@@ -19,6 +18,7 @@ import Estrellas from '../Estrellas/Estrellas';
 import ModalVerCardProveedor from '../CardProveedor/ModalVerCardProveedor';
 import ResultadoBusqueda, { categoriaBuscada } from '../ResultadoBusqueda/ResultadoBusqueda';
 import Resenas from '../Reseñas/Resenas';
+import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonChip, IonCol, IonGrid, IonIcon, IonItem, IonItemDivider, IonLabel, IonList, IonModal, IonRow } from '@ionic/react';
 
 const getLocation = async () => {
   try {
@@ -623,7 +623,8 @@ export const Categorias: React.FC = () => {
   return (
     <div id="columna3">
 
-      <IonModal isOpen={showModal} cssClass='my-custom-class' animated={true} backdropDismiss={true}>
+      <IonModal isOpen={showModal} 
+       animated={true} backdropDismiss={true}>
       <IonIcon icon={closeCircle} onClick={() => setShowModal(false)}></IonIcon>
         <div id="contenedor-central" >
         <IonList>

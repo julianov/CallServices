@@ -1,4 +1,3 @@
-import { IonAvatar, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonChip, IonCol, IonContent, IonFab, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonLabel, IonList, IonModal, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import { add, arrowBack, arrowForwardCircle, chevronDown, closeCircle, pin } from 'ionicons/icons';
 import React, { Component, useRef, useState } from 'react';
 import './ExploreContainer.css';
@@ -16,13 +15,15 @@ import CompletarRubros from '../../pages/CompletarRubros/CompletarRubros';
 import { ordenes } from '../../pages/Home/HomeProveedor';
 import ModalVerOrdenesProveedor from '../VerOrdenes/ModalVerOrdenesProveedor';
 import { useRubroContext } from '../../Contexts/RubroContext';
+import { IonButton, IonCard, IonCardHeader, IonCardSubtitle, IonCol, IonGrid, IonModal, IonRow, IonTitle } from '@ionic/react';
 
 const url=Https
 
 
 const getLocation = async () => {
   try {
-      const position = await Geolocation.getCurrentPosition();
+    const position = await Geolocation.getCurrentPosition();
+
       const posicion=position.coords.latitude +"/"+ position.coords.longitude
       return posicion;
 
@@ -59,39 +60,11 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any, sin
 
     }
 }, [props.sinRubro]);
+
   useEffect(() => {
-
-  /*  for (let i=0; i<props.ordenes.length;i++){     
-
-
-      setArregloOrdenes([...arregloOrdenes, { tipo:props.ordenes[i].tipo,
-        status:props.ordenes[i].status,
-        fecha_creacion:props.ordenes[i].fecha_creacion,
-        ticket:props.ordenes[i].ticket,
-        dia:props.ordenes[i].dia,
-        hora:props.ordenes[i].hora,
-        titulo:props.ordenes[i].titulo,
-        descripcion:props.ordenes[i].descripcion,
-        email_cliente:props.ordenes[i].email_cliente,
-        imagen_cliente:props.ordenes[i].imagen_cliente,
-        location_lat:props.ordenes[i].location_lat,
-        location_long:props.ordenes[i].location_long,
-        picture1:props.ordenes[i].picture1,
-        picture2:props.ordenes[i].picture2,
-        presupuesto_inicial:props.ordenes[i].presupuesto,
-        pedido_mas_información:props.ordenes[i].pedidoMasInformacion,
-        respuesta_cliente_pedido_mas_información:props.ordenes[i].respuesta_cliente_pedido_mas_información,
-        picture1_mas_información:props.ordenes[i].picture1_mas_información,
-        picture2_mas_información:props.ordenes[i].picture2_mas_información
-      }])
-
-    }*/
-
     if(props.ordenes.length > 0){
       setHayOrdenes(true)
     }
-   
-
   }, [props.ordenes]);
 
 
@@ -108,7 +81,7 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any, sin
            
               <h1 id="textoCentrado"> ORDENES DE TRABAJO ACTIVAS </h1>
   
-              <Elements proveedores={props.ordenes} setVerOrden={setVerOrden} setPosicion={setPosicion} />
+            <Elements proveedores={props.ordenes} setVerOrden={setVerOrden} setPosicion={setPosicion} />
             
             <CampanaPublicidad></CampanaPublicidad>
             <Adsense
@@ -195,7 +168,7 @@ const Elements = (props:{ proveedores: Array <ordenes> , setVerOrden:any,setPosi
   var i=0
   //if (props.proveedores!=[]){
     return (
-      <div   >
+      <div  >
         {props.proveedores.map((a) => {
           i=i+1
           return (<CardVistaVariasOrdenes key={i} posicion={i} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket} 

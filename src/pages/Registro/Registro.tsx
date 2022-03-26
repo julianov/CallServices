@@ -1,4 +1,3 @@
-import { IonAlert, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonListHeader, IonLoading, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonSearchbar, IonTitle, IonToolbar } from '@ionic/react';
 import { render } from '@testing-library/react';
 import React, { Component, useEffect, useState } from 'react';
 import './Registro.css';
@@ -10,6 +9,7 @@ import { type } from 'os';
 import { useMemo } from 'react';
 import Https from '../../utilidades/HttpsURL';
 import { setItem } from '../../utilidades/Storage';
+import { IonAlert, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonListHeader, IonLoading, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonSearchbar, IonTitle, IonToolbar } from '@ionic/react';
 
 
 const url=Https+"registro/"

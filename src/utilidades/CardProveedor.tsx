@@ -1,4 +1,3 @@
-import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonItem, IonTitle, IonButton, IonGrid, IonCol, IonRow, IonItemDivider, IonModal } from "@ionic/react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { createStore, getDB, removeDB, setDB } from "./dataBase";
 import { getItem, removeItem, setItem } from "./Storage";
@@ -8,6 +7,7 @@ import { contractSharp } from "ionicons/icons";
 import OrdenSimple from "../pages/PedirOrden";
 import { categoriaBuscada } from "../components/ResultadoBusqueda/ResultadoBusqueda";
 import Resenas from "../components/Reseñas/Resenas";
+import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonItem, IonTitle, IonButton, IonGrid, IonCol, IonRow, IonItemDivider, IonModal } from "@ionic/react";
 
 
 

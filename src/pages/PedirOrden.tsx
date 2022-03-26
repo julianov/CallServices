@@ -7,7 +7,6 @@ import CardProveedor from "../utilidades/CardProveedor";
 import { removeItem } from "../utilidades/Storage";
 import Https from "../utilidades/HttpsURL";
 import React, { useEffect, useRef, useState } from 'react';
-import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItemDivider, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent, IonDatetime, IonCheckbox, IonLoading, IonTitle, IonSegment, IonSegmentButton } from '@ionic/react';
 import { Photo, usePhotoGallery } from "../hooks/usePhotoGallery";
 import { base64FromPath } from '@ionic/react-hooks/filesystem';
 import { b64toBlob } from '../utilidades/b64toBlob';
@@ -16,6 +15,7 @@ import { isSetAccessorDeclaration } from 'typescript';
 import { allowedNodeEnvironmentFlags } from 'process';
 import { BotonDia } from './CompletarRubros/CompletarRubros';
 import { setDB } from '../utilidades/dataBase';
+import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItemDivider, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent, IonDatetime, IonCheckbox, IonLoading, IonTitle, IonSegment, IonSegmentButton } from '@ionic/react';
 
 const url=Https+"orden/"
 
@@ -290,7 +290,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                                 <IonCol >
                                     <IonItem id="item-completarInfo">
                                         <IonLabel position="floating">Hora estimativa</IonLabel>
-                                        <IonDatetime displayFormat="HH:mm" value={hora.current} onIonChange={e => hora.current=(e.detail.value!)}></IonDatetime>
+                                        <IonDatetime value={hora.current} onIonChange={e => hora.current=(e.detail.value!)}></IonDatetime>
 
                                     </IonItem>
                                 </IonCol>

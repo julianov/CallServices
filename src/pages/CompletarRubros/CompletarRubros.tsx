@@ -1,6 +1,5 @@
 
 import { Geolocation } from "@capacitor/core";
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCheckbox, IonCol, IonDatetime, IonGrid, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonSelect, IonSelectOption, IonIcon, IonFabButton, IonImg, IonActionSheet, IonRange, IonTextarea, IonItemSliding, IonSegment, IonSegmentButton } from "@ionic/react";
 import { base64FromPath } from "@ionic/react-hooks/filesystem/utils";
 import { setServers } from "dns";
 import { arrowBack, camera, trash,close, volumeLowSharp, imageOutline, terminalOutline } from "ionicons/icons";
@@ -16,6 +15,7 @@ import { Photo, usePhotoGallery } from "../../hooks/usePhotoGallery";
 import "./CompletarRubros.css";
 import { useRubroContext } from "../../Contexts/RubroContext";
 
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCheckbox, IonCol, IonDatetime, IonGrid, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonSelect, IonSelectOption, IonIcon, IonFabButton, IonImg, IonActionSheet, IonRange, IonTextarea, IonItemSliding, IonSegment, IonSegmentButton } from "@ionic/react";
 
 
 /*
@@ -247,7 +247,6 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any}) => {
                 data:formDataToUpload
             }).then(function(res: any){
 
-                console.log("entonces hay error: "+res.data)
                 if(res.data=="rubro cargado"){
                     setRubro(rubros =>
                         [{...rubros, 
@@ -271,11 +270,9 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any}) => {
                     }])
 
                     getItem("rubro1").then(res2 => {
-                        console.log("*****LO QUE HAY EN RUBRO 1 ES: "+res2) 
                         if (res2==null){
 
                             // rubro radius posicion descripcion dias horainicio horafin certificacion foto1 foto2 foto3
-                            console.log("LO QUE HAY EN RUBRO 1 ES: "+res2) 
 
                           setItem("rubro1", rubro_a_cargar).then(() =>{    
                             setItem("infoRubro1", JSON.stringify(arreglo)).then(() =>{ 
@@ -290,7 +287,6 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any}) => {
                         else{
                           setItem("rubro2", rubro_a_cargar).then(() =>{   
                             setItem("infoRubro2", JSON.stringify(arreglo)).then(() =>{
-                            
                             
                             setShowLoading(false);
                             setVista(0)
@@ -541,13 +537,11 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any}) => {
 
     useEffect(() =>{
         
-        console.log("RUBROS: "+rubros[0].rubro)
-        //console.log("RUBROS2: "+rubros[1].rubro)
 
         if(rubros!=undefined || rubros!=undefined || rubros!={}){
 
             setTieneCargado(true)
-            props.setTituloRubros(rubros);
+         
 
         }else{
             const axios = require('axios');
@@ -581,7 +575,7 @@ const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any}) => {
     if (!error){
         if(tieneCargado){
             return (
-                <Lista setIsReg={props.setIsReg} setVista={props.setVista} arreglo={props.tituloRubros} clientType={props.clientType} email={props.email} setTituloAVer={props.setTituloAVer} ></Lista>
+                <Lista setIsReg={props.setIsReg} setVista={props.setVista} arreglo={rubros} clientType={props.clientType} email={props.email} setTituloAVer={props.setTituloAVer} ></Lista>
                 );
     
         }else{
@@ -646,7 +640,7 @@ const Lista = (props:{ setIsReg:any,setTituloAVer:any, setVista:any, arreglo:any
 
     const [termino,setTermino]=useState(false)
 
-    console.log("LLEGO A LISTA"+((props.arreglo!).length))
+    
     if (termino){
        
         props.setIsReg(true) 
@@ -665,7 +659,7 @@ const Lista = (props:{ setIsReg:any,setTituloAVer:any, setVista:any, arreglo:any
         props.setVista(1)
     }
 
-    if(((props.arreglo!).length)==1){
+    if((props.arreglo.length)==1){
             return(
                 <div id="contenedorCompletarRubro">
             <header id="headerRegistro">
@@ -701,10 +695,10 @@ const Lista = (props:{ setIsReg:any,setTituloAVer:any, setVista:any, arreglo:any
           
                 <div id="contenedorCompletarRubro">
                     <IonItem id="item-completarRubro-rubro" onClick={()=> ( verRubro(props.arreglo[0].rubro)) }>
-                        <strong> {props.arreglo[0]} </strong>
+                        <strong> {props.arreglo[0].rubro} </strong>
                     </IonItem>
                     <IonItem id="item-completarRubro-rubro" onClick={()=> verRubro(props.arreglo[1].rubro) } >
-                        <strong  >{props.arreglo[1]} </strong>
+                        <strong  >{props.arreglo[1].rubro} </strong>
                     </IonItem>
                 </div>
           
@@ -717,7 +711,7 @@ const Lista = (props:{ setIsReg:any,setTituloAVer:any, setVista:any, arreglo:any
 
             );
         }else{
-            return(<div></div>)
+            return(<div>asdf</div>)
         }
     }
 
@@ -729,20 +723,63 @@ const Lista = (props:{ setIsReg:any,setTituloAVer:any, setVista:any, arreglo:any
 
 const CardItem= (props:{setVista:any, clientType:any, email:any, ver:any}) => {
 
-    const [rubros, setRubros]=useState <any>();
-    const [datosListos,setDatosListos]=useState(false);
-    const [showCargando, setShowCargando]=useState(true)
+   // const [rubros, setRubros]=useState <any>();
+    //const [datosListos,setDatosListos]=useState(false);
+  //  const [showCargando, setShowCargando]=useState(true)
     const [showRubroEliminado, setShowRubroEliminado]=useState(false)
 
+    const {rubros,setRubro} = useRubroContext ()
+
+    var j=0
+    console.log("VER ES EL NOMBRE DEL RUBRO: "+rubros[j].rubro)
+
+    const [item, setItem]= useState("")
+    const radius = useRef("")
+    const description = useRef("")
+    const calificacion= useRef(0)
+
+    const pais= useRef("")
+    const provincia= useRef("")
+    const ciudad= useRef("")
+    const calle= useRef("")
+    const numeracion= useRef("")
+
+    const days_of_works = useRef("")
+    const hour_init = useRef("")
+    const hour_end = useRef("")
+    const certificate = useRef("")
+    const picture1 = useRef("")
+    const picture2 = useRef("")
+    const picture3 = useRef("")
+
     useEffect(() => {   
-        const axios = require('axios');
-        axios.get(url+"pedirrubros/"+props.clientType+"/"+props.email+"/"+props.ver)
-    .then((res: { data: any; }) => {
-      const resquest = res.data;  
-      setRubros(resquest)
-      setDatosListos(true)
-      setShowCargando(false)
-    })
+
+        var i=0; 
+
+        if (rubros[0].rubro==props.ver){
+            i=0
+        }else{
+            i=1
+        }
+
+        setItem(rubros[i].rubro)
+            radius.current=rubros[i].radius
+            description.current=rubros[i].description
+            calificacion.current=rubros[i].calificacion
+            pais.current=rubros[i].pais
+            provincia.current=rubros[i].provincia
+            ciudad.current=rubros[i].ciudad
+            calle.current=rubros[i].calle
+            numeracion.current=rubros[i].numeracion
+            days_of_works.current=rubros[i].days_of_works
+            hour_init.current=rubros[i].hour_init
+            hour_end.current=rubros[i].hour_end
+            certificate.current=rubros[i].certificate
+            picture1.current=rubros[i].picture1
+            picture2.current=rubros[i].picture2
+            picture3.current=rubros[i].picture3
+        
+        
 
     }, []);
 
@@ -752,7 +789,7 @@ const CardItem= (props:{setVista:any, clientType:any, email:any, ver:any}) => {
         var formDataToUpload = new FormData();
         formDataToUpload.append("email", props.email);
         formDataToUpload.append("tipo", props.clientType);
-        formDataToUpload.append("item", rubros[0].item);
+        formDataToUpload.append("item", item);
 
         axios({
             url:url+"eliminarRubro",
@@ -791,31 +828,30 @@ const CardItem= (props:{setVista:any, clientType:any, email:any, ver:any}) => {
 
     }
 
-    if (datosListos){
     return (
       <>
     <div id="cardItem">
 
-      <IonCard>
+      <IonCard style={{marginTop:"35px"}}>
             <IonCardHeader>
-                <IonCardTitle>{rubros[0].item}</IonCardTitle>
+                <IonCardTitle>{item}</IonCardTitle>
             </IonCardHeader>
             <strong>Descripción:</strong>
-            <IonCardContent>{rubros[0].description}</IonCardContent>
+            <IonCardContent>{description.current}</IonCardContent>
         </IonCard>
 
         <IonCard>
-            <IonItem className="item">País: {rubros[3].pais}</IonItem>
-            <IonItem className="item">Provincia/Departamento/Estado: {rubros[3].provincia}</IonItem>
-            <IonItem className="item">Ciudad: {rubros[3].ciudad}</IonItem>
-            <IonItem className="item">Dirección: {rubros[3].calle} {rubros[3].numeracion}</IonItem>
+            <IonItem className="item">País: {pais.current}</IonItem>
+            <IonItem className="item">Provincia/Departamento/Estado: {provincia.current}</IonItem>
+            <IonItem className="item">Ciudad: {ciudad.current}</IonItem>
+            <IonItem className="item">Dirección: {calle.current} {numeracion.current}</IonItem>
 
         </IonCard>
 
         <IonCard>
-            <IonItem className="item">Días de trabajo: {rubros[1].days_of_works}</IonItem>
-            <IonItem className="item">Horario de inicio: {rubros[1].hour_init}</IonItem>
-            <IonItem className="item">Horario de finalización: {rubros[1].hour_end}</IonItem>
+            <IonItem className="item">Días de trabajo: {days_of_works.current}</IonItem>
+            <IonItem className="item">Horario de inicio: {hour_init.current}</IonItem>
+            <IonItem className="item">Horario de finalización: {hour_end.current}</IonItem>
         </IonCard>
 
         <IonCard>
@@ -825,7 +861,7 @@ const CardItem= (props:{setVista:any, clientType:any, email:any, ver:any}) => {
 
             <div id="imagenesCompletarRubro">
 
-                <img id="imagenCompletarRubro" src={rubros[2].certificate}></img>
+                <img id="imagenCompletarRubro" src={certificate.current}></img>
             </div>
         </IonCard>
 
@@ -836,9 +872,9 @@ const CardItem= (props:{setVista:any, clientType:any, email:any, ver:any}) => {
             
             <div id="imagenesCompletarRubro">
             
-                <img id="imagenCompletarRubro" src={rubros[2].picture1}></img>
-                <img id="imagenCompletarRubro" src={rubros[2].picture2}></img>
-                <img id="imagenCompletarRubro" src={rubros[2].picture3}></img>
+                <img id="imagenCompletarRubro" src={picture1.current}></img>
+                <img id="imagenCompletarRubro" src={picture2.current}></img>
+                <img id="imagenCompletarRubro" src={picture3.current}></img>
             
             </div>
         </IonCard>
@@ -866,18 +902,7 @@ const CardItem= (props:{setVista:any, clientType:any, email:any, ver:any}) => {
                   </> 
 
     );
-    }else{
-      return ( 
-          <IonLoading
-              cssClass='my-custom-class'
-              isOpen={showCargando}
-              onDidDismiss={() => setShowCargando(false)}
-              message={'Cargando datos...'}
-              duration={5000} />
 
-  
-      );
-    }
     
   }
 
@@ -1010,7 +1035,7 @@ const AgregarTipoRubro =  (props:{setVista:any, rubro:any, dias:any,horaInicio:a
                             <IonCol className="columna">
                                 <IonItem>
                                     <IonLabel id="label">HORA DE INICIO DE TRABAJO DIARIO</IonLabel>
-                                    <IonDatetime displayFormat="HH:mm" value={props.horaInicio.current} onIonChange={e => props.horaInicio.current = (e.detail.value!)}></IonDatetime>
+                                    <IonDatetime value={props.horaInicio.current} onIonChange={e => props.horaInicio.current = (e.detail.value!)}></IonDatetime>
                                 </IonItem>
                             </IonCol>
                         </IonRow>
@@ -1018,7 +1043,7 @@ const AgregarTipoRubro =  (props:{setVista:any, rubro:any, dias:any,horaInicio:a
                             <IonCol className="columna">
                                 <IonItem>
                                     <IonLabel id="label">HORA DE FINALIZACIÓN DE TRABAJO DIARIO</IonLabel>
-                                    <IonDatetime displayFormat="HH:mm" value={props.horaFin.current} onIonChange={e => props.horaFin.current = (e.detail.value!)}></IonDatetime>
+                                    <IonDatetime  value={props.horaFin.current} onIonChange={e => props.horaFin.current = (e.detail.value!)}></IonDatetime>
                                 </IonItem>
                             </IonCol>
                         </IonRow>
@@ -1568,8 +1593,7 @@ const AgregarImagenes = (props:{setVista: any,
 const OrdenesEmergencia = (props:{rubro:any, ordenEmergencia:any}) => {
 
 
-    console.log("llego a orden de emergencia")
-    console.log("el rubro que elegi es: "+props.rubro)
+
     if (props.rubro=="PLOMERIA" || props.rubro=="GASISTA" || props.rubro=="CERRAJERÍA" || props.rubro=="ELECTRICIDAD" || props.rubro=="FLETE" || props.rubro=="MECANICA" || props.rubro=="REMOLQUES - GRÚAS" ){
         return( 
             

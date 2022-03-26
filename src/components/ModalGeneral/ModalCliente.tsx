@@ -1,11 +1,8 @@
-import { IonActionSheet, IonAlert, IonButton, IonCard, IonCol, IonContent, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonTitle, IonToolbar } from "@ionic/react";
 import { arrowBack, person, close,receipt, help, chatbubble, camera, trash, trendingUpOutline } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
-import { Redirect } from "react-router";
 import { getItem, removeItem, setItem } from "../../utilidades/Storage";
 
 import './Modal.css';
-import axios from "axios";
 import { usePhotoGallery } from "../../hooks/usePhotoGallery";
 import { b64toBlob } from "../../utilidades/b64toBlob";
 import { base64FromPath } from "@ionic/react-hooks/filesystem";
@@ -14,10 +11,11 @@ import Estrellas from "../Estrellas/Estrellas";
 import Https from "../../utilidades/HttpsURL";
 import VerOrdenesCliente from "../../pages/VerOrdenes";
 
-import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import { isPropertySignature } from "typescript";
 import CardProveedor from "../../utilidades/CardProveedor";
 import { categoriaBuscada } from "../ResultadoBusqueda/ResultadoBusqueda";
+import { IonActionSheet, IonAlert, IonButton, IonCard, IonCol, IonContent, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonTitle, IonToolbar } from "@ionic/react";
+import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 
 
 const url=Https
@@ -25,7 +23,9 @@ const url=Https
 let posicion: string | number;
 
 const getLocation = async () => {
+  
   try {
+      Geolocation.watchPosition()
       const position = await Geolocation.getCurrentPosition();
       posicion=position.coords.latitude +"/"+ position.coords.longitude
       return posicion;
@@ -34,7 +34,6 @@ const getLocation = async () => {
     return 0;
   }
 }
-
 
 const ModalCliente: React.FC<{setIsReg:any, onClose: any; tipoVista: string; 
   email:any; completarInfoPersonal:boolean, fotoPersonal:any
@@ -363,22 +362,19 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
     );
   }else{
     return (
+      <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh"}}>
       
-      
-      <IonContent>
-        <div id="contenedorPrincipalModal">
-      <header id="headerModal">
+      <header style={{display:"flex", alignItems:"right", justifyContent:"right",width:"100%",height:"auto"}}>
         <IonIcon icon={close} onClick={() => props.onClose(null)} slot="right" id="flecha-cerrar">  </IonIcon>
       </header>
-      <article>
 
-      <div id="contenedorCentralModal">
+      <div style={{display:"flex",flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%",height:"100%"}}>
         <img onClick={() => props.setDatosPersonales(true)} src={imagen} id="foto-usuario-grande"/>
 
-        <IonList>
-     
+        <div style={{display:"flex",flexDirection:"column", justifyContent:"center", alignItems:"center", width:"80%",height:"auto", marginTop:"15px"}}>
+
         <IonItem id="item-modal" button onClick={() => { props.setDatosPersonales(true)}}>
-            <IonLabel >DATOS PERSONALES</IonLabel>
+            <IonLabel style={{ with:"100%" }}>DATOS PERSONALES</IonLabel>
             <IonIcon className="iconosModal" icon={person} ></IonIcon>
           </IonItem>
 
@@ -396,21 +392,12 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
             <IonLabel>SOPORTE</IonLabel>
             <IonIcon className="iconosModal" icon={chatbubble} ></IonIcon>
           </IonItem>
-
-        
-        </IonList>  
-    
-
-     
-
+          </div>
         </div>
-        </article>
-
-        <footer id="footerModal">
+        <div style={{display:"flex", alignItems:"center", justifyContent:"center", width:"100%",height:"auto"}}>
         <button  onClick={() => { props.closeSesion () } } className="cerrarsesion" >CERRAR SESIÓN</button>
-        </footer>
         </div>
-      </IonContent>
+        </div>
    
     );
   }
@@ -503,57 +490,37 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
     if(listoCarga || !pedirDatos){
       if(cambiar=="nada"){
         return (
-          <>
+          < div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh"}}>
            <div id="modalProveedor-flechaVolver">
-            <IonIcon icon={arrowBack} onClick={() => props.setDatosPersonales(false)} slot="start" id="flecha-volver">  </IonIcon>
-            <IonIcon icon={close} onClick={() => props.onClose(null)} slot="end" id="flecha-cerrar">  </IonIcon>
+              <IonIcon icon={arrowBack} onClick={() => props.setDatosPersonales(false)} slot="start" id="flecha-volver">  </IonIcon>
+              <IonIcon icon={close} onClick={() => props.onClose(null)} slot="end" id="flecha-cerrar">  </IonIcon>
             </div>
+            
+                      
+            <div style={{display:"flex", flexDirection:"column", textAlign:"center" ,justifyContent:"center", alignItems:"center", width:"100%",height:"100%"}}>
 
-            <div className="header">
-            </div>
-
-          
-            <div id="contenedor-central">
-            <h1>PRESIONE UN ELEMENTO PARA MODIFICAR</h1>
-
-            <IonGrid>
-            <IonRow>
-              <IonCol>
                 <IonItem lines="none" id="itemFoto"  onClick={()=> cambiarElemento("foto") }>
                   <img  src={imagen} id="foto-usuario-grande"/>
                 </IonItem>
-              </IonCol>
-            </IonRow><IonRow><IonCol></IonCol></IonRow>
-            <IonRow>
-            <IonCol><IonItem id="item-modal-datos" onClick={()=> cambiarElemento("nombre") } >
+           
+            <IonItem id="item-modal-datos" onClick={()=> cambiarElemento("nombre") } >
             <strong >NOMBRE: {props.nombre} </strong>
-            </IonItem></IonCol>
-            </IonRow>
-            <IonRow>
-            <IonCol><IonItem id="item-modal-datos" onClick={()=> cambiarElemento("apellido") }>
+            </IonItem>
+            
+            <IonItem id="item-modal-datos" onClick={()=> cambiarElemento("apellido") }>
             <strong >APELLIDO: {props.apellido} </strong>
-            </IonItem></IonCol>
-            </IonRow>
+            </IonItem>
 
-            <IonRow><IonCol></IonCol></IonRow>
-            <IonRow><IonCol></IonCol></IonRow>
-
-            <IonRow>
-              <IonCol> 
-                <strong >CALIFICACIÓN COMO USUARIO:  </strong>
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
+                <strong style={{marginTop:"25px"}} >CALIFICACIÓN COMO USUARIO:  </strong>
+            
                 <Estrellas  calificacion={calificacion.current}   ></Estrellas> 
-              </IonCol>
-            </IonRow>
+              
 
-            <IonRow><IonCol></IonCol></IonRow>
-
-            </IonGrid>
             </div>
-
+            
+            <div style={{display:"flex", height:"auto", width:"100%", justifyContent:"center", alignItems:"center"}}> 
+            <h2 style={{marginTop:"25px", fontSize:"1em"}}>PRESIONE UN ELEMENTO PARA MODIFICAR</h2>
+            </div>
               <IonAlert
                 isOpen={alertCambioFoto}
                 onDidDismiss={() => setShowAlertCambioFoto(false)}
@@ -564,7 +531,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
                 buttons={['OK']}
                 />
           
-        </>
+        </div>
     
         );
       }
@@ -828,7 +795,6 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
     }else{
       return(
       
-     
       <div id="padreModal">
         <div id="hijoModal">
           <IonTitle id="titulo-busqueda">NO HAY PROVEDORES EN SU ZONA</IonTitle>
@@ -836,7 +802,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
       </div>
       
       
-)
+ )
     }
   }
   

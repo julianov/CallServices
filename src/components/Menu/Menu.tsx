@@ -1,3 +1,12 @@
+
+  
+  import React, { useContext, useEffect, useRef, useState } from 'react';
+  import { Redirect, useLocation } from 'react-router-dom';
+  import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp, heart, build, location, home, time,closeCircle, book, person} from 'ionicons/icons';
+  import './Menu.css';
+import { getItem, removeItem, setItem } from '../../utilidades/Storage';
+import { isPropertySignature } from 'typescript';
+import { UserContext, useUserContext } from '../../Contexts/UserContext';
 import {
   IonCol,
     IonContent,
@@ -12,15 +21,7 @@ import {
     IonNote,
     IonRow,
   } from '@ionic/react';
-  
-  import React, { useContext, useEffect, useRef, useState } from 'react';
-  import { Redirect, useLocation } from 'react-router-dom';
-  import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp, heart, build, location, home, time,closeCircle, book, person} from 'ionicons/icons';
-  import './Menu.css';
-import { getItem, removeItem, setItem } from '../../utilidades/Storage';
-import { isPropertySignature } from 'typescript';
-import { UserContext, useUserContext } from '../../Contexts/UserContext';
-  
+    
   interface AppPage {
     url: string;
     src: string;

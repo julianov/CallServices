@@ -1,6 +1,6 @@
-import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonItem, IonTitle, IonButton } from "@ionic/react";
 import React from "react"
 import './Estrellas.css';
+import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonItem, IonTitle, IonButton } from "@ionic/react";
 
 
 

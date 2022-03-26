@@ -162,7 +162,7 @@ const HomeCliente = (props:{setIsReg:any,
       });  
     });
 
-    axios.get(url+"orden/misordenes/"+"cliente/"+user).then((resp: { data: any; }) => {
+    axios.get(url+"orden/misordenes/"+"cliente/"+user?.email).then((resp: { data: any; }) => {
       if (resp.data!="bad"){
 
         setMisOrdenes(    

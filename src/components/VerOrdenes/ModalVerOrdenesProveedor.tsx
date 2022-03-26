@@ -1,4 +1,3 @@
-import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCheckbox, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonLoading, IonRow, IonSegment, IonSegmentButton, IonTitle } from "@ionic/react";
 import { arrowBack, chatbox, eye, location } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import { isConstructorDeclaration, isSetAccessorDeclaration } from "typescript";
@@ -8,6 +7,7 @@ import '../ModalGeneral/Modal.css';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import Https from "../../utilidades/HttpsURL";
 import Chat from "../Chat/Chat";
+import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCheckbox, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonLabel, IonLoading, IonRow, IonSegment, IonSegmentButton, IonTitle } from "@ionic/react";
 
 const url=Https
 

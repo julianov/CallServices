@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonFabButton, IonIcon, IonGrid, IonRow, IonCol, IonImg, IonActionSheet, IonInput, IonItem, IonLabel, IonButton, IonItemDivider, IonRange, IonAlert, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonList, IonSelect, IonSelectOption, IonDatetime, IonLoading, IonTextarea, IonCheckbox } from '@ionic/react';
 import { camera, trash, close, pin, closeCircle, text } from 'ionicons/icons';
 
 import './Completarinfo.css';
@@ -12,6 +11,7 @@ import CompletarRubros from '../CompletarRubros/CompletarRubros';
 import { Photo, usePhotoGallery } from '../../hooks/usePhotoGallery';
 import { b64toBlob } from '../../utilidades/b64toBlob';
 import { setItem } from '../../utilidades/Storage';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonFabButton, IonIcon, IonGrid, IonRow, IonCol, IonImg, IonActionSheet, IonInput, IonItem, IonLabel, IonButton, IonItemDivider, IonRange, IonAlert, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonList, IonSelect, IonSelectOption, IonDatetime, IonLoading, IonTextarea, IonCheckbox } from '@ionic/react';
 
 
 /*

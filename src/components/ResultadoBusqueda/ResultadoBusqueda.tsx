@@ -1,5 +1,4 @@
 
-import { IonActionSheet, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonDatetime, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonPage, IonRange, IonRow, IonSelect, IonSelectOption, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
 import { arrowBack, person, receipt, help, chatbubble, close, trash, camera, construct } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 
@@ -13,6 +12,7 @@ import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import Https from "../../utilidades/HttpsURL";
 import Estrellas from "../Estrellas/Estrellas";
 import CardProveedor from "../../utilidades/CardProveedor";
+import { IonActionSheet, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonDatetime, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonPage, IonRange, IonRow, IonSelect, IonSelectOption, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
 
 
 //var arreglo_resultado_busqueda=new Array()

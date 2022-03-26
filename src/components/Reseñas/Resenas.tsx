@@ -1,11 +1,11 @@
 
-import { IonCard, IonContent, IonIcon } from "@ionic/react";
 import axios from "axios";
 import { arrowBack } from "ionicons/icons";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Https from "../../utilidades/HttpsURL";
 import Estrellas from "../Estrellas/Estrellas";
 import './Resenas.css';
+import { IonCard, IonContent, IonIcon } from "@ionic/react";
 
 const url=Https
 

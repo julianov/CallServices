@@ -1,4 +1,3 @@
-import { IonActionSheet, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonDatetime, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRange, IonRow, IonSelect, IonSelectOption, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
 import { arrowBack, person, receipt, help, chatbubble, close, trash, camera, construct } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router";
@@ -17,6 +16,7 @@ import CompletarRubros from "../../pages/CompletarRubros/CompletarRubros";
 import { useRubroContext } from "../../Contexts/RubroContext";
 import { useUserContext } from "../../Contexts/UserContext";
 import { usuario } from "../../Interfaces/interfaces";
+import { IonActionSheet, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonDatetime, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRange, IonRow, IonSelect, IonSelectOption, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
 
 //const url='http://127.0.0.1:8000/';
 //const url="https://callservicesvps.online:443/"
@@ -363,16 +363,17 @@ const DatosPersonales =(props:{setIsReg:any, completarInfoPersonal:any; closeSes
             }else{
               return (
             
-              <IonContent>
-                <div id="contenedorPrincipalModal">
-                  <header id="headerModal">
+                <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh"}}>
+
+                  <header  style={{display:"flex", alignItems:"right", justifyContent:"right",width:"100%",height:"auto"}}>
                     <IonIcon icon={close} onClick={() => props.onClose(null)} slot="right" id="flecha-cerrar">  </IonIcon>
                   </header>
-                  <article>
 
-                  <div id="contenedorCentralModal">
+                  <div style={{display:"flex",flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%",height:"100%"}}>
                     <img onClick={() =>props.setDatosPersonales(true)} src={imagen} id="foto-usuario-grande"/>
-                    <IonList>
+                    
+                    <div style={{display:"flex",flexDirection:"column", justifyContent:"center", alignItems:"center", width:"80%",height:"auto", marginTop:"15px"}}>
+
                         <IonItem id="item-modal" button onClick={() => { props.setDatosPersonales(true)}}>
                                   <IonLabel>DATOS PERSONALES</IonLabel>
                                   <IonIcon className="iconosModal" icon={person} ></IonIcon>
@@ -397,15 +398,15 @@ const DatosPersonales =(props:{setIsReg:any, completarInfoPersonal:any; closeSes
                                   <IonIcon className="iconosModal" icon={chatbubble} ></IonIcon>
                         </IonItem>
                     
-                    </IonList>  
+                 
                     </div>
-                    </article>
+                    </div>
 
-                    <footer id="footerModal">
+                    <div style={{display:"flex", alignItems:"center", justifyContent:"center", width:"100%",height:"auto"}}>
                     <button  onClick={() => { props.closeSesion () } } className="cerrarsesion" >CERRAR SESIÓN</button>
-                    </footer>
-                </div>
-              </IonContent>
+                    </div>
+                
+              </div>
 
               );
             }
@@ -559,38 +560,37 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
     if (props.tipoProveedor=="2"){
       if(cambiar=="nada"){
         return (
-          <>
+          < div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh"}}>
+
             <div id="modalProveedor-flechaVolver">
 
             <IonIcon icon={arrowBack} onClick={() => props.setDatosPersonales(false)} slot="start" id="flecha-volver">  </IonIcon>
             <IonIcon icon={close} onClick={() => props.onClose(null)} slot="end" id="flecha-cerrar">  </IonIcon>
             </div>
           
-            <div className="header">
-            <IonTitle>PRESIONE UN ELMENTO PARA MODIFICAR</IonTitle>
-            </div>
            
           
-            <div id="contenedor-central">
+            <div style={{display:"flex", flexDirection:"column", textAlign:"center" ,justifyContent:"center", alignItems:"center", width:"100%",height:"100%"}}>
 
-            <IonGrid>
-            <IonRow><IonCol ><IonItem lines="none" id="itemFoto" onClick={()=> cambiarElemento("foto") }>
+            <IonItem lines="none" id="itemFoto" onClick={()=> cambiarElemento("foto") }>
             <img  src={imagen} id="foto-usuario-grande"/>
-            </IonItem></IonCol></IonRow>
-            <IonRow><IonCol></IonCol></IonRow>
+            </IonItem>
             
-            <IonRow><IonCol><IonItem id="item-modal-datos" onClick={()=> cambiarElemento("nombre") } >
+            <IonItem id="item-modal-datos" onClick={()=> cambiarElemento("nombre") } >
             <strong >NOMBRE: {nombre.current} </strong>
-            </IonItem></IonCol></IonRow>
-            <IonRow><IonCol><IonItem id="item-modal-datos" onClick={()=> cambiarElemento("apellido") }>
+            </IonItem>
+            <IonItem id="item-modal-datos" onClick={()=> cambiarElemento("apellido") }>
             <strong >APELLIDO: {apellido.current} </strong>
-            </IonItem></IonCol></IonRow>
-            <IonRow><IonCol> <Estrellas  calificacion={props.calificacion}   ></Estrellas>  </IonCol></IonRow>
-           
-            </IonGrid>
+            </IonItem>
+            <Estrellas  calificacion={props.calificacion}   ></Estrellas>      
+            
+            </div>
+
+            <div style={{display:"flex",height:"auto", width:"100%", justifyContent:"center", alignItems:"center"}}> 
+            <h2 style={{marginTop:"25px", fontSize:"1em"}}>PRESIONE UN ELEMENTO PARA MODIFICAR</h2>
             </div>
           
-        </>
+        </div>
     
         );
       }
@@ -671,38 +671,37 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
     }else{
       if(cambiar=="nada"){
         return (
-          <>
-          <div id="modalProveedor-flechaVolver">
+          < div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh"}}>
+
+            <div id="modalProveedor-flechaVolver">
+
             <IonIcon icon={arrowBack} onClick={() => props.setDatosPersonales(false)} slot="start" id="flecha-volver">  </IonIcon>
-          </div>
-         
-            <div className="header">
-            <IonTitle>PRESIONE UN ELEMENTO PARA MODIFICAR</IonTitle>
+            <IonIcon icon={close} onClick={() => props.onClose(null)} slot="end" id="flecha-cerrar">  </IonIcon>
             </div>
           
-            <div id="contenedor-central">
+           
+          
+            <div style={{display:"flex", flexDirection:"column", textAlign:"center" ,justifyContent:"center", alignItems:"center", width:"100%",height:"100%"}}>
 
-            <IonGrid>
-            <IonRow><IonCol >
-            <IonItem lines="none" onClick={()=> cambiarElemento("foto") }>
-            <img  src={props.foto} id="foto-usuario-grande"/>
-            </IonItem></IonCol></IonRow><IonRow><IonCol></IonCol></IonRow>
-
-            <IonRow><IonCol ><IonItem id="item-modal-datos" onClick={()=> cambiarElemento("nombre") } >
+            <IonItem lines="none" id="itemFoto" onClick={()=> cambiarElemento("foto") }>
+            <img  src={imagen} id="foto-usuario-grande"/>
+            </IonItem>
+            
+            <IonItem id="item-modal-datos" onClick={()=> cambiarElemento("nombre") } >
             <strong >NOMBRE: {nombre.current} </strong>
-            </IonItem></IonCol></IonRow>
-
-            <IonRow><IonCol><IonItem id="item-modal-datos" onClick={()=> cambiarElemento("descripción") }>
-            <strong >DESCRIPCIÓN: {descripcion.current} </strong>
-            </IonItem></IonCol></IonRow>
-
-            <IonRow><IonCol> <Estrellas  calificacion={props.calificacion}   ></Estrellas>  </IonCol></IonRow>
-
-          </IonGrid>
+            </IonItem>
+            <IonItem id="item-modal-datos" onClick={()=> cambiarElemento("apellido") }>
+            <strong >DESCRIPCIÓN: {apellido.current} </strong>
+            </IonItem>
+            <Estrellas  calificacion={props.calificacion}   ></Estrellas>      
+            
             </div>
-        
+
+            <div style={{display:"flex",height:"auto", width:"100%", justifyContent:"center", alignItems:"center"}}> 
+            <h2 style={{marginTop:"25px", fontSize:"1em"}}>PRESIONE UN ELEMENTO PARA MODIFICAR</h2>
+            </div>
           
-        </>
+        </div>
     
         );
       }
@@ -879,8 +878,6 @@ const CardItemVerRubro= (props:{ pedir:any,rubro:any, clientType:any, email:any,
 
 
   useEffect(() => {
-    
-    
     setItem(props.rubro.rubro)
     radius.current=props.rubro.radius
     description.current=props.rubro.description
@@ -1269,7 +1266,7 @@ const ModificarDatosRubro = (props:{clientType:any, email:any,rubro:any, setVolv
                       <IonCol className="columna">
                           <IonItem>
                               <IonLabel id="label">HORA DE INICIO DE TRABAJO DIARIO</IonLabel>
-                              <IonDatetime displayFormat="HH:mm" value={hour_init.current} onIonChange={e => hour_init.current=(e.detail.value!)}></IonDatetime>
+                              <IonDatetime value={hour_init.current} onIonChange={e => hour_init.current=(e.detail.value!)}></IonDatetime>
                           </IonItem>
                       </IonCol>
                   </IonRow>
@@ -1277,7 +1274,7 @@ const ModificarDatosRubro = (props:{clientType:any, email:any,rubro:any, setVolv
                       <IonCol className="columna">
                           <IonItem>
                               <IonLabel id="label">HORA DE FINALIZACIÓN DE TRABAJO DIARIO</IonLabel>
-                              <IonDatetime displayFormat="HH:mm" value={hour_end.current} onIonChange={e => hour_end.current=(e.detail.value!)}></IonDatetime>
+                              <IonDatetime value={hour_end.current} onIonChange={e => hour_end.current=(e.detail.value!)}></IonDatetime>
                           </IonItem>
                       </IonCol>
                   </IonRow>

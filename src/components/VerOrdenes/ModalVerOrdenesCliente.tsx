@@ -1,4 +1,3 @@
-import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonRow, IonTitle } from "@ionic/react";
 import { arrowBack, camera, chatbox, eye, location } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import { isConstructorDeclaration, isSetAccessorDeclaration } from "typescript";
@@ -11,8 +10,8 @@ import axios from "axios";
 import { TomarFotografia } from "../../pages/PedirOrden";
 import { Calificacion } from "./ModalVerOrdenesProveedor";
 import { createStore, removeDB } from "../../utilidades/dataBase";
-import { dashToPascalCase } from "@ionic/react/dist/types/components/utils";
 import Chat from "../Chat/Chat";
+import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonRow, IonTitle } from "@ionic/react";
 
 const url=Https
 
