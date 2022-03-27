@@ -476,7 +476,7 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , hayOrdenes:any,
               <IonSlide>
                 <CardVistaVariasOrdenes key={i} posicion={i} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket}
                   dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_proveedor} setVerOrden={props.setVerOrden} setPosicion={props.setPosicion}
-                  presupuesto={a.presupuesto} masInfo={a.pedido_mas_información}></CardVistaVariasOrdenes>
+                  presupuesto={a.presupuesto} masInfo={a.pedido_mas_información} masInfoEnviada={a.respuesta_cliente_pedido_mas_información}></CardVistaVariasOrdenes>
             </IonSlide>);
           })}
         </IonSlides>
@@ -493,7 +493,7 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , hayOrdenes:any,
 }
 
 const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fecha_creacion:string,ticket: string,
-  dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, setPosicion:any, presupuesto:any, masInfo:any}) => {
+  dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, setPosicion:any, presupuesto:any, masInfo:any, masInfoEnviada:string}) => {
         
     const [estado,setEstado]=useState("Enviada")
 
@@ -506,6 +506,8 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
     const [nuevoStatus,setNuevoStatus]=useState(false)
 
     const [imagen,setImagen]=useState ("")
+
+    console.log("veamos si mis planes se cumplen: "+props.masInfoEnviada)
 
     useEffect(() => {
       if (props.imagen==""|| props.imagen==null || props.imagen==undefined){
@@ -527,9 +529,17 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
     }else if(props.status=="ABI"){
       setEstado("PEDIDO DE TRABAJO RECIBIDO")
     }else if(props.status=="PEI"){
-      setEstado("SOLILCITUD DE MÁS INFORMACIÓN")
-      setMensaje1("EL PROVEEDOR SOLICITA MÁS INFORMACIÓN")
-      setMensaje2("Ingrese para aceptarlo o rechazarlo")
+
+
+      if(props.masInfoEnviada!="" && props.masInfoEnviada!=undefined){
+        setEstado("MÁS INFORMACIÓN ENVIADA")
+        setMensaje1("En espera de respuesta del proveedor")
+      }else{
+        setEstado("SOLILCITUD DE MÁS INFORMACIÓN")
+        setMensaje1("EL PROVEEDOR SOLICITA MÁS INFORMACIÓN")
+        setMensaje2("Ingrese para aceptarlo o rechazarlo")
+      }
+
     }else if(props.status=="PRE"){
       setEstado("TRABAJO PRESUPUESTADO")
       setMensaje1("EL PROVEEDOR HA ENVIADO COTIZACIÓN")

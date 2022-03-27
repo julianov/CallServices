@@ -62,14 +62,14 @@ const Resenas = (props:{email_a_ver_reseñas:any,  tipo:any, setVolver:any}) => 
       if(sinReseñas){
         return (
             <IonContent>
-            <div id="contenedorCentralReseñas">
+              <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", backgroundColor:"#f3f2ef"}}>
 
               <div id="contenedorPrincipal">
                 <div id="modalProveedor-flechaVolver">
                     <IonIcon icon={arrowBack} onClick={() => props.setVolver(false )} slot="start" id="flecha-volver">  </IonIcon>
                 </div>
                 
-                <div id="contenedorHijoCentrado">
+                <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center", alignItems:"center", textAlign:"center", backgroundColor:"#f3f2ef"}}>
                     <h1>NO HAY RESEÑAS HASTA EL MOMENTO</h1>
                 </div>
                 </div>    
@@ -81,7 +81,7 @@ const Resenas = (props:{email_a_ver_reseñas:any,  tipo:any, setVolver:any}) => 
       }else{
         return (
             <IonContent >
-              <div id="ReseñaColor">
+              <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", backgroundColor:"#f3f2ef"}}>
                 <div id="modalProveedor-flechaVolver">
                     <IonIcon icon={arrowBack} onClick={() => props.setVolver( false)} slot="start" id="flecha-volver">  </IonIcon>
                 </div>

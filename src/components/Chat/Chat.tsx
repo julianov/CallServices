@@ -98,10 +98,9 @@ const Chat = (props:{email:any,  ticket:any, setVolver:any, setVista:any, desdeD
                 <div id="modalChat-card">
 
                 <IonCard id="ionCardMensaje">
-
                     <ElementosMensaje miemail={props.email} mensajes={arregloMensajes}></ElementosMensaje>
-
                 </IonCard>
+                
                 </div>
                 <footer id="chatFooter">
                     <IonItemDivider>INGRESE MENSAJE</IonItemDivider>

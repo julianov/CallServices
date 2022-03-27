@@ -48,6 +48,7 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
             }else if(props.datos.status=="ABI"){
               setEstado("ORDEN RECIBIDA POR PROVEEDOR")
             }else if(props.datos.status=="PEI"){
+              
               if(props.datos.respuesta_cliente_pedido_mas_información!="" && props.datos.respuesta_cliente_pedido_mas_información!=undefined){
                 setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
                 setVista("respuestaEnviada")

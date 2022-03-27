@@ -15,7 +15,7 @@ import { isSetAccessorDeclaration } from 'typescript';
 import { allowedNodeEnvironmentFlags } from 'process';
 import { BotonDia } from './CompletarRubros/CompletarRubros';
 import { setDB } from '../utilidades/dataBase';
-import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItemDivider, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent, IonDatetime, IonCheckbox, IonLoading, IonTitle, IonSegment, IonSegmentButton } from '@ionic/react';
+import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent, IonDatetime, IonCheckbox, IonLoading, IonTitle, IonSegment, IonSegmentButton, IonItemDivider } from '@ionic/react';
 
 const url=Https+"orden/"
 
@@ -157,38 +157,44 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
         }
         
     }
-    
+
+    console.log(props.data.qualification)
+    console.log(props.data.qualification)
+
     if (vista=="primeraVista"){
         return (
             <IonContent >
                 <div id="GenerarOrdenContainer">
                     <div id="modalProveedor-flechaVolver">
-                    <   IonIcon icon={arrowBack} onClick={() => props.setVolver( false )} slot="start" id="flecha-volver">  </IonIcon>
+                        <IonIcon icon={arrowBack} onClick={() => props.setVolver( false )} slot="start" id="flecha-volver">  </IonIcon>
                     </div>
                     <div id="contenderCentralOrden">
-                        <IonTitle id="tituloPedirOrden">FORMULARIO DE SOLICITUD DE SERVICIO</IonTitle>
+                        <IonCard id="ionCardOrden">
+                            <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
+                                <h2 id="tituloPedirOrdenEnCard">RUBRO DE SERVICIO:</h2>
+                                <p style={{fontWeight:"600", fontSize:"1.2em", marginBottom:"15px"}}>{props.data.items}</p>
+                                <h2 id="tituloPedirOrdenEnCard">PROVEEDOR DEL SERVICIO:</h2> 
+                                <p style={{fontWeight:"600", fontSize:"1.2em", marginBottom:"15px"}}> {props.data.nombre} </p>
+                                <Estrellas calificacion={props.data.qualification}></Estrellas>
+                            </div>
+                        </IonCard>
+
+                        <h1 style={{fontSize:"1.3em"}}>FORMULARIO DE SOLICITUD DE SERVICIO</h1>
                         <IonCard id="ionCardOrden">
                             <div id="contenedorCamposCentro">
-                                <h2 id="tituloPedirOrdenEnCard">RUBRO DE SERVICIO:</h2>
-                                <p>{props.data.items}</p>
-                                <h2 id="tituloPedirOrdenEnCard">PROVEEDOR DEL SERVICIO:</h2> 
-                                <p> {props.data.nombre} </p>
-                                <Estrellas calificacion={props.data.calificacion}></Estrellas>
+                                <h2 style={{fontSize:"1.3em"}}>INGRESE UN TÍTULO PARA EL SERVICIO</h2 >
                             </div>
-                            <div id="contenedorCamposCentro">
-                                <p id="tituloPedirOrdenEnCard">INGRESE UN TÍTULO PARA EL SERVICIO</p>
-                            </div>
-                            <div id="contenedorCamposIzquierda">
-                                <IonItem id="item-Orden">
+                            <div style={{display:"flex", width:"90%", justifyContent:"center", alignItems:"center"}}>
+                                <IonItem >
                                     <IonLabel position="floating">TÍTULO</IonLabel>
                                     <IonInput onIonInput={(e: any) => titulo.current = (e.target.value)}></IonInput>
                                 </IonItem>
                             </div>
                             <div id="contenedorCamposCentro">
-                                <p id="tituloPedirOrdenEnCard">INGRESE UNA BREVE DESCRIPCIÓN DEL PROBLEMA</p>
+                                <h2 style={{fontSize:"1.3em"}}>INGRESE UNA BREVE DESCRIPCIÓN DEL PROBLEMA</h2>
                             </div>
-                            <div id="contenedorCamposIzquierda">
-                                <IonItem id="item-Orden">
+                            <div style={{display:"flex", width:"90%", justifyContent:"center", alignItems:"center"}}>
+                                <IonItem >
                                     <IonLabel position="floating">DESCRIPCIÓN</IonLabel>
                                     <IonInput onIonInput={(e: any) => descripcion.current = (e.target.value)}></IonInput>
                                 </IonItem>
@@ -199,17 +205,22 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                             <LocacionServicio direccion={direccion} posicionCliente={posicionCliente} latitudCliente={latitudCliente} longitudCliente={longitudCliente} ></LocacionServicio>
                         </IonCard>
 
-                        <IonButton shape="round" color="warning" id="botonContratar" onClick={() => irASiguiente()}>SIGUIENTE</IonButton>
+                        <div style={{width:"100%", display:"flex", justifyContent:"right", marginRight:"15px"}}>
+                        <IonButton shape="round" color="warning" style={{float:"right",width:"50%", marginTop:"20px"}} onClick={() => irASiguiente()}>SIGUIENTE</IonButton>
+                        </div>
                     </div>
+
+                    
                         <IonAlert
                             isOpen={showAlertCompletarCampos}
                             onDidDismiss={() => setShowAlertCompletarCampos(false)}
                             cssClass='my-custom-class'
-                            header={'Completar campos'}
+                            header={'COMPLETAR CAMPOS'}
                             subHeader={''}
+                            mode='ios'
                             message={'Debe completar todos los campos para continuar'}
                             buttons={['OK']} />
-                        </div>
+            </div>
         </IonContent>
         )
     }
@@ -217,11 +228,15 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
 
     return (
         <IonContent>
-            <div id="GenerarOrdenContainer">
-                <div id="modalProveedor-flechaVolver">
-                    <IonIcon icon={arrowBack} onClick={() => setVista("primeraVista")} slot="start" id="flecha-volver">  </IonIcon>
+            <div style={{display:"flex", flexDirection:"column", width:"100%", minHeight:"100vh" ,height:"auto", background: "#f3f2ef"}}>
+
+                <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto"}}>
+                    <div id="modalProveedor-flechaVolver">
+                        <IonIcon icon={arrowBack} onClick={() => setVista("primeraVista")} slot="start" id="flecha-volver">  </IonIcon>
+                    </div>
                 </div>
-                <div id="contenderCentralOrden">
+
+                <div style={{ justifyContent:"center",alignItems:"center" ,display:"flex", flexDirection:"column", width:"100%", height:"100%"}}>
                     <IonCard id="ionCardOrden">
                         
                             <IonCardTitle id="tituloOrden">IMÁGENES DE REFERENCIA</IonCardTitle>
@@ -241,11 +256,12 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                             </IonGrid>
 
                     </IonCard>
-                    
 
                 </div>
 
-                <IonButton shape="round"  color="warning"  id="botonContratar" onClick={() => setVista("final")}>SIGUIENTE</IonButton>
+                <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto"}}>
+                    <IonButton shape="round"  color="warning"  id="botonContratar" onClick={() => setVista("final")}>SIGUIENTE</IonButton>
+                </div>
         </div>
     </IonContent>
     )
@@ -254,51 +270,46 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
 
         return (
             <IonContent>
-                <div id="GenerarOrdenContainer">
-            <div id="modalProveedor-flechaVolver">
-                <IonIcon icon={arrowBack} onClick={() => setVista("imagenes")} slot="start" id="flecha-volver">  </IonIcon>
-            </div>
-            <div id="contenderCentralOrden">
-            <IonCardTitle>PROGRAMAR FECHA</IonCardTitle>
+            <div style={{display:"flex", flexDirection:"column", width:"100%", minHeight:"100vh" ,height:"100vh", background: "#f3f2ef"}}>
+                <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto"}}>
+                    <div id="modalProveedor-flechaVolver">
+                        <IonIcon icon={arrowBack} onClick={() => setVista("imagenes")} slot="start" id="flecha-volver">  </IonIcon>
+                    </div>
+                </div>
+                <div style={{ justifyContent:"center",alignItems:"center" ,display:"flex", flexDirection:"column", width:"100%", height:"100%"}}>
+                <h1 style={{fontSize:"1.2em"}}>PROGRAMAR FECHA</h1>
 
-                    <IonCard id="ionCard-CardProveedor">
+                <IonCard id="ionCard-CardProveedor">
                     
-                        <IonCardSubtitle>Ingrese día y horario estimativo para su servicio</IonCardSubtitle>
+                    <h2 style={{fontSize:"1.3em", color:"black"}}>INGRESE DÍA ESTIMATIVO PARA EL SERVICIO</h2>
     
-                        <IonGrid>
-                            <IonRow>
-                                <IonCol >
+                    <IonLabel style={{margin:"10px 0px 10px 0px"}}>DÍAS DISPONIBLES DEL PROVEEDOR</IonLabel>                                    
 
-                                <IonItem id="item-completarInfo">
-                                        <IonLabel position="floating">DÍAS DISPONIBLES DEL PROVEEDOR</IonLabel>                                    
-                                        < Dias  dias={props.data.dias_proveedor} cliente={false} />
+                    <IonItem lines='none'>
+                        < Dias dias={props.data.dias_proveedor} cliente={false} />
+                    </IonItem>
 
-                                    </IonItem>
-                                    </IonCol>
-                            </IonRow>
-                                    <IonRow>
-                                <IonCol >
+                    <IonLabel style={{margin:"10px 0px 10px 0px"}}>MIS DÍAS DISPONIBLES PARA EL SERVICIO</IonLabel>                                    
+                    <IonItem lines='none'>
+                        < Dias  dias={fecha} cliente={true} />
+                    </IonItem>
 
-                                    <IonItem id="item-completarInfo">
-                                        <IonLabel position="floating">MIS DÍAS DISPONIBLES PARA EL SERVICIO</IonLabel>                                    
-                                        < Dias  dias={fecha} cliente={true} />
+                    <IonItemDivider />
 
-                                    </IonItem>
-                                </IonCol>
-                            </IonRow>
-                            <IonRow>
-                                <IonCol >
-                                    <IonItem id="item-completarInfo">
-                                        <IonLabel position="floating">Hora estimativa</IonLabel>
-                                        <IonDatetime value={hora.current} onIonChange={e => hora.current=(e.detail.value!)}></IonDatetime>
+                    <h2 style={{fontSize:"1.2em", color:"black"}}>INGRESE HORA ESTIMATIVA PARA EL SERVICIO</h2>
 
-                                    </IonItem>
-                                </IonCol>
-                            </IonRow>                                              
-                        </IonGrid>
+                    <IonItem id="item-completarInfo">
+                        <IonLabel position="floating">Hora estimativa</IonLabel>
+                        <IonDatetime value={hora.current} onIonChange={e => hora.current=(e.detail.value!)}></IonDatetime>
+                    </IonItem>
+                               
     
               </IonCard>
-              <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviar()}>SOLICITAR</IonButton>
+            </div>
+
+            <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto"}}>
+            <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviar()}>SOLICITAR</IonButton>
+
             </div>
 
             <IonLoading
@@ -565,25 +576,27 @@ const LocacionServicio = ( props:{direccion:any, posicionCliente:any, latitudCli
     return(
         <div id="contenderCentralOrden">
 
-        <div id="contenedorCamposCentro">
-            <p id="tituloPedirOrdenEnCard">¿SE ENCUENTRA ACTUALMENTE EN EL DOMICILIO DONDE SE REALIZARÁ EL SERVICIO?</p>
-         
-            <IonSegment mode="ios" value={domicilio} select-on-focus={true} onIonChange={e => setDomicilio(  e.detail.value!)} >
-                <IonSegmentButton value="enmicasa">
-                    <IonLabel>SERVICIO EN MI DOMICILIO</IonLabel>
-                </IonSegmentButton>
-                <IonSegmentButton value="otrolugar">
-                    <IonLabel>SERVICIO EN OTRO LUGAR</IonLabel>
-                </IonSegmentButton>
-            </IonSegment>
+        <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center",textAlign:"center" , width:"100%"}}>
+            <h2 style={{fontSize:"1.3em"}}>¿SE ENCUENTRA ACTUALMENTE EN EL DOMICILIO DONDE SE REALIZARÁ EL SERVICIO?</h2>
+            <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", marginTop:"25px"}}>
+                <IonSegment mode="ios" value={domicilio} select-on-focus={true} onIonChange={e => setDomicilio(  e.detail.value!)} >
+                    <IonSegmentButton value="enmicasa">
+                        <IonLabel>SERVICIO EN MI DOMICILIO</IonLabel>
+                    </IonSegmentButton>
+                    <IonSegmentButton value="otrolugar">
+                        <IonLabel>SERVICIO EN OTRO LUGAR</IonLabel>
+                    </IonSegmentButton>
+                </IonSegment>
             </div>
-            <div id="contenedorCamposCentro">
+            </div>
+            <IonItemDivider />
 
-            <p id="tituloPedirOrdenEnCard">ESPECIFIQUE LA DIRECCIÓN DE LA LOCACIÓN DONDE SOLICITA EL SERVICIO</p>
-            <p id="subtituloPedirOrden" >La misma debe ser lo más específica posible en cuanto a dirección y numeración de calle</p>
+            <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center",textAlign:"center" , width:"100%"}}>
+                <h2 style={{fontSize:"1.3em"}}>ESPECIFIQUE LA DIRECCIÓN DE LA LOCACIÓN DONDE SOLICITA EL SERVICIO</h2>
+                <p style={{fontSize:"1em", fontWeight:"200", margin:"3px 20px 20px 20px"}}>La misma debe ser específica</p>
             </div>
-            <div id="contenedorCamposIzquierda">
-            <IonItem id="item-Orden">
+            <div style={{display:"flex", width:"90%", justifyContent:"center", alignItems:"center"}}>
+            <IonItem>
                 <IonLabel position="floating" >DIRECCIÓN</IonLabel>
                 <IonInput onIonInput={(e: any) => props.direccion.current = (e.target.value)}></IonInput>
             </IonItem>
@@ -623,6 +636,7 @@ const Dias =(props:{dias:any, cliente:boolean})=>{
 
 
         return (
+            <div style={{width:"100%", height:"auto", margin:"15px 0px 15px 0px"}}>
                 <IonGrid>
                 <IonRow>
                     <IonCol><BotonDia dia={"LU"} setDia={setLunes} ></BotonDia></IonCol>
@@ -635,7 +649,7 @@ const Dias =(props:{dias:any, cliente:boolean})=>{
     
                     </IonRow>
                 </IonGrid>
-    
+            </div>
     
             );
     }else{
