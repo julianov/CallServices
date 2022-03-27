@@ -20,9 +20,7 @@
   word-wrap:break-word;
 }
 
-#textoCentrado{
-  text-align: center;
-}
+
 
 .container p {
   font-size: 16px;
@@ -62,7 +60,7 @@
   }
 
 
-  #ionCard-explorerContainer-Cliente{
+  .ionCardExplorerContainer{
     width: auto;
     display:flex;
     flex-direction: column;
@@ -232,6 +230,3 @@ height: 100%;
   width: 64px;
 }
 
-#tituloNegro{
-  color: black;
-}

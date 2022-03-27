@@ -27,6 +27,9 @@
 #item-ingresar{
   width:75%;
   text-align: center;
+  background-color: white;
+  border-radius: 50px 50px 50px 50px;
+
 }
 
 .header{

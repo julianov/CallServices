@@ -108,8 +108,6 @@ const App: React.FC = () => {
 
   useEffect(() => {
 
-    console.log("EL TIPO ES: "+typeof (rubros))
-
     createStore("dbDispositivo")
 
     getItem("isRegistered").then(res => {
@@ -138,7 +136,6 @@ const App: React.FC = () => {
           
         })
         getItem("nombre").then(res2 => {
-          console.log("SE EJECUTÓ EL NOMBRE, EL CUAL ES: "+ res2)
           setNombre(res2)
           setUser((previous) => ({...previous, nombre: res2}))
 
@@ -155,7 +152,6 @@ const App: React.FC = () => {
         })
         getItem("infoRubro1").then(res4 => {
           setRubro1((res4))
-          console.log("rubro1"+ res4)
 
           if(res4!=null){
             setRubro([{
@@ -182,6 +178,7 @@ const App: React.FC = () => {
         })
         getItem("infoRubro2").then(res5 => {
           setRubro2(res5)
+
           if(res5!=null){
             setRubro(rubros => [...rubros, {
               rubro:JSON.parse(res5).rubro,

@@ -230,3 +230,13 @@ http://ionicframework.com/docs/theming/ */
     --ion-card-background: #1e1e1e;
   }
 }
+
+ion-item {
+  --ion-item-background: transparent;
+}
+
+ion-item-divider {
+  min-height: 0.1rem;
+  max-height: 0.5rem;
+  margin: 15px 0px 15px 0px
+}

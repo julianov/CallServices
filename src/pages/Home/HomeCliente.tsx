@@ -140,7 +140,6 @@ const HomeCliente = (props:{setIsReg:any,
         setShowAlertUbicación(true)
       }
       axios.get(url+"home/cliente/"+value).then((resp: { data: any; }) => {
-        console.log("ESTO SON LOS PROVEEDORES EN ZONA: "+JSON.stringify(resp.data))
 
         if (resp.data!="bad"){
           setProveedoresEnZona(resp.data.map((d: { email: any; nombre: any; apellido: any; certificado: any; item: any; tipo: any; distancia: any; calificacion: any; }) => ({
@@ -163,10 +162,11 @@ const HomeCliente = (props:{setIsReg:any,
     });
 
     axios.get(url+"orden/misordenes/"+"cliente/"+user?.email).then((resp: { data: any; }) => {
+      console.log("veamos que llega che: "+JSON.stringify(resp.data))
       if (resp.data!="bad"){
 
         setMisOrdenes(    
-            resp.data.map((d: { tipo: any; status: any; fecha_creacion: any; ticket: any; dia: any; hora: any; titulo: any; descripcion: any; email_proveedor: any; presupuesto: any; imagen_proveedor: any; lacation_lat: any; location_long: any; picture1: any; picture2: any; pedido_mas_información: any; respuesta_cliente_pedido_mas_información: any; picture1_mas_información: any; picutre2_mas_información: any; }) => ({
+            resp.data.map((d: { tipo: any; status: any; fecha_creacion: any; ticket: any; dia: any; hora: any; titulo: any; descripcion: any; email_proveedor: any; presupuesto: any; imagen_proveedor: any; lacation_lat: any; location_long: any; picture1: any; picture2: any; pedidoMasInformacion: any; respuesta_cliente_pedido_mas_información: any; picture1_mas_información: any; picutre2_mas_información: any; }) => ({
               tipo:d.tipo,
               status:d.status,
               fecha_creacion:d.fecha_creacion,
@@ -182,7 +182,7 @@ const HomeCliente = (props:{setIsReg:any,
               location_long:d.location_long,
               picture1:d.picture1,
               picture2:d.picture2,
-              pedido_mas_información:d.pedido_mas_información,
+              pedido_mas_información:d.pedidoMasInformacion,
               respuesta_cliente_pedido_mas_información:d.respuesta_cliente_pedido_mas_información,
               picture1_mas_información:d.picture1_mas_información,
               picture2_mas_información:d.picutre2_mas_información

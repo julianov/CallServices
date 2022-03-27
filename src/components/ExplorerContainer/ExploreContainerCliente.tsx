@@ -42,6 +42,7 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
 
   
   //const [proveedores, setProveedores]=useState()
+
   
   const [verEmail, setVerEmail]=useState("")
   const[item, setItem]=useState("")
@@ -97,7 +98,7 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
         picture1:props.ordenes[i].picture1,
         picture2:props.ordenes[i].picture2,
         presupuesto:props.ordenes[i].presupuesto,
-        pedido_mas_información:props.ordenes[i].pedidoMasInformacion,
+        pedido_mas_información:props.ordenes[i].pedido_mas_información,
         respuesta_cliente_pedido_mas_información:props.ordenes[i].respuesta_cliente_pedido_mas_información,
         picture1_mas_información:props.ordenes[i].picture1_mas_información,
         picture2_mas_información:props.ordenes[i].picture2_mas_información
@@ -167,7 +168,10 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
           <div id="container-principal-ExplorerContainer-Cliente">  
             <Tabs setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal} ></Tabs>
             <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={arregloOrdenesCliente}  setVerOrden={setVerOrden} setPosicion={setPosicion}></MisOrdenes>
-            <h1 id="explorerContainerCliente-titulo">PROVEEDORES DE SERVICIOS EN LA ZONA </h1>             
+            <IonItemDivider />
+
+            <h1 style={{fontWeight:"600", fontSize:"1.5em", marginTop:"5px"}}>PROVEEDORES DE SERVICIOS</h1>    
+            <h1 style={{fontWeight:"600", fontSize:"1.5em", marginTop:"0px"}}>EN LA ZONA</h1>          
             <ProveedoresEnZona  proveedores={props.proveedores!} setVerEmail={setVerEmail} setItem={setItem} 
              setPediOrden={setPediOrden}  setVerReseña={setVerReseña}  setVerProveedor={setVerProveedor}
              tiipo={tiipo} />
@@ -463,7 +467,7 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , hayOrdenes:any,
     if (props.hayOrdenes){
       return (
         <>
-        <h1>SERVICIOS EN CURSO</h1>
+        <h1 style={{fontWeight:"600", fontSize:"1.5em"}}>SERVICIOS EN CURSO</h1>
         <div>
         <IonSlides >
           {props.misOrdenes.map((a) => {

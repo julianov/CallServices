@@ -806,29 +806,32 @@ const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:
     if (verRubro==""){
 
       return( <> 
-      <div id="contenedorCompletarRubro">
-          <header id="headerRegistro">
-          <div id="modalProveedor-flechaVolver">
-            <IonIcon icon={arrowBack} onClick={() => props.setRubros(false)} slot="start" id="flecha-volver">  </IonIcon>
-            <IonIcon icon={close} onClick={() => props.onClose(null)} slot="end" id="flecha-cerrar">  </IonIcon>
+      <div style={{display:"flex",flexDirection:"column", width:"100%", height:"100vh"}}>
+          <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto"}}>
+            <div id="modalProveedor-flechaVolver">
+              <IonIcon icon={arrowBack} onClick={() => props.setRubros(false)} slot="start" id="flecha-volver">  </IonIcon>
+              <IonIcon icon={close} onClick={() => props.onClose(null)} slot="end" id="flecha-cerrar">  </IonIcon>
+            </div>
+              <IonTitle id="register-title">MIS RUBROS CARGADOS</IonTitle>
           </div>
-            <IonTitle id="register-title">MIS RUBROS CARGADOS</IonTitle>
-          </header>
-    
-          {rubros.map((a) => {
-                i = i + 1;
-                return (
-                  <IonItem style={{height:"100%"}} key={i} id="item-modalRubro" onClick={() => (verRubros(a))}>
-                    <strong> {a.rubro} </strong>
-                  </IonItem>
-                  
-                );
-              })}
-         
-    
-          <footer id="footerCompletarRubro">
-          <IonButton id="botonAgregarRubro" shape="round" onClick={() => setAgregarOtroRubro(true)}> AGREGAR OTRO RUBRO  </IonButton>
-          </footer>
+
+          <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"100%", justifyContent:"center",alignItems:"center" }}>
+            <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto", justifyContent:"center",alignItems:"center"}}>
+
+              {rubros.map((a) => {
+                    i = i + 1;
+                    return (
+                      <IonItem style={{height:"100%"}} key={i} id="item-modalRubro" onClick={() => (verRubros(a))}>
+                        <strong> {a.rubro} </strong>
+                      </IonItem>
+                      
+                    );
+                  })}
+          </div>
+         </div>
+         <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto", justifyContent:"center", alignItems:"center", marginBottom:"32px"}}>
+            <IonButton id="botonAgregarRubro" shape="round" onClick={() => setAgregarOtroRubro(true)}> AGREGAR OTRO RUBRO  </IonButton>
+          </div>
         </div> 
       </>)      
     }else{
@@ -897,7 +900,6 @@ const CardItemVerRubro= (props:{ pedir:any,rubro:any, clientType:any, email:any,
 
   }, [modificarRubro]);
 
-  console.log("ASDFASDF+"+ props.rubro.rubro)
 
   const volver = ()=>{
     props.volver("")

@@ -57,28 +57,6 @@ const getLocation = async () => {
     }
   }
 
-/*export interface rubro {
-    rubro:string
-    radius:string
-    descripcion:string
-    calificacion:string
-    hace_orden_emergencia:string
-    dias:string
-    horaInicio:string
-    horaFin:string
-    certificacion:string
-    picture1:string
-    picture2:string
-    picture3:string
-    pais:string
-    provincia:string
-    ciudad:string
-    domicilio_calle:string
-    domicilio_numeración:string
-}*/
-
-
-
 const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any}) => {
 
 
@@ -662,22 +640,24 @@ const Lista = (props:{ setIsReg:any,setTituloAVer:any, setVista:any, arreglo:any
     if((props.arreglo.length)==1){
             return(
                 <div id="contenedorCompletarRubro">
-            <header id="headerRegistro">
-              <IonTitle id="register-title">RUBROS CARGADOS:</IonTitle>
-            </header>
+                    <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto", marginTop:"50px"}}>
+                        <IonTitle id="register-title">RUBROS CARGADOS:</IonTitle>
+                    </div>
       
-            <div id="contenedorCompletarRubro">
-                <IonItem id="item-completarRubro-rubro" onClick={()=> ( verRubro(props.arreglo[0].rubro)) }>
-                    <strong> {props.arreglo[0].rubro} </strong>
-                </IonItem>
-            </div>
+                    <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"100%", justifyContent:"center",alignItems:"center" }}>
+                        <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto", justifyContent:"center",alignItems:"center"}}>
+                                <IonItem id="item-completarRubro-rubro" onClick={()=> ( verRubro(props.arreglo[0].rubro)) }>
+                                    <strong> {props.arreglo[0].rubro} </strong>
+                                </IonItem>
+                        </div>
+                    </div>
       
-            <footer id="footerCompletarRubro">
-                <IonGrid>
-                    <IonRow><IonCol><IonButton shape="round" id="boton-inicialBR" onClick={() => { props.setVista(2)} }>AGREGAR OTRO RUBRO</IonButton></IonCol></IonRow>
-                    <IonRow><IonCol><IonButton shape="round" id="boton-inicialBR" onClick={()=> setTermino(true) } >FINALIZAR</IonButton></IonCol></IonRow>
-                </IonGrid>
-            </footer>
+                    <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto", justifyContent:"center", alignItems:"center", marginBottom:"32px"}}>
+                    
+                        <IonButton shape="round" id="boton-inicialBR" onClick={() => { props.setVista(2)} }>AGREGAR OTRO RUBRO</IonButton>
+                        <IonButton shape="round" id="boton-inicialBR" onClick={()=> setTermino(true) } >FINALIZAR</IonButton>
+                    
+                    </div>
           </div> 
 
 
@@ -689,22 +669,23 @@ const Lista = (props:{ setIsReg:any,setTituloAVer:any, setVista:any, arreglo:any
 
 
                 <div id="contenedorCompletarRubro">
-                <header id="headerRegistro">
-                  <IonTitle id="register-title">RUBROS CARGADOS:</IonTitle>
-                </header>
+                    <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto", marginTop:"50px"}}>
+                        <IonTitle id="register-title">RUBROS CARGADOS:</IonTitle>
+                    </div>
           
-                <div id="contenedorCompletarRubro">
-                    <IonItem id="item-completarRubro-rubro" onClick={()=> ( verRubro(props.arreglo[0].rubro)) }>
-                        <strong> {props.arreglo[0].rubro} </strong>
-                    </IonItem>
-                    <IonItem id="item-completarRubro-rubro" onClick={()=> verRubro(props.arreglo[1].rubro) } >
-                        <strong  >{props.arreglo[1].rubro} </strong>
-                    </IonItem>
-                </div>
-          
-                <footer id="footerCompletarRubro">
-                <IonButton id="boton-inicialBR" shape="round" onClick={()=> setTermino(true) } >FINALIZAR</IonButton>
-                </footer>
+                    <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"100%", justifyContent:"center",alignItems:"center" }}>
+                        <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto", justifyContent:"center",alignItems:"center"}}>
+                            <IonItem id="item-completarRubro-rubro" onClick={()=> ( verRubro(props.arreglo[0].rubro)) }>
+                                <strong> {props.arreglo[0].rubro} </strong>
+                            </IonItem>
+                            <IonItem id="item-completarRubro-rubro" onClick={()=> verRubro(props.arreglo[1].rubro) } >
+                                <strong  >{props.arreglo[1].rubro} </strong>
+                            </IonItem>
+                        </div>
+                    </div>
+                    <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto", justifyContent:"center", alignItems:"center", marginBottom:"32px"}}>
+                        <IonButton id="boton-inicialBR" shape="round" onClick={()=> setTermino(true) } >FINALIZAR</IonButton>
+                    </div>
               </div> 
     
 

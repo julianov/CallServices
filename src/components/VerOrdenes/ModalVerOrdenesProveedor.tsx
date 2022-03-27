@@ -402,17 +402,20 @@ const Presupuestar = (props: {setVista:any, datos:any,setEstado:any,setVolver:an
   if (presupuestar=="SI"){
     
     return (
-      <div id="ionContentModalOrdenes">
-      <div id="contenedorPrincipalModal">
-        <header id="headerModal">
-        <div id="modalProveedor-flechaVolver">
-            <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
-        </div>
-        <IonCardTitle id="ionCardTituloVerORden">PRESUPUESTO</IonCardTitle>
-        </header>
-        <article>
+        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh",background:"#f3f2ef" }}>
 
-        <div id="contenedorCentralModal">
+        <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto"}}>
+
+            <div id="modalProveedor-flechaVolver">
+                <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+            </div>
+            <div style={{display:"flex", justifyContent:"center", alignItems:"center", marginTop:"36px"}}>
+              <IonCardTitle>PRESUPUESTO</IonCardTitle>
+            </div>
+        </div>
+
+        <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"100%", justifyContent:"center",alignItems:"center" }}>
+
           <IonCard id="ionCardModalCentro">
 
             <div id="contenedorPrincipal">
@@ -441,64 +444,68 @@ const Presupuestar = (props: {setVista:any, datos:any,setEstado:any,setVolver:an
             </div>
             </div>
           </IonCard>
+        </div>
 
-          <IonLoading
+
+
+        <IonLoading
               cssClass='my-custom-class'
               isOpen={showLoading}
               onDidDismiss={() => setShowLoading(false)}
               message={'Enviando respuesta...'}
               duration={7000}
             />
-          </div>
-          </article>
+          <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto", justifyContent:"center", alignItems:"center", marginBottom:"32px"}}>
 
-          <footer id="footerModal">
           <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviarPresupuesto()} >ENVIAR PRESUPUESTO</IonButton>            
-          </footer>
-      </div>
-</div>
+        </div>
+        </div>
+
+
   )
   }else{
     return(
-      <IonContent>
-      <div id="ionContentModalOrdenes">
+      <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh",background:"#f3f2ef" }}>
 
-        <div id="modalProveedor-flechaVolver">
-            <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
-        </div>
+      <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto"}}>
 
-        <div id="contenedorPrincipal">
-          <div id="contenedorHijoCentrado">
-          <IonCardTitle>PEDIR MÁS INFORMACIÓN</IonCardTitle>
-        </div></div>
+          <div id="modalProveedor-flechaVolver">
+              <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+          </div>
+          <div style={{display:"flex", justifyContent:"center", alignItems:"center", marginTop:"36px"}}>
+            <IonCardTitle>PEDIR MÁS INFORMACIÓN</IonCardTitle>
+          </div>
+      </div>
       
+      <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"100%", justifyContent:"center",alignItems:"center" }}>
+
       <IonCard id="ionCardModalCentro">
+        <div id="contenedorPrincipal">
+        <div id="contenedorHijoCentrado">
 
-      <div id="contenedorPrincipal">
-      <div id="contenedorHijoCentrado">
-
-        <p>¿ESTÁ EN CONDICIONES DE PRESUPUESTAR EL TRABAJO?</p>
-        <div id="contenederCentrarItem">
-
-          <IonSegment mode="ios" value={presupuestar} select-on-focus={true} onIonChange={e => setPresupuestar(  e.detail.value!)} >
-            <IonSegmentButton value="SI">
-              <IonLabel>SI</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="NO">
-              <IonLabel>NO</IonLabel>
-            </IonSegmentButton>
-          </IonSegment>
-
-          </div>
-          <p>INDIQUE LA INFORMACIÓN QUE NECESITA DEL CLIENTE PARA PRESUPUESTAR</p>
+          <p style={{margin:"25px 10px 0px 10px"}}>¿ESTÁ EN CONDICIONES DE PRESUPUESTAR EL TRABAJO?</p>
           <div id="contenederCentrarItem">
-          <IonItem id="item-Orden">
-          <IonLabel position="floating">Pedido de información / comentarios</IonLabel>
-            <IonInput onIonInput={(e: any) => informacion.current = (e.target.value)}></IonInput>          </IonItem>
+
+            <IonSegment style={{width:"90%"}} mode="ios" value={presupuestar} select-on-focus={true} onIonChange={e => setPresupuestar(  e.detail.value!)} >
+              <IonSegmentButton value="SI">
+                <IonLabel>SI</IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value="NO">
+                <IonLabel>NO</IonLabel>
+              </IonSegmentButton>
+            </IonSegment>
+
+            </div>
+            <p style={{margin:"25px 10px 0px 10px"}}>INDIQUE LA INFORMACIÓN QUE NECESITA DEL CLIENTE PARA PRESUPUESTAR</p>
+            <div id="contenederCentrarItem">
+            <IonItem id="item-Orden">
+            <IonLabel position="floating">Pedido de información / comentarios</IonLabel>
+              <IonInput onIonInput={(e: any) => informacion.current = (e.target.value)}></IonInput>          </IonItem>
+            </div>
           </div>
-        </div>
-        </div>
+          </div>
     </IonCard>
+    </div>
 
 
 
@@ -509,11 +516,11 @@ const Presupuestar = (props: {setVista:any, datos:any,setEstado:any,setVolver:an
             message={'Enviando respuesta...'}
             duration={7000}
           />
+         <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto", justifyContent:"center", alignItems:"center", marginBottom:"32px"}}>
 
-    <IonButton  color="warning"  id="botonContratar" onClick={() => masInformacion()}>RESPONDER AL CLIENTE</IonButton>
+        <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => masInformacion()}>RESPONDER AL CLIENTE</IonButton>
+    </div>
 </div>
-</IonContent>
-
     )
   }
  

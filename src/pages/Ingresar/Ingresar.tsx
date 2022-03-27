@@ -163,6 +163,7 @@ import { IonAlert, IonButton, IonButtons, IonChip, IonCol, IonContent, IonGrid, 
     const tipoDeCliente=useRef("")
 
     const  {user,setUser}  = useUserContext()
+
     const {rubros,setRubro} = useRubroContext()
 
 
@@ -246,58 +247,70 @@ import { IonAlert, IonButton, IonButtons, IonChip, IonCol, IonContent, IonGrid, 
               let cantidad=0
               for (let i in arreglo) {
                 if (arreglo[i]!=""){
-                  console.log("pidiendo.... "+arreglo[i])
                   axios.get(url3+"pedirrubros/"+tipoDeCliente.current+"/"+email.current+"/"+arreglo[i])
                   .then((res: { data: any; }) => {
                     const resquest = (res.data);
 
-                    console.log("LOS RUBROS QUE LLEGARON SON**: - "+ resquest.item)
-                    console.log("LOS RUBROS QUE LLEGARON SON: - "+ JSON.stringify(resquest))
                     if(resquest!=undefined){
-                      setRubro(res.data)
+
+                     if (cantidad==0){
+                     setRubro!((state) =>[{...state,
+                        rubro:resquest.rubro,
+                        radius:resquest.radius,
+                        description:resquest.description,
+                        hace_orden_emergencia:"nop",
+                        calificacion:Number(resquest.calificacion),
+                        pais:resquest.pais,
+                        provincia:resquest.provincia,
+                        ciudad:resquest.ciudad,
+                        calle:resquest.calle,
+                        numeracion:resquest.numeracion,
+                        days_of_works:resquest.days_of_works,
+                        hour_init:resquest.hour_init,
+                        hour_end:resquest.hour_end,
+                        certificate:resquest.certificate,
+                        picture1:resquest.picture1,
+                        picture2:resquest.picture2,
+                        picture3:resquest.picture3
+                      }])
+
+                     }else{
+                      setRubro(rubros =>[...rubros,{
+                        rubro:resquest.rubro,
+                        radius:resquest.radius,
+                        description:resquest.description,
+                        hace_orden_emergencia:"nop",
+                        calificacion:Number(resquest.calificacion),
+                        pais:resquest.pais,
+                        provincia:resquest.provincia,
+                        ciudad:resquest.ciudad,
+                        calle:resquest.calle,
+                        numeracion:resquest.numeracion,
+                        days_of_works:resquest.days_of_works,
+                        hour_init:resquest.hour_init,
+                        hour_end:resquest.hour_end,
+                        certificate:resquest.certificate,
+                        picture1:resquest.picture1,
+                        picture2:resquest.picture2,
+                        picture3:resquest.picture3
+                      }])
+                     }
                       
                       if(cantidad==0){
-                       // props.setRubro1(JSON.stringify(array))
-                        setRubro(res.data)
-                       
-                        setItem("rubro1", resquest.item).then(() =>{     
-                          
+                        setItem("rubro1", resquest.rubro).then(() =>{     
                         })
                         setItem("infoRubro1",JSON.stringify(resquest)).then(() =>{ 
                           cantidad++;
                         })
+                        
                       }else{
-                        setRubro([...rubros,{
-                          rubro:resquest.item,
-                          radius:resquest.radius,
-                          description:resquest.description,
-                          hace_orden_emergencia:"nop",
-                          calificacion:Number(resquest.qualification),
-                          pais:resquest.pais,
-                          provincia:resquest.provincia,
-                          ciudad:resquest.ciudad,
-                          calle:resquest.calle,
-                          numeracion:resquest.numeracion,
-                          days_of_works:resquest.days_of_works,
-                          hour_init:resquest.hour_init,
-                          hour_end:resquest.hour_end,
-                          certificate:resquest.certificate,
-                          picture1:resquest.picture1,
-                          picture2:resquest.picture2,
-                          picture3:resquest.picture3
-                        }])
-                       // props.setRubro2(JSON.stringify(array))
-                        setItem("rubro2", resquest.item).then(() =>{     
+                        setItem("rubro2", resquest.rubro).then(() =>{     
                           setItem("infoRubro2", JSON.stringify(resquest)).then(() =>{ 
-                            
                           })
                         })
                       }
                     }
-                   
-  
                   })
-                
                 }
               }
               setItem("rubroLoaded", true).then(() =>{
@@ -339,7 +352,6 @@ import { IonAlert, IonButton, IonButtons, IonChip, IonCol, IonContent, IonGrid, 
                     //Pedir Rubros
                     if (resquest[0].clientType!="1"){
                       PedirRubros( email, tipoDeCliente)
-                      console.log("debe pedir los rubros")
                     }//Fin pedir Rubros
                     else{
                       props.setCalificacion(resquest[0].calificacion)

@@ -70,7 +70,9 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any, sin
 
   const [cargarRubro, setCargarRubro] = useState(false)
 
+  const {rubros,setRubro} = useRubroContext()
 
+  console.log("los rubros que tenemos son: "+rubros)
 
     if(cargarRubro){
       return (<CompletarRubros setIsReg={props.setIsReg} clientType= {props.tipodeCliente} email={props.emailProveedor} ></CompletarRubros>);
@@ -79,8 +81,8 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any, sin
         return (
           <><div id="container-principal-ExplorerContainer-Cliente">
            
-              <h1 id="textoCentrado"> ORDENES DE TRABAJO ACTIVAS </h1>
-  
+            
+            <h1 style={{marginTop:"35px",fontWeight:"600", fontSize:"1.5em"}}> ORDENES DE TRABAJO ACTIVAS </h1>
             <Elements proveedores={props.ordenes} setVerOrden={setVerOrden} setPosicion={setPosicion} />
             
             <CampanaPublicidad></CampanaPublicidad>
@@ -129,7 +131,7 @@ const Solicitudes  = () => {
     <IonCard id="IonCardExplorerContainer">
       <IonCardHeader>
       <div id="contenedorCentrado">
-        <h1 id="tituloNegro"> NO POSEE SOLICITUDES DE TRABAJO ACTUALMENTE </h1 > 
+        <h1 style={{fontWeight:"600"}}> NO POSEE SOLICITUDES DE TRABAJO ACTUALMENTE </h1 > 
       </div>
       </IonCardHeader>
    
@@ -140,35 +142,13 @@ const Solicitudes  = () => {
   )
 }
 
-const CampanaPublicidad  = () => {
-
-  return(
-    <>
-    <IonCard id="IonCardExplorerContainer">
-      <IonCardHeader>
-      <div id="contenedorCentrado">
-      <img src={"./assets/CampañasDePublicidad.png"} id="imagenCampañaPublicidad" />
-      </div>
-      </IonCardHeader>
-      <div id="contenedorCentrado">
-
-      <strong id="textoCentrado">Cree campañas de publicidad para llegar a más clientes</strong>
-      <IonButton color="warning">CREAR CAMPAÑA</IonButton>
-
-      </div>
-
-    </IonCard>
-    </>
-
-  )
-}
 
 const Elements = (props:{ proveedores: Array <ordenes> , setVerOrden:any,setPosicion:any }) => {
 
   var i=0
   //if (props.proveedores!=[]){
     return (
-      <div  >
+      <div  style={{width:"100%", height:"auto"}}>
         <IonSlides >
 
         {props.proveedores.map((a) => {
@@ -197,10 +177,8 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
     const [mensaje, setMensaje] = useState("")
 
     const [estado,setEstado]=useState("Enviada")
-
     
     useEffect(() => {
-
 
     if (props.status=="ENV"){
       setEstado("PEDIDO DE TRABAJO")
@@ -227,7 +205,7 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
  
 
   return (
-    <IonCard id="ionCard-explorerContainer-Cliente" onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
+    <IonCard className="ionCardExplorerContainer" onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
       <IonGrid>
         <IonRow  id="row-busqueda">
           <IonCol   id="col-explorerContainerCliente">
@@ -304,5 +282,27 @@ const CardSinRubro = (props:{ setCargarRubro:any}) => {
 
 }
 
+const CampanaPublicidad  = () => {
+
+  return(
+    <>
+    <IonCard id="IonCardExplorerContainer">
+      <IonCardHeader>
+      <div id="contenedorCentrado">
+      <img src={"./assets/CampañasDePublicidad.png"} id="imagenCampañaPublicidad" />
+      </div>
+      </IonCardHeader>
+      <div id="contenedorCentrado">
+
+      <strong id="textoCentrado">Cree campañas de publicidad para llegar a más clientes</strong>
+      <IonButton color="warning">CREAR CAMPAÑA</IonButton>
+
+      </div>
+
+    </IonCard>
+    </>
+
+  )
+}
 
 export default ExploreContainerProveedor;

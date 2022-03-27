@@ -37,7 +37,6 @@ import { Dispatch, SetStateAction } from "react"
     picture1:string
     picture2:string
     picture3:string
-
   }
 
   

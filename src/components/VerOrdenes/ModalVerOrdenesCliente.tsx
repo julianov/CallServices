@@ -41,15 +41,21 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
     
     useEffect(() => {
         
-            if (props.datos.status=="ENV"){
+          if (props.datos.status=="ENV"){
               setEstado("GENERADA")
             }else if(props.datos.status=="REC"){
               setEstado("ORDEN RECIBIDA POR PROVEEDOR")
             }else if(props.datos.status=="ABI"){
               setEstado("ORDEN RECIBIDA POR PROVEEDOR")
             }else if(props.datos.status=="PEI"){
-              setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
-              setVista("masinfo")
+              if(props.datos.respuesta_cliente_pedido_mas_información!="" && props.datos.respuesta_cliente_pedido_mas_información!=undefined){
+                setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
+                setVista("respuestaEnviada")
+              }else{
+                setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
+                setVista("masinfo")
+              }
+              
             } else if(props.datos.status=="PRE"){
               setEstado("ORDEN PRE ACEPTADA POR PROVEEDOR")
               setVista("preaceptada")
@@ -285,6 +291,7 @@ const PedidoMasInfo = ( props:{datos:any, setVolver:any, setVista:any, setEstado
       var formDataToUpload = new FormData();
       formDataToUpload.append("ticket",props.datos.ticket)
       formDataToUpload.append("respuesta_informacion",respuesta_informacion.current)
+
       if(foto1.current!=null || foto1.current!=undefined){
         formDataToUpload.append("imagen1", foto1.current);
       }
@@ -316,6 +323,9 @@ const PedidoMasInfo = ( props:{datos:any, setVolver:any, setVista:any, setEstado
 
   }
 
+  console.log("esto es lo que pide el proveedor:"+props.datos.pedido_mas_información)
+  console.log("esto es lo que pide el proveedor:"+props.datos.tipo)
+
   return (
     <IonContent>
       <div id="ionContentModalOrdenes">
@@ -323,7 +333,6 @@ const PedidoMasInfo = ( props:{datos:any, setVolver:any, setVista:any, setEstado
           <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
         </div>
 
-        <IonTitle>SOLICITUD DE MÁS INFORMACIÓN</IonTitle>  
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <div id="divSentencias">
             <p>TIPO: {props.datos.tipo}</p>
@@ -352,24 +361,38 @@ const PedidoMasInfo = ( props:{datos:any, setVolver:any, setVista:any, setEstado
         </IonCard>
 
         <div id="titulo">
-            <strong>SOLICITUD DE MÁS INFORMACIÓN </strong>
+            <h1>SOLICITUD DE MÁS INFORMACIÓN </h1>
         </div>
 
         <IonCard id="ionCard-explorerContainer-Proveedor">
 
-          <div id="divSentencias">
-            <p>MAS INFORMACIÓN REQUERIDA POR EL PROVEEDOR:</p> 
-            <p>{props.datos.pedido_mas_información}</p> 
+          <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
+            <h2 style={{fontWeight:"100", fontSize:"1em"}}>RESPUESTA DEL PROVEEDOR DE SERVICIO</h2> 
           </div>
-          <IonItemDivider></IonItemDivider>
+            <IonItemDivider style={{margin:"0px"}}></IonItemDivider>
+          <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
+            <p style={{fontWeight:"600", fontSize:"1.2em", marginBottom:"15px"}}>{props.datos.pedido_mas_información}</p> 
+          </div>
+        </IonCard>
+
+        <IonItemDivider></IonItemDivider>
+
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+        <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
+            <h2 style={{fontWeight:"100", fontSize:"1em"}}>INGRESE SU RESPUESTA</h2> 
+          </div>
+          <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
 
             <IonItem id="item-Orden">
               <IonLabel position="floating">Respuesta</IonLabel>
               <IonInput onIonInput={(e: any) => respuesta_informacion.current = (e.target.value)}></IonInput>
             </IonItem>
-
-            <p>Agregar Fotos:</p> 
-            <IonGrid>
+            </div>
+            <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
+            <h2 style={{fontWeight:"100", fontSize:"1em"}}>¿DESEA AGREGAR FOTOS?</h2> 
+          </div>
+          
+                      <IonGrid>
               <IonRow>
                 <IonCol>
                   <TomarFotografia imagen={foto1Mostrar} setFilepath={foto1} />
@@ -385,10 +408,12 @@ const PedidoMasInfo = ( props:{datos:any, setVolver:any, setVista:any, setEstado
 
           <div id="botonCentral">
             <div id="botonCentralIzquierda">
-              <IonButton color="warning" id="botonContratar" onClick={() => enviarMasInfo()}>RESPONDER</IonButton>
+            <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton>
+
             </div>
             <div id="botonCentralDerecha">  
-              <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton>
+            <IonButton shape="round" color="warning" id="botonContratar" onClick={() => enviarMasInfo()}>RESPONDER</IonButton>
+
             </div>
           </div>
 
@@ -572,6 +597,7 @@ const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEst
 }
 
 const RespuestaEnviada  = (props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any, cancelarOrden:any} )=>{
+  
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
   const [showAlertUbicacion,setShowAlertUbicacion] = useState(false)
 
@@ -629,19 +655,34 @@ const RespuestaEnviada  = (props:{datos:any, setVolver:any, setVista:any, setEst
         <IonCard id="ionCard-explorerContainer-Proveedor">
           < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
         </IonCard>
+        <IonItemDivider style={{margin:"35px 0px 0px 0px"}}></IonItemDivider>
 
         <div id="titulo">
           <strong>PEDIDO DE MÁS INFORMACIÓN</strong>
         </div>
      
         <IonCard id="ionCard-explorerContainer-Proveedor">
-          <div id="divSentencias">
-            <p>PREGUNTA PROVEEDOR:</p>
-            <p>{props.datos.pedido_mas_información}</p>
-            <p>RESPUESTA DADA:</p>
-            <p>{props.datos.respuesta_cliente_pedido_mas_información}</p>
-            <p>IMÁGENES BRINDADAS:</p>
+          <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
+            <h2 style={{fontWeight:"100", fontSize:"1em"}}>PREGUNTA PROVEEDOR:</h2>
           </div>
+
+          <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
+            <p style={{fontWeight:"600", fontSize:"1.2em", marginBottom:"15px"}}>{props.datos.pedido_mas_información}</p>
+          </div>
+
+          
+          <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
+            <h2 style={{fontWeight:"100", fontSize:"1em"}}>RESPUESTA DADA:</h2>
+          </div>
+
+          <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
+            <p style={{fontWeight:"600", fontSize:"1.2em", marginBottom:"15px"}}>{props.datos.respuesta_cliente_pedido_mas_información}</p>
+          </div>
+
+          <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
+            <h2 style={{fontWeight:"100", fontSize:"1em"}}>IMÁGENES BRINDADAS:</h2>
+          </div>
+
           <Imagenes2 picture1={props.datos.picture1_mas_información} picture2={props.datos.picture2_mas_información} />
         </IonCard>
   
@@ -1347,7 +1388,9 @@ const Imagenes = (props:{picture1:any,picture2:any, ticket:any, tipo:any})=>{
 }
 
 const Imagenes2 = (props:{picture1:any,picture2:any})=>{
-  if(props.picture1!="" && props.picture2!="" ){
+  console.log("a ver las imágenes: "+props.picture1)
+  console.log("a ver las imágenes: "+props.picture2)
+  if(props.picture1!="" && props.picture1!=undefined && props.picture2!="" && props.picture2!=undefined){
     return(
       <div id="CardProveedoresImg">
         <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture1}></img>
@@ -1355,22 +1398,23 @@ const Imagenes2 = (props:{picture1:any,picture2:any})=>{
         </div>
     )
   }
-  else if(props.picture1!="" && props.picture2==""){
+  else if((props.picture1!="" && props.picture1!=undefined) && (props.picture2=="" || props.picture2==undefined)){
     return(
       <div id="CardProveedoresImg"><img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture1}></img>
       </div>
     )
   }
-  else if(props.picture1=="" && props.picture2!="" ){
+  else if( (props.picture1=="" || props.picture1==undefined) && (props.picture2!="" && props.picture2!=undefined) ){
     return(
       <div id="CardProveedoresImg"><img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture2}></img>
       </div>
     )
   }else{
     return(
-      <div id="CardProveedoresImg">
-        <p>CLIENTE NO HA ADJUNTADO IMÁGENES DE REFERENCIA DEL PEDIDO DE SERVICIO</p>
-      </div>
+      <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
+            <p style={{fontWeight:"600", fontSize:"1.2em", marginBottom:"15px"}}>NO HA ADJUNTADO IMÁGENES DE REFERENCIA</p>
+          </div>
+      
     )
   }
 }
