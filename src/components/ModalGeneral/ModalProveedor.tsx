@@ -13,9 +13,9 @@ import { getItem, removeItem, setItem } from "../../utilidades/Storage";
 import { b64toBlob } from "../../utilidades/b64toBlob";
 import Estrellas from "../Estrellas/Estrellas";
 import CompletarRubros from "../../pages/CompletarRubros/CompletarRubros";
-import { useRubroContext } from "../../Contexts/RubroContext";
+import { useRubroContext1, useRubroContext2 } from "../../Contexts/RubroContext";
 import { useUserContext } from "../../Contexts/UserContext";
-import { usuario } from "../../Interfaces/interfaces";
+import { itemRubro, usuario } from "../../Interfaces/interfaces";
 import { IonActionSheet, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonDatetime, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRange, IonRow, IonSelect, IonSelectOption, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
 
 //const url='http://127.0.0.1:8000/';
@@ -31,18 +31,15 @@ const url2 = Https+"completarinfo/"
 
 
 
-const ModalProveedor: React.FC<{setIsReg:any,  onClose: any; tipoVista:any; 
-  email:any; tipoProveedor:any; completarInfoPersonal:boolean, 
-}> = ({setIsReg, onClose, tipoVista, email, tipoProveedor, completarInfoPersonal,
+const ModalProveedor: React.FC<{setIsReg:any,  onClose: any; tipoVista:any; completarInfoPersonal:boolean, 
+}> = ({setIsReg, onClose, tipoVista, completarInfoPersonal,
 }) => {
  
 
  if(tipoVista==="datosUsuario"){
   return (
     < >
-      <DatosUsuario setIsReg={setIsReg}
-      email={email} tipoProveedor={tipoProveedor} completarInfoPersonal={completarInfoPersonal}
-     onClose={onClose}
+      <DatosUsuario setIsReg={setIsReg} completarInfoPersonal={completarInfoPersonal}  onClose={onClose}
       
       />
     </>
@@ -225,8 +222,7 @@ const TomarFotografia = (props: {imagen:any, setFilepath:any}) => {
   
 }  
 
-const DatosUsuario = (props:{setIsReg:any, 
-  email:any,tipoProveedor:string, completarInfoPersonal:any, onClose:any,
+const DatosUsuario = (props:{setIsReg:any, completarInfoPersonal:any, onClose:any,
   }) =>{
 
   const [agrandarImagen,setAgrandarImagen]=useState(false)
@@ -253,19 +249,13 @@ const DatosUsuario = (props:{setIsReg:any,
     window.location.reload();    
   }
     return(
-      <DatosPersonales setIsReg={props.setIsReg}
-      completarInfoPersonal={props.completarInfoPersonal} closeSesion={closeSesion} datosPersonales={datosPersonales} setDatosPersonales={seDatosPersonales} onClose={props.onClose} 
-      email={props.email} tipoProveedor={props.tipoProveedor} 
-      
-       ></DatosPersonales>
+      <DatosPersonales setIsReg={props.setIsReg} completarInfoPersonal={props.completarInfoPersonal} closeSesion={closeSesion} datosPersonales={datosPersonales} setDatosPersonales={seDatosPersonales} onClose={props.onClose}></DatosPersonales>
     )
   
 }
 
 
-const DatosPersonales =(props:{setIsReg:any, completarInfoPersonal:any; closeSesion:any;  datosPersonales:any;  setDatosPersonales:any, onClose:any, 
-  email:any, tipoProveedor:any,
-  }) => {
+const DatosPersonales =(props:{setIsReg:any, completarInfoPersonal:any; closeSesion:any;  datosPersonales:any;  setDatosPersonales:any, onClose:any }) => {
 
   const [showAlertDatosPersonales, setShowAlertDatosPersonales]=useState(false)
   const [rubros,setRubros]=useState(false) //igual a true para mostrar rubros
@@ -334,7 +324,7 @@ const DatosPersonales =(props:{setIsReg:any, completarInfoPersonal:any; closeSes
               <IonContent>
                 <div id="contenedor-central-Modal">
                 <MostrarDatosPersonales setShowAlertDatosPersonales={setShowAlertDatosPersonales} setDatosPersonales={props.setDatosPersonales} onClose={props.onClose} 
-                email={props.email} tipoProveedor={props.tipoProveedor} foto={user!.foto} 
+                email={user?.email} tipoProveedor={user?.tipoCliente} foto={user!.foto} 
                 nombre={user!.nombre} apellido={user!.apellido} calificacion={user!.calificacion} setUser={setUser}
                 ></MostrarDatosPersonales>
                 </div>
@@ -354,7 +344,7 @@ const DatosPersonales =(props:{setIsReg:any, completarInfoPersonal:any; closeSes
                 <>
                 
                 <IonContent >
-                <MisRubros onClose={props.onClose} setIsReg={props.setIsReg} setRubros={setRubros} email={props.email} tipoProveedor={props.tipoProveedor}></MisRubros>
+                <MisRubros onClose={props.onClose} setIsReg={props.setIsReg} setRubros={setRubros} email={user?.email} tipoProveedor={user!.tipoCliente}></MisRubros>
                 </IonContent>
               </>
               );
@@ -779,8 +769,55 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
   }
 }
 
-const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:any,
-  onClose:any}) => {
+
+const Rubritos = (props:{setAgregarOtroRubro:any,verRubros:any}) =>{
+
+
+  const {rubrosItem1,setItemRubro1} = useRubroContext1 () 
+  const {rubrosItem2,setItemRubro2} = useRubroContext2 () 
+
+
+  if ((rubrosItem1!.rubro!="" && rubrosItem1!.rubro!=undefined) && (rubrosItem2!.rubro!="" && rubrosItem2!.rubro!=undefined)){
+      return (
+        <div style={{display:"flex", flexDirection:"column", width:"100%",height:"100%", justifyContent:"center", alignItems:"center"}}>
+          <IonItem id="item-completarRubro-rubro" onClick={() => (props.verRubros(rubrosItem1!.rubro))}>
+              <strong> {rubrosItem1!.rubro} </strong>
+          </IonItem>
+          <IonItem id="item-completarRubro-rubro" onClick={() => (props.verRubros(rubrosItem2!.rubro))}>
+              <strong> {rubrosItem2!.rubro} </strong>
+          </IonItem>
+        </div>
+      )
+  }else if((rubrosItem1!.rubro=="" || rubrosItem1!.rubro==undefined) && (rubrosItem2!.rubro!="" && rubrosItem2!.rubro!=undefined)){ 
+      return (
+          <div style={{display:"flex", flexDirection:"column", width:"100%",height:"100%", justifyContent:"center", alignItems:"center"}}>
+            <IonItem id="item-completarRubro-rubro" onClick={() => (props.verRubros(rubrosItem2!.rubro))}>
+                  <strong> {rubrosItem2!.rubro} </strong>
+              </IonItem>
+              <IonButton shape="round" id="boton-inicialBR" onClick={() => { props.setAgregarOtroRubro(true)} }>AGREGAR OTRO RUBRO</IonButton>
+          </div>
+      )
+  }else if((rubrosItem1!.rubro!="" && rubrosItem1!.rubro!=undefined) && (rubrosItem2!.rubro=="" || rubrosItem2!.rubro==undefined)){ 
+      return (
+        <div style={{display:"flex", flexDirection:"column", width:"100%",height:"100%", justifyContent:"center", alignItems:"center"}}>
+        <IonItem id="item-completarRubro-rubro" onClick={() => (props.verRubros(rubrosItem1!.rubro))}>
+                  <strong> {rubrosItem1!.rubro} </strong>
+              </IonItem>
+              <IonButton shape="round" id="boton-inicialBR" onClick={() => {props.setAgregarOtroRubro(true)} }>AGREGAR OTRO RUBRO</IonButton>
+</div>
+      )
+  }else{
+      return (
+        <div style={{display:"flex", flexDirection:"column", textAlign:"center", width:"100%",height:"100%", justifyContent:"center", alignItems:"center"}}>
+          <h1>NO POSEE RUBROS CARGADOS</h1>
+          <IonButton shape="round" id="boton-inicialBR" onClick={() => { props.setAgregarOtroRubro(true)} }>AGREGAR RUBRO</IonButton>
+        </div>
+      )
+  }
+
+}
+
+const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:any,onClose:any}) => {
 
   const[ hayRubros, setHayRubros]=useState("comprobar")
   const[ verRubro, setVerRubro]=useState("")
@@ -791,49 +828,39 @@ const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:
 
  // const[showCargandoRubros, setShowCargandoRubros]= useState(false)
 
-  const {rubros,setRubro} = useRubroContext ()
+ const {rubrosItem1,setItemRubro1} = useRubroContext1 () 
+ const {rubrosItem2,setItemRubro2} = useRubroContext2 ()
 
-  var i=0; 
-  const verRubros = (rubro:any)=> {
-    setVerRubro(rubro)
-  }
+ console.log("rubro 1: "+rubrosItem1?.rubro)
+ console.log("rubro 2: "+rubrosItem2?.rubro)
+
 
   if (agregarOtroRubro){
 
-    return(<CompletarRubros  email={props.email} clientType={props.tipoProveedor} setIsReg={props.setIsReg} />);
+    return(<CompletarRubros  email={props.email}  clientType={props.tipoProveedor} setIsReg={props.setIsReg} />);
 
   }else{
     if (verRubro==""){
 
-      return( <> 
-      <div style={{display:"flex",flexDirection:"column", width:"100%", height:"100vh"}}>
-          <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto"}}>
-            <div id="modalProveedor-flechaVolver">
-              <IonIcon icon={arrowBack} onClick={() => props.setRubros(false)} slot="start" id="flecha-volver">  </IonIcon>
-              <IonIcon icon={close} onClick={() => props.onClose(null)} slot="end" id="flecha-cerrar">  </IonIcon>
-            </div>
-              <IonTitle id="register-title">MIS RUBROS CARGADOS</IonTitle>
-          </div>
+      
+        return( <> 
+          <div style={{display:"flex",flexDirection:"column", width:"100%", height:"100vh"}}>
+              <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto"}}>
+                <div id="modalProveedor-flechaVolver">
+                  <IonIcon icon={arrowBack} onClick={() => props.setRubros(false)} slot="start" id="flecha-volver">  </IonIcon>
+                  <IonIcon icon={close} onClick={() => props.onClose(null)} slot="end" id="flecha-cerrar">  </IonIcon>
+                </div>
+                  <IonTitle id="register-title">MIS RUBROS CARGADOS</IonTitle>
+              </div>
+    
+                <Rubritos setAgregarOtroRubro={setAgregarOtroRubro} verRubros={setVerRubro}></Rubritos>
+            
+             
+            </div> 
+          </>)  
 
-          <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"100%", justifyContent:"center",alignItems:"center" }}>
-            <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto", justifyContent:"center",alignItems:"center"}}>
-
-              {rubros.map((a) => {
-                    i = i + 1;
-                    return (
-                      <IonItem style={{height:"100%"}} key={i} id="item-modalRubro" onClick={() => (verRubros(a))}>
-                        <strong> {a.rubro} </strong>
-                      </IonItem>
-                      
-                    );
-                  })}
-          </div>
-         </div>
-         <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto", justifyContent:"center", alignItems:"center", marginBottom:"32px"}}>
-            <IonButton id="botonAgregarRubro" shape="round" onClick={() => setAgregarOtroRubro(true)}> AGREGAR OTRO RUBRO  </IonButton>
-          </div>
-        </div> 
-      </>)      
+   
+          
     }else{
     
         return(
@@ -850,7 +877,7 @@ const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:
 }
 }
 
-const CardItemVerRubro= (props:{ pedir:any,rubro:any, clientType:any, email:any, volver:any}) => {
+const CardItemVerRubro= (props:{ pedir:any , rubro:any, clientType:any, email:any, volver:any}) => {
 
   const [modificarRubro,setModificarRubro]=useState("")
 
@@ -858,47 +885,74 @@ const CardItemVerRubro= (props:{ pedir:any,rubro:any, clientType:any, email:any,
   const [showCargando, setShowCargando]=useState(true)
   const [showRubroEliminado, setShowRubroEliminado]=useState(false)
 
-  const [item,setItem] = useState()
-  const radius = useRef()
-  const description = useRef()
-  const calificacion= useRef()
+  const {rubrosItem1,setItemRubro1} = useRubroContext1 () 
+  const {rubrosItem2,setItemRubro2} = useRubroContext2 ()
+  
+  
+    const [item, setItem]= useState("")
+    const radius = useRef("")
+    const description = useRef("")
+    const calificacion= useRef(0)
 
-  const pais= useRef()
-  const provincia= useRef()
-  const ciudad= useRef()
-  const calle= useRef()
-  const numeracion= useRef()
+    const pais= useRef("")
+    const provincia= useRef("")
+    const ciudad= useRef("")
+    const calle= useRef("")
+    const numeracion= useRef("")
 
-  const days_of_works = useRef()
-  const hour_init = useRef()
-  const hour_end = useRef()
-  const certificate = useRef()
-  const picture1 = useRef()
-  const picture2 = useRef()
-  const picture3 = useRef()
+    const days_of_works = useRef("")
+    const hour_init = useRef("")
+    const hour_end = useRef("")
+    const certificate = useRef("")
+    const picture1 = useRef("")
+    const picture2 = useRef("")
+    const picture3 = useRef("")
 
-  const siesRubro1oRubro2 = useRef("")
+    useEffect(() => {   
+
+       if (rubrosItem1?.rubro==props.rubro){
+           setItem(rubrosItem1!.rubro)
+           radius.current=rubrosItem1!.radius
+           description.current=rubrosItem1!.description
+           calificacion.current=rubrosItem1!.calificacion
+           pais.current=rubrosItem1!.pais
+           provincia.current=rubrosItem1!.provincia
+           ciudad.current=rubrosItem1!.ciudad
+           calle.current=rubrosItem1!.calle
+           numeracion.current=rubrosItem1!.numeracion
+           days_of_works.current=rubrosItem1!.days_of_works
+           hour_init.current=rubrosItem1!.hour_init
+           hour_end.current=rubrosItem1!.hour_end
+           certificate.current=rubrosItem1!.certificate
+           picture1.current=rubrosItem1!.picture1
+           picture2.current=rubrosItem1!.picture2
+           picture3.current=rubrosItem1!.picture3
+        }else{
+
+           setItem(rubrosItem2!.rubro)
+           radius.current=rubrosItem2!.radius
+           description.current=rubrosItem2!.description
+           calificacion.current=rubrosItem2!.calificacion
+           pais.current=rubrosItem2!.pais
+           provincia.current=rubrosItem2!.provincia
+           ciudad.current=rubrosItem2!.ciudad
+           calle.current=rubrosItem2!.calle
+           numeracion.current=rubrosItem2!.numeracion
+           days_of_works.current=rubrosItem2!.days_of_works
+           hour_init.current=rubrosItem2!.hour_init
+           hour_end.current=rubrosItem2!.hour_end
+           certificate.current=rubrosItem2!.certificate
+           picture1.current=rubrosItem2!.picture1
+           picture2.current=rubrosItem2!.picture2
+           picture3.current=rubrosItem2!.picture3
+
+        }
+
+      
+
+    }, [modificarRubro]);
 
 
-  useEffect(() => {
-    setItem(props.rubro.rubro)
-    radius.current=props.rubro.radius
-    description.current=props.rubro.description
-    calificacion.current=props.rubro.calificacion
-    pais.current=props.rubro.pais
-    provincia.current=props.rubro.provincia
-    ciudad.current=props.rubro.ciudad
-    calle.current=props.rubro.calle
-    numeracion.current=props.rubro.numeracion
-    days_of_works.current=props.rubro.days_of_works
-    hour_init.current=props.rubro.hour_init
-    hour_end.current=props.rubro.hour_end
-    certificate.current=props.rubro.certificate
-    picture1.current=props.rubro.picture1
-    picture2.current=props.rubro.picture2
-    picture3.current=  props.rubro.picture3
-
-  }, [modificarRubro]);
 
 
   const volver = ()=>{
@@ -925,27 +979,71 @@ const CardItemVerRubro= (props:{ pedir:any,rubro:any, clientType:any, email:any,
               if (res.data=="rubro elimnado"){
                   //Aca tengo que eliminar el setItem
                   getItem("rubro2").then(res => {
-                      if (res!=null || res!= undefined || res!=""){
+                      if (res!=null && res!= undefined && res!="" && res==item){
                           removeItem("rubro2")
                           removeItem("infoRubro2")
                           //props.setRubro(null)
-                      }
+                          setItemRubro2!({
+                            rubro:"",
+                            radius:"",
+                            description:"",
+                            hace_orden_emergencia:"",
+                            calificacion:0,
+                            pais:"",
+                            provincia:"",
+                            ciudad:"",
+                            calle:"",
+                            numeracion:"",
+                            days_of_works:"",
+                            hour_init:"",
+                            hour_end:"",
+                            certificate:"",
+                            picture1:"",
+                            picture2:"",
+                            picture3:"",
+                           })
+                           setShowRubroEliminado(true)
+                           props.pedir("pedir")
+                           props.volver("")
+                       }
                       else{
-                        removeItem("rubro1")
-                        removeItem("infoRubro1")
-                       // props.setRubro(null)
+                        getItem("rubro1").then(res => {
+                          if (res!=null && res!= undefined && res!="" && res==item){
+                            removeItem("rubro1")
+                            removeItem("infoRubro1")
+                            setItemRubro1!({
+                              rubro:"",
+                              radius:"",
+                              description:"",
+                              hace_orden_emergencia:"",
+                              calificacion:0,
+                              pais:"",
+                              provincia:"",
+                              ciudad:"",
+                              calle:"",
+                              numeracion:"",
+                              days_of_works:"",
+                              hour_init:"",
+                              hour_end:"",
+                              certificate:"",
+                              picture1:"",
+                              picture2:"",
+                              picture3:"",
+                            })
+                            setShowRubroEliminado(true)
+                            props.pedir("pedir")
+                            props.volver("")
+                          }
+                        })
                       }
-                    })
-                  
-                  setShowRubroEliminado(true)
-                  props.pedir("pedir")
-                  props.volver("")
-              }else if(res.data=="no ha sido posible eliminar el rubro"){
+                   })
+              }
+            }else if(res.data=="no ha sido posible eliminar el rubro"){
                   props.volver("")
               }else{
                   props.volver("")
               }
-          }
+          
       }).catch((error: any) =>{
           //Network error comes in
       });   
@@ -1038,17 +1136,18 @@ if(modificarRubro==""){
   return (<ModificarDatosRubro 
     clientType={props.clientType} email={props.email}
     rubro={props.rubro} setVolver={setModificarRubro} 
-    siesRubro1oRubro2={siesRubro1oRubro2} 
     setDatosListos={setDatosListos} />)
 }
 
   
 }
 
-const ModificarDatosRubro = (props:{clientType:any, email:any,rubro:any, setVolver:any,
-  siesRubro1oRubro2:any, setDatosListos:any}) =>{
+const ModificarDatosRubro = (props:{clientType:any, email:any,rubro:any, setVolver:any, setDatosListos:any}) =>{
 
   //para volver props.setRubro("")
+
+  const {rubrosItem1,setItemRubro1} = useRubroContext1 () 
+  const {rubrosItem2,setItemRubro2} = useRubroContext2 ()
 
   const blobCertificado = useRef <Blob>()
   const blobFoto1 = useRef <Blob>()
@@ -1059,23 +1158,68 @@ const ModificarDatosRubro = (props:{clientType:any, email:any,rubro:any, setVolv
   const [showAlertRubroModificado,setShowAlertRubroModificado]=useState(false)
   //const radio = useRef()
 
+  const [item, setItem]= useState("")
+     const radius = useRef("")
+     const description = useRef("")
+     const calificacion= useRef(0)
+ 
+     const pais= useRef("")
+     const provincia= useRef("")
+     const ciudad= useRef("")
+     const calle= useRef("")
+     const numeracion= useRef("")
+ 
+     const days_of_works = useRef("")
+     const hour_init = useRef("")
+     const hour_end = useRef("")
+     const certificate = useRef("")
+     const picture1 = useRef("")
+     const picture2 = useRef("")
+     const picture3 = useRef("")
 
-  const item = useRef(props.rubro.rubro)
-  const radius = useRef(props.rubro.radius)
-  const description = useRef(props.rubro.description)
-  const calificacion= useRef(props.rubro.calificacion)
-  const pais=useRef(props.rubro.pais)
-  const provincia=useRef(props.rubro.provincia)
-  const ciudad=useRef(props.rubro.ciudad)
-  const calle=useRef(props.rubro.calle)
-  const numeracion=useRef(props.rubro.numeracion)
-  const days_of_works = useRef(props.rubro.days_of_works)
-  const hour_init = useRef(props.rubro.hour_init)
-  const hour_end = useRef(props.rubro.hour_end)
-  const certificate = useRef(props.rubro.certificate)
-  const picture1 = useRef(props.rubro.picture1)
-  const picture2 = useRef(props.rubro.picture2)
-  const picture3 = useRef(props.rubro.picture3)
+   useEffect(() => {   
+ 
+        if (rubrosItem1?.rubro==props.rubro){
+            setItem(rubrosItem1!.rubro)
+            radius.current=rubrosItem1!.radius
+            description.current=rubrosItem1!.description
+            calificacion.current=rubrosItem1!.calificacion
+            pais.current=rubrosItem1!.pais
+            provincia.current=rubrosItem1!.provincia
+            ciudad.current=rubrosItem1!.ciudad
+            calle.current=rubrosItem1!.calle
+            numeracion.current=rubrosItem1!.numeracion
+            days_of_works.current=rubrosItem1!.days_of_works
+            hour_init.current=rubrosItem1!.hour_init
+            hour_end.current=rubrosItem1!.hour_end
+            certificate.current=rubrosItem1!.certificate
+            picture1.current=rubrosItem1!.picture1
+            picture2.current=rubrosItem1!.picture2
+            picture3.current=rubrosItem1!.picture3
+         }else{
+
+            setItem(rubrosItem2!.rubro)
+            radius.current=rubrosItem2!.radius
+            description.current=rubrosItem2!.description
+            calificacion.current=rubrosItem2!.calificacion
+            pais.current=rubrosItem2!.pais
+            provincia.current=rubrosItem2!.provincia
+            ciudad.current=rubrosItem2!.ciudad
+            calle.current=rubrosItem2!.calle
+            numeracion.current=rubrosItem2!.numeracion
+            days_of_works.current=rubrosItem2!.days_of_works
+            hour_init.current=rubrosItem2!.hour_init
+            hour_end.current=rubrosItem2!.hour_end
+            certificate.current=rubrosItem2!.certificate
+            picture1.current=rubrosItem2!.picture1
+            picture2.current=rubrosItem2!.picture2
+            picture3.current=rubrosItem2!.picture3
+
+         }
+ 
+       
+ 
+     }, []);
 
   const modificar =()=>{
 
@@ -1087,8 +1231,8 @@ const ModificarDatosRubro = (props:{clientType:any, email:any,rubro:any, setVolv
     formDataToUpload.append("tipo", String(props.clientType))
     formDataToUpload.append("email", props.email);
 
-    formDataToUpload.append("item", item.current);
-    arreglo.push(item.current)
+    formDataToUpload.append("item", item);
+    arreglo.push(item)
     formDataToUpload.append("radius",radius.current!);
     arreglo.push(String(radius.current))
 
@@ -1188,28 +1332,65 @@ const ModificarDatosRubro = (props:{clientType:any, email:any,rubro:any, setVolv
   }).then(function(res: any){
 
       if(res.data=="rubro modificado"){
-        if(props.siesRubro1oRubro2.current=="rubro1"){
-          
-          setItem("infoRubro1", JSON.stringify(arreglo)).then(() =>{ 
-            setShowModificandoRubro(false) 
-           // props.setDatosListos(false)
-           // props.setRubro(JSON.stringify(arreglo))
-            })
-        }else if (props.siesRubro1oRubro2.current=="rubro2"){
-          setItem("infoRubro2", JSON.stringify(arreglo)).then(() =>{ 
-            setShowModificandoRubro(false) 
-          //  props.setDatosListos(false)
-         //   props.setRubro(JSON.stringify(arreglo))
-          })
-        }else{
-          setShowModificandoRubro(false) 
-          //props.setRubro("")
-        }
-        setShowAlertRubroModificado(true)
+
+        getItem("rubro1").then(res4 => {
+              if(rubrosItem1?.rubro==res4){
+                setItemRubro1!(
+                  { 
+                  rubro:item,
+                  radius:radius.current,
+                  description:description.current,
+                  calificacion:0,
+                  hace_orden_emergencia:rubrosItem1!.hace_orden_emergencia,
+                  days_of_works:days_of_works.current,
+                  hour_init: hour_init.current,
+                  hour_end:hour_end.current,
+                  certificate:certificate.current,
+                  picture1:picture1.current,
+                  picture2:picture2.current,
+                  picture3:picture3.current,
+                  pais:pais.current,
+                  provincia:provincia.current,
+                  ciudad:ciudad.current,
+                  calle:calle.current,
+                  numeracion:String(numeracion.current),
+              })
+
+              setShowModificandoRubro(false)
+          }else{
+            getItem("rubro2").then(res5 => {
+              if(rubrosItem2?.rubro==res5){
+                setItemRubro2!(
+                  { 
+                  rubro:item,
+                  radius:radius.current,
+                  description:description.current,
+                  calificacion:0,
+                  hace_orden_emergencia:rubrosItem1!.hace_orden_emergencia,
+                  days_of_works:days_of_works.current,
+                  hour_init: hour_init.current,
+                  hour_end:hour_end.current,
+                  certificate:certificate.current,
+                  picture1:picture1.current,
+                  picture2:picture2.current,
+                  picture3:picture3.current,
+                  pais:pais.current,
+                  provincia:provincia.current,
+                  ciudad:ciudad.current,
+                  calle:calle.current,
+                  numeracion:String(numeracion.current),
+              })
+              setShowModificandoRubro(false)
+              setShowAlertRubroModificado(true)
+
+          }else{
+            setShowModificandoRubro(false)
+          }
+        })
+          }
+        })
+
       }
-
-
-
   }).catch((error: any) =>{
       //Network error comes in
       setShowModificandoRubro(false) 
@@ -1225,12 +1406,13 @@ const ModificarDatosRubro = (props:{clientType:any, email:any,rubro:any, setVolv
   return(<> 
   
   
+
   <div id="cardItemModalProveedor">
   <IonTitle id="tituloModalProveedor">PUEDE MOFICIAR LA SIGUIENTE INFORMACIÓN DEL RUBRO</IonTitle>
 
 <IonCard id="ionCard-CardProveedorGeneral">
       <IonCardHeader>
-          <IonCardTitle>{item.current}</IonCardTitle>
+          <IonCardTitle>{item}</IonCardTitle>
       </IonCardHeader>
       <strong>Descripción:</strong>      
       <IonTextarea placeholder={description.current} onIonInput={(e: any) => description.current=(e.target.value)}></IonTextarea>
@@ -1340,15 +1522,7 @@ const ModificarDatosRubro = (props:{clientType:any, email:any,rubro:any, setVolv
               onDidDismiss={() => setShowModificandoRubro(false)}
               message={'Modificando rubro...'}
               duration={15000} />
-     <IonAlert
-              isOpen={showAlertRubroModificado}
-              onDidDismiss={() => setShowAlertRubroModificado(false)}
-              cssClass='my-custom-class'
-              header={'Rubro ha sido modificado'}
-              subHeader={''}
-              message={'Observará los cambios al cerrar e iniciar sesión'}
-              buttons={['OK']}
-              />
+
   
   </>)
 }

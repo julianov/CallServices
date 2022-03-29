@@ -14,7 +14,6 @@ import { Link } from 'react-router-dom';
 import CompletarRubros from '../../pages/CompletarRubros/CompletarRubros';
 import { ordenes } from '../../pages/Home/HomeProveedor';
 import ModalVerOrdenesProveedor from '../VerOrdenes/ModalVerOrdenesProveedor';
-import { useRubroContext } from '../../Contexts/RubroContext';
 import { IonButton, IonCard, IonCardHeader, IonCardSubtitle, IonCol, IonGrid, IonModal, IonRow, IonSlide, IonSlides, IonTitle } from '@ionic/react';
 
 const url=Https
@@ -70,9 +69,6 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any, sin
 
   const [cargarRubro, setCargarRubro] = useState(false)
 
-  const {rubros,setRubro} = useRubroContext()
-
-  console.log("los rubros que tenemos son: "+rubros)
 
     if(cargarRubro){
       return (<CompletarRubros setIsReg={props.setIsReg} clientType= {props.tipodeCliente} email={props.emailProveedor} ></CompletarRubros>);

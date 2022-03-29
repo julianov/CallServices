@@ -10,12 +10,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Photo, usePhotoGallery } from "../hooks/usePhotoGallery";
 import { base64FromPath } from '@ionic/react-hooks/filesystem';
 import { b64toBlob } from '../utilidades/b64toBlob';
-import { arrowBack, camera, trash } from 'ionicons/icons';
+import { arrowBack, camera, logoWindows, trash } from 'ionicons/icons';
 import { isSetAccessorDeclaration } from 'typescript';
 import { allowedNodeEnvironmentFlags } from 'process';
 import { BotonDia } from './CompletarRubros/CompletarRubros';
 import { setDB } from '../utilidades/dataBase';
 import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent, IonDatetime, IonCheckbox, IonLoading, IonTitle, IonSegment, IonSegmentButton, IonItemDivider } from '@ionic/react';
+import { Link } from 'react-router-dom';
 
 const url=Https+"orden/"
 
@@ -81,8 +82,11 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
             }else{
                 setShowAlertCompletarCampos(true)
             }
-            
         }
+    }
+
+    const reload =() => {
+        window.location.reload();
     }
 
     const enviar =() => {
@@ -309,7 +313,6 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
 
             <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto"}}>
             <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviar()}>SOLICITAR</IonButton>
-
             </div>
 
             <IonLoading
@@ -361,6 +364,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                     cssClass='my-custom-class'
                     header={'ORDEN DE SERVICIO CREADA CON ÉXITO'}
                     subHeader={''}
+                    mode="ios"
                     message={'Se ha creado con éxito la orden de servicio: '+ticket.current }
                     buttons={[
                         {
@@ -383,10 +387,14 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
         return(
 
 
-            <div id="GenerarOrdenContainer2">
-                <IonIcon icon={arrowBack} onClick={() => props.setVolver( false )} slot="start" id="flecha-volver">  </IonIcon>
+            <div style={{display:"flex", flexDirection:"column", width:"100%", minHeight:"100vh" ,height:"100vh", background: "#f3f2ef"}}>
+                <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto"}}>
+                    <div id="modalProveedor-flechaVolver">
+                    <IonIcon icon={arrowBack} onClick={() => props.setVolver( false )} slot="start" id="flecha-volver">  </IonIcon>
+                    </div>
+                </div>
 
-                <div id="contenedorOrdenPedida">
+                <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center", alignItems:"center"}}>
 
                 <IonCard id="ionCardOrden">
                         <IonCardHeader>
@@ -395,22 +403,22 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                         <p id="p-estado">En espera de confirmación por parte del proveedor </p>
                         </IonCardHeader>
                     </IonCard>
-                </div>
-                <div id="contenedorOrdenPedidaInferior">
-                        <IonCard id="ionCardOrden">
+                
+                <IonCard id="ionCardOrden">
+                    <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center", alignItems:"center"}}>
                         <IonTitle>PROVEEDOR</IonTitle>  
-                            <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.data.picture}></img>
-                            <IonCardTitle> {props.data.nombre} </IonCardTitle>
-                            <IonCardTitle  > {props.data.items} </IonCardTitle>
-                            <IonItem id="CardProveedorItem" lines="none"> {props.data.calificacion} </IonItem>
-                        </IonCard>        
+                        <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.data.picture}></img>
+                        <IonCardTitle> {props.data.nombre} </IonCardTitle>
+                        <IonCardTitle  > {props.data.items} </IonCardTitle>
+                        <IonItem id="CardProveedorItem" lines="none"> {props.data.calificacion} </IonItem>
+                    </div>
+                </IonCard>        
                 </div>
+
+            <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto"}}>
+            <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => reload()}>IR A HOME</IonButton>
+            </div>
           </div> 
-
-
-
-
-
 
         )
     }

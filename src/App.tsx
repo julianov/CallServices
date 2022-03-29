@@ -33,14 +33,14 @@ import Inicio from './pages/Inicio/Inicio';
 
 import CompletarRubros from './pages/CompletarRubros/CompletarRubros';
 import { createStore } from './utilidades/dataBase';
-import { itemRubro, RubroType, usuario, UsuarioType, } from './Interfaces/interfaces';
+import { itemRubro, usuario, UsuarioType, } from './Interfaces/interfaces';
 import {  UserContext, UserProvider } from './Contexts/UserContext';
 import HomeCliente from './pages/Home/HomeCliente';
 import HomeProveedor from './pages/Home/HomeProveedor';
 import Completarinfo from './pages/CompletarInformacionPersonal/Completarinfo';
 import Registro from './pages/Registro/Registro';
-import { RubroContext, useRubroContext } from './Contexts/RubroContext';
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
+import { RubroContext1, RubroContext2 } from './Contexts/RubroContext';
 
 /*
 Device's var:
@@ -101,10 +101,45 @@ const App: React.FC = () => {
         tipoCliente:"",
  })
  
- const [rubros,setRubro] = useState <itemRubro[] | []> ([])
 
- const [rubrosItem1,setItemRubro1] = useState <itemRubro> ()
- const [rubrosItem2,setItemRubro2] = useState <itemRubro> ()
+ const [rubrosItem1,setItemRubro1] = useState <itemRubro>({
+      rubro:"",
+      radius:"",
+      description:"",
+      hace_orden_emergencia:"",
+      calificacion:0,
+      pais:"",
+      provincia:"",
+      ciudad:"",
+      calle:"",
+      numeracion:"",
+      days_of_works:"",
+      hour_init:"",
+      hour_end:"",
+      certificate:"",
+      picture1:"",
+      picture2:"",
+      picture3:"",
+ })
+ const [rubrosItem2,setItemRubro2] = useState <itemRubro>({
+    rubro:"",
+    radius:"",
+    description:"",
+    hace_orden_emergencia:"",
+    calificacion:0,
+    pais:"",
+    provincia:"",
+    ciudad:"",
+    calle:"",
+    numeracion:"",
+    days_of_works:"",
+    hour_init:"",
+    hour_end:"",
+    certificate:"",
+    picture1:"",
+    picture2:"",
+    picture3:"",
+ })
 
   useEffect(() => {
 
@@ -154,7 +189,7 @@ const App: React.FC = () => {
           setRubro1((res4))
 
           if(res4!=null){
-            setRubro([{
+            setItemRubro1({
               rubro:JSON.parse(res4).rubro,
               radius:JSON.parse(res4).radius,
               description:JSON.parse(res4).description,
@@ -171,16 +206,19 @@ const App: React.FC = () => {
               certificate:JSON.parse(res4).certificate,
               picture1:JSON.parse(res4).picture1,
               picture2:JSON.parse(res4).picture2,
-              picture3:JSON.parse(res4).picture3
-              }])
+              picture3:JSON.parse(res4).picture3,
+              })
           }
           
         })
         getItem("infoRubro2").then(res5 => {
           setRubro2(res5)
+          
 
           if(res5!=null){
-            setRubro(rubros => [...rubros, {
+            console.log("sera por esto?"+JSON.parse(res5).rubro)
+          console.log("sera por esto?"+res5)
+            setItemRubro2({
               rubro:JSON.parse(res5).rubro,
               radius:JSON.parse(res5).radius,
               description:JSON.parse(res5).description,
@@ -197,8 +235,8 @@ const App: React.FC = () => {
               certificate:JSON.parse(res5).certificate,
               picture1:JSON.parse(res5).picture1,
               picture2:JSON.parse(res5).picture2,
-              picture3:JSON.parse(res5).picture3
-              }])  
+              picture3:JSON.parse(res5).picture3,
+              })
           }
           
         })
@@ -213,7 +251,8 @@ const App: React.FC = () => {
 
 return(
   <UserContext.Provider  value={ {user,setUser} } >
-    <RubroContext.Provider  value={ {rubros,setRubro} } >
+    <RubroContext1.Provider  value={ {rubrosItem1,setItemRubro1} } >
+    <RubroContext2.Provider  value={ {rubrosItem2,setItemRubro2} } >
 
 
 <IonApp>
@@ -236,7 +275,7 @@ return(
 
     <Route path="/ingresar" render={() => isReg ?   ( cliente ?  <HomeCliente  setIsReg={setIsReg} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto}/> 
                                                       :<HomeProveedor  setIsReg={setIsReg} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} /> ) 
-                                          :<Ingresar setIsReg={setIsReg} setCliente={setCliente} setEmail={setEmail} setFoto={setFoto} setTipoCliente={setTipoCliente} setNombre={setNombre} setApellido={setApellido} setCalificacion={setCalificacion} setRubro1={setRubro1} setRubro2={setRubro2} />} /> 
+                                          :<Ingresar setIsReg={setIsReg} setCliente={setCliente} setEmail={setEmail} setFoto={setFoto} setTipoCliente={setTipoCliente} setNombre={setNombre} setApellido={setApellido} setCalificacion={setCalificacion} />} /> 
     
     <Route path="/MisServicios" render={() => <MisServicios cliente={cliente} email={email}  ></MisServicios>}></Route>
     
@@ -244,7 +283,7 @@ return(
         
     <Route path="/Completarinfo" render={() => <Completarinfo setIsReg={setIsReg} email={email} tipoCliente={tipoCliente} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} rubro1={rubro1} rubro2={rubro2} setRubro1={setRubro1} setRubro2={setRubro2} /> }  />
     
-    <Route path="/CompletarRubros" render={() => <CompletarRubros email={email} clientType={tipoCliente} setIsReg={setIsReg}  />  }  />   
+    <Route path="/CompletarRubros" render={() => <CompletarRubros  email={email} clientType={tipoCliente} setIsReg={setIsReg}  />  }  />   
 
     <Route path="/inicio" render={() => isReg ?   ( cliente ?  <HomeCliente  setIsReg={setIsReg} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} /> 
                                                     :<HomeProveedor  setIsReg={setIsReg}  setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} /> ) 
@@ -256,8 +295,8 @@ return(
   </IonSplitPane>
 </IonReactRouter>
 </IonApp>
-
-</RubroContext.Provider>
+</RubroContext2.Provider>
+</RubroContext1.Provider>
 </UserContext.Provider >
 
 );

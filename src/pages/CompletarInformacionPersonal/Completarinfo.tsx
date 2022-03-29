@@ -68,7 +68,7 @@ const CompletarInformacion =  (props:{setIsReg:any,tipoCliente:any,
    // const { deletePhoto, photos, takePhoto } = usePhotoGallery();
 
    // const[path,setPath]=useState<String>()
-   
+
     if(provedores==0){
             return(<CompletarInformacionPersonal  setIsReg={props.setIsReg} tipoCliente={props.tipoCliente} setNombre={props.setNombre} setApellido={props.setApellido} setFoto={props.setFoto} tipoProveedor={provedores} setTipoProveedor={setProveedores} clientType={props.tipoCliente} email={props.email}></CompletarInformacionPersonal>);
         }else{

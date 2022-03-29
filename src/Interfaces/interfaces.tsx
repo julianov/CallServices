@@ -40,7 +40,13 @@ import { Dispatch, SetStateAction } from "react"
   }
 
   
-  export type RubroType = {
-    rubros : itemRubro [];
-    setRubro: Dispatch<SetStateAction<itemRubro []>>;
+  export type RubroType1 = {
+    rubrosItem1 : itemRubro;
+    setItemRubro1: Dispatch<SetStateAction<itemRubro >>;
   }
+
+  export type RubroType2 = {
+    rubrosItem2 : itemRubro;
+    setItemRubro2 : Dispatch<SetStateAction<itemRubro >>;
+  }
+

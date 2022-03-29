@@ -13,7 +13,6 @@ import { UserContext } from '../../Contexts/UserContext';
 import ExploreContainerProveedor from '../../components/ExplorerContainer/ExploreContainerProveedor';
 import ModalProveedor from '../../components/ModalGeneral/ModalProveedor';
 import Chat from '../../components/Chat/Chat';
-import { useRubroContext } from '../../Contexts/RubroContext';
 import { IonAlert, IonAvatar, IonButton, IonButtons, IonCard, IonCardHeader, IonChip, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonItemOptions, IonItemSliding, IonLabel, IonList, IonLoading, IonMenuButton, IonModal, IonPage, IonPopover, IonRow, IonSearchbar, IonTitle, IonToolbar} from '@ionic/react';
 
 
@@ -100,9 +99,7 @@ const HomeProveedor = (props:{setIsReg:any,
   const [mostrarChat,setMostrarChat] = useState(false)
   const ticket = useRef ("")
 
-  const {rubros,setRubro} = useRubroContext()
 
-  console.log("muestro la longitud: "+rubros.length)
 
 
   useEffect(() => {
@@ -228,9 +225,7 @@ const HomeProveedor = (props:{setIsReg:any,
             onDidDismiss={() => setShowModal({ isOpen: false })}>
             <ModalProveedor 
               setIsReg={props.setIsReg}
-              email={user!.email}
               tipoVista={tipoDeVistaEnModal}
-              tipoProveedor={user!.tipoCliente}
               completarInfoPersonal={completarInfoPersonal}
               onClose={(value: React.SetStateAction<null>) => {
               setShowModal({ isOpen: false });

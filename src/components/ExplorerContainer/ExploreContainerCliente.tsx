@@ -79,6 +79,8 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
        }
   )
 
+
+
   useEffect(() => {
 
     for (let i=0; i<props.ordenes.length;i++){     

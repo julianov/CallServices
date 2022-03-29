@@ -10,8 +10,8 @@ import { forceUpdate } from 'ionicons/dist/types/stencil-public-runtime';
 import Https from '../../utilidades/HttpsURL';
 import { itemRubro, usuario } from '../../Interfaces/interfaces';
 import { useUserContext } from '../../Contexts/UserContext';
-import { useRubroContext } from '../../Contexts/RubroContext';
 import { IonAlert, IonButton, IonButtons, IonChip, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonListHeader, IonLoading, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonSearchbar, IonTitle, IonToolbar } from '@ionic/react';
+import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext';
 
   //const url='http://127.0.0.1:8000/login/';
   //const url="https://callservicesvps.online:443/login/"
@@ -28,8 +28,7 @@ import { IonAlert, IonButton, IonButtons, IonChip, IonCol, IonContent, IonGrid, 
   
 
   const Ingresar = (props:{setIsReg:any, setCliente:any, setEmail:any, setFoto:any, setTipoCliente:any,
-    setNombre:any, setApellido:any, setCalificacion:any,
-    setRubro1:any, setRubro2:any}) => {
+    setNombre:any, setApellido:any, setCalificacion:any}) => {
 
     const [showAlertServerConnection, setShowAlertServerConnection] = useState(false);
     const [showAlertCompletarInfo,setShowAlertCompletarInfo] = useState(false)
@@ -164,8 +163,8 @@ import { IonAlert, IonButton, IonButtons, IonChip, IonCol, IonContent, IonGrid, 
 
     const  {user,setUser}  = useUserContext()
 
-    const {rubros,setRubro} = useRubroContext()
-
+    const {rubrosItem1,setItemRubro1} = useRubroContext1 () 
+    const {rubrosItem2,setItemRubro2} = useRubroContext2 ()
 
     if(home){
       props.setIsReg(true)
@@ -206,6 +205,7 @@ import { IonAlert, IonButton, IonButtons, IonChip, IonCol, IonContent, IonGrid, 
 
           setUser!((state:usuario) => ({ ...state, nombre: resp.data[0].name }))
           setUser!((state:usuario) => ({ ...state, apellido: resp.data[0].last_name }))
+          setUser!((state:usuario) => ({ ...state, calificacion: resp.data[0].qualification }))
           setUser!((state:usuario) => ({ ...state, calificacion: resp.data[0].qualification }))
 
           setItem("nombre",resp.data[0].name )
@@ -254,29 +254,8 @@ import { IonAlert, IonButton, IonButtons, IonChip, IonCol, IonContent, IonGrid, 
                     if(resquest!=undefined){
 
                      if (cantidad==0){
-                     setRubro!((state) =>[{...state,
-                        rubro:resquest.rubro,
-                        radius:resquest.radius,
-                        description:resquest.description,
-                        hace_orden_emergencia:"nop",
-                        calificacion:Number(resquest.calificacion),
-                        pais:resquest.pais,
-                        provincia:resquest.provincia,
-                        ciudad:resquest.ciudad,
-                        calle:resquest.calle,
-                        numeracion:resquest.numeracion,
-                        days_of_works:resquest.days_of_works,
-                        hour_init:resquest.hour_init,
-                        hour_end:resquest.hour_end,
-                        certificate:resquest.certificate,
-                        picture1:resquest.picture1,
-                        picture2:resquest.picture2,
-                        picture3:resquest.picture3
-                      }])
 
-                     }else{
-                      setRubro(rubros =>[...rubros,{
-                        rubro:resquest.rubro,
+                      setItemRubro1!( {rubro:resquest.rubro,
                         radius:resquest.radius,
                         description:resquest.description,
                         hace_orden_emergencia:"nop",
@@ -293,7 +272,27 @@ import { IonAlert, IonButton, IonButtons, IonChip, IonCol, IonContent, IonGrid, 
                         picture1:resquest.picture1,
                         picture2:resquest.picture2,
                         picture3:resquest.picture3
-                      }])
+                      })
+                    
+                     }else{
+                      setItemRubro2!( {rubro:resquest.rubro,
+                        radius:resquest.radius,
+                        description:resquest.description,
+                        hace_orden_emergencia:"nop",
+                        calificacion:Number(resquest.calificacion),
+                        pais:resquest.pais,
+                        provincia:resquest.provincia,
+                        ciudad:resquest.ciudad,
+                        calle:resquest.calle,
+                        numeracion:resquest.numeracion,
+                        days_of_works:resquest.days_of_works,
+                        hour_init:resquest.hour_init,
+                        hour_end:resquest.hour_end,
+                        certificate:resquest.certificate,
+                        picture1:resquest.picture1,
+                        picture2:resquest.picture2,
+                        picture3:resquest.picture3
+                      })
                      }
                       
                       if(cantidad==0){
@@ -348,7 +347,8 @@ import { IonAlert, IonButton, IonButtons, IonChip, IonCol, IonContent, IonGrid, 
                     props.setTipoCliente(resquest[0].clientType)
                     tipoDeCliente.current=resquest[0].clientType
                     setUser!((state:usuario) => ({ ...state, foto: person}))
-                   
+                    setUser!((state:usuario) => ({ ...state, tipoCliente: resquest[0].clientType}))
+
                     //Pedir Rubros
                     if (resquest[0].clientType!="1"){
                       PedirRubros( email, tipoDeCliente)
@@ -385,6 +385,7 @@ import { IonAlert, IonButton, IonButtons, IonChip, IonCol, IonContent, IonGrid, 
                     props.setTipoCliente(tipoDeCliente.current)
                     props.setFoto(resquest[0].picture)
                     setUser!((state:usuario) => ({ ...state, foto:resquest[0].picture }))
+                    setUser!((state:usuario) => ({ ...state, tipoCliente: resquest[0].clientType}))
 
                     PedirPersonalInfo(tipoDeCliente)
                     if (tipoDeCliente.current!="1"){

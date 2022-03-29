@@ -1,4 +1,4 @@
-import { arrowBack, camera, chatbox, eye, location } from "ionicons/icons";
+import { arrowBack, camera, chatbox, eye, location, logoWindows } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import { isConstructorDeclaration, isSetAccessorDeclaration } from "typescript";
 
@@ -12,6 +12,7 @@ import { Calificacion } from "./ModalVerOrdenesProveedor";
 import { createStore, removeDB } from "../../utilidades/dataBase";
 import Chat from "../Chat/Chat";
 import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonRow, IonTitle } from "@ionic/react";
+import { ordenesCliente } from "../../pages/Home/HomeCliente";
 
 const url=Https
 
@@ -29,7 +30,7 @@ const verUbicacion = ( latitud:any, longitud:any) =>{
 
   }
 
-const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any})  =>{
+const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any, setVolver:any})  =>{
     const [vista, setVista] = useState("primero")
 
     const [estado, setEstado] =useState("Enviada")
@@ -84,9 +85,13 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
           .then((resp: { data: any; }) => {
             if(resp.data!="bad"){
               setEstado("ORDEN RECHAZADA")
+              setVista("cancelarOrden")
+
               createStore("ordenesActivas")
               removeDB(props.datos.ticket.toString())
-              props.setVolver(false)
+
+              window.location.reload()
+
             }
            })
         
@@ -151,6 +156,11 @@ const ModalVerOrdenesCliente = (props:{datos:any,emailCliente:any,setVolver:any}
         <>
         <Chat email={props.emailCliente}  ticket={props.datos.ticket} setVolver={props.setVolver} setVista={setVista} desdeDondeEstoy={desdeDondeEstoy.current}/>
         
+        </>
+        )
+      }else if (vista=="cancelarOrden") {
+        return(
+        <>        
         </>
         )
       }else{
