@@ -17,6 +17,7 @@ import "./CompletarRubros.css";
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonDatetime, IonGrid, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonSelect, IonSelectOption, IonIcon, IonFabButton, IonImg, IonActionSheet, IonRange, IonTextarea, IonItemSliding, IonSegment, IonSegmentButton } from "@ionic/react";
 import { itemRubro } from "../../Interfaces/interfaces";
 import { useRubroContext1, useRubroContext2 } from "../../Contexts/RubroContext";
+import { retornarIconoCategoria } from "../../utilidades/retornarIconoCategoria";
 
 /*
 CompletarItems
@@ -229,12 +230,31 @@ const getLocation = async () => {
                  if(res.data=="rubro cargado"){
                    
                      getItem("rubro1").then(res2 => {
-                         if (res2==""){
+                         console.log("ENTONCES VEAMOS QUE HAY EN RUBRO 1: "+res2)
+                         if (res2=="" || res2==null ){
  
                              // rubro radius posicion descripcion dias horainicio horafin certificacion foto1 foto2 foto3
  
                            setItem("rubro1", rubro_a_cargar).then(() =>{    
-                             setItem("infoRubro1", JSON.stringify(arreglo)).then(() =>{ 
+                             setItem("infoRubro1", JSON.stringify( { 
+                                rubro:rubro.current,
+                                radius:String(radius),
+                                description:descripcion.current,
+                                calificacion:0,
+                                hace_orden_emergencia:hace_orden_emergencia.current,
+                                days_of_works:dias.current,
+                                hour_init:horaInicio.current,
+                                hour_end:horaFin.current,
+                                certificate:certificacionMostrar.current,
+                                picture1:foto1Mostrar.current,
+                                picture2:foto2Mostrar.current,
+                                picture3:foto3Mostrar.current,
+                                pais:pais.current,
+                                provincia:provincia.current,
+                                ciudad:ciudad.current,
+                                calle:domicilio_calle.current,
+                                numeracion:String(domicilio_numeración.current),
+                            })).then(() =>{ 
                                 setItemRubro1!(
                                     { 
                                     rubro:rubro.current,
@@ -264,8 +284,25 @@ const getLocation = async () => {
                          }
                          else{
                            setItem("rubro2", rubro_a_cargar).then(() =>{   
-                             setItem("infoRubro2", JSON.stringify(arreglo)).then(() =>{
-                                 console.log("bien llego a cargar rubro2")
+                             setItem("infoRubro2", JSON.stringify( { 
+                                rubro:rubro.current,
+                                radius:String(radius),
+                                description:descripcion.current,
+                                calificacion:0,
+                                hace_orden_emergencia:hace_orden_emergencia.current,
+                                days_of_works:dias.current,
+                                hour_init:horaInicio.current,
+                                hour_end:horaFin.current,
+                                certificate:certificacionMostrar.current,
+                                picture1:foto1Mostrar.current,
+                                picture2:foto2Mostrar.current,
+                                picture3:foto3Mostrar.current,
+                                pais:pais.current,
+                                provincia:provincia.current,
+                                ciudad:ciudad.current,
+                                calle:domicilio_calle.current,
+                                numeracion:String(domicilio_numeración.current),
+                            })).then(() =>{
                                 setItemRubro2!(
                                     { 
                                     rubro:rubro.current,
@@ -289,7 +326,6 @@ const getLocation = async () => {
                              setShowLoading(false);
                              setVista(0)
                              arreglo = []
-                             setReload(true)
                          })
                          })
                          }
@@ -1158,71 +1194,92 @@ const getLocation = async () => {
              <IonList>
                  <IonItemSliding>
                  <IonItem onClick={()=> {props.rubro.current="CARPINTERIA";setRubroSeleccionado("RUBRO SELECCIONADO: CARPINTERIA") ;setSeleccionDeRubro("vistaCompleta")}}>
-                 <IonLabel id="laberCompletarRubrosRubros">CARPINTERÍA</IonLabel>
+                    <IonLabel id="laberCompletarRubrosRubros">CARPINTERÍA</IonLabel>
+		            <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("CARPINTERÍA")}></img>
                  </IonItem>
                  <IonItem onClick={()=> {props.rubro.current="CERRAJERÍA";setRubroSeleccionado("RUBRO SELECCIONADO: CERRAJERÍA"); setSeleccionDeRubro("vistaCompleta")}}>
-                 <IonLabel id="laberCompletarRubrosRubros">CERRAJERÍA</IonLabel>
-                 </IonItem>
+                    <IonLabel id="laberCompletarRubrosRubros">CERRAJERÍA</IonLabel>
+                    <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("CERRAJERÍA")}></img>
+		          </IonItem>
                  <IonItem onClick={()=> {props.rubro.current="CONSTRUCCIÓN";setRubroSeleccionado("RUBRO SELECCIONADO: CONSTRUCCIÓN"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">CONSTRUCCIÓN</IonLabel>
+		         <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("CONSTRUCCIÓN")}></img>
                  </IonItem>
                  <IonItem onClick={()=> {props.rubro.current="CONTADURÍA";setRubroSeleccionado("RUBRO SELECCIONADO: CONTADURÍA"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">CONTADURÍA</IonLabel>
+		         <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("CONTADURÍA")}></img>
                  </IonItem>
                  <IonItem onClick={()=> {props.rubro.current="ELECTRICIDAD";setRubroSeleccionado("RUBRO SELECCIONADO: ELECTRICIDAD"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">ELECTRICIDAD</IonLabel>
+                 <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("ELECTRICIDAD")}></img>
                  </IonItem>
                  <IonItem onClick={()=> {props.rubro.current="ELECTRONICA";setRubroSeleccionado("RUBRO SELECCIONADO: ELECTRONICA"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">ELECTRÓNICA</IonLabel>
+                 <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("ELECTRÓNICA")}></img>
                  </IonItem>
                  <IonItem onClick={()=> {props.rubro.current="ESTÉTICA";setRubroSeleccionado("RUBRO SELECCIONADO: ESTÉTICA"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">ESTÉTICA</IonLabel>
+                 <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("ESTÉTICA")}></img>
                  </IonItem>
                  <IonItem onClick={()=> {props.rubro.current="FLETE";setRubroSeleccionado("RUBRO SELECCIONADO: FLETE"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">FLETE</IonLabel>
+                 <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("FLETE")}></img>
                  </IonItem>
                  <IonItem onClick={()=> {props.rubro.current="FUMIGACIÓN";setRubroSeleccionado("RUBRO SELECCIONADO: FUMIGACIÓN"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">FUMIGACIÓN</IonLabel>
+                 <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("FUMIGACIÓN")}></img>
                  </IonItem>
                  <IonItem onClick={()=> {props.rubro.current="GASISTA";setRubroSeleccionado("RUBRO SELECCIONADO: GASISTA");setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">GASISTA</IonLabel>
+                 <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("GASISTA")}></img>
                  </IonItem>
                  <IonItem onClick={()=> {props.rubro.current="HERRERIA";setRubroSeleccionado("RUBRO SELECCIONADO: HERRERIA"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">HERRERÍA</IonLabel>
+                 <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("HERRERIA")}></img>
                  </IonItem>
                  <IonItem onClick={()=> {props.rubro.current="INFORMATICA";setRubroSeleccionado("RUBRO SELECCIONADO: INFORMATICA"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">INFORMÁTICA</IonLabel>
+                 <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("INFORMÁTICA")}></img>
                  </IonItem>
                  <IonItem onClick={()=> {props.rubro.current="JARDINERÍA";setRubroSeleccionado("RUBRO SELECCIONADO: JARDINERÍA"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">JARDINERÍA</IonLabel>
+                 <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("JARDINERÍA")}></img>
                  </IonItem>
                  <IonItem onClick={()=> {props.rubro.current="MECANICA";setRubroSeleccionado("RUBRO SELECCIONADO: MECANICA");setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">MECÁNICA</IonLabel>
+                 <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("MECÁNICA")}></img>
                  </IonItem>
                  <IonItem onClick={()=> {props.rubro.current="MODA";setRubroSeleccionado("RUBRO SELECCIONADO: MODA");setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">MODA</IonLabel>
+                 <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("MODA")}></img>
                  </IonItem>
                  <IonItem onClick={()=> {props.rubro.current="PASEADOR DE MASCOTAS";setRubroSeleccionado("RUBRO SELECCIONADO: PASEADOR DE MASCOTAS"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">PASEADOR DE MASCOTAS</IonLabel>
+                 <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("PASEADOR DE MASCOTAS")}></img>
                  </IonItem>
                  <IonItem onClick={()=> {props.rubro.current="PINTOR";setRubroSeleccionado("RUBRO SELECCIONADO: PINTOR"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">PINTOR</IonLabel>
+                 <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("PINTOR")}></img>
                  </IonItem>
                  <IonItem onClick={()=> {props.rubro.current="PLOMERIA";setRubroSeleccionado("RUBRO SELECCIONADO: PLOMERIA"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">PLOMERÍA</IonLabel>
+                 <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("PLOMERÍA")}></img>
                  </IonItem>
                  <IonItem onClick={()=> {props.rubro.current="REFRIGERACION";setRubroSeleccionado("RUBRO SELECCIONADO: REFRIGERACION"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">REFRIGERACIÓN</IonLabel>
+                 <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("REFRIGERACION")}></img>
                  </IonItem>
                  <IonItem onClick={()=> {props.rubro.current="REMOLQUES - GRÚAS";setRubroSeleccionado("RUBRO SELECCIONADO: REMOLQUES - GRÚAS"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">REMOLQUES - GRÚAS</IonLabel>
+                 <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("REMOLQUES - GRÚAS")}></img>
                  </IonItem>
-                 
                  <IonItem onClick={()=> {props.rubro.current="TELEFONIA CELULAR";setRubroSeleccionado("RUBRO SELECCIONADO: TELEFONIA CELULAR"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">TELEFONÍA CELULAR</IonLabel>
+                 <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("TELEFONÍA CELULAR")}></img>
                  </IonItem>
                  <IonItem onClick={()=> {props.rubro.current="TEXTIL";setRubroSeleccionado("RUBRO SELECCIONADO: TEXTIL"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">TEXTIL</IonLabel>
+                 <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("TEXTIL")}></img>
                  </IonItem>
  
                  </IonItemSliding>

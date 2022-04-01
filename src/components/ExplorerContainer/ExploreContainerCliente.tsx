@@ -19,6 +19,7 @@ import ModalVerCardProveedor from '../CardProveedor/ModalVerCardProveedor';
 import ResultadoBusqueda, { categoriaBuscada } from '../ResultadoBusqueda/ResultadoBusqueda';
 import Resenas from '../Reseñas/Resenas';
 import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonChip, IonCol, IonGrid, IonIcon, IonItem, IonItemDivider, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal, IonRow, IonSlide, IonSlides } from '@ionic/react';
+import { retornarIconoCategoria } from '../../utilidades/retornarIconoCategoria';
 
 const getLocation = async () => {
   try {
@@ -85,7 +86,9 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
 
     for (let i=0; i<props.ordenes.length;i++){     
 
-      setArregloOrdenesCliente([...arregloOrdenesCliente,{ tipo:props.ordenes[i].tipo,
+      setArregloOrdenesCliente([...arregloOrdenesCliente,{ 
+        rubro:props.ordenes[i].rubro,
+        tipo:props.ordenes[i].tipo,
         status:props.ordenes[i].status,
         fecha_creacion:props.ordenes[i].fecha_creacion,
         ticket:props.ordenes[i].ticket,
@@ -120,7 +123,9 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
 
     if(pediOrden){
       axios.get(props.url+"home/cliente/pedirdatos/"+verEmail+"/"+item+"/"+"caracteres"+"/"+locacion).then((resp: { data: any; }) => {
+        console.log("es aqui:"+resp.data)
         if (resp.data!="bad"){
+          
          setDatosDeOrdenes( 
             {
               clienteEmail:props.emailCliente,
@@ -476,7 +481,7 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , hayOrdenes:any,
             i = i + 1;
             return (
               <IonSlide>
-                <CardVistaVariasOrdenes key={i} posicion={i} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket}
+                <CardVistaVariasOrdenes key={i} posicion={i} rubro={a.rubro} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket}
                   dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_proveedor} setVerOrden={props.setVerOrden} setPosicion={props.setPosicion}
                   presupuesto={a.presupuesto} masInfo={a.pedido_mas_información} masInfoEnviada={a.respuesta_cliente_pedido_mas_información}></CardVistaVariasOrdenes>
             </IonSlide>);
@@ -494,7 +499,7 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , hayOrdenes:any,
       
 }
 
-const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fecha_creacion:string,ticket: string,
+const CardVistaVariasOrdenes= (props:{rubro:any, posicion:any,tipo:string,status:string,fecha_creacion:string,ticket: string,
   dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, setPosicion:any, presupuesto:any, masInfo:any, masInfoEnviada:string}) => {
         
     const [estado,setEstado]=useState("Enviada")
@@ -507,18 +512,15 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
     const ticketeck = useRef <string>("")
     const [nuevoStatus,setNuevoStatus]=useState(false)
 
-    const [imagen,setImagen]=useState ("")
+    const [imagenes,setImagen]=useState ("")
 
-    console.log("veamos si mis planes se cumplen: "+props.masInfoEnviada)
+    console.log("veamos si mis planes se cumplen: "+props.rubro)
 
     useEffect(() => {
-      if (props.imagen==""|| props.imagen==null || props.imagen==undefined){
-        setImagen ("./assets/icon/nuevoUsuario.png") 
-      }else{
-        setImagen(props.imagen)
-      }
-    }, [props.imagen]);
-  
+
+      setImagen(retornarIconoCategoria(props.rubro)) 
+     
+ }, [props.ticket]); 
 
     useEffect(() => {
 
@@ -588,7 +590,7 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
           <IonGrid>
             <IonRow  id="row-busqueda">
               <IonCol   id="col-explorerContainerCliente">
-                <img id="imgOrden" src={imagen}></img>
+                <img id="imgOrden" src={imagenes}></img>
               </IonCol>
             </IonRow>
             <IonRow  id="row-busqueda">
@@ -614,7 +616,7 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
           <IonGrid>
             <IonRow  id="row-busqueda">
               <IonCol   id="col-explorerContainerCliente">
-                <img id="imgOrden" src={props.imagen}></img>
+                <img id="imgOrden" src={imagenes}></img>
               </IonCol>
             </IonRow>
             <IonRow  id="row-busqueda">

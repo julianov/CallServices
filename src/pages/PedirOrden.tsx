@@ -133,6 +133,8 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                     headers: {"content-type": "multipart/form-data"},
                     data:formDataToUpload
                 }).then(function(res: any){
+
+                    console.log("veamos que llegó: "+res.data)
     
                     setShowLoading(false)
 

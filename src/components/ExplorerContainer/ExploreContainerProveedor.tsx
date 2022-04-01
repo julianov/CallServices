@@ -14,7 +14,8 @@ import { Link } from 'react-router-dom';
 import CompletarRubros from '../../pages/CompletarRubros/CompletarRubros';
 import { ordenes } from '../../pages/Home/HomeProveedor';
 import ModalVerOrdenesProveedor from '../VerOrdenes/ModalVerOrdenesProveedor';
-import { IonButton, IonCard, IonCardHeader, IonCardSubtitle, IonCol, IonGrid, IonModal, IonRow, IonSlide, IonSlides, IonTitle } from '@ionic/react';
+import { IonButton, IonCard, IonCardHeader, IonCardSubtitle, IonCol, IonGrid, IonItemDivider, IonModal, IonRow, IonSlide, IonSlides, IonTitle } from '@ionic/react';
+import { retornarIconoCategoria } from '../../utilidades/retornarIconoCategoria';
 
 const url=Https
 
@@ -77,10 +78,12 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any, sin
         return (
           <><div id="container-principal-ExplorerContainer-Cliente">
            
-            
-            <h1 style={{marginTop:"35px",fontWeight:"600", fontSize:"1.5em"}}> ORDENES DE TRABAJO ACTIVAS </h1>
+           <div style={{width:"90%", height:"auto", textAlign:"center"}}>
+              <h1 style={{marginTop:"35px",fontWeight:"600", fontSize:"1.3em"}}> ORDENES DE TRABAJO ACTIVAS </h1>
+            </div>
             <Elements proveedores={props.ordenes} setVerOrden={setVerOrden} setPosicion={setPosicion} />
-            
+            <IonItemDivider />
+
             <CampanaPublicidad></CampanaPublicidad>
             <Adsense
                 client="ca-pub-3241473434204149"
@@ -151,7 +154,7 @@ const Elements = (props:{ proveedores: Array <ordenes> , setVerOrden:any,setPosi
           i=i+1
           return (
           <IonSlide>
-            <CardVistaVariasOrdenes key={i} posicion={i} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket} 
+            <CardVistaVariasOrdenes key={i} posicion={i} rubro={a.rubro} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket} 
             dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_cliente} setVerOrden={props.setVerOrden} setPosicion={props.setPosicion}></CardVistaVariasOrdenes>
            </IonSlide>
            ) 
@@ -167,12 +170,14 @@ const Elements = (props:{ proveedores: Array <ordenes> , setVerOrden:any,setPosi
 
 
 
-const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fecha_creacion:string,ticket: string,
+const CardVistaVariasOrdenes= (props:{posicion:any,rubro:string, tipo:string,status:string,fecha_creacion:string,ticket: string,
   dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, setPosicion:any }) => {
         
     const [mensaje, setMensaje] = useState("")
 
     const [estado,setEstado]=useState("Enviada")
+
+    const [imagen, setImagen] = useState("")
     
     useEffect(() => {
 
@@ -200,12 +205,18 @@ const CardVistaVariasOrdenes= (props:{posicion:any,tipo:string,status:string,fec
   }, [props.status]);
  
 
+  useEffect(() => {
+
+    setImagen(retornarIconoCategoria(props.rubro)) 
+   
+}, []); 
+
   return (
     <IonCard className="ionCardExplorerContainer" onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
       <IonGrid>
         <IonRow  id="row-busqueda">
           <IonCol   id="col-explorerContainerCliente">
-            <img id="imgOrden" src={props.imagen}></img>
+            <img id="imgOrden" src={imagen}></img>
           </IonCol>
         </IonRow>
         <IonRow  id="row-busqueda">
