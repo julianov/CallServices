@@ -13,13 +13,13 @@ import { datosGeneralesVariosProveedores, ordenesCliente, proveedorBuscado } fro
 import { datosOrden } from '../../utilidades/CardProveedor';
 import { getDB, setDB } from '../../utilidades/dataBase';
 import ModalVerOrdenesCliente from '../VerOrdenes/ModalVerOrdenesCliente';
-import OrdenSimple from '../../pages/PedirOrden';
 import Estrellas from '../Estrellas/Estrellas';
 import ModalVerCardProveedor from '../CardProveedor/ModalVerCardProveedor';
 import ResultadoBusqueda, { categoriaBuscada } from '../ResultadoBusqueda/ResultadoBusqueda';
 import Resenas from '../Reseñas/Resenas';
 import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonChip, IonCol, IonGrid, IonIcon, IonItem, IonItemDivider, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal, IonRow, IonSlide, IonSlides } from '@ionic/react';
 import { retornarIconoCategoria } from '../../utilidades/retornarIconoCategoria';
+import OrdenSimple from '../../pages/PedirOrdenes/PedirOrden';
 
 const getLocation = async () => {
   try {

@@ -5,7 +5,6 @@ import './ExploreContainer.css';
 import {Geoposition} from "@ionic-native/geolocation";
 import { Geolocation } from '@capacitor/core/dist/esm/web/geolocation';
 import { useEffect } from 'react';
-import OrdenSimple from '../../pages/PedirOrden';
 import axios from 'axios';
 import Https from '../../utilidades/HttpsURL';
 import { Adsense } from '@ctrl/react-adsense';

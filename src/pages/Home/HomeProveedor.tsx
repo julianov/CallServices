@@ -101,7 +101,13 @@ const HomeProveedor = (props:{setIsReg:any,
   const ticket = useRef ("")
 
 
-
+  useEffect(() => {
+  if (user!.foto==""|| user!.foto==null || user!.foto==undefined){
+    setImagen ("./assets/icon/nuevoUsuario.png") 
+  }else{
+    setImagen(user!.foto)
+  }
+}, [user]);
 
   useEffect(() => {
 

@@ -16,6 +16,7 @@ import CardProveedor from "../../utilidades/CardProveedor";
 import { categoriaBuscada } from "../ResultadoBusqueda/ResultadoBusqueda";
 import { IonActionSheet, IonAlert, IonButton, IonCard, IonCol, IonContent, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonTitle, IonToolbar } from "@ionic/react";
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
+import { PedirOrdenEmergencia } from "../../pages/PedirOrdenes/PedirOrdenEmergencia";
 
 
 const url=Https
@@ -63,17 +64,8 @@ const ModalCliente: React.FC<{setIsReg:any, onClose: any; tipoVista: string;
     if(tipoVista=="emergencias"){
       return (
         <>
-        <IonHeader>
-          <IonToolbar>
-          <IonIcon icon={arrowBack} onClick={() => onClose(null)} slot="start" id="flecha-volver">  </IonIcon>
+        <PedirOrdenEmergencia setVolver={onClose} />
           
-          </IonToolbar>
-        </IonHeader>
-        <IonContent>
-          <div id="contenedor-central">
-            <strong>Emergencias</strong>
-          </div>
-        </IonContent>
       </>
       );
     }

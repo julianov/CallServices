@@ -7,12 +7,12 @@ import '../ModalGeneral/Modal.css';
 
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import axios from "axios";
-import { TomarFotografia } from "../../pages/PedirOrden";
 import { Calificacion } from "./ModalVerOrdenesProveedor";
 import { createStore, removeDB } from "../../utilidades/dataBase";
 import Chat from "../Chat/Chat";
 import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonRow, IonTitle } from "@ionic/react";
 import { ordenesCliente } from "../../pages/Home/HomeCliente";
+import { TomarFotografia } from "../../pages/PedirOrdenes/PedirOrden";
 
 const url=Https
 

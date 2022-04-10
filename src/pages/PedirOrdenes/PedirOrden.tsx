@@ -1,28 +1,26 @@
 import './PedirOrden.css';
 import axios from "axios";
-import Estrellas from "../components/Estrellas/Estrellas";
 
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
-import CardProveedor from "../utilidades/CardProveedor";
-import { removeItem } from "../utilidades/Storage";
-import Https from "../utilidades/HttpsURL";
 import React, { useEffect, useRef, useState } from 'react';
-import { Photo, usePhotoGallery } from "../hooks/usePhotoGallery";
-import { base64FromPath } from '@ionic/react-hooks/filesystem';
-import { b64toBlob } from '../utilidades/b64toBlob';
 import { arrowBack, camera, logoWindows, trash } from 'ionicons/icons';
 import { isSetAccessorDeclaration } from 'typescript';
 import { allowedNodeEnvironmentFlags } from 'process';
-import { BotonDia } from './CompletarRubros/CompletarRubros';
-import { setDB } from '../utilidades/dataBase';
 import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent, IonDatetime, IonCheckbox, IonLoading, IonTitle, IonSegment, IonSegmentButton, IonItemDivider } from '@ionic/react';
 import { Link } from 'react-router-dom';
+import Https from '../../utilidades/HttpsURL';
+import { setDB } from '../../utilidades/dataBase';
+import Estrellas from '../../components/Estrellas/Estrellas';
+import { usePhotoGallery } from '../../hooks/usePhotoGallery';
+import { base64FromPath } from '@ionic/react-hooks/filesystem';
+import { b64toBlob } from '../../utilidades/b64toBlob';
+import { BotonDia } from '../CompletarRubros/CompletarRubros';
 
 const url=Https+"orden/"
 
 let posicion: string;
 
-const getLocation = async () => {
+export const getLocation = async () => {
     try {
         const position = await Geolocation.getCurrentPosition();
         posicion=position.coords.latitude +"/"+ position.coords.longitude
@@ -164,9 +162,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
         
     }
 
-    console.log(props.data.qualification)
-    console.log(props.data.qualification)
-
+  
     if (vista=="primeraVista"){
         return (
             <IonContent >
@@ -266,8 +262,46 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                 </div>
 
                 <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto"}}>
-                    <IonButton shape="round"  color="warning"  id="botonContratar" onClick={() => setVista("final")}>SIGUIENTE</IonButton>
+                <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviar()}>SOLICITAR</IonButton>
                 </div>
+
+                <IonAlert
+                    isOpen={showAlertYaHayOrden}
+                    onDidDismiss={() => setShowAlertYaHayOrden(false)}
+                    cssClass='my-custom-class'
+                    header={'INCONVENIENTE EN LA SOLICITUD DEL SERVICIO'}
+                    subHeader={''}
+                    message={'Ya posee una orden de servicio con el proveedor del servicio'}
+                    buttons={[
+                        {
+                          text: 'OK',
+                          role: 'cancel',
+                          cssClass: 'secondary',
+                          handler: blah => {
+                            props.setVolver({ isOpen: false })
+                          }
+                        }
+                      ]} />
+            <IonAlert
+                    isOpen={showAlertOrdenCreada}
+                    onDidDismiss={() => setShowAlertOrdenCreada(false)}
+                    cssClass='my-custom-class'
+                    header={'ORDEN DE SERVICIO CREADA CON ÉXITO'}
+                    subHeader={''}
+                    mode="ios"
+                    message={'Se ha creado con éxito la orden de servicio: '+ticket.current }
+                    buttons={[
+                        {
+                          text: 'OK',
+                          role: 'cancel',
+                          cssClass: 'secondary',
+                          handler: blah => {
+                            setVista("orden creada")
+                          }
+                        }
+                      ]} />
+                
+                
         </div>
     </IonContent>
     )
@@ -389,7 +423,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
         return(
 
 
-            <div style={{display:"flex", flexDirection:"column", width:"100%", minHeight:"100vh" ,height:"100vh", background: "#f3f2ef"}}>
+            <div style={{display:"flex", flexDirection:"column", width:"100%", minHeight:"100%" ,height:"100vh", background: "#f3f2ef"}}>
                 <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto"}}>
                     <div id="modalProveedor-flechaVolver">
                     <IonIcon icon={arrowBack} onClick={() => props.setVolver( false )} slot="start" id="flecha-volver">  </IonIcon>
@@ -454,7 +488,7 @@ export const TomarFotografia = (props: {imagen:any, setFilepath:any}) => {
     }, []);
     
     const tomarFoto =()=>{
-        takePhoto().then(async res => {
+        takePhoto().then(async res =>  {
             if(res!=null){
                // props.setImagen(res[0].webviewPath!)
                 const base64Data = await base64FromPath(res[0].webviewPath!);

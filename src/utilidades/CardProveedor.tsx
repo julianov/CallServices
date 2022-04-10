@@ -4,10 +4,10 @@ import { getItem, removeItem, setItem } from "./Storage";
 import './CardProveedor.css';
 import Estrellas from "../components/Estrellas/Estrellas";
 import { contractSharp } from "ionicons/icons";
-import OrdenSimple from "../pages/PedirOrden";
 import { categoriaBuscada } from "../components/ResultadoBusqueda/ResultadoBusqueda";
 import Resenas from "../components/Reseñas/Resenas";
 import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonItem, IonTitle, IonButton, IonGrid, IonCol, IonRow, IonItemDivider, IonModal } from "@ionic/react";
+import OrdenSimple from "../pages/PedirOrdenes/PedirOrden";
 
 
 

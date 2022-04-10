@@ -744,12 +744,7 @@ const getLocation = async () => {
              )
  
      }
- 
      
-     
- 
-     console.log("props.arreglo.length: "+rubrosItem2)
-    
              return(
                  <div id="contenedorCompletarRubro">
                      <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto", marginTop:"50px"}}>
