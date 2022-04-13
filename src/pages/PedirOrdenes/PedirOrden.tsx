@@ -230,7 +230,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
 
     return (
         <IonContent>
-            <div style={{display:"flex", flexDirection:"column", width:"100%", minHeight:"100vh" ,height:"auto", background: "#f3f2ef"}}>
+            <div style={{display:"flex", flexDirection:"column", width:"100%", minHeight:"100%" ,height:"auto", background: "#f3f2ef"}}>
 
                 <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto"}}>
                     <div id="modalProveedor-flechaVolver">
@@ -310,7 +310,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
 
         return (
             <IonContent>
-            <div style={{display:"flex", flexDirection:"column", width:"100%", minHeight:"100vh" ,height:"100vh", background: "#f3f2ef"}}>
+            <div style={{display:"flex", flexDirection:"column", width:"100%", minHeight:"100%" ,height:"auto", background: "#f3f2ef"}}>
                 <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto"}}>
                     <div id="modalProveedor-flechaVolver">
                         <IonIcon icon={arrowBack} onClick={() => setVista("imagenes")} slot="start" id="flecha-volver">  </IonIcon>

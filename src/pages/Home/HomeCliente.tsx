@@ -142,7 +142,6 @@ const HomeCliente = (props:{setIsReg:any,
       }
       axios.get(url+"home/cliente/"+value).then((resp: { data: any; }) => {
 
-        console.log("entonces veamos los proveedores: "+JSON.stringify(resp.data))
         if (resp.data!="bad"){
           setProveedoresEnZona(resp.data.map((d: { email: any; nombre: any; apellido: any; certificado: any; item: any; tipo: any; distancia: any; calificacion: any; }) => ({
             email:d.email,

@@ -514,8 +514,6 @@ const CardVistaVariasOrdenes= (props:{rubro:any, posicion:any,tipo:string,status
 
     const [imagenes,setImagen]=useState ("")
 
-    console.log("veamos si mis planes se cumplen: "+props.rubro)
-
     useEffect(() => {
 
       setImagen(retornarIconoCategoria(props.rubro)) 

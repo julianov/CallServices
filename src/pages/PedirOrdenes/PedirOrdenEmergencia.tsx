@@ -38,6 +38,7 @@ export const PedirOrdenEmergencia = (props:{setVolver:any}) => {
 
       }, [])
 
+     
     const solicitar = ()=> {
 
         var formDataToUpload = new FormData();
@@ -70,6 +71,11 @@ export const PedirOrdenEmergencia = (props:{setVolver:any}) => {
         }
         
     }
+
+    const cancelar = ()=> {
+          
+    }
+
 
     if (vista=="rubros"){
         return(
