@@ -14,7 +14,7 @@ import { Photo, usePhotoGallery } from "../../hooks/usePhotoGallery";
 
 import "./CompletarRubros.css";
 
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonDatetime, IonGrid, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonSelect, IonSelectOption, IonIcon, IonFabButton, IonImg, IonActionSheet, IonRange, IonTextarea, IonItemSliding, IonSegment, IonSegmentButton } from "@ionic/react";
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonDatetime, IonGrid, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonSelect, IonSelectOption, IonIcon, IonFabButton, IonImg, IonActionSheet, IonRange, IonTextarea, IonItemSliding, IonSegment, IonSegmentButton, IonItemDivider } from "@ionic/react";
 import { itemRubro } from "../../Interfaces/interfaces";
 import { useRubroContext1, useRubroContext2 } from "../../Contexts/RubroContext";
 import { retornarIconoCategoria } from "../../utilidades/retornarIconoCategoria";
@@ -622,10 +622,10 @@ const getLocation = async () => {
                    <IonTitle id="register-title">MIS RUBROS</IonTitle>
                  </header>
            
-                 <div id="contenedorCompletarRubro">
+                 <div style={{display:"flex", flexDirection:"column", width:"95%", height:"auto", justifyContent:"center", alignItems:"center"}}>
                      <div className="caja">
                          <strong>NO POSEE RUBROS CARGADOS</strong>
-                         <p>Cargue un Rubro para poder recibir pedidos de clientes</p>
+                         <p style={{fontSize:"0.9em"}}>Cargue un Rubro para poder recibir pedidos de clientes</p>
                      </div>
                  </div>
            
@@ -648,7 +648,7 @@ const getLocation = async () => {
                <IonTitle id="register-title">RUBROS</IonTitle>
              </header>
        
-             <div id="contenedorCompletarRubro">
+             <div style={{display:"flex", flexDirection:"column", width:"95%", height:"auto", justifyContent:"center", alignItems:"center"}}>
                  <div className="caja">
                      <strong>ERROR DE CONECTIVIDAD</strong>
                      <p>Asegúrese de tener conectividad de red o intente más tarde</p>
@@ -680,36 +680,51 @@ const getLocation = async () => {
 
     if ((rubrosItem1!.rubro!="" && rubrosItem1!.rubro!=undefined) && (rubrosItem2!.rubro!="" && rubrosItem2!.rubro!=undefined)){
         return (
-            <><IonItem id="item-completarRubro-rubro" onClick={() => (verRubro(rubrosItem1!.rubro))}>
-                <strong> {rubrosItem1!.rubro} </strong>
-            </IonItem><IonItem id="item-completarRubro-rubro" onClick={() => (verRubro(rubrosItem2!.rubro))}>
+            <>
+                <IonItem style={{width:"80%"}}  onClick={() => (verRubro(rubrosItem1!.rubro))}>
+                    <strong> {rubrosItem1!.rubro} </strong>
+                    <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(rubrosItem1!.rubro)}></img>
+                </IonItem>
+                <IonItem style={{width:"80%"}}  onClick={() => (verRubro(rubrosItem2!.rubro))}>
                     <strong> {rubrosItem2!.rubro} </strong>
-                </IonItem></>
+                    <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(rubrosItem2!.rubro)}></img>
+                </IonItem>
+            </>
         )
     }else if((rubrosItem1!.rubro=="" || rubrosItem1!.rubro==undefined) && (rubrosItem2!.rubro!="" && rubrosItem2!.rubro!=undefined)){ 
+       
         return (
-            <><IonItem id="item-completarRubro-rubro" onClick={() => (verRubro(rubrosItem2!.rubro))}>
-                    <strong> {rubrosItem2!.rubro} </strong>
-                </IonItem>
-                
-                <IonButton shape="round" id="boton-inicialBR" onClick={() => { props.setVista(2)} }>AGREGAR OTRO RUBRO</IonButton>
+            <>
+            <IonItem style={{width:"80%"}} onClick={() => (verRubro(rubrosItem2!.rubro))}>
+                <strong> {rubrosItem2!.rubro} </strong>
+                <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(rubrosItem2!.rubro)}></img>
+            </IonItem>
+            < div style={{display:"flex", width:"100%", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center"}}>
+                    <p style={{fontSize:"0.9em", marginTop:"45px"}}> AGREGAR OTRO RUBRO</p>
+                    <IonButton color="warning" shape="round" style={{width:"40px", height:"40px",}} onClick={() => { props.setVista(2)} }>+</IonButton>
+            </div>
 </>
         )
     }else if((rubrosItem1!.rubro!="" && rubrosItem1!.rubro!=undefined) && (rubrosItem2!.rubro=="" || rubrosItem2!.rubro==undefined)){ 
         return (
-            <><IonItem id="item-completarRubro-rubro" onClick={() => (verRubro(rubrosItem1!.rubro))}>
+            <>
+                <IonItem style={{width:"80%"}}  onClick={() => (verRubro(rubrosItem1!.rubro))}>
                     <strong> {rubrosItem1!.rubro} </strong>
+                    <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(rubrosItem1!.rubro)}></img>
                 </IonItem>
-                <IonButton shape="round" id="boton-inicialBR" onClick={() => { props.setVista(2)} }>AGREGAR OTRO RUBRO</IonButton>
-</>
+                < div style={{display:"flex", width:"100%", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center"}}>
+                    <p style={{fontSize:"0.9em", marginTop:"45px"}}> AGREGAR OTRO RUBRO</p>
+                    <IonButton color="warning" shape="round" style={{width:"40px", height:"40px",}} onClick={() => { props.setVista(2)} }>+</IonButton>
+                </div>
+            </>
         )
     }else{
         return (
             <>
-                    <h1>NO POSEE RUBROS CARGADOS</h1>
-                    <IonButton shape="round" id="boton-inicialBR" onClick={() => { props.setVista(2)} }>AGREGAR RUBRO</IonButton>
+                <h1>NO POSEE RUBROS CARGADOS</h1>
+                <IonButton shape="round" id="boton-inicialBR" onClick={() => { props.setVista(2)} }>AGREGAR RUBRO</IonButton>
 
-                </>
+            </>
         )
     }
 
@@ -759,7 +774,7 @@ const getLocation = async () => {
        
                      <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto", justifyContent:"center", alignItems:"center", marginBottom:"32px"}}>
                      
-                         <IonButton shape="round" id="boton-inicialBR" onClick={()=> setTermino(true) } >FINALIZAR</IonButton>
+                        <IonButton shape="round" id="boton-inicialBR" onClick={()=> setTermino(true) } >FINALIZAR</IonButton>
                      
                      </div>
            </div> 
@@ -1092,9 +1107,7 @@ const getLocation = async () => {
      const [rubroSeleccionado, setRubroSeleccionado] = useState("SELECIONE TIPO DE RUBRO")
  
      const volver= ()=>{
-         
-             props.setVista(0)
-         
+        props.setVista(0)
      }
  
      const siguiente =()=> {
@@ -1114,8 +1127,13 @@ const getLocation = async () => {
  
      if(seleccionDeRubro=="vistaCompleta"){
      return (
-         <>
-             <div className="contenedor_central">
+         <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh", background:"#f3f2ef"}}>
+             
+             <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto",alignItems:"center", textAlign:"center", marginTop:"25px"}}>
+                <h1>DATOS PRINCIPALES</h1>
+             </div>
+             <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100%"}}>
+                 
                  <div className="caja">
                      <IonGrid>
                          <IonRow>
@@ -1134,7 +1152,7 @@ const getLocation = async () => {
                      <IonGrid>
                          <IonRow>
                              <IonCol>
-                                 <strong>SELECIONE LOS DIAS DE TRABAJO</strong>
+                                 <strong style={{margin:"15px 0px 15px 0px"}}>SELECIONE LOS DIAS DE TRABAJO</strong>
                              </IonCol>
                          </IonRow>
                          <IonRow>
@@ -1144,7 +1162,7 @@ const getLocation = async () => {
                          </IonRow>
                          <IonRow>
  
-                             <strong>SELECIONE EL HORARIO DE TRABAJO</strong>
+                             <strong style={{margin:"15px 0px 15px 0px"}}>SELECIONE EL HORARIO DE TRABAJO</strong>
  
                          </IonRow>
                          <IonRow>
@@ -1165,19 +1183,19 @@ const getLocation = async () => {
                          </IonRow>
                      </IonGrid>
                  </div>
-                 <div className="caja">
-                 <IonGrid>
-                         <IonRow>
-                             <IonCol >
-                                 <IonButton shape="round" onClick={() => { volver(); } }>VOLVER</IonButton>
-                             </IonCol>
-                             <IonCol >
-                                 <IonButton shape="round" onClick={() => { siguiente(); } }>SIGUIENTE</IonButton>
-                             </IonCol>
-                         </IonRow>
-                     </IonGrid>        
                  </div>
-             </div></>
+                 <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"auto", background:"#f3f2ef"}}>
+
+
+                 <div style={{display:"flex", flexDirection:"row", width:"100%", height:"auto",alignItems:"center", marginBottom:"35px"}}>
+                 
+                                 <IonButton  shape="round" onClick={() => { volver(); } }>ATRAS</IonButton>
+                            
+                                 <IonButton color="warning" shape="round" onClick={() => { siguiente(); } }>SIGUIENTE</IonButton>
+                                 
+                 </div>
+             </div>
+             </div>
          )}
      else{
          return(
@@ -1188,7 +1206,7 @@ const getLocation = async () => {
  
              <IonList>
                  <IonItemSliding>
-                 <IonItem onClick={()=> {props.rubro.current="CARPINTERIA";setRubroSeleccionado("RUBRO SELECCIONADO: CARPINTERIA") ;setSeleccionDeRubro("vistaCompleta")}}>
+                 <IonItem onClick={()=> {props.rubro.current="CARPINTERÍA";setRubroSeleccionado("RUBRO SELECCIONADO: CARPINTERIA") ;setSeleccionDeRubro("vistaCompleta")}}>
                     <IonLabel id="laberCompletarRubrosRubros">CARPINTERÍA</IonLabel>
 		            <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("CARPINTERÍA")}></img>
                  </IonItem>
@@ -1228,11 +1246,11 @@ const getLocation = async () => {
                  <IonLabel id="laberCompletarRubrosRubros">GASISTA</IonLabel>
                  <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("GASISTA")}></img>
                  </IonItem>
-                 <IonItem onClick={()=> {props.rubro.current="HERRERIA";setRubroSeleccionado("RUBRO SELECCIONADO: HERRERIA"); setSeleccionDeRubro("vistaCompleta")}}>
+                 <IonItem onClick={()=> {props.rubro.current="HERRERÍA";setRubroSeleccionado("RUBRO SELECCIONADO: HERRERIA"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">HERRERÍA</IonLabel>
                  <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("HERRERIA")}></img>
                  </IonItem>
-                 <IonItem onClick={()=> {props.rubro.current="INFORMATICA";setRubroSeleccionado("RUBRO SELECCIONADO: INFORMATICA"); setSeleccionDeRubro("vistaCompleta")}}>
+                 <IonItem onClick={()=> {props.rubro.current="INFORMÁTICA";setRubroSeleccionado("RUBRO SELECCIONADO: INFORMATICA"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">INFORMÁTICA</IonLabel>
                  <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("INFORMÁTICA")}></img>
                  </IonItem>
@@ -1240,7 +1258,7 @@ const getLocation = async () => {
                  <IonLabel id="laberCompletarRubrosRubros">JARDINERÍA</IonLabel>
                  <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("JARDINERÍA")}></img>
                  </IonItem>
-                 <IonItem onClick={()=> {props.rubro.current="MECANICA";setRubroSeleccionado("RUBRO SELECCIONADO: MECANICA");setSeleccionDeRubro("vistaCompleta")}}>
+                 <IonItem onClick={()=> {props.rubro.current="MECÁNICA";setRubroSeleccionado("RUBRO SELECCIONADO: MECANICA");setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">MECÁNICA</IonLabel>
                  <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("MECÁNICA")}></img>
                  </IonItem>
@@ -1256,11 +1274,11 @@ const getLocation = async () => {
                  <IonLabel id="laberCompletarRubrosRubros">PINTOR</IonLabel>
                  <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("PINTOR")}></img>
                  </IonItem>
-                 <IonItem onClick={()=> {props.rubro.current="PLOMERIA";setRubroSeleccionado("RUBRO SELECCIONADO: PLOMERIA"); setSeleccionDeRubro("vistaCompleta")}}>
+                 <IonItem onClick={()=> {props.rubro.current="PLOMERÍA";setRubroSeleccionado("RUBRO SELECCIONADO: PLOMERIA"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">PLOMERÍA</IonLabel>
                  <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("PLOMERÍA")}></img>
                  </IonItem>
-                 <IonItem onClick={()=> {props.rubro.current="REFRIGERACION";setRubroSeleccionado("RUBRO SELECCIONADO: REFRIGERACION"); setSeleccionDeRubro("vistaCompleta")}}>
+                 <IonItem onClick={()=> {props.rubro.current="REFRIGERACIÓN";setRubroSeleccionado("RUBRO SELECCIONADO: REFRIGERACION"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">REFRIGERACIÓN</IonLabel>
                  <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("REFRIGERACION")}></img>
                  </IonItem>
@@ -1268,7 +1286,7 @@ const getLocation = async () => {
                  <IonLabel id="laberCompletarRubrosRubros">REMOLQUES - GRÚAS</IonLabel>
                  <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("REMOLQUES - GRÚAS")}></img>
                  </IonItem>
-                 <IonItem onClick={()=> {props.rubro.current="TELEFONIA CELULAR";setRubroSeleccionado("RUBRO SELECCIONADO: TELEFONIA CELULAR"); setSeleccionDeRubro("vistaCompleta")}}>
+                 <IonItem onClick={()=> {props.rubro.current="TELEFONÍA CELULAR";setRubroSeleccionado("RUBRO SELECCIONADO: TELEFONIA CELULAR"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">TELEFONÍA CELULAR</IonLabel>
                  <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("TELEFONÍA CELULAR")}></img>
                  </IonItem>
@@ -1306,35 +1324,34 @@ const getLocation = async () => {
      }
  
      return (
-         <div id="contenedorCompletarRubro">
+        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh", background:"#f3f2ef"}}>
+             
+        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto",alignItems:"center", textAlign:"center", marginTop:"25px"}}>
+           <h1>DESCRIBA SU TRABAJO</h1>
+        </div>
+
+        <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100%"}}>
             
-                 <div className="contenedor_central">
+                 
                      <div className="caja">
-                         <IonTitle>DESCRIBA SU TRABAJO</IonTitle>
+                        
                      
-                     <p>Una buena descripción de su trabajo sirve como una guía de referencia para los futuros clientes</p>
+                     <p style={{fontSize:"1em", marginTop:"15px"}}>Una buena descripción de su trabajo sirve como una guía de referencia para los futuros clientes</p>
                      <IonItem id="item-completarRubro-descripcion">
-                         <IonTextarea id="textArea" autoGrow={true} maxlength={400} placeholder="Descripción de su trabajo" onIonInput={(e: any) => props.descripcion.current=(e.target.value)}></IonTextarea>
+                         <IonTextarea id="textArea" autoGrow={true} maxlength={450} placeholder="Descripción de su trabajo" onIonInput={(e: any) => props.descripcion.current=(e.target.value)}></IonTextarea>
                      </IonItem>
                      </div>
                   
-                 </div>
+        </div>
             
      
-             <footer id="footerCompletarRubro">
-                 <div className="caja">
-                     <IonGrid>
-                         <IonRow>
-                             <IonCol >
-                                 <IonButton shape="round" onClick={() => { volver(); } }>VOLVER</IonButton>
-                             </IonCol>
-                             <IonCol >
-                                 <IonButton shape="round" onClick={() => { siguiente(); } }>SIGUIENTE</IonButton>
-                             </IonCol>
-                         </IonRow>
-                     </IonGrid>        
-                 </div>
-             </footer>
+            <div style={{display:"flex", flexDirection:"row", width:"100%", height:"auto",alignItems:"center", marginBottom:"35px"}}>
+                       
+                <IonButton shape="round" onClick={() => { volver(); } }>VOLVER</IonButton>  
+                <IonButton color="warning" shape="round" onClick={() => { siguiente(); } }>SIGUIENTE</IonButton>
+                              
+            </div>
+            
          </div> 
      );
  }
@@ -1366,9 +1383,12 @@ const getLocation = async () => {
      return(
             
             <div id="contenedorPrincipalCompletarRubroLocacion">
-               
+            
+            <h1>DATOS GENERALES</h1>
+
              <div className="caja">
-                 <IonTitle>DATOS DOMICILIO</IonTitle>
+                 <IonTitle style={{margin:"15px 0px 10px 0px"}}>DATOS DOMICILIO</IonTitle>
+                 <IonItemDivider />
                  <IonItem id="item-rubro-domicilio">
                      <IonLabel position="floating">País</IonLabel>
                      <IonInput autocomplete="country" onIonInput={(e: any) => props.pais.current = (e.target.value)}></IonInput>
@@ -1400,7 +1420,9 @@ const getLocation = async () => {
              </div>
  
              <div className="caja">
-                 <IonTitle>VISITA A CLIENTES</IonTitle>
+                 <IonTitle style={{margin:"15px 0px 10px 0px"}}>VISITA A CLIENTES</IonTitle>
+                 <IonItemDivider />
+
                  <div>
                      <p>Ingrese si va a la locación de clientes</p>
                      <p>En caso de que no se desplace a locación de clientes no seleccione la casilla de verificación y presion siguiente</p>
@@ -1427,22 +1449,16 @@ const getLocation = async () => {
                  </IonItem>
                  <Range domicilio={domicilio} radius={props.radio} setRadio={props.setRadio} />
              </div>
- 
-                  
+                   
              <OrdenesEmergencia rubro={props.rubro} ordenEmergencia={props.ordenesEmergencia}></OrdenesEmergencia>
         
-                 <div className="caja">
+             <div style={{display:"flex", flexDirection:"row", width:"100%", height:"auto",alignItems:"center", marginBottom:"35px"}}>
  
-                     <div id="botonCentral">
-                         <div id="botonCentralIzquierda">
-                             <IonButton shape="round" onClick={() => { volver(); } }>VOLVER</IonButton>
-                         </div>
-                         <div id="botonCentralDerecha">
-                             <IonButton shape="round" onClick={() => { siguiente(); } }>SIGUIENTE</IonButton>
-                         </div>
-                     </div>
-                 </div>
-             </div>
+                <IonButton shape="round" onClick={() => { volver(); } }>VOLVER</IonButton>          
+                <IonButton color="warning" shape="round" onClick={() => { siguiente(); } }>SIGUIENTE</IonButton>
+                     
+            </div>
+        </div>
  
  
  
@@ -1632,28 +1648,32 @@ const getLocation = async () => {
      }
                  
     return(
-     <div id="contenedorPrincipalCompletarRubroLocacion">
+        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh", background:"#f3f2ef"}}>
+             
+             <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto",alignItems:"center", textAlign:"center", marginTop:"25px"}}>
+                <h1 >CERTIFICACIÓN DE SU TRABAJO</h1>
+            </div> 
+            <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100%"}}>
+
+                <div className="caja">
+                    <IonTitle register-title>INGRESE CERTIFICACIÓN</IonTitle>
+                    <p style={{fontSize:"0.9em"}}>Foto o captura de certificación o título habilitante para el trabajo</p>
+                    <p style={{fontSize:"0.9em"}}>Certificación de curso o título muestra a los clientes sus conocimientos en la materia</p>
+                    <IonItemDivider />
+
+                    <TomarFotografia imagen={props.certificacionMostrar} setFilepath={props.certificacion} ></TomarFotografia>
+                </div>
+
+            </div>
+           <div style={{display:"flex", flexDirection:"row", width:"100%", height:"auto",alignItems:"center", marginBottom:"35px"}}>
+                   
+                <IonButton shape="round" onClick={() => { volver(); } }>VOLVER</IonButton>
+                                
+                <IonButton color="warning" shape="round" onClick={() => { siguiente(); } }>FINALIZAR</IonButton>
  
-               <div className="caja">
-               <IonTitle register-title>INGRESE CERTIFICACIÓN</IonTitle>
-           <div><p>Foto o captura de certificación o título habilitante para el trabajo</p>
-           <p>Certificación de curso o título muestra a los clientes sus conocimientos en la materia</p></div>
-               <TomarFotografia imagen={props.certificacionMostrar} setFilepath={props.certificacion} ></TomarFotografia>
-           </div>
-           <div className="caja">
-                         <IonGrid>
-                             <IonRow>
-                                 <IonCol className="columna">
-                                     <IonButton shape="round" onClick={() => { volver(); } }>VOLVER</IonButton>
-                                 </IonCol>
-                                 <IonCol className="columna">
-                                     <IonButton shape="round" onClick={() => { siguiente(); } }>FINALIZAR</IonButton>
- 
-                                 </IonCol>
-                             </IonRow>
-                         </IonGrid>
-                         </div> 
-           </div>
+            </div> 
+        </div>
+   
     )
  }
  
@@ -1680,11 +1700,14 @@ const getLocation = async () => {
                              
                      return(
                          <div id="contenedorPrincipalCompletarRubroLocacion">
-                         
+                            <h1 >IMÁGENES DE SU TRABAJO</h1>
+
                             <div className="caja">
-                            <IonTitle id="register-title">INGRESE IMÁGENES DE SU TRABAJO</IonTitle>
-                             <div><p>Dichas fotos serán mostradas a sus clientes</p>
-                                 <p>Ingrse fotos o capturas que destaquen lo que hace</p></div>
+                            <h1 id="register-title">INGRESE IMÁGENES</h1>
+                            <p style={{fontSize:"0.9em"}}>Dichas fotos serán mostradas a sus clientes</p>
+                            <p style={{fontSize:"0.9em"}}>Ingrse fotos o capturas que destaquen lo que hace</p>
+                            <IonItemDivider />
+                            
                                  <IonGrid>
                                      <IonRow>
                                          <IonCol >
@@ -1709,20 +1732,11 @@ const getLocation = async () => {
                                      </IonRow>
                                  </IonGrid>
                              </div >
-                             <div className="caja">
-                             <IonGrid>
-                                 <IonRow>
-                                     <IonCol className="columna">
-                                         <IonButton shape="round" onClick={() => { volver(); } }>VOLVER</IonButton>
-                                     </IonCol>
-                                     <IonCol className="columna">
-                                         <IonButton shape="round" onClick={() => { siguiente(); } }>SIGUIENTE</IonButton>
- 
-                                     </IonCol>
-                                 </IonRow>
-                             </IonGrid>
+                             <div style={{display:"flex", flexDirection:"row", width:"100%", height:"auto",alignItems:"center", marginBottom:"35px"}}>
+                                <IonButton shape="round" onClick={() => { volver(); } }>VOLVER</IonButton>
+                                <IonButton color="warning" shape="round" onClick={() => { siguiente(); } }>SIGUIENTE</IonButton>
                              </div>
-                             </div>
+                        </div>
                      )
                  }
  
@@ -1734,7 +1748,10 @@ const getLocation = async () => {
      if (props.rubro=="PLOMERIA" || props.rubro=="GASISTA" || props.rubro=="CERRAJERÍA" || props.rubro=="ELECTRICIDAD" || props.rubro=="FLETE" || props.rubro=="MECANICA" || props.rubro=="REMOLQUES - GRÚAS" ){
          return( 
              
-             <div className="caja">      <IonTitle>ÓRDENES DE EMERGENCIA</IonTitle><div>
+             <div className="caja">      
+             <IonTitle style={{margin:"15px 0px 10px 0px"}}>ÓRDENES DE EMERGENCIA</IonTitle>
+                 <IonItemDivider />
+             <div>
                  <p>Aceptar órdenes de emergencia implica tener la disponibilidad para asistir a los domicilios de los clientes cuando lo requieran</p>
                  <p>Deberá atender las ordenes de emergencia de manera prioritaria</p>
  

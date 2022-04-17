@@ -146,8 +146,10 @@ const Elements = (props:{ proveedores: Array <ordenes> , setVerOrden:any,setPosi
   var i=0
   //if (props.proveedores!=[]){
     return (
+      <IonCard style={{display:"flex", flexDirection:"column", color:"white", width:"90%", height:"auto", justifyContent:"center", alignItems:"center" }}>
+
       <div  style={{width:"100%", height:"auto"}}>
-        <IonSlides >
+        <IonSlides pager={true} >
 
         {props.proveedores.map((a) => {
           i=i+1
@@ -161,6 +163,8 @@ const Elements = (props:{ proveedores: Array <ordenes> , setVerOrden:any,setPosi
         }
         </IonSlides>
     </div>
+    </IonCard>
+
   )
   //}
       
@@ -211,7 +215,7 @@ const CardVistaVariasOrdenes= (props:{posicion:any,rubro:string, tipo:string,sta
 }, []); 
 
   return (
-    <IonCard className="ionCardExplorerContainer" onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
+    <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
       <IonGrid>
         <IonRow  id="row-busqueda">
           <IonCol   id="col-explorerContainerCliente">
@@ -228,7 +232,7 @@ const CardVistaVariasOrdenes= (props:{posicion:any,rubro:string, tipo:string,sta
         </IonRow>
       
       </IonGrid>
-    </IonCard>
+    </div>
   )
 
 }

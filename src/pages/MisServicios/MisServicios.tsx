@@ -5,21 +5,24 @@ import Https from '../../utilidades/HttpsURL';
 import './MisServicios.css';
 import { informacionOrdenes } from '../VerOrdenes';
 import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonItem, IonLabel, IonMenuButton, IonPage, IonRow, IonSegment, IonSegmentButton, IonTitle, IonToolbar } from '@ionic/react';
+import { useUserContext } from '../../Contexts/UserContext';
 
 const url=Https
 
-const MisServicios = ( props: {cliente:boolean, email:string}) => {
+const MisServicios = () => {
+
+  const  {user,setUser}  = useUserContext()
 
   const [tipo, setTipo] = useState("")
-  useEffect(() => {
 
-    if(props.cliente){
+  useEffect(() => {
+    if(user!.tipoCliente){
       setTipo("cliente")
     }else{
       setTipo("proveedor")
     }
 
-  }, [props.cliente]);
+  }, [user!.tipoCliente]);
 
     return (
             <IonPage>
@@ -40,7 +43,7 @@ const MisServicios = ( props: {cliente:boolean, email:string}) => {
                     <IonTitle size="large"></IonTitle>
                   </IonToolbar>
                 </IonHeader>
-              <SegmentosServicios tipo={tipo} email={props.email} ></SegmentosServicios>
+              <SegmentosServicios tipo={tipo} email={user!.email} ></SegmentosServicios>
               <div id="contenedor-central">
                 <strong id="prueba">SIN SERVICIOS EN CURSO</strong>
               </div>

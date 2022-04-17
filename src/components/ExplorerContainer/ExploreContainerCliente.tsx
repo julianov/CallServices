@@ -1,4 +1,4 @@
-import { alert, chevronDown, closeCircle, trendingUpOutline } from 'ionicons/icons';
+import { alert, arrowBack, arrowForward, chevronDown, closeCircle, trendingUpOutline } from 'ionicons/icons';
 import React, { useMemo, useRef, useState } from 'react';
 
 import './ExploreContainer.css';
@@ -84,7 +84,7 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
 
   useEffect(() => {
 
-    for (let i=0; i<props.ordenes.length;i++){     
+   /* for (let i=0; i<props.ordenes.length;i++){     
 
       setArregloOrdenesCliente([...arregloOrdenesCliente,{ 
         rubro:props.ordenes[i].rubro,
@@ -108,7 +108,7 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
         picture1_mas_información:props.ordenes[i].picture1_mas_información,
         picture2_mas_información:props.ordenes[i].picture2_mas_información
       }])
-    }
+    }*/
 
     if(props.ordenes.length > 0){
       setHayOrdenes(true)
@@ -123,7 +123,6 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
 
     if(pediOrden){
       axios.get(props.url+"home/cliente/pedirdatos/"+verEmail+"/"+item+"/"+"caracteres"+"/"+locacion).then((resp: { data: any; }) => {
-        console.log("es aqui:"+resp.data)
         if (resp.data!="bad"){
           
          setDatosDeOrdenes( 
@@ -174,8 +173,11 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
           <>
           <div id="container-principal-ExplorerContainer-Cliente">  
             <Tabs setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal} ></Tabs>
-            <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={arregloOrdenesCliente}  setVerOrden={setVerOrden} setPosicion={setPosicion}></MisOrdenes>
             <IonItemDivider />
+            <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={props.ordenes}  setVerOrden={setVerOrden} setPosicion={setPosicion}></MisOrdenes>
+            <IonItemDivider />
+
+            <CategoriasUtiles/>
 
             <h1 style={{fontWeight:"600", fontSize:"1.5em", marginTop:"5px"}}>PROVEEDORES DE SERVICIOS</h1>    
             <h1 style={{fontWeight:"600", fontSize:"1.5em", marginTop:"0px"}}>EN LA ZONA</h1>          
@@ -191,7 +193,7 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
             onDidDismiss={() => setVerOrden( false )}
             >
             <ModalVerOrdenesCliente 
-              datos={arregloOrdenesCliente[posicion-1]}
+              datos={props.ordenes[posicion-1]}
               setVolver={setVerOrden}
               emailCliente={props.emailCliente}
             />  
@@ -471,23 +473,34 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , hayOrdenes:any,
 
   var i=0
   //if (props.proveedores!=[]){
+
     if (props.hayOrdenes){
       return (
         <>
-        <h1 style={{fontWeight:"600", fontSize:"1.5em"}}>SERVICIOS EN CURSO</h1>
-        <div>
-        <IonSlides >
+        <IonCard style={{display:"flex", flexDirection:"column", color:"white", width:"90%", height:"auto", justifyContent:"center", alignItems:"center" }}>
+
+        <h1 style={{fontWeight:"600", fontSize:"1.5em", color:"black"}}>SERVICIOS EN CURSO</h1>
+        <div style={{display:"flex", flexDirection:"row", width:"100%", height:"auto"}} >
+        <IonSlides pager={true} >
           {props.misOrdenes.map((a) => {
             i = i + 1;
             return (
+              
               <IonSlide>
                 <CardVistaVariasOrdenes key={i} posicion={i} rubro={a.rubro} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket}
                   dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_proveedor} setVerOrden={props.setVerOrden} setPosicion={props.setPosicion}
                   presupuesto={a.presupuesto} masInfo={a.pedido_mas_información} masInfoEnviada={a.respuesta_cliente_pedido_mas_información}></CardVistaVariasOrdenes>
-            </IonSlide>);
+              </IonSlide>
+                          
+            );
           })}
         </IonSlides>
-        </div></>
+
+        </div>
+        <VerTodas cantidad={props.misOrdenes.length} />
+
+        </IonCard>
+      </>
     )
     }else{
       return(
@@ -505,7 +518,7 @@ const CardVistaVariasOrdenes= (props:{rubro:any, posicion:any,tipo:string,status
     const [estado,setEstado]=useState("Enviada")
 
     const [mensaje1, setMensaje1] = useState("")
-    const [mensaje2, setMensaje2] = useState("")
+    //const [mensaje2, setMensaje2] = useState("")
 
    // createStore("ordenesActivas")
 
@@ -539,13 +552,13 @@ const CardVistaVariasOrdenes= (props:{rubro:any, posicion:any,tipo:string,status
       }else{
         setEstado("SOLILCITUD DE MÁS INFORMACIÓN")
         setMensaje1("EL PROVEEDOR SOLICITA MÁS INFORMACIÓN")
-        setMensaje2("Ingrese para aceptarlo o rechazarlo")
+        //setMensaje2("Ingrese para aceptarlo o rechazarlo")
       }
 
     }else if(props.status=="PRE"){
       setEstado("TRABAJO PRESUPUESTADO")
       setMensaje1("EL PROVEEDOR HA ENVIADO COTIZACIÓN")
-      setMensaje2("Ingrese responder")
+      //setMensaje2("Ingrese responder")
     } else if(props.status=="ACE"){
       setEstado("PEDIDO DE TRABAJO ACEPTADO")
     }else if(props.status=="EVI"){
@@ -580,7 +593,7 @@ const CardVistaVariasOrdenes= (props:{rubro:any, posicion:any,tipo:string,status
 
     if(nuevoStatus){
       return (
-        <IonCard id="ionCard-explorerContainer-Cliente" onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
+        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"500px", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
 
         <div id="iconoDerecha">            
           <IonIcon icon={alert} id="iconoNuevaStatus" ></IonIcon>
@@ -593,23 +606,19 @@ const CardVistaVariasOrdenes= (props:{rubro:any, posicion:any,tipo:string,status
             </IonRow>
             <IonRow  id="row-busqueda">
               <IonCol   id="col-explorerContainerCliente">
-                <IonCardSubtitle>TIPO: {props.tipo.toUpperCase( )}</IonCardSubtitle>
-                <IonCardSubtitle>STATUS: {estado}</IonCardSubtitle>
-                <IonCardSubtitle>TICKET: {props.ticket}</IonCardSubtitle>  
+                <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>STATUS: {estado}</h2>
+                <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>TICKET: {props.ticket}</h2>  
+                <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>{mensaje1}</h2>
+
               </IonCol>
             </IonRow>
-            <IonRow  id="row-busqueda">
-              <IonCol   id="col-explorerContainerCliente">
-                <IonCardSubtitle>{mensaje1}</IonCardSubtitle>
-                <IonCardSubtitle>{mensaje2}</IonCardSubtitle>
-              </IonCol>
-            </IonRow> 
+            
           </IonGrid>
-        </IonCard>
+        </div>
       )    
     }else{
       return (
-        <IonCard id="ionCard-explorerContainer-Cliente" onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
+        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"200px", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
 
           <IonGrid>
             <IonRow  id="row-busqueda">
@@ -619,19 +628,15 @@ const CardVistaVariasOrdenes= (props:{rubro:any, posicion:any,tipo:string,status
             </IonRow>
             <IonRow  id="row-busqueda">
               <IonCol   id="col-explorerContainerCliente">
-                <IonCardSubtitle>TIPO: {props.tipo.toUpperCase( )}</IonCardSubtitle>
-                <IonCardSubtitle>STATUS: {estado}</IonCardSubtitle>
-                <IonCardSubtitle>TICKET: {props.ticket}</IonCardSubtitle>  
+                <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>STATUS: {estado}</h2>
+                <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>TICKET: {props.ticket}</h2>  
+                <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>{mensaje1}</h2>
+
               </IonCol>
             </IonRow>
-            <IonRow  id="row-busqueda">
-              <IonCol   id="col-explorerContainerCliente">
-                <IonCardSubtitle>{mensaje1}</IonCardSubtitle>
-                <IonCardSubtitle>{mensaje2}</IonCardSubtitle>
-              </IonCol>
-            </IonRow> 
+            
           </IonGrid>
-        </IonCard>
+        </div>
       )    
     }
       
@@ -700,12 +705,71 @@ const Tabs= (props:{setShowModal:any,setTipoDeVistaEnModal:any  }) => {
     </IonCol>
   
   </IonRow>
-  </IonGrid >
+  </IonGrid>
   </IonCard> 
   )
 
 }
 
+
+const VerTodas = (props:{cantidad:number}) =>{
+  if(props.cantidad>1){
+    return(<p>VER TODAS</p> )
+  }else{
+    return(<></>)
+  }
+}
+
+const CategoriasUtiles = () =>{
+
+
+  return (
+    <IonCard  style={{display:"flex", flexDirection:"column", width:"90%", height:"auto"}}>
+      <div style={{display:"flex", flexDirection:"column",width:"100%", alignItems:"center", textAlign:"center"}}>
+        
+      <strong style={{margin:"15px 0px 15px 10px"}}>CATEGORÍAS MAS DEMANDADAS</strong>
+      </div>
+      <IonGrid>
+        <IonRow>
+          <IonCol style={{display:"flex", flexDirection:"column"}}>
+            <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("CERRAJERÍA")}></img>
+            <p style={{fontWeight:"bold"}}>CERRAJERÍA</p>
+          </IonCol>
+          <IonCol style={{display:"flex", flexDirection:"column"}}>
+            <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("ELECTRICIDAD")}></img>
+            <p style={{fontWeight:"bold"}}>ELECTRICIDAD</p>
+          </IonCol> 
+          <IonCol style={{display:"flex", flexDirection:"column"}}>
+            <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("FLETE")}></img>
+            <p style={{fontWeight:"bold"}}>FLETE</p>
+          </IonCol>   
+        </IonRow>
+        <IonRow>
+          <IonCol style={{display:"flex", flexDirection:"column"}}>
+            <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("GASISTA")}></img>
+            <p style={{fontWeight:"bold"}}>GASISTA</p>
+          </IonCol>
+          <IonCol style={{display:"flex", flexDirection:"column"}}>
+            <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("MECÁNICA")}></img>
+            <p style={{fontWeight:"bold"}}>MECÁNICA</p>
+          </IonCol> 
+          <IonCol style={{display:"flex", flexDirection:"column"}}>
+            <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("REFRIGERACIÓN")}></img>
+            <p style={{fontWeight:"bold"}}>REFRIGERACIÓN</p>
+          </IonCol>   
+        </IonRow>
+        <IonItemDivider />
+        <IonRow>
+          <IonCol style={{display:"flex", flexDirection:"column"}}>
+            <p style={{fontWeight:"bold"}}>VER TODAS</p>
+          </IonCol>   
+        </IonRow>
+      </IonGrid>
+
+    </IonCard>
+
+  )
+}
 
 
   

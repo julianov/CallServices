@@ -165,8 +165,11 @@ const App: React.FC = () => {
           
         })
         getItem("fotoPersonal").then(res2 => {
-          setFoto(res2)
-          setUser((previous) => ({...previous, foto: res2}))
+          if(res2!=""||res2!=undefined|| res2!=" "){
+            setFoto(res2)
+            setUser((previous) => ({...previous, foto: res2}))
+          }
+          
 
           
         })
@@ -277,7 +280,7 @@ return(
                                                       :<HomeProveedor  setIsReg={setIsReg} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} /> ) 
                                           :<Ingresar setIsReg={setIsReg} setCliente={setCliente} setEmail={setEmail} setFoto={setFoto} setTipoCliente={setTipoCliente} setNombre={setNombre} setApellido={setApellido} setCalificacion={setCalificacion} />} /> 
     
-    <Route path="/MisServicios" render={() => <MisServicios cliente={cliente} email={email}  ></MisServicios>}></Route>
+    <Route path="/MisServicios" render={() => <MisServicios ></MisServicios>}></Route>
     
     <Route path="/Favoritos" component={Favoritos} exact={true}></Route>
         

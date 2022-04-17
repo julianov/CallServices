@@ -163,7 +163,6 @@ const HomeCliente = (props:{setIsReg:any,
     });
 
     axios.get(url+"orden/misordenes/"+"cliente/"+user?.email).then((resp: { data: any; }) => {
-      console.log("veamos que llega che: "+JSON.stringify(resp.data))
       if (resp.data!="bad"){
 
         setMisOrdenes(    
@@ -208,6 +207,7 @@ const HomeCliente = (props:{setIsReg:any,
 
   const [imagen, setImagen] = useState (user!.foto)
 
+  console.log("la foto es: "+user!.foto)
   useEffect(() => {
     if (user!.foto==""|| user!.foto==null || user!.foto==undefined){
       setImagen ("./assets/icon/nuevoUsuario.png") 

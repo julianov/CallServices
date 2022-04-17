@@ -673,12 +673,6 @@ const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEst
       <IonTitle>PRESUPUESTO DEL TRABAJO</IonTitle>  
       </div>
      
-      <IonCard id="ionCard-explorerContainer-Proveedor">
-        <div id="divSentencias">
-          <p>PRESUPUESTO:</p>
-          <p>{props.datos.presupuesto}</p>
-        </div>
-      </IonCard>
 
       <IonCard id="ionCard-explorerContainer-Proveedor">
             <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO RECIBIDO:</h1>

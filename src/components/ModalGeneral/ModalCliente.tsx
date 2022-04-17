@@ -17,6 +17,7 @@ import { categoriaBuscada } from "../ResultadoBusqueda/ResultadoBusqueda";
 import { IonActionSheet, IonAlert, IonButton, IonCard, IonCol, IonContent, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonTitle, IonToolbar } from "@ionic/react";
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import { PedirOrdenEmergencia } from "../../pages/PedirOrdenes/PedirOrdenEmergencia";
+import { retornarIconoCategoria } from "../../utilidades/retornarIconoCategoria";
 
 
 const url=Https
@@ -615,7 +616,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
 
   const Categorias = (props: {emailCliente:string, onClose:any}) => {
 
-    const arreglo_categorias=["CARPINTERIA","CERRAJERIA","CONSTRUCCIÓN","CONTADURÍA","ELECTRICIDAD","ELECTRONICA","ESTÉTICA","FLETE","FUMIGACIÓN","GASISTA","HERRERIA","INFORMATICA","JARDINERÍA","MECANICA","MODA","PASEADOR DE MASCOTAS","PINTOR","PLOMERIA","REFRIGERACION","REMOLQUES - GRÚAS","TELEFONIA CELULAR","TEXTIL"]
+    const arreglo_categorias=["CARPINTERÍA","CERRAJERÍA","CONSTRUCCIÓN","CONTADURÍA","ELECTRICIDAD","ELECTRÓNICA","ESTÉTICA","FLETE","FUMIGACIÓN","GASISTA","HERRERÍA","INFORMÁTICA","JARDINERÍA","MECÁNICA","MODA","PASEADOR DE MASCOTAS","PINTOR","PLOMERÍA","REFRIGERACIÓN","REMOLQUES - GRÚAS","TELEFONÍA CELULAR","TEXTIL"]
     var i=0
 
     const[ categoriaABuscar, setCategoriaABuscar] = useState("")
@@ -639,6 +640,8 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
                 return (
                   <IonItem key={i} id="item-busqueda" onClick={() => setCategoriaABuscar(a)}>
                     <IonTitle id="titulo-busqueda">{a}</IonTitle>
+                    <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(a)}></img>
+
                   </IonItem>
                 );
               })}

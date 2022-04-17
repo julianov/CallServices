@@ -124,6 +124,7 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
                 setItem("clientType", tipoUsuario.current).then(() => {
                  // setCodigo(resquest)
                  codigo.current=resquest
+                  console.log(resquest)
                   setCount("validacion email") 
                   props.setShowAlertEmailSending(false)
                 }
@@ -205,23 +206,26 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
             ]} />
 
 
-      <div id="contenedorPrincipalRegistro">
-        <header id="headerRegistro">
+      <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh"}}>
+        
+        <div  style={{display:"flex",flexDirection:"column", width:"100%", height:"150px"}}>
           <a href={"/"} id="flechaIngresar">
             <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro">  </IonIcon>
           </a>
-          <IonTitle id="register-title">SELECCIONE TIPO DE CUENTA</IonTitle>
-
-        </header>
-
-        <div id="contenedorCentralRegistro">
-
-          <IonButton shape="round" onClick={() => { setShowAlertCuentaUsuario(true); } } id="boton-registro"> Nueva cuenta de usuario</IonButton>
-          <IonButton shape="round" onClick={() => { setShowAlertCuentaProveedor(true); } } id="boton-registro">Nueva cuenta de servicio</IonButton>
+          <div style={{display:"flex", flexDirection:"column", textAlign:"center", marginTop:"35px"}}>
+            <h2 style={{fontSize:"1.2em", color:"black"}}>SELECCIONE TIPO DE CUENTA</h2>
+          </div>
         </div>
-        <footer id="footerRegistro">
-        </footer>
-      </div> 
+
+        <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100%"}}>
+
+          <IonButton shape="round" onClick={() => { setShowAlertCuentaUsuario(true); } } style={{width:"90%"}}> Nueva cuenta de usuario</IonButton>
+          <IonButton shape="round" onClick={() => { setShowAlertCuentaProveedor(true); } } style={{width:"90%", marginTop:"35px"}}>Nueva cuenta de servicio</IonButton>
+        </div>
+        <div  style={{display:"flex",flexDirection:"column", width:"100%", height:"150px"}}>
+        
+        </div>
+      </div >
 
       
         </>
@@ -236,50 +240,42 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
    return (
 
     <>
-      <a onClick={()=>setCount("registro inicio")} id="flechaIngresar">
-        <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro">  </IonIcon>
-      </a>
-      <div id="registro_header">    
-        <IonGrid id="registro-iongrid">
-          <IonRow>
-            <IonCol>
-              <IonTitle id="register-title">COMPLETE SUS DATOS</IonTitle>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-      </div>
-      <div id="registro_contenedor_central">
-        <IonGrid>
-          <IonRow>
-            <IonCol>
-               <IonItem id="item-registro">
-                  <IonLabel position="floating">E-mail</IonLabel>
-                  <IonInput autocomplete="email" type="email" onIonInput={(e: any) => email.current = e.target.value}></IonInput>
-                </IonItem>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <IonItem id="item-registro">
+
+
+  <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh"}}>
+        
+        <div  style={{ display:"flex", flexDirection:"column", width:"100%", height:"100px"}}>
+          <a onClick={()=>setCount("registro inicio")} id="flechaIngresar">
+            <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro">  </IonIcon>
+          </a>
+          <div  style={{ margin:"30px 0px 0px 0px", display:"flex", flexDirection:"column", textAlign:"center" , width:"100%", height:"auto"}}>
+
+          <h2 style={{fontSize:"1.5em", color:"black"}}>COMPLETE SUS DATOS</h2>
+          </div>
+
+        </div>
+
+        <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100%"}}>
+          <IonItem id="item-registro">
+              <IonLabel position="floating">E-mail</IonLabel>
+              <IonInput autocomplete="email" type="email" onIonInput={(e: any) => email.current = e.target.value}></IonInput>
+          </IonItem>
+          <IonItem id="item-registro">
                 <IonLabel position="floating">Contraseña</IonLabel>
                 <IonInput type="password" onIonInput={(e: any) => password.current = (e.target.value)}></IonInput>
-             </IonItem>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <IonItem id="item-registro">
+            </IonItem>
+          <IonItem id="item-registro">
                 <IonLabel position="floating">Repita la Contraseña</IonLabel>
                 <IonInput type="password" id="contraseña2" onIonInput={(e: any) => password2.current = (e.target.value)}></IonInput>
-              </IonItem>
-            </IonCol>
-          </IonRow>
-          <IonRow></IonRow>
-          <IonRow></IonRow>
-        </IonGrid>
-         
-        <IonButton id="boton" shape="round" onClick={enviarRegistro}>CONTINUAR</IonButton>
-      </div>
+            </IonItem>
+        </div>
+        <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100px"}}>
+        <IonButton shape="round" onClick={enviarRegistro} style={{margin:"0px 0px 30px 0px", width:"90%"}}>CONTINUAR</IonButton>
+
+        </div >
+      </div >
+
+
     </>
       
     );
@@ -290,21 +286,27 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
     */
     return (
          
-    <div id="contenedorPrincipalRegistro">
-      <header id="headerRegistro">
-        <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro" onClick={()=>setCount("registro inicio")}>  </IonIcon>
-        <IonTitle id="register-title">SELECCIONE TIPO DE PROVEEDOR DE SERVICIO</IonTitle>      
-      </header>
 
-      <div id="contenedorCentralRegistro">
-        <IonButton shape="round" onClick={() => { setCount("proveedor independiente"); } } id="boton-registro-2">Proveedor independiente</IonButton>
-        <IonButton shape="round" onClick={() => { setCount("proveedor empresa"); } } id="boton-registro-2">Empresa de servicio</IonButton>
+      <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh"}}>
+        
+      <div  style={{ width:"100%", height:"150px"}}>
+        <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro" onClick={()=>setCount("registro inicio")}>  </IonIcon>    
+        <div style={{display:"flex", flexDirection:"column", textAlign:"center"}}>
+          <h2 style={{fontSize:"1.2em", color:"black"}}>SELECCIONE TIPO</h2>
+          <h2 style={{fontSize:"1.2em", color:"black"}}>DE PROVEEDOR DE SERVICIO</h2>
+        </div>
       </div>
 
-      <footer id="footerRegistro">
-      </footer>
-    </div> 
-      
+      <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100%"}}>
+
+      <IonButton shape="round" onClick={() => { setCount("proveedor independiente"); } } id="boton-registro-2">Proveedor independiente</IonButton>
+        <IonButton shape="round" onClick={() => { setCount("proveedor empresa"); } } id="boton-registro-2">Empresa de servicio</IonButton>
+      </div>
+      <div  style={{ width:"100%", height:"150px"}}>
+       
+      </div>
+    </div >
+
     );
   }
   if(tipo=="proveedor independiente"){
@@ -314,47 +316,38 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
    tipoUsuario.current="2";
    return (
     <>
-      <a onClick={()=>setCount("cuenta proveedor")} id="flechaIngresar">
-        <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro">  </IonIcon>
-      </a>
-      <div id="registro_header">
-        <IonGrid id="registro-iongrid">
-          <IonRow><IonCol>
-            <IonTitle id="register-title">COMPLETE SUS DATOS</IonTitle>
-          </IonCol></IonRow>
-        </IonGrid>
-      </div>
-        <div id="registro_contenedor_central">
-          <IonGrid>
-            <IonRow><IonCol>
-              <IonItem id="item-registro">
-                <IonLabel position="floating">E-mail</IonLabel>
-                <IonInput autocomplete="email" type="email" onIonInput={(e: any) => email.current = (e.target.value)}></IonInput>
-              </IonItem>
-            </IonCol></IonRow>
+       <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh"}}>
+        
+        <div  style={{ display:"flex", flexDirection:"column", width:"100%", height:"100px"}}>
+          <a onClick={()=>setCount("registro inicio")} id="flechaIngresar">
+            <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro">  </IonIcon>
+          </a>
+          <div  style={{ margin:"30px 0px 0px 0px", display:"flex", flexDirection:"column", textAlign:"center" , width:"100%", height:"auto"}}>
 
-            <IonRow><IonCol>
-              <IonItem id="item-registro">
+          <h2 style={{fontSize:"1.5em", color:"black"}}>COMPLETE SUS DATOS</h2>
+          </div>
+
+        </div>
+
+        <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100%"}}>
+          <IonItem id="item-registro">
+              <IonLabel position="floating">E-mail</IonLabel>
+              <IonInput autocomplete="email" type="email" onIonInput={(e: any) => email.current = e.target.value}></IonInput>
+          </IonItem>
+          <IonItem id="item-registro">
                 <IonLabel position="floating">Contraseña</IonLabel>
                 <IonInput type="password" onIonInput={(e: any) => password.current = (e.target.value)}></IonInput>
-              </IonItem>
-            </IonCol></IonRow>
-
-            <IonRow><IonCol>
-              <IonItem id="item-registro">
+            </IonItem>
+          <IonItem id="item-registro">
                 <IonLabel position="floating">Repita la Contraseña</IonLabel>
                 <IonInput type="password" id="contraseña2" onIonInput={(e: any) => password2.current = (e.target.value)}></IonInput>
-              </IonItem>
-            </IonCol></IonRow>
-            <IonRow></IonRow>
-            <IonRow><IonCol>
-            </IonCol></IonRow>
-
-          </IonGrid>
-          <IonButton id="boton" shape="round" onClick={enviarRegistro}>
-            CONTINUAR
-          </IonButton>
+            </IonItem>
         </div>
+        <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100px"}}>
+        <IonButton shape="round" onClick={enviarRegistro} style={{margin:"0px 0px 30px 0px", width:"90%"}}>CONTINUAR</IonButton>
+
+        </div >
+      </div >
       </>        
     );
   }
@@ -365,48 +358,38 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
    tipoUsuario.current="3";
     return (
       <>
-      <a onClick={()=>setCount("cuenta proveedor")} id="flechaIngresar">
-      <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro">  </IonIcon>
-     </a>
-      <div id="registro_header">
-        <IonGrid id="registro-iongrid">
-          <IonRow><IonCol>
-            <IonTitle id="register-title">COMPLETE SUS DATOS</IonTitle>
-          </IonCol></IonRow>
-        </IonGrid>
-      </div>
-      <div id="registro_contenedor_central">
-          <IonGrid>
-            <IonRow><IonCol>
-              <IonItem id="item-registro">
-                <IonLabel position="floating">E-mail</IonLabel>
-                <IonInput autocomplete="email" type="email" onIonInput={(e: any) => email.current = (e.target.value)}></IonInput>
-              </IonItem>
-            </IonCol></IonRow>
+      <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh"}}>
+        
+        <div  style={{ display:"flex", flexDirection:"column", width:"100%", height:"100px"}}>
+          <a onClick={()=>setCount("registro inicio")} id="flechaIngresar">
+            <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro">  </IonIcon>
+          </a>
+          <div  style={{ margin:"30px 0px 0px 0px", display:"flex", flexDirection:"column", textAlign:"center" , width:"100%", height:"auto"}}>
 
-            <IonRow><IonCol>
-              <IonItem id="item-registro">
+          <h2 style={{fontSize:"1.5em", color:"black"}}>COMPLETE SUS DATOS</h2>
+          </div>
+
+        </div>
+
+        <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100%"}}>
+          <IonItem id="item-registro">
+              <IonLabel position="floating">E-mail</IonLabel>
+              <IonInput autocomplete="email" type="email" onIonInput={(e: any) => email.current = e.target.value}></IonInput>
+          </IonItem>
+          <IonItem id="item-registro">
                 <IonLabel position="floating">Contraseña</IonLabel>
                 <IonInput type="password" onIonInput={(e: any) => password.current = (e.target.value)}></IonInput>
-              </IonItem>
-            </IonCol></IonRow>
-
-            <IonRow><IonCol>
-              <IonItem id="item-registro">
+            </IonItem>
+          <IonItem id="item-registro">
                 <IonLabel position="floating">Repita la Contraseña</IonLabel>
                 <IonInput type="password" id="contraseña2" onIonInput={(e: any) => password2.current = (e.target.value)}></IonInput>
-              </IonItem>
-            </IonCol></IonRow>
+            </IonItem>
+        </div>
+        <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100px"}}>
+        <IonButton shape="round" onClick={enviarRegistro} style={{margin:"0px 0px 30px 0px", width:"90%"}}>CONTINUAR</IonButton>
 
-            <IonRow></IonRow>
-            <IonRow><IonCol>
-            </IonCol></IonRow>
-
-          </IonGrid>
-          <IonButton id="boton" shape="round" onClick={enviarRegistro}>
-            CONTINUAR
-          </IonButton>
-        </div></>        
+        </div >
+      </div ></>        
       );
   }
 
@@ -416,23 +399,30 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
     */
     return (
 
-      <div id="contenedorPrincipalRegistro">
-      <header id="headerRegistro">
-        <IonTitle id="register-title">VALIDACIÓN VÍA EMAIL</IonTitle>
-        <IonTitle id="register-title2">SE HA ENVIADO AL E-MAIL CÓDIGO PARA VALIDACIÓN</IonTitle> 
-      </header>
 
-      <div id="contenedorCentralRegistro">
-        <IonItem id="item-registro-validacion">
+      <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh"}}>
+        
+      <div  style={{ display:"flex", flexDirection:"column", width:"100%", height:"100px"}}>
+        <div  style={{ display:"flex", flexDirection:"column", width:"100%", height:"auto", textAlign:"center"}}>
+            <h2 style={{fontSize:"1.2em", color:"black", marginTop:"35px"}}>VALIDACIÓN VÍA EMAIL</h2>
+            < h2 style={{fontSize:"1.2em", color:"black"}}>SE HA ENVIADO AL E-MAIL CÓDIGO PARA VALIDACIÓN</h2 >
+          </div>
+      </div>
+
+      <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100%"}}>
+      <IonItem id="item-registro-validacion">
           <IonLabel position="floating">Código de validación</IonLabel>
           <IonInput mode='ios' value="" onIonInput={(e: any) => codigo_agregado.current = (e.target.value)}></IonInput>
         </IonItem>
       </div>
+      <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100px"}}>
+      <IonButton shape="round" onClick={completarRegistro} style={{margin:"0px 0px 30px 0px", width:"90%"}}>CONTINUAR</IonButton>
 
-      <footer id="footerRegistro">
-        <Boton name="Continuar" onClick={completarRegistro}></Boton>
-      </footer>
-    </div> 
+      </div >
+    </div >
+
+
+    
      
     );
   }

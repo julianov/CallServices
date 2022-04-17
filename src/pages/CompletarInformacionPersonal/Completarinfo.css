@@ -62,7 +62,7 @@ height: 100%;
 #personalInfo_header{
   height: 15%;
   width: 100%;
-
+  background:  #f3f2ef;  
   position: fixed;
   top: 0%;
 
@@ -159,6 +159,6 @@ ion-button{
 #item-completarInfo{
   width:50%;
   text-align: left;
-  margin: 0;
+  margin: 20px 0px 20px 0px;
 }
 

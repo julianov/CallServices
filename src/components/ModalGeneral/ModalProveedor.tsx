@@ -17,6 +17,7 @@ import { useRubroContext1, useRubroContext2 } from "../../Contexts/RubroContext"
 import { useUserContext } from "../../Contexts/UserContext";
 import { itemRubro, usuario } from "../../Interfaces/interfaces";
 import { IonActionSheet, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonDatetime, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRange, IonRow, IonSelect, IonSelectOption, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
+import { retornarIconoCategoria } from "../../utilidades/retornarIconoCategoria";
 
 //const url='http://127.0.0.1:8000/';
 //const url="https://callservicesvps.online:443/"
@@ -780,30 +781,41 @@ const Rubritos = (props:{setAgregarOtroRubro:any,verRubros:any}) =>{
   if ((rubrosItem1!.rubro!="" && rubrosItem1!.rubro!=undefined) && (rubrosItem2!.rubro!="" && rubrosItem2!.rubro!=undefined)){
       return (
         <div style={{display:"flex", flexDirection:"column", width:"100%",height:"100%", justifyContent:"center", alignItems:"center"}}>
-          <IonItem id="item-completarRubro-rubro" onClick={() => (props.verRubros(rubrosItem1!.rubro))}>
+          <IonItem style={{width:"80%"}}  onClick={() => (props.verRubros(rubrosItem1!.rubro))}>
               <strong> {rubrosItem1!.rubro} </strong>
+              <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(rubrosItem1!.rubro)}></img>
+
           </IonItem>
-          <IonItem id="item-completarRubro-rubro" onClick={() => (props.verRubros(rubrosItem2!.rubro))}>
+          <IonItem style={{width:"80%"}}  onClick={() => (props.verRubros(rubrosItem2!.rubro))}>
               <strong> {rubrosItem2!.rubro} </strong>
+              <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(rubrosItem2!.rubro)}></img>
           </IonItem>
         </div>
       )
   }else if((rubrosItem1!.rubro=="" || rubrosItem1!.rubro==undefined) && (rubrosItem2!.rubro!="" && rubrosItem2!.rubro!=undefined)){ 
       return (
           <div style={{display:"flex", flexDirection:"column", width:"100%",height:"100%", justifyContent:"center", alignItems:"center"}}>
-            <IonItem id="item-completarRubro-rubro" onClick={() => (props.verRubros(rubrosItem2!.rubro))}>
+            <IonItem style={{width:"80%"}}  onClick={() => (props.verRubros(rubrosItem2!.rubro))}>
                   <strong> {rubrosItem2!.rubro} </strong>
+                  <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(rubrosItem2!.rubro)}></img>
               </IonItem>
-              <IonButton shape="round" id="boton-inicialBR" onClick={() => { props.setAgregarOtroRubro(true)} }>AGREGAR OTRO RUBRO</IonButton>
-          </div>
+              < div style={{display:"flex", width:"100%", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center"}}>
+                <p style={{fontSize:"0.9em", marginTop:"45px"}}> AGREGAR OTRO RUBRO</p>
+                <IonButton color="warning" shape="round" style={{width:"40px", height:"40px",}} onClick={() => {props.setAgregarOtroRubro(true)} }>+</IonButton>
+            </div>
+           </div>
       )
   }else if((rubrosItem1!.rubro!="" && rubrosItem1!.rubro!=undefined) && (rubrosItem2!.rubro=="" || rubrosItem2!.rubro==undefined)){ 
       return (
         <div style={{display:"flex", flexDirection:"column", width:"100%",height:"100%", justifyContent:"center", alignItems:"center"}}>
-        <IonItem id="item-completarRubro-rubro" onClick={() => (props.verRubros(rubrosItem1!.rubro))}>
+        <IonItem style={{width:"80%"}} onClick={() => (props.verRubros(rubrosItem1!.rubro))}>
                   <strong> {rubrosItem1!.rubro} </strong>
-              </IonItem>
-              <IonButton shape="round" id="boton-inicialBR" onClick={() => {props.setAgregarOtroRubro(true)} }>AGREGAR OTRO RUBRO</IonButton>
+              <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(rubrosItem1!.rubro)}></img>
+        </IonItem>
+        < div style={{display:"flex", width:"100%", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center"}}>
+                    <p style={{fontSize:"0.9em", marginTop:"45px"}}> AGREGAR OTRO RUBRO</p>
+                    <IonButton color="warning" shape="round" style={{width:"40px", height:"40px",}} onClick={() => {props.setAgregarOtroRubro(true)} }>+</IonButton>
+            </div>
 </div>
       )
   }else{
@@ -844,13 +856,13 @@ const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:
 
       
         return( <> 
-          <div style={{display:"flex",flexDirection:"column", width:"100%", height:"100vh"}}>
+          <div style={{display:"flex",flexDirection:"column", width:"100%", height:"100vh", textAlign:"center"}}>
               <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto"}}>
                 <div id="modalProveedor-flechaVolver">
                   <IonIcon icon={arrowBack} onClick={() => props.setRubros(false)} slot="start" id="flecha-volver">  </IonIcon>
                   <IonIcon icon={close} onClick={() => props.onClose(null)} slot="end" id="flecha-cerrar">  </IonIcon>
                 </div>
-                  <IonTitle id="register-title">MIS RUBROS CARGADOS</IonTitle>
+                  <h1 style={{marginTop:"25px"}}>MIS RUBROS CARGADOS</h1>
               </div>
     
                 <Rubritos setAgregarOtroRubro={setAgregarOtroRubro} verRubros={setVerRubro}></Rubritos>
