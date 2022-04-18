@@ -42,6 +42,8 @@ import Registro from './pages/Registro/Registro';
 import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { RubroContext1, RubroContext2 } from './Contexts/RubroContext';
 
+import { setupIonicReact } from '@ionic/react';
+
 /*
 Device's var:
   isRegistered - este devuelve el email.
@@ -65,6 +67,9 @@ Device's var:
   proveedores
 */
 
+setupIonicReact({
+  mode: 'md'
+});
 
 const App: React.FC = () => {
 

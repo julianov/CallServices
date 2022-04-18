@@ -17,7 +17,7 @@ import Estrellas from '../Estrellas/Estrellas';
 import ModalVerCardProveedor from '../CardProveedor/ModalVerCardProveedor';
 import ResultadoBusqueda, { categoriaBuscada } from '../ResultadoBusqueda/ResultadoBusqueda';
 import Resenas from '../Reseñas/Resenas';
-import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonChip, IonCol, IonGrid, IonIcon, IonItem, IonItemDivider, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal, IonRow, IonSlide, IonSlides } from '@ionic/react';
+import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonChip, IonCol, IonContent, IonGrid, IonIcon, IonItem, IonItemDivider, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal, IonRow, IonSlide, IonSlides } from '@ionic/react';
 import { retornarIconoCategoria } from '../../utilidades/retornarIconoCategoria';
 import OrdenSimple from '../../pages/PedirOrdenes/PedirOrden';
 
@@ -85,7 +85,6 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
   useEffect(() => {
 
    /* for (let i=0; i<props.ordenes.length;i++){     
-
       setArregloOrdenesCliente([...arregloOrdenesCliente,{ 
         rubro:props.ordenes[i].rubro,
         tipo:props.ordenes[i].tipo,
@@ -177,7 +176,7 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
             <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={props.ordenes}  setVerOrden={setVerOrden} setPosicion={setPosicion}></MisOrdenes>
             <IonItemDivider />
 
-            <CategoriasUtiles/>
+            <CategoriasUtiles setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal}/>
 
             <h1 style={{fontWeight:"600", fontSize:"1.5em", marginTop:"5px"}}>PROVEEDORES DE SERVICIOS</h1>    
             <h1 style={{fontWeight:"600", fontSize:"1.5em", marginTop:"0px"}}>EN LA ZONA</h1>          
@@ -238,10 +237,8 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
     
         }else if (verProveedor){
           return (
-            <><div id="container-principal-ExplorerContainer-Cliente">
+            
               <VerProveedorParticular url={props.url} emailCliente={props.emailCliente} email={verEmail} setVerEmail={setVerEmail} verProveedor={verProveedor} setVerProveedor={setVerProveedor} item={item} setItem={setItem} setShowCargandoProveedores={props.setShowCargandoProveedores}/>
-            </div>
-          </>
           )
         }
         else{
@@ -452,13 +449,13 @@ const VerProveedorParticular = (  props:{url:string, emailCliente:String, email:
           >
             <ModalVerCardProveedor 
               caracteres={caracteres}
-              imagenes={imagenes} 
+              imagenes={imagenes}
               email={props.email}
               emailCliente={props.emailCliente}
               proveedorEmail={props.email}
-              setVerEmail={props.setVerEmail} 
-              setItem={props.setItem}            
-            />  
+              setVerEmail={props.setVerEmail}
+              setItem={props.setItem} 
+              setVerProveedor={props.setVerProveedor}            />  
           </IonModal>
       </div>
       )
@@ -642,48 +639,8 @@ const CardVistaVariasOrdenes= (props:{rubro:any, posicion:any,tipo:string,status
       
 }
 
-export const Categorias: React.FC = () => {
-  const [showModal, setShowModal] = useState(false);
 
-  return (
-    <div id="columna3">
-
-      <IonModal isOpen={showModal} 
-       animated={true} backdropDismiss={true}>
-      <IonIcon icon={closeCircle} onClick={() => setShowModal(false)}></IonIcon>
-        <div id="contenedor-central" >
-        <IonList>
-          <IonItem>
-            <IonLabel>Pokémon Yellow</IonLabel>
-          </IonItem>
-          <IonItem>
-            <IonLabel>Mega Man X</IonLabel>
-          </IonItem>
-          <IonItem>
-            <IonLabel>The Legend of Zelda</IonLabel>
-          </IonItem>
-          <IonItem>
-            <IonLabel>Pac-Man</IonLabel>
-          </IonItem>
-          <IonItem>
-            <IonLabel>Super Mario World</IonLabel>
-          </IonItem>
-        </IonList>
-        </div>
-        <IonButton onClick={() => setShowModal(false)}>Registrarse</IonButton>
-      </IonModal>
-      <IonChip onClick={() => setShowModal(true)}  >
-        <IonIcon icon={chevronDown}/>
-        <IonLabel>Categorias</IonLabel>
-      </IonChip>
-      </div>
-
-
-  );
-};
-
-
-const Tabs= (props:{setShowModal:any,setTipoDeVistaEnModal:any  }) => {
+const Tabs= (props:{setShowModal:any,setTipoDeVistaEnModal:any }) => {
   return(
   <IonCard id="IonCardTabs">
   <IonGrid id="ExplorerContainerCliente-Tabs">
@@ -720,7 +677,7 @@ const VerTodas = (props:{cantidad:number}) =>{
   }
 }
 
-const CategoriasUtiles = () =>{
+const CategoriasUtiles = (props:{setShowModal:any,setTipoDeVistaEnModal:any }) =>{
 
 
   return (
@@ -729,6 +686,7 @@ const CategoriasUtiles = () =>{
         
       <strong style={{margin:"15px 0px 15px 10px"}}>CATEGORÍAS MAS DEMANDADAS</strong>
       </div>
+      <IonItemDivider />
       <IonGrid>
         <IonRow>
           <IonCol style={{display:"flex", flexDirection:"column"}}>
@@ -758,9 +716,10 @@ const CategoriasUtiles = () =>{
             <p style={{fontWeight:"bold"}}>REFRIGERACIÓN</p>
           </IonCol>   
         </IonRow>
-        <IonItemDivider />
         <IonRow>
-          <IonCol style={{display:"flex", flexDirection:"column"}}>
+        <IonItemDivider />
+
+          <IonCol style={{display:"flex", flexDirection:"column"}} onClick={() => {  props.setShowModal({ isOpen: true});  props.setTipoDeVistaEnModal("categorias")}}>
             <p style={{fontWeight:"bold"}}>VER TODAS</p>
           </IonCol>   
         </IonRow>

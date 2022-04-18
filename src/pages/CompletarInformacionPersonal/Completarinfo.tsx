@@ -190,6 +190,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                  }).then(function(res: any){
                     setShowLoading(false);
                     if(res.data=="todo ok"){
+                        
                         setItem("personalInfoCompleted", true);
                         setItem("nombre", nombre)
                         setItem("apellido", apellido)

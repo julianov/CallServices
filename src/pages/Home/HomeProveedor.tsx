@@ -109,11 +109,30 @@ const HomeProveedor = (props:{setIsReg:any,
     }else{
       setImagen(user!.foto)
     }
-  }, [imagen]);
+  }, [user!.foto]);
 
   useEffect(() => {
 
-    const ubicacion = getLocation();
+   
+
+       
+
+        if (user!.foto==""|| user!.foto==null || user!.foto==undefined){
+          setImagen ("./assets/icon/nuevoUsuario.png") 
+        }else{
+          setImagen(user!.foto)
+        }
+   
+    
+
+  }, []);
+
+
+  useEffect(() => {
+
+    if(user!.email!=""){
+
+      const ubicacion = getLocation();
       ubicacion.then((value)=>{
       
       if (value==0){
@@ -142,52 +161,47 @@ const HomeProveedor = (props:{setIsReg:any,
       }
     })
 
-        axios.get(url+"orden/misordenes/"+"proveedor/"+user!.email).then((resp: { data: any; }) => {
-          if (resp.data!="bad"){
-            //setMisOrdenes(resp.data) 
-            setMisOrdenes(resp.data.map((d: { rubro:any; tipo: any; status: any; fecha_creacion: any; ticket: any; dia: any; time: any; titulo: any; descripcion: any; email_cliente: any; imagen_cliente: any; location_lat: any; location_long: any; picture1: any; picture2: any; presupuesto: any; pedidoMasInformacion: any; respuesta_cliente_pedido_mas_información: any; picture1_mas_información: any; picture2_mas_información: any; }) => ({
-              rubro:d.rubro,
-              tipo:d.tipo,
-              status:d.status,
-              fecha_creacion:d.fecha_creacion,
-              ticket:d.ticket,
-              dia:d.dia,
-              hora:d.time,
-              titulo:d.titulo,
-              descripcion:d.descripcion,
-              email_cliente:d.email_cliente,
-              imagen_cliente:d.imagen_cliente,
-              location_lat:d.location_lat,
-              location_long:d.location_long,
-              picture1:d.picture1,
-              picture2:d.picture2,
-              presupuesto_inicial:d.presupuesto,
-              pedido_mas_información:d.pedidoMasInformacion,
-              respuesta_cliente_pedido_mas_información:d.respuesta_cliente_pedido_mas_información,
-              picture1_mas_información:d.picture1_mas_información,
-              picture2_mas_información:d.picture2_mas_información,
-                    }))
-                  );           
-          }
-        })
-
-        if (user!.foto==""|| user!.foto==null || user!.foto==undefined){
-          setImagen ("./assets/icon/nuevoUsuario.png") 
-        }else{
-          setImagen(user!.foto)
+      axios.get(url+"orden/misordenes/"+"proveedor/"+user!.email).then((resp: { data: any; }) => {
+        if (resp.data!="bad"){
+          //setMisOrdenes(resp.data) 
+          setMisOrdenes(resp.data.map((d: { rubro:any; tipo: any; status: any; fecha_creacion: any; ticket: any; dia: any; time: any; titulo: any; descripcion: any; email_cliente: any; imagen_cliente: any; location_lat: any; location_long: any; picture1: any; picture2: any; presupuesto: any; pedidoMasInformacion: any; respuesta_cliente_pedido_mas_información: any; picture1_mas_información: any; picture2_mas_información: any; }) => ({
+            rubro:d.rubro,
+            tipo:d.tipo,
+            status:d.status,
+            fecha_creacion:d.fecha_creacion,
+            ticket:d.ticket,
+            dia:d.dia,
+            hora:d.time,
+            titulo:d.titulo,
+            descripcion:d.descripcion,
+            email_cliente:d.email_cliente,
+            imagen_cliente:d.imagen_cliente,
+            location_lat:d.location_lat,
+            location_long:d.location_long,
+            picture1:d.picture1,
+            picture2:d.picture2,
+            presupuesto_inicial:d.presupuesto,
+            pedido_mas_información:d.pedidoMasInformacion,
+            respuesta_cliente_pedido_mas_información:d.respuesta_cliente_pedido_mas_información,
+            picture1_mas_información:d.picture1_mas_información,
+            picture2_mas_información:d.picture2_mas_información,
+                  }))
+                );           
         }
-   
-        axios.get(url+"chatsinleer/"+user!.email).then((resp: { data: any; }) => {
-          if (resp.data!="bad"){
-            setNotifications(resp.data.map((d: { de: any; ticket: any; }) => ({
-              de:d.de,
-              ticket:d.ticket,
-              })));
-          }
-    
-        })
+      })
 
-  }, []);
+      axios.get(url+"chatsinleer/"+user!.email).then((resp: { data: any; }) => {
+        if (resp.data!="bad"){
+          setNotifications(resp.data.map((d: { de: any; ticket: any; }) => ({
+            de:d.de,
+            ticket:d.ticket,
+            })));
+        }
+  
+      })
+    }
+
+  }, [user!.email]);
 
   if (mostrarChat){
     return(

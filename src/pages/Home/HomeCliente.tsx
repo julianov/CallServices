@@ -140,6 +140,8 @@ const HomeCliente = (props:{setIsReg:any,
         setShowCargandoProveedores(false)
         setShowAlertUbicación(true)
       }
+
+    
       axios.get(url+"home/cliente/"+value).then((resp: { data: any; }) => {
 
         if (resp.data!="bad"){
@@ -162,7 +164,14 @@ const HomeCliente = (props:{setIsReg:any,
       });  
     });
 
-    axios.get(url+"orden/misordenes/"+"cliente/"+user?.email).then((resp: { data: any; }) => {
+
+  }, []);
+
+
+
+  useEffect(() => {
+    if(user!.email!="")
+    {axios.get(url+"orden/misordenes/"+"cliente/"+user!.email).then((resp: { data: any; }) => {
       if (resp.data!="bad"){
 
         setMisOrdenes(    
@@ -189,7 +198,7 @@ const HomeCliente = (props:{setIsReg:any,
               picture2_mas_información:d.picutre2_mas_información
             })))      
       }
-    })
+    });
 
     axios.get(url+"chatsinleer/"+user!.email).then((resp: { data: any; }) => {
       if (resp.data!="bad"){
@@ -199,22 +208,20 @@ const HomeCliente = (props:{setIsReg:any,
           })));
       }
 
-    })
+    })}
 
+  }, [user!.email]);
 
-
-  }, []);
 
   const [imagen, setImagen] = useState (user!.foto)
 
-  console.log("la foto es: "+user!.foto)
   useEffect(() => {
     if (user!.foto==""|| user!.foto==null || user!.foto==undefined){
       setImagen ("./assets/icon/nuevoUsuario.png") 
     }else{
       setImagen(user!.foto)
     }
-  }, [imagen]);
+  }, [user!.foto]);
 
 
   const [mostrarChat,setMostrarChat] = useState(false)
@@ -233,7 +240,6 @@ const HomeCliente = (props:{setIsReg:any,
     return (
       <IonPage >
         <IonHeader>
-          <IonToolbar>
             <IonGrid>
               <IonRow id="header">
                 <IonCol id="columna" size="1.5"><IonButtons ><IonMenuButton /> </IonButtons></IonCol>
@@ -246,7 +252,6 @@ const HomeCliente = (props:{setIsReg:any,
                  </IonCol>
               </IonRow>
             </IonGrid>
-          </IonToolbar>
         </IonHeader>
 
         
@@ -269,7 +274,8 @@ const HomeCliente = (props:{setIsReg:any,
             <IonModal
               animated={true}
               isOpen={showModal.isOpen}
-              onDidDismiss={() => setShowModal({ isOpen: false })}>
+              onDidDismiss={() => setShowModal({ isOpen: false })}
+              >
               <ModalCliente 
                 setIsReg={props.setIsReg}
                 email={user!.email}

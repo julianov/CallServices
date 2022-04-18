@@ -1169,7 +1169,7 @@ const getLocation = async () => {
                              <IonCol className="columna">
                                  <IonItem>
                                      <IonLabel id="label">HORA DE INICIO DE TRABAJO DIARIO</IonLabel>
-                                     <IonDatetime value={props.horaInicio.current} onIonChange={e => props.horaInicio.current = (e.detail.value!)}></IonDatetime>
+                                     <IonDatetime presentation="time" value={props.horaInicio.current} onIonChange={e => props.horaInicio.current = (e.detail.value!)}></IonDatetime>
                                  </IonItem>
                              </IonCol>
                          </IonRow>
@@ -1177,7 +1177,7 @@ const getLocation = async () => {
                              <IonCol className="columna">
                                  <IonItem>
                                      <IonLabel id="label">HORA DE FINALIZACIÓN DE TRABAJO DIARIO</IonLabel>
-                                     <IonDatetime  value={props.horaFin.current} onIonChange={e => props.horaFin.current = (e.detail.value!)}></IonDatetime>
+                                     <IonDatetime presentation="time" value={props.horaFin.current} onIonChange={e => props.horaFin.current = (e.detail.value!)}></IonDatetime>
                                  </IonItem>
                              </IonCol>
                          </IonRow>
@@ -1705,7 +1705,7 @@ const getLocation = async () => {
                             <div className="caja">
                             <h1 id="register-title">INGRESE IMÁGENES</h1>
                             <p style={{fontSize:"0.9em"}}>Dichas fotos serán mostradas a sus clientes</p>
-                            <p style={{fontSize:"0.9em"}}>Ingrse fotos o capturas que destaquen lo que hace</p>
+                            <p style={{fontSize:"0.9em"}}>Ingrese fotos o capturas que destaquen lo que hace</p>
                             <IonItemDivider />
                             
                                  <IonGrid>

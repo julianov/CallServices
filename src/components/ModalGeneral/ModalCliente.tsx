@@ -18,7 +18,7 @@ import { IonActionSheet, IonAlert, IonButton, IonCard, IonCol, IonContent, IonFa
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import { PedirOrdenEmergencia } from "../../pages/PedirOrdenes/PedirOrdenEmergencia";
 import { retornarIconoCategoria } from "../../utilidades/retornarIconoCategoria";
-
+import { menuController } from '@ionic/core/components';
 
 const url=Https
 
@@ -65,8 +65,9 @@ const ModalCliente: React.FC<{setIsReg:any, onClose: any; tipoVista: string;
     if(tipoVista=="emergencias"){
       return (
         <>
+        <IonContent>
         <PedirOrdenEmergencia setVolver={onClose} />
-          
+        </IonContent>
       </>
       );
     }

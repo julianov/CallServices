@@ -56,7 +56,6 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any, sin
   useEffect(() => {
     if(props.sinRubro){
       setSinRubro(true)
-
     }
 }, [props.sinRubro]);
 
@@ -237,8 +236,7 @@ const CardVistaVariasOrdenes= (props:{posicion:any,rubro:string, tipo:string,sta
 
 }
 
-const SinRubro = (props:{sinrubro:boolean, setCargarRubro:any
-}) => {
+const SinRubro = (props:{sinrubro:boolean, setCargarRubro:any}) => {
   console.log("esto es loq ue hay: "+props.sinrubro)
   if (props.sinrubro==true){
 

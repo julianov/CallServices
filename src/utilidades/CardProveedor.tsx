@@ -320,19 +320,23 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
                 <IonRow id="row-busqueda">
                   <IonCol size="auto" id="col-explorerContainerCliente">
                   <strong>DESCRIPCIÓN:</strong>
+                  <div style={{display:"flex", flexDirection:"column", textAlign:"left"}}>
 
-                  <IonItem lines="none"> {datosProveedoresArray.description} </IonItem>
+                  <p style={{fontSize:"1.2em",color:"black"}}> {datosProveedoresArray.description} </p>
+                  </div>
                 </IonCol></IonRow>
               </IonGrid>
             </IonCardHeader>
           </IonCard>
 
-          <div id="tituloCardPRoveedor">
-          <strong>LOCACIÓN DEL PROVEEDOR</strong>
-            </div>
+         
           <IonCard id="ionCard-CardProveedor">
+            <div style={{display:"flex", flexDirection:"column", textAlign:"center"}}>
+            <h1 style={{fontSize:"1em",fontWeight:"bold", color:"black"}}>LOCACIÓN DEL PROVEEDOR</h1>
+              </div>
+              <IonItemDivider></IonItemDivider>
                 <div id="CardProveedorContainer">
-                  <IonItem id="CardProveedorItem" lines="none"> DISTANCIA ACTUAL AL PROVEEDOR: {Math.round(datosProveedoresArray.distancia)} km </IonItem>
+                  <IonItem  lines="none"> DISTANCIA ACTUAL AL PROVEEDOR: {Math.round(datosProveedoresArray.distancia)} km </IonItem>
                   <IonItem lines="none"> PAÍS: {datosProveedoresArray.pais}  </IonItem>
                   <IonItem lines="none"> PROVINCIA/DEPARTAMENTO/ESTADO: {datosProveedoresArray.provincia}  </IonItem>
                   <IonItem lines="none"> CIUDAD: {datosProveedoresArray.ciudad}  </IonItem>
@@ -340,10 +344,13 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
                 </div>
             </IonCard>
 
-            <div id="tituloCardPRoveedor">
-            <strong>DATOS DE JORNADA LABORAL</strong>
-            </div>
+            
             <IonCard id="ionCard-CardProveedor">
+              <div style={{display:"flex", flexDirection:"column", textAlign:"center"}}>
+              <h1 style={{fontSize:"1em",fontWeight:"bold", color:"black"}}>DATOS DE JORNADA LABORAL</h1>
+              </div>
+              <IonItemDivider></IonItemDivider>
+
                 <div id="CardProveedorContainer">
                   <IonItem lines="none"> DIAS LABORALES: {datosProveedoresArray.days_of_works}  </IonItem>
                   <IonItem lines="none"> HORA DE INICIO DE LA JORNADA: {datosProveedoresArray.hour_init}  </IonItem>
@@ -351,17 +358,23 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
                 </div>
             </IonCard>
 
-            <div id="tituloCardPRoveedor">
-            <strong>CERTIFICADO</strong>
-            </div>
+           
             <IonCard id="ionCard-CardProveedor">
+              <div style={{display:"flex", flexDirection:"column", textAlign:"center"}}>
+              <h1 style={{fontSize:"1em",fontWeight:"bold", color:"black"}}>CERTIFICADO</h1>
+              </div>
+              <IonItemDivider></IonItemDivider>
+
                 <Certificado certificado={imagenesProveedoresArray.certificate}></Certificado>
             </IonCard>
 
-            <div id="tituloCardPRoveedor">
-            <strong> IMÁGENES DE REFERENCIA</strong>
-            </div>
+           
             <IonCard id="ionCard-CardProveedor">
+            <div style={{display:"flex", flexDirection:"column", textAlign:"center"}}>
+            <h1 style={{fontSize:"1em",fontWeight:"bold", color:"black"}}> IMÁGENES DE REFERENCIA</h1>
+            </div>
+            <IonItemDivider></IonItemDivider>
+
                 <Imagenes picture1={imagenesProveedoresArray.picture1} picture2={imagenesProveedoresArray.picture2} picture3={imagenesProveedoresArray.picture3}></Imagenes>              
             </IonCard>
 
@@ -435,45 +448,54 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
             </IonCardHeader>
           </IonCard>
           
-          <div id="tituloCardPRoveedor">
-          <strong>LOCACIÓN DEL PROVEEDOR</strong>
-            </div>
           <IonCard id="ionCard-CardProveedor">
-              <div id="CardProveedorContainer">
-                <IonItem id="CardProveedorItem" lines="none"> DISTANCIA ACTUAL AL PROVEEDOR: {Math.round(datosProveedoresArray.distancia)} km </IonItem>
-                <IonItem lines="none"> PAÍS: {datosProveedoresArray.pais}  </IonItem>
-                <IonItem lines="none"> PROVINCIA/DEPARTAMENTO/ESTADO: {datosProveedoresArray.provincia}  </IonItem>
-                <IonItem lines="none"> CIUDAD: {datosProveedoresArray.ciudad}  </IonItem>
-                <IonItem lines="none"> DOMICILIO: {datosProveedoresArray.calle} {datosProveedoresArray.numeracion}  </IonItem>
+            <div style={{display:"flex", flexDirection:"column", textAlign:"center"}}>
+            <h1 style={{fontSize:"1em",fontWeight:"bold", color:"black"}}>LOCACIÓN DEL PROVEEDOR</h1>
               </div>
-            </IonCard>
-            
-            <div id="tituloCardPRoveedor">
-            <strong>DATOS DE JORNADA LABORAL</strong>
-            </div>
-            <IonCard id="ionCard-CardProveedor">
-              <div id="CardProveedorContainer">
-                <IonItem lines="none"> DIAS LABORALES: {datosProveedoresArray.days_of_works}  </IonItem>
-                <IonItem lines="none"> HORA DE INICIO DE LA JORNADA: {datosProveedoresArray.hour_init}  </IonItem>
-                <IonItem lines="none"> HORA DE FIN DE LA JORNADA: {datosProveedoresArray.hour_end}  </IonItem>
-              </div>
-            </IonCard>
-            
-            <div id="tituloCardPRoveedor">
-            <strong>CERTIFICADO</strong>
-            </div>
-            
-            <IonCard id="ionCard-CardProveedor">
-              <Certificado certificado={imagenesProveedoresArray.certificate}></Certificado>
+              <IonItemDivider></IonItemDivider>
+                <div id="CardProveedorContainer">
+                  <IonItem  lines="none"> DISTANCIA ACTUAL AL PROVEEDOR: {Math.round(datosProveedoresArray.distancia)} km </IonItem>
+                  <IonItem lines="none"> PAÍS: {datosProveedoresArray.pais}  </IonItem>
+                  <IonItem lines="none"> PROVINCIA/DEPARTAMENTO/ESTADO: {datosProveedoresArray.provincia}  </IonItem>
+                  <IonItem lines="none"> CIUDAD: {datosProveedoresArray.ciudad}  </IonItem>
+                  <IonItem lines="none"> DOMICILIO: {datosProveedoresArray.calle} {datosProveedoresArray.numeracion}  </IonItem>
+                </div>
             </IonCard>
 
-            <div id="tituloCardPRoveedor">
-              <strong> IMÁGENES DE REFERENCIA</strong>
-            </div>
-            <IonCard id="ionCard-CardProveedor">
             
-              <Imagenes picture1={imagenesProveedoresArray.picture1} picture2={imagenesProveedoresArray.picture2} picture3={imagenesProveedoresArray.picture3}></Imagenes>
+            <IonCard id="ionCard-CardProveedor">
+              <div style={{display:"flex", flexDirection:"column", textAlign:"center"}}>
+              <h1 style={{fontSize:"1em",fontWeight:"bold", color:"black"}}>DATOS DE JORNADA LABORAL</h1>
+              </div>
+              <IonItemDivider></IonItemDivider>
+
+                <div id="CardProveedorContainer">
+                  <IonItem lines="none"> DIAS LABORALES: {datosProveedoresArray.days_of_works}  </IonItem>
+                  <IonItem lines="none"> HORA DE INICIO DE LA JORNADA: {datosProveedoresArray.hour_init}  </IonItem>
+                  <IonItem lines="none"> HORA DE FIN DE LA JORNADA: {datosProveedoresArray.hour_end}  </IonItem>
+                </div>
             </IonCard>
+
+           
+            <IonCard id="ionCard-CardProveedor">
+              <div style={{display:"flex", flexDirection:"column", textAlign:"center"}}>
+              <h1 style={{fontSize:"1em",fontWeight:"bold", color:"black"}}>CERTIFICADO</h1>
+              </div>
+              <IonItemDivider></IonItemDivider>
+
+                <Certificado certificado={imagenesProveedoresArray.certificate}></Certificado>
+            </IonCard>
+
+           
+            <IonCard id="ionCard-CardProveedor">
+            <div style={{display:"flex", flexDirection:"column", textAlign:"center"}}>
+            <h1 style={{fontSize:"1em",fontWeight:"bold", color:"black"}}> IMÁGENES DE REFERENCIA</h1>
+            </div>
+            <IonItemDivider></IonItemDivider>
+
+                <Imagenes picture1={imagenesProveedoresArray.picture1} picture2={imagenesProveedoresArray.picture2} picture3={imagenesProveedoresArray.picture3}></Imagenes>              
+            </IonCard>
+
 
             <div id="tituloCardPRoveedor">
                 <strong>CONTRATAR LOS SERVICIOS DEL PROVEEDOR</strong>
