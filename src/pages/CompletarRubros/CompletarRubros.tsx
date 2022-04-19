@@ -701,7 +701,7 @@ const getLocation = async () => {
             </IonItem>
             < div style={{display:"flex", width:"100%", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center"}}>
                     <p style={{fontSize:"0.9em", marginTop:"45px"}}> AGREGAR OTRO RUBRO</p>
-                    <IonButton color="warning" shape="round" style={{width:"40px", height:"40px",}} onClick={() => { props.setVista(2)} }>+</IonButton>
+                    <IonButton color="warning" shape="round" style={{width:"40px", height:"40px",}} onClick={() => { props.setVista(2)} }><p style={{fontSize:"1.4em", color:"black", fontWeight:"bold"}}>+</p></IonButton>
             </div>
 </>
         )
@@ -714,7 +714,7 @@ const getLocation = async () => {
                 </IonItem>
                 < div style={{display:"flex", width:"100%", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center"}}>
                     <p style={{fontSize:"0.9em", marginTop:"45px"}}> AGREGAR OTRO RUBRO</p>
-                    <IonButton color="warning" shape="round" style={{width:"40px", height:"40px",}} onClick={() => { props.setVista(2)} }>+</IonButton>
+                    <IonButton color="warning" shape="round" style={{width:"40px", height:"40px",}} onClick={() => { props.setVista(2)} }><p style={{fontSize:"1.4em", color:"black", fontWeight:"bold"}}>+</p></IonButton>
                 </div>
             </>
         )
@@ -762,9 +762,11 @@ const getLocation = async () => {
      
              return(
                  <div id="contenedorCompletarRubro">
-                     <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto", marginTop:"50px"}}>
-                         <IonTitle id="register-title">RUBROS CARGADOS:</IonTitle>
+                     <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto", marginTop:"50px", textAlign:"center"}}>
+                         <h1 style={{fontSize:"1.3em", color:"black", fontWeight:"bold"}}>RUBROS CARGADOS</h1>
                      </div>
+                     <IonItemDivider />
+
        
                      <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"100%", justifyContent:"center",alignItems:"center" }}>
                      

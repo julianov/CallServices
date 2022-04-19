@@ -84,31 +84,6 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
 
   useEffect(() => {
 
-   /* for (let i=0; i<props.ordenes.length;i++){     
-      setArregloOrdenesCliente([...arregloOrdenesCliente,{ 
-        rubro:props.ordenes[i].rubro,
-        tipo:props.ordenes[i].tipo,
-        status:props.ordenes[i].status,
-        fecha_creacion:props.ordenes[i].fecha_creacion,
-        ticket:props.ordenes[i].ticket,
-        dia:props.ordenes[i].dia,
-        hora:props.ordenes[i].hora,
-        titulo:props.ordenes[i].titulo,
-        descripcion:props.ordenes[i].descripcion,
-        email_proveedor:props.ordenes[i].email_proveedor,
-        imagen_proveedor:props.ordenes[i].imagen_proveedor,
-        location_lat:props.ordenes[i].location_lat,
-        location_long:props.ordenes[i].location_long,
-        picture1:props.ordenes[i].picture1,
-        picture2:props.ordenes[i].picture2,
-        presupuesto:props.ordenes[i].presupuesto,
-        pedido_mas_información:props.ordenes[i].pedido_mas_información,
-        respuesta_cliente_pedido_mas_información:props.ordenes[i].respuesta_cliente_pedido_mas_información,
-        picture1_mas_información:props.ordenes[i].picture1_mas_información,
-        picture2_mas_información:props.ordenes[i].picture2_mas_información
-      }])
-    }*/
-
     if(props.ordenes.length > 0){
       setHayOrdenes(true)
     }
@@ -167,7 +142,7 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
   }, [ props.busqueda_categorias]);
 
   if (props.busqueda_categorias.length == 0 && props.buscar=="" ){
-      if (verEmail=="" && item =="" ){
+      
         return (
           <>
           <div id="container-principal-ExplorerContainer-Cliente">  
@@ -197,15 +172,8 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
               emailCliente={props.emailCliente}
             />  
         </IonModal>
-              </>
-          );
-  
-      }
-      else{
 
-        if (verReseña){
-          return (
-            <IonModal
+        <IonModal
               animated={true}
               isOpen={verReseña}
               onDidDismiss={() =>setVerReseña(false )} >
@@ -214,13 +182,8 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
                 email_a_ver_reseñas={verEmail}
                 setVolver={setVerReseña} />
           </IonModal>
-          )
-    
-        }else if(pediOrden){
 
-          return (
-    
-            <IonModal
+          <IonModal
               animated={true}
               isOpen={pediOrden}
               onDidDismiss={() => setPediOrden( false )}>
@@ -230,26 +193,29 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
                 proveedorVaALocacion={true}
                 setVolver={setPediOrden} />
           </IonModal>
-    
-    
-          
-          )
-    
-        }else if (verProveedor){
-          return (
-            
-              <VerProveedorParticular url={props.url} emailCliente={props.emailCliente} email={verEmail} setVerEmail={setVerEmail} verProveedor={verProveedor} setVerProveedor={setVerProveedor} item={item} setItem={setItem} setShowCargandoProveedores={props.setShowCargandoProveedores}/>
-          )
-        }
-        else{
-          setVerEmail("") 
-           setItem ("") 
-           return(<></>)
-        }
-        
+
+          <IonModal
+            animated={true}
+            isOpen={verProveedor}
+            onDidDismiss={() => setVerProveedor( false )}
+          >
+            <ModalVerCardProveedor 
+                email={verEmail}
+                emailCliente={props.emailCliente}
+                proveedorEmail={verEmail}
+                setVerEmail={setVerEmail}
+                setItem={setItem}
+                setVerProveedor={setVerProveedor} 
+                url={props.url} 
+                setShowCargandoProveedores={props.setShowCargandoProveedores} 
+                item={item}            />  
+          </IonModal>
+
+              </>
+          );
+  
       
-      
-      }
+     
 
     
     }else{
@@ -378,7 +344,7 @@ const CardVistaVariosProveedores= (props:{item:any, personalImg:any ,distancia: 
        
   );
 }
-
+/*
 const VerProveedorParticular = (  props:{url:string, emailCliente:String, email:any, setVerEmail:any, item:any, setItem:any, 
   setShowCargandoProveedores:any, verProveedor:any, setVerProveedor:any} ) =>{
 
@@ -442,26 +408,12 @@ const VerProveedorParticular = (  props:{url:string, emailCliente:String, email:
     }else{
       return (
         <div id="volver-contenedor-ExplorerContainer">
-          <IonModal
-            animated={true}
-            isOpen={props.verProveedor}
-            onDidDismiss={() => props.setVerProveedor( false )}
-          >
-            <ModalVerCardProveedor 
-              caracteres={caracteres}
-              imagenes={imagenes}
-              email={props.email}
-              emailCliente={props.emailCliente}
-              proveedorEmail={props.email}
-              setVerEmail={props.setVerEmail}
-              setItem={props.setItem} 
-              setVerProveedor={props.setVerProveedor}            />  
-          </IonModal>
+          
       </div>
       )
     } 
 
-}
+}*/
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////

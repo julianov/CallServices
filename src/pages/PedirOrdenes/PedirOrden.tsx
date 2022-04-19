@@ -15,6 +15,7 @@ import { usePhotoGallery } from '../../hooks/usePhotoGallery';
 import { base64FromPath } from '@ionic/react-hooks/filesystem';
 import { b64toBlob } from '../../utilidades/b64toBlob';
 import { BotonDia } from '../CompletarRubros/CompletarRubros';
+import { retornarIconoCategoria } from '../../utilidades/retornarIconoCategoria';
 
 const url=Https+"orden/"
 
@@ -103,8 +104,6 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
             formDataToUpload.append("tituloPedido",titulo.current)
             formDataToUpload.append("direccion",direccion.current)
 
-            
-
             if(fecha.current!=undefined || fecha.current!=""){
                 formDataToUpload.append("diaPedido",fecha.current.split("T")[0])
             }
@@ -175,14 +174,18 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                             <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
                                 <h2 id="tituloPedirOrdenEnCard">RUBRO DE SERVICIO:</h2>
                                 <p style={{fontWeight:"600", fontSize:"1.2em", marginBottom:"15px"}}>{props.data.items}</p>
+                                <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(props.data.items)}></img>
+                                <IonItemDivider />
                                 <h2 id="tituloPedirOrdenEnCard">PROVEEDOR DEL SERVICIO:</h2> 
                                 <p style={{fontWeight:"600", fontSize:"1.2em", marginBottom:"15px"}}> {props.data.nombre} </p>
                                 <Estrellas calificacion={props.data.qualification}></Estrellas>
                             </div>
                         </IonCard>
 
-                        <h1 style={{fontSize:"1.3em"}}>FORMULARIO DE SOLICITUD DE SERVICIO</h1>
                         <IonCard id="ionCardOrden">
+                        <h1 style={{fontSize:"1.2em", color:"black", fontWeight:"bold"}}>FORMULARIO DE SOLICITUD DE SERVICIO</h1>
+                        <IonItemDivider />
+
                             <div id="contenedorCamposCentro">
                                 <h2 style={{fontSize:"1.3em"}}>INGRESE UN TÍTULO PARA EL SERVICIO</h2 >
                             </div>
@@ -204,6 +207,8 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                         </IonCard>
                             
                         <IonCard id="ionCardOrden">
+                        <h1 style={{fontSize:"1.2em", color:"black", fontWeight:"bold"}}>DIRECCIÓN DEL SERVICIO</h1>
+                        <IonItemDivider />
                             <LocacionServicio direccion={direccion} posicionCliente={posicionCliente} latitudCliente={latitudCliente} longitudCliente={longitudCliente} ></LocacionServicio>
                         </IonCard>
 
@@ -238,11 +243,11 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                     </div>
                 </div>
 
-                <div style={{ justifyContent:"center",alignItems:"center" ,display:"flex", flexDirection:"column", width:"100%", height:"100%"}}>
+                <div style={{ justifyContent:"center",alignItems:"center", textAlign:"center" ,display:"flex", flexDirection:"column", width:"100%", height:"100%"}}>
                     <IonCard id="ionCardOrden">
-                        
-                            <IonCardTitle id="tituloOrden">IMÁGENES DE REFERENCIA</IonCardTitle>
-                            <IonCardSubtitle>¿Desea agregar imágenes para que el proveedor tenga referencia del trabajo a realizar?</IonCardSubtitle>
+                    <h1 style={{fontSize:"1.2em", color:"black", fontWeight:"bold"}}>IMÁGENES DE REFERENCIA</h1>
+                        <IonItemDivider />
+                            <p style={{fontSize:"1em", color:"black"}}>¿Desea agregar imágenes para que el proveedor tenga referencia del trabajo a realizar?</p>
 
                             <IonGrid>
                                 <IonRow>
@@ -261,8 +266,8 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
 
                 </div>
 
-                <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto"}}>
-                <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviar()}>SOLICITAR</IonButton>
+                <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", marginTop:"25px"}}>
+                <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviar()}> <p style={{fontSize:"1.2em", color:"black", fontWeight:"bold"}}>SOLICITAR SERVICIO</p></IonButton>
                 </div>
 
                 <IonAlert

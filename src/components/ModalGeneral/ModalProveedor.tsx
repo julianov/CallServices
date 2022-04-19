@@ -801,7 +801,7 @@ const Rubritos = (props:{setAgregarOtroRubro:any,verRubros:any}) =>{
               </IonItem>
               < div style={{display:"flex", width:"100%", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center"}}>
                 <p style={{fontSize:"0.9em", marginTop:"45px"}}> AGREGAR OTRO RUBRO</p>
-                <IonButton color="warning" shape="round" style={{width:"40px", height:"40px",}} onClick={() => {props.setAgregarOtroRubro(true)} }>+</IonButton>
+                <IonButton color="warning" shape="round" style={{width:"40px", height:"40px",}} onClick={() => {props.setAgregarOtroRubro(true)} }><p style={{fontSize:"1.4em", color:"black", fontWeight:"bold"}}>+</p></IonButton>
             </div>
            </div>
       )
@@ -814,7 +814,7 @@ const Rubritos = (props:{setAgregarOtroRubro:any,verRubros:any}) =>{
         </IonItem>
         < div style={{display:"flex", width:"100%", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center"}}>
                     <p style={{fontSize:"0.9em", marginTop:"45px"}}> AGREGAR OTRO RUBRO</p>
-                    <IonButton color="warning" shape="round" style={{width:"40px", height:"40px",}} onClick={() => {props.setAgregarOtroRubro(true)} }>+</IonButton>
+                    <IonButton color="warning" shape="round" style={{width:"40px", height:"40px",}} onClick={() => {props.setAgregarOtroRubro(true)} }><p style={{fontSize:"1.4em", color:"black", fontWeight:"bold"}}>+</p></IonButton>
             </div>
 </div>
       )
