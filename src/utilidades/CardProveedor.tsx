@@ -8,6 +8,7 @@ import { categoriaBuscada } from "../components/ResultadoBusqueda/ResultadoBusqu
 import Resenas from "../components/Reseñas/Resenas";
 import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonItem, IonTitle, IonButton, IonGrid, IonCol, IonRow, IonItemDivider, IonModal } from "@ionic/react";
 import OrdenSimple from "../pages/PedirOrdenes/PedirOrden";
+import { retornarIconoCategoria } from "./retornarIconoCategoria";
 
 
 
@@ -305,15 +306,19 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
                 <IonRow id="row-busqueda">
                   <IonCol size="auto" id="col-explorerContainerCliente">
                     <IonCardTitle>{datosProveedoresArray.nombre+ " " + datosProveedoresArray.last_name}</IonCardTitle>
-                    <IonCardSubtitle>RUBRO: {datosProveedoresArray.items}</IonCardSubtitle>
-                    <IonCardSubtitle>{tipo}</IonCardSubtitle>
                     <Estrellas calificacion={datosProveedoresArray.qualification}></Estrellas>
+
+                    <IonItemDivider />
+
+                    <IonCardSubtitle>RUBRO: {datosProveedoresArray.items}</IonCardSubtitle>
+                    <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(props.data.items)}></img>
+
+                    <IonCardSubtitle>{tipo}</IonCardSubtitle>
                   </IonCol>
                 </IonRow>
                 
                 <IonRow id="row-busqueda">
                   <IonCol size="auto" id="col-explorerContainerCliente">
-                <IonItem id="CardProveedorItem" lines="none"> {datosProveedoresArray.locacion} </IonItem>
                 </IonCol>
                 </IonRow>
                 <IonItemDivider></IonItemDivider>
@@ -335,7 +340,11 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
             <h1 style={{fontSize:"1em",fontWeight:"bold", color:"black"}}>LOCACIÓN DEL PROVEEDOR</h1>
               </div>
               <IonItemDivider></IonItemDivider>
+              <div style={{display:"flex", textAlign:"center"}}>
+              <IonItem lines="none"> {datosProveedoresArray.locacion} </IonItem>
+              </div>
                 <div id="CardProveedorContainer">
+
                   <IonItem  lines="none"> DISTANCIA ACTUAL AL PROVEEDOR: {Math.round(datosProveedoresArray.distancia)} km </IonItem>
                   <IonItem lines="none"> PAÍS: {datosProveedoresArray.pais}  </IonItem>
                   <IonItem lines="none"> PROVINCIA/DEPARTAMENTO/ESTADO: {datosProveedoresArray.provincia}  </IonItem>
