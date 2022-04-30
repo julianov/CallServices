@@ -1,4 +1,4 @@
-import { add, arrowBack, arrowForwardCircle, chevronDown, closeCircle, pin } from 'ionicons/icons';
+import { alert, arrowBack, arrowForwardCircle, chevronDown, closeCircle, pin } from 'ionicons/icons';
 import React, { Component, useRef, useState } from 'react';
 import './ExploreContainer.css';
 
@@ -13,8 +13,9 @@ import { Link } from 'react-router-dom';
 import CompletarRubros from '../../pages/CompletarRubros/CompletarRubros';
 import { ordenes } from '../../pages/Home/HomeProveedor';
 import ModalVerOrdenesProveedor from '../VerOrdenes/ModalVerOrdenesProveedor';
-import { IonButton, IonCard, IonCardHeader, IonCardSubtitle, IonCol, IonGrid, IonItemDivider, IonModal, IonRow, IonSlide, IonSlides, IonTitle } from '@ionic/react';
+import { IonButton, IonCard, IonCardHeader, IonCardSubtitle, IonCol, IonGrid, IonIcon, IonItemDivider, IonModal, IonRow, IonSlide, IonSlides, IonTitle } from '@ionic/react';
 import { retornarIconoCategoria } from '../../utilidades/retornarIconoCategoria';
+import { getDB, setDB } from '../../utilidades/dataBase';
 
 const url=Https
 
@@ -50,8 +51,6 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any, sin
 
   //const [arregloOrdenes, setArregloOrdenes] =  useState <ordenes []> ( [])
   const [sinRubro, setSinRubro] = useState(false)
-
-
 
   useEffect(() => {
     if(props.sinRubro){
@@ -180,8 +179,12 @@ const CardVistaVariasOrdenes= (props:{posicion:any,rubro:string, tipo:string,sta
     const [estado,setEstado]=useState("Enviada")
 
     const [imagen, setImagen] = useState("")
-    
+    const ticketeck = useRef <string>("")
+    const [nuevoStatus,setNuevoStatus]=useState(false)
+
     useEffect(() => {
+
+    ticketeck.current= props.ticket 
 
     if (props.status=="ENV"){
       setEstado("PEDIDO DE TRABAJO")
@@ -204,6 +207,21 @@ const CardVistaVariasOrdenes= (props:{posicion:any,rubro:string, tipo:string,sta
       setEstado("EN SITIO")
     }
 
+    getDB(ticketeck.current.toString( )).then(res => {
+      console.log("EL RES ES: "+res)
+      if(res!=undefined || res!=null){
+       //arreglo.push(res)
+       //aca copia todo, el numero 1 del arreglo no es el rubro sino la primer letra del rubro y así.
+        if(res!=props.status || props.status=="ENV"){
+          setNuevoStatus(true)
+          setDB(ticketeck.current, props.status)
+        }  
+        }else{
+          setDB(ticketeck.current, props.status)
+          setNuevoStatus(false)
+        }
+    })
+
   }, [props.status]);
  
 
@@ -213,6 +231,33 @@ const CardVistaVariasOrdenes= (props:{posicion:any,rubro:string, tipo:string,sta
    
 }, []); 
 
+if(nuevoStatus){
+
+  return (
+    <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
+      <div id="iconoDerecha">            
+          <IonIcon icon={alert} id="iconoNuevaStatus" ></IonIcon>
+        </div > 
+      <IonGrid>
+        <IonRow  id="row-busqueda">
+          <IonCol   id="col-explorerContainerCliente">
+            <img id="imgOrden" src={imagen}></img>
+          </IonCol>
+        </IonRow>
+        <IonRow  id="row-busqueda">
+          <IonCol   id="col-explorerContainerCliente">
+            <IonCardSubtitle>TIPO: {props.tipo.toUpperCase( )}</IonCardSubtitle>
+            <IonCardSubtitle>STATUS: {estado}</IonCardSubtitle>
+            <IonCardSubtitle>TICKET: {props.ticket}</IonCardSubtitle>  
+            <IonCardSubtitle style={{margin:"0px 0px 25px 0px"}}>{mensaje}</IonCardSubtitle>
+          </IonCol>
+        </IonRow>
+      
+      </IonGrid>
+    </div>
+  )
+
+}else{
   return (
     <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
       <IonGrid>
@@ -226,13 +271,14 @@ const CardVistaVariasOrdenes= (props:{posicion:any,rubro:string, tipo:string,sta
             <IonCardSubtitle>TIPO: {props.tipo.toUpperCase( )}</IonCardSubtitle>
             <IonCardSubtitle>STATUS: {estado}</IonCardSubtitle>
             <IonCardSubtitle>TICKET: {props.ticket}</IonCardSubtitle>  
-            <IonCardSubtitle>{mensaje}</IonCardSubtitle>
+            <IonCardSubtitle style={{margin:"0px 0px 25px 0px"}}>{mensaje}</IonCardSubtitle>
           </IonCol>
         </IonRow>
       
       </IonGrid>
     </div>
   )
+  }
 
 }
 

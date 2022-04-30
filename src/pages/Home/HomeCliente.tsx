@@ -113,6 +113,8 @@ const HomeCliente = (props:{setIsReg:any,
 
  const [popoverState, setShowPopover] = useState({ showPopover: false, event: undefined });
 
+ const [nuevasOrdenes, setNuevasOrdenes] = useState<string []>([]);
+
   useEffect(() => {
 
     if(proveedoresEnZona.length > 0){
@@ -167,7 +169,29 @@ const HomeCliente = (props:{setIsReg:any,
 
   }, []);
 
+  useEffect(() => {
 
+    if (misOrdenes.length !=0 || misOrdenes!=undefined || misOrdenes!=[]){
+
+      for (let i=0; i<misOrdenes.length; i++){
+
+
+        getDB(misOrdenes[i].ticket!).then(res => {
+          console.log("se ejecutó????"+misOrdenes[i].status+" - "+misOrdenes[i].ticket+" - "+res)
+          if(res!=undefined || res!=null){
+           //arreglo.push(res)
+           //aca copia todo, el numero 1 del arreglo no es el rubro sino la primer letra del rubro y así.
+            if(res!=misOrdenes[i].status){
+              setNuevasOrdenes([...nuevasOrdenes , (misOrdenes[i].ticket)])
+              }else{
+                
+              }
+            }
+          })
+      }
+    }
+  
+}, [misOrdenes]);
 
   useEffect(() => {
     if(user!.email!="")
@@ -245,7 +269,7 @@ const HomeCliente = (props:{setIsReg:any,
                 <IonCol id="columna" size="1.5"><IonButtons ><IonMenuButton /> </IonButtons></IonCol>
                 <IonCol id="columna2" ><Busqueda categorias={categorias} setCategorias={setCategorias} setProveedorBuscadoHook={setProveedorBuscadoHook} setBuscar={setBuscar} /></IonCol>
                 <IonCol id="columna3" size="1.5" onClick={(e: any) => { e.persist(); setShowPopover({ showPopover: true, event: e })}}>
-                  <CardCampanaNotificacion notify={notifications} setMostrarChat={setMostrarChat}></CardCampanaNotificacion>
+                  <CardCampanaNotificacion nuevasOrdenes={nuevasOrdenes} notify={notifications} setMostrarChat={setMostrarChat}></CardCampanaNotificacion>
                 </IonCol>
                 <IonCol id="columna3" size="1.5"> 
                     <img src={imagen} id="foto-usuario" onClick={() => {  setShowModal({ isOpen: true});  setTipoDeVistaEnModal("datosUsuario")}}/>
@@ -320,7 +344,12 @@ const HomeCliente = (props:{setIsReg:any,
         onDidDismiss={() => setShowPopover({ showPopover: false, event: undefined })}
       >
           
-        <IonContent><ListaDeMensajes otra={notifications} setMostrarChat={setMostrarChat} ticket={ticket} /></IonContent>
+        <IonContent>
+          <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center" ,width:"100%", height:"100%"}} >
+            <NuevasOrdenesAviso nuevasOrdenes={nuevasOrdenes}   />
+            <ListaDeMensajes otra={notifications} setMostrarChat={setMostrarChat} ticket={ticket} />
+          </div>
+        </IonContent>
       </IonPopover>
           </div>
 
@@ -363,9 +392,10 @@ export const ListaDeMensajes = ( props:{otra:any, setMostrarChat:any, ticket:any
 
 }
 
-export const CardCampanaNotificacion = (props:{notify:any, setMostrarChat:any}) => {
+export const CardCampanaNotificacion = (props:{nuevasOrdenes:any, notify:any, setMostrarChat:any}) => {
  
-  if (props.notify.length>0){
+ console.log("aca esta lo de campana: "+props.nuevasOrdenes.length)
+  if (props.notify.length>0 || props.nuevasOrdenes.length>0){
     return (
       <div>  
         <span className="dot"></span>
@@ -384,13 +414,44 @@ export const IonCardNotificaciones = (props:{de:string, ticket:string, setMostra
   props.ticket_.current=props.ticket
   return(
     <IonCard id="ionCard-CardProveedor" onClick={()=> props.setMostrarChat(true)}>
-      <div id="CardProveedorContainer">
+      <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center", width:"100%", height:"auto"}}>
         <IonItem lines="none">MENSAJE DE: {props.de}</IonItem>
         <IonItem lines="none">ORDEN TICKET Nº: {props.ticket}</IonItem>
         <p id="p-ionpover">INGRESE A LA ORDEN PARA VER EL CHAT</p>
       </div>
     </IonCard>
   )
+}
+
+const NuevasOrdenesAviso = (props: {nuevasOrdenes:string []})=>{
+
+   console.log(" ahora checkemos: "+props.nuevasOrdenes)
+  if (props.nuevasOrdenes!=[]){
+    return(
+      <div id="elementos">
+        {(props.nuevasOrdenes || []).map((a) => {
+          //item, imagen personal, distancia, calificación, email, nombre, apellido, tipo
+          return (  
+            <IonCard id="ionCard-CardProveedor" >
+              <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center", width:"100%", height:"auto"}}>
+                <IonItem lines="none">ORDEN DE SERVICIO</IonItem>
+                <IonItem lines="none">TICKET Nº: {a}</IonItem>
+              </div>
+          </IonCard> 
+          ) 
+        })
+        }
+    </div>
+    
+    )
+  }else{
+    return(
+      <>
+        
+      </>
+    )
+  }
+
 }
 
 

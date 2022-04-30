@@ -274,8 +274,9 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                     isOpen={showAlertYaHayOrden}
                     onDidDismiss={() => setShowAlertYaHayOrden(false)}
                     cssClass='my-custom-class'
-                    header={'INCONVENIENTE EN LA SOLICITUD DEL SERVICIO'}
+                    header={'YA POSEE UNA ORDEN CON EL PROVEEDOR'}
                     subHeader={''}
+                    mode="ios"
                     message={'Ya posee una orden de servicio con el proveedor del servicio'}
                     buttons={[
                         {
@@ -438,20 +439,23 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                 <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center", alignItems:"center"}}>
 
                 <IonCard id="ionCardOrden">
-                        <IonCardHeader>
-                        <IonCardTitle> NÚMERO DE TICKET: {ticket.current} </IonCardTitle>
-                        <IonCardTitle>STATUS: SOLICITUD ENVIADA </IonCardTitle>
-                        <p id="p-estado">En espera de confirmación por parte del proveedor </p>
-                        </IonCardHeader>
+                        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center", alignItems:"center"}}>
+                            <IonCardTitle style={{margin:"0px 0px 15px 0px"}}> NÚMERO DE TICKET: {ticket.current} </IonCardTitle>
+                            <IonCardTitle style={{margin:"0px 0px 0px 0px"}}>STATUS: SOLICITUD ENVIADA </IonCardTitle>
+                            <p id="p-estado">En espera de confirmación por parte del proveedor </p>
+                        </div>
                     </IonCard>
                 
                 <IonCard id="ionCardOrden">
                     <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center", alignItems:"center"}}>
-                        <IonTitle>PROVEEDOR</IonTitle>  
+                        <IonCardTitle style={{marginTop:"20px", marginBottom:"20px"}} > {props.data.items} </IonCardTitle>
+                        <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(props.data.items)}></img>
+                        <IonItemDivider />
+                        <IonCardTitle>PROVEEDOR</IonCardTitle>  
                         <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.data.picture}></img>
-                        <IonCardTitle> {props.data.nombre} </IonCardTitle>
-                        <IonCardTitle  > {props.data.items} </IonCardTitle>
-                        <IonItem id="CardProveedorItem" lines="none"> {props.data.calificacion} </IonItem>
+                        <IonCardTitle style={{marginTop:"20px", marginBottom:"20px"}}> {props.data.nombre} </IonCardTitle>
+                        <Estrellas calificacion={props.data.qualification} />
+
                     </div>
                 </IonCard>        
                 </div>

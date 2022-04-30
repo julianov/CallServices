@@ -172,6 +172,10 @@ interface datosSemiCompletosOrdenes{
   proveedor_nombre:string
 }
 
+
+
+
+
 const VerOrdenParticular = (props:{ ticket: string }) => {
 
   const [datosOrdenGeneral, setDatosOrdenGeneral] = useState <datosSemiCompletosOrdenes> (
@@ -217,13 +221,41 @@ const VerOrdenParticular = (props:{ ticket: string }) => {
     }, [])
 
 
+    const [estado, setEstado] = useState("REALIZADA")
+
+    useEffect(() => {
+      if (datosOrdenGeneral.status=="ENV"){
+          setEstado("GENERADA")
+        }else if(datosOrdenGeneral.status=="REC"){
+          setEstado("ORDEN RECIBIDA POR PROVEEDOR")
+        }else if(datosOrdenGeneral.status=="ABI"){
+          setEstado("ORDEN RECIBIDA POR PROVEEDOR")
+        }else if(datosOrdenGeneral.status=="PEI"){
+          setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
+        } else if(datosOrdenGeneral.status=="PRE"){
+          setEstado("ORDEN PRE ACEPTADA POR PROVEEDOR")
+        }else if(datosOrdenGeneral.status=="ACE"){
+          setEstado("ORDEN ACEPTADA")
+        }else if(datosOrdenGeneral.status=="EVI"){
+          setEstado("PROVEEDOR EN VIAJE")
+        }else if(datosOrdenGeneral.status=="ENS"){
+          setEstado("PROVEEDOR EN SITIO")
+        }else if(datosOrdenGeneral.status=="RED"){
+          setEstado("REALIZADA")
+        }else if (datosOrdenGeneral.status=="REX"){
+          setEstado("RECHAZADA")
+        }else if (datosOrdenGeneral.status=="CAN"){
+          setEstado("CANCELADA")
+        }
+      }, [datosOrdenGeneral.status])
+
+//aca en el return hay que dar vuelta la fecha porque está en año, mes y dia
     return(
       <div id="ionContentModalVerOrdenes">
-           
           <IonCard id="ionCard-explorerContainer-Proveedor">
             <div id="divSentencias">
             <p >TIPO: {datosOrdenGeneral.tipo.toUpperCase()}</p>
-            <p >STATUS: {datosOrdenGeneral.status}</p>
+            <p >STATUS: {estado}</p>
             <p >TICKET: {datosOrdenGeneral.ticket}</p>
             <p >FECHA CREACIÓN: {datosOrdenGeneral.fecha_creacion}</p>
             <p >TITULO: {datosOrdenGeneral.titulo}</p>

@@ -486,14 +486,13 @@ const CardVistaVariasOrdenes= (props:{rubro:any, posicion:any,tipo:string,status
 
       ticketeck.current= props.ticket 
 
-    if (props.status=="ENV"){
-      setEstado("PEDIDO DE TRABAJO ENVIADO")
-    }else if(props.status=="REC"){
-      setEstado("PEDIDO DE TRABAJO RECIBIDO")
-    }else if(props.status=="ABI"){
-      setEstado("PEDIDO DE TRABAJO RECIBIDO")
-    }else if(props.status=="PEI"){
-
+      if (props.status=="ENV"){
+        setEstado("PEDIDO DE TRABAJO ENVIADO")
+      }else if(props.status=="REC"){
+        setEstado("PEDIDO DE TRABAJO RECIBIDO")
+      }else if(props.status=="ABI"){
+        setEstado("PEDIDO DE TRABAJO RECIBIDO")
+      }else if(props.status=="PEI"){
 
       if(props.masInfoEnviada!="" && props.masInfoEnviada!=undefined){
         setEstado("MÁS INFORMACIÓN ENVIADA")
@@ -503,22 +502,21 @@ const CardVistaVariasOrdenes= (props:{rubro:any, posicion:any,tipo:string,status
         setMensaje1("EL PROVEEDOR SOLICITA MÁS INFORMACIÓN")
         //setMensaje2("Ingrese para aceptarlo o rechazarlo")
       }
-
-    }else if(props.status=="PRE"){
-      setEstado("TRABAJO PRESUPUESTADO")
-      setMensaje1("EL PROVEEDOR HA ENVIADO COTIZACIÓN")
-      //setMensaje2("Ingrese responder")
-    } else if(props.status=="ACE"){
-      setEstado("PEDIDO DE TRABAJO ACEPTADO")
-    }else if(props.status=="EVI"){
-      setEstado("EN VIAJE")
-      setMensaje1("EL PROVEEDOR ESTÁ EN CAMINO!")
-    }else if(props.status=="ENS"){
-      setEstado("EN SITIO")
-    }else if(props.status=="RED"){
-      setEstado("ORDEN DE TRABAJO FINALIZADA")
-      setMensaje1("CALIFIQUE AL PROVEEDOR DEL SERVICIO")
-    }
+      }else if(props.status=="PRE"){
+        setEstado("TRABAJO PRESUPUESTADO")
+        setMensaje1("EL PROVEEDOR HA ENVIADO COTIZACIÓN")
+        //setMensaje2("Ingrese responder")
+      } else if(props.status=="ACE"){
+        setEstado("PEDIDO DE TRABAJO ACEPTADO")
+      }else if(props.status=="EVI"){
+        setEstado("EN VIAJE")
+        setMensaje1("EL PROVEEDOR ESTÁ EN CAMINO!")
+      }else if(props.status=="ENS"){
+        setEstado("EN SITIO")
+      }else if(props.status=="RED"){
+        setEstado("ORDEN DE TRABAJO FINALIZADA")
+        setMensaje1("CALIFIQUE AL PROVEEDOR DEL SERVICIO")
+      }
 
     getDB(ticketeck.current.toString( )).then(res => {
       if(res!=undefined || res!=null){
@@ -527,22 +525,20 @@ const CardVistaVariasOrdenes= (props:{rubro:any, posicion:any,tipo:string,status
         if(res!=props.status){
           setNuevoStatus(true)
           setDB(ticketeck.current, props.status)
-
         }  
-        
-      }else{
-        setDB(ticketeck.current, props.status)
-        setNuevoStatus(false)
-      }
-
+        }else{
+          setDB(ticketeck.current, props.status)
+          setNuevoStatus(false)
+        }
     })
+    
 
   }, [props.status])
 
 
     if(nuevoStatus){
       return (
-        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"500px", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
+        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
 
         <div id="iconoDerecha">            
           <IonIcon icon={alert} id="iconoNuevaStatus" ></IonIcon>
@@ -557,7 +553,7 @@ const CardVistaVariasOrdenes= (props:{rubro:any, posicion:any,tipo:string,status
               <IonCol   id="col-explorerContainerCliente">
                 <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>STATUS: {estado}</h2>
                 <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>TICKET: {props.ticket}</h2>  
-                <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>{mensaje1}</h2>
+                <h2 style={{margin:"0px 0px 25px 0px", color:"black", fontSize:"0.75em"}}>{mensaje1}</h2>
 
               </IonCol>
             </IonRow>
@@ -567,7 +563,7 @@ const CardVistaVariasOrdenes= (props:{rubro:any, posicion:any,tipo:string,status
       )    
     }else{
       return (
-        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"200px", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
+        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
 
           <IonGrid>
             <IonRow  id="row-busqueda">
@@ -579,7 +575,7 @@ const CardVistaVariasOrdenes= (props:{rubro:any, posicion:any,tipo:string,status
               <IonCol   id="col-explorerContainerCliente">
                 <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>STATUS: {estado}</h2>
                 <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>TICKET: {props.ticket}</h2>  
-                <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>{mensaje1}</h2>
+                <h2 style={{margin:"0px 0px 25px 0px", color:"black", fontSize:"0.75em"}}>{mensaje1}</h2>
 
               </IonCol>
             </IonRow>

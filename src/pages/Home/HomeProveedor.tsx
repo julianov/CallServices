@@ -14,6 +14,7 @@ import ExploreContainerProveedor from '../../components/ExplorerContainer/Explor
 import ModalProveedor from '../../components/ModalGeneral/ModalProveedor';
 import Chat from '../../components/Chat/Chat';
 import { IonAlert, IonAvatar, IonButton, IonButtons, IonCard, IonCardHeader, IonChip, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonItemOptions, IonItemSliding, IonLabel, IonList, IonLoading, IonMenuButton, IonModal, IonPage, IonPopover, IonRow, IonSearchbar, IonTitle, IonToolbar} from '@ionic/react';
+import { getDB } from '../../utilidades/dataBase';
 
 
 let posicion: string | number;
@@ -101,8 +102,8 @@ const HomeProveedor = (props:{setIsReg:any,
 
 
   const [imagen, setImagen] = useState (user!.foto)
+  const [nuevasOrdenes, setNuevasOrdenes] = useState<string []>([]);
 
-  console.log("la foto es: "+user!.foto)
   useEffect(() => {
     if (user!.foto==""|| user!.foto==null || user!.foto==undefined){
       setImagen ("./assets/icon/nuevoUsuario.png") 
@@ -111,97 +112,92 @@ const HomeProveedor = (props:{setIsReg:any,
     }
   }, [user!.foto]);
 
-  useEffect(() => {
-
-   
-
-       
-
-        if (user!.foto==""|| user!.foto==null || user!.foto==undefined){
-          setImagen ("./assets/icon/nuevoUsuario.png") 
-        }else{
-          setImagen(user!.foto)
-        }
-   
-    
-
-  }, []);
-
+  /*useEffect(() => {
+    if (user!.foto==""|| user!.foto==null || user!.foto==undefined){
+      setImagen ("./assets/icon/nuevoUsuario.png") 
+    }else{
+      setImagen(user!.foto)
+    }
+  }, []);*/
 
   useEffect(() => {
-
     if(user!.email!=""){
-
       const ubicacion = getLocation();
       ubicacion.then((value)=>{
-      
       if (value==0){
-
         setShowAlertUbicación(true)
-        console.log("veamos que tenemos en el value de la ubicación: "+value)
-
-
       }else{
         axios.get(url+"proveedor/ubicacion/"+user!.email+"/"+value).then((resp: { data: any; }) => {
-
           if (resp.data=="bad"){
-
             setShowAlertServidor(true)
-
           }else if(resp.data=="sin rubro"){
-           // aca hay que mostrar el cartel que no tiene rubros cargados
            setSinRubro(true)
-
           }else{
-            
-            
-            
+
           }
         });  
       }
     })
-
-      axios.get(url+"orden/misordenes/"+"proveedor/"+user!.email).then((resp: { data: any; }) => {
-        if (resp.data!="bad"){
-          //setMisOrdenes(resp.data) 
-          setMisOrdenes(resp.data.map((d: { rubro:any; tipo: any; status: any; fecha_creacion: any; ticket: any; dia: any; time: any; titulo: any; descripcion: any; email_cliente: any; imagen_cliente: any; location_lat: any; location_long: any; picture1: any; picture2: any; presupuesto: any; pedidoMasInformacion: any; respuesta_cliente_pedido_mas_información: any; picture1_mas_información: any; picture2_mas_información: any; }) => ({
-            rubro:d.rubro,
-            tipo:d.tipo,
-            status:d.status,
-            fecha_creacion:d.fecha_creacion,
-            ticket:d.ticket,
-            dia:d.dia,
-            hora:d.time,
-            titulo:d.titulo,
-            descripcion:d.descripcion,
-            email_cliente:d.email_cliente,
-            imagen_cliente:d.imagen_cliente,
-            location_lat:d.location_lat,
-            location_long:d.location_long,
-            picture1:d.picture1,
-            picture2:d.picture2,
-            presupuesto_inicial:d.presupuesto,
-            pedido_mas_información:d.pedidoMasInformacion,
-            respuesta_cliente_pedido_mas_información:d.respuesta_cliente_pedido_mas_información,
-            picture1_mas_información:d.picture1_mas_información,
-            picture2_mas_información:d.picture2_mas_información,
-                  }))
-                );           
-        }
-      })
-
-      axios.get(url+"chatsinleer/"+user!.email).then((resp: { data: any; }) => {
-        if (resp.data!="bad"){
-          setNotifications(resp.data.map((d: { de: any; ticket: any; }) => ({
-            de:d.de,
-            ticket:d.ticket,
-            })));
-        }
+    axios.get(url+"orden/misordenes/"+"proveedor/"+user!.email).then((resp: { data: any; }) => {
+      if (resp.data!="bad"){
+         //setMisOrdenes(resp.data) 
+        setMisOrdenes(resp.data.map((d: { rubro:any; tipo: any; status: any; fecha_creacion: any; ticket: any; dia: any; time: any; titulo: any; descripcion: any; email_cliente: any; imagen_cliente: any; location_lat: any; location_long: any; picture1: any; picture2: any; presupuesto: any; pedidoMasInformacion: any; respuesta_cliente_pedido_mas_información: any; picture1_mas_información: any; picture2_mas_información: any; }) => ({
+          rubro:d.rubro,
+          tipo:d.tipo,
+          status:d.status,
+          fecha_creacion:d.fecha_creacion,
+          ticket:d.ticket,
+          dia:d.dia,
+          hora:d.time,
+          titulo:d.titulo,
+          descripcion:d.descripcion,
+          email_cliente:d.email_cliente,
+          imagen_cliente:d.imagen_cliente,
+          location_lat:d.location_lat,
+          location_long:d.location_long,
+          picture1:d.picture1,
+          picture2:d.picture2,
+          presupuesto_inicial:d.presupuesto,
+          pedido_mas_información:d.pedidoMasInformacion,
+          respuesta_cliente_pedido_mas_información:d.respuesta_cliente_pedido_mas_información,
+          picture1_mas_información:d.picture1_mas_información,
+          picture2_mas_información:d.picture2_mas_información,
+          }))
+        );           
+      }
+    })
+    axios.get(url+"chatsinleer/"+user!.email).then((resp: { data: any; }) => {
+      if (resp.data!="bad"){
+        setNotifications(resp.data.map((d: { de: any; ticket: any; }) => ({
+          de:d.de,
+          ticket:d.ticket,
+          })));
+      }
   
-      })
-    }
-
+    })
+  }
   }, [user!.email]);
+
+
+  useEffect(() => {
+
+    if (misOrdenes.length !=0 || misOrdenes!=undefined || misOrdenes!=[]){
+
+      for (let i=0; i<misOrdenes.length; i++){
+        getDB(misOrdenes[i].ticket!).then(res => {
+          if(res!=undefined || res!=null ){
+            console.log("aca deberia haber entrado")
+           //arreglo.push(res)
+           //aca copia todo, el numero 1 del arreglo no es el rubro sino la primer letra del rubro y así.
+            if(res!=misOrdenes[i].status || misOrdenes[i].status=="ENV"){
+              setNuevasOrdenes([...nuevasOrdenes , (misOrdenes[i].ticket)])
+              }
+          }
+        })
+      }
+    }
+  
+}, [misOrdenes]);
 
   if (mostrarChat){
     return(
@@ -224,7 +220,7 @@ const HomeProveedor = (props:{setIsReg:any,
               </IonCol>
               <IonCol id="columna2" ></IonCol>
               <IonCol id="columna3" size="1.5" onClick={(e: any) => { e.persist(); setShowPopover({ showPopover: true, event: e })}}>
-                  <CardCampanaNotificacion notify={notifications} setMostrarChat={setMostrarChat}></CardCampanaNotificacion>
+                  <CardCampanaNotificacion notify={notifications} setMostrarChat={setMostrarChat} nuevasOrdenes={nuevasOrdenes}></CardCampanaNotificacion>
                 </IonCol>
               <IonCol id="columna3" size="2"> 
                 <img src={imagen} id="foto-usuario" onClick={() => {  setShowModal({ isOpen: true});  setTipoDeVistaEnModal("datosUsuario")}}/>
@@ -257,10 +253,11 @@ const HomeProveedor = (props:{setIsReg:any,
               }} />  
           </IonModal>
 
-          <ExploreContainerProveedor  ordenes={misOrdenes} 
+          <ExploreContainerProveedor  
+          ordenes={misOrdenes} 
+         
           emailProveedor={user!.email}  
           sinRubro={sinRubro}
-          
           setIsReg={props.setIsReg} 
           tipodeCliente={user!.tipoCliente}  
          
@@ -282,7 +279,13 @@ const HomeProveedor = (props:{setIsReg:any,
         onDidDismiss={() => setShowPopover({ showPopover: false, event: undefined })}
       >
           
-        <IonContent><ListaDeMensajes otra={notifications} setMostrarChat={setMostrarChat} ticket={ticket} /></IonContent>
+        <IonContent>
+          <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center" ,width:"100%", height:"100%"}} >
+            <NuevasOrdenesAviso nuevasOrdenes={nuevasOrdenes}   />
+            <ListaDeMensajes otra={notifications} setMostrarChat={setMostrarChat} ticket={ticket} />
+          </div>
+
+        </IonContent>
       </IonPopover>
             
 
@@ -305,7 +308,36 @@ const HomeProveedor = (props:{setIsReg:any,
 
 
 
+const NuevasOrdenesAviso = (props: {nuevasOrdenes:string []})=>{
 
+  console.log(" ahora checkemos: "+props.nuevasOrdenes)
+ if (props.nuevasOrdenes!=[]){
+   return(
+     <div id="elementos">
+       {(props.nuevasOrdenes || []).map((a) => {
+         //item, imagen personal, distancia, calificación, email, nombre, apellido, tipo
+         return (  
+           <IonCard id="ionCard-CardProveedor" >
+             <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center", width:"100%", height:"auto"}}>
+               <IonItem lines="none">ORDEN DE SERVICIO</IonItem>
+               <IonItem lines="none">TICKET Nº: {a}</IonItem>
+             </div>
+         </IonCard> 
+         ) 
+       })
+       }
+   </div>
+   
+   )
+ }else{
+   return(
+     <>
+       
+     </>
+   )
+ }
+
+}
 
 /*
 

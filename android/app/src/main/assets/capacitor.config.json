@@ -1,15 +1,14 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "CallServices",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "build",
-  "linuxAndroidStudioPath": "/home/julian/bin/android-studio/bin/studio.sh",
-  "plugins": {
-    "SplashScreen": {
-      "launchShowDuration": 0
-    }
-  },
-  "cordova": {}
-  
+	"appId": "io.ionic.starter",
+	"appName": "CallServices",
+	"bundledWebRuntime": false,
+	"npmClient": "npm",
+	"webDir": "build",
+	"linuxAndroidStudioPath": "/home/julian/bin/android-studio/bin/studio.sh",
+	"plugins": {
+		"SplashScreen": {
+			"launchShowDuration": 0
+		}
+	},
+	"cordova": {}
 }

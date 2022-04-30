@@ -404,6 +404,7 @@ import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext'
           // what now?
          props.setShowLoading(false)
           props.setShowAlertServerConnection(true)
+          console.log("error: "+err)
          // setIngresar(false)
       })
       }else{

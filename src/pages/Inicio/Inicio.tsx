@@ -12,7 +12,7 @@ const Inicio = () => {
             <IonTitle>ServiceYA</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent id="Inicio-IonContent" fullscreen>
+        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh"}}>
           
         <div id="InicioPagina">
         <div id="hero__title">
@@ -26,7 +26,7 @@ const Inicio = () => {
         <div id="cube"></div>
         <div id="cube"></div>
         </div>
-        </IonContent>
+        </div>
       </IonPage>
     );
   };
