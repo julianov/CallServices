@@ -38,6 +38,8 @@ const getLocation = async () => {
 const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any, sinRubro:boolean, 
   setIsReg:any
   tipodeCliente:any
+  setNuevasOrdenes:any
+  nuevasOrdenes:any
  } ) => {
 
   //const [proveedores, setProveedores]=useState()
@@ -67,6 +69,7 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any, sin
 
   const [cargarRubro, setCargarRubro] = useState(false)
 
+  console.log("EL PROPS NUEVAS ORDENES EN EXPLORER CONTAINER ES: "+props.nuevasOrdenes)
 
     if(cargarRubro){
       return (<CompletarRubros setIsReg={props.setIsReg} clientType= {props.tipodeCliente} email={props.emailProveedor} ></CompletarRubros>);
@@ -78,7 +81,7 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any, sin
            <div style={{width:"90%", height:"auto", textAlign:"center"}}>
               <h1 style={{marginTop:"35px",fontWeight:"600", fontSize:"1.3em"}}> ORDENES DE TRABAJO ACTIVAS </h1>
             </div>
-            <Elements proveedores={props.ordenes} setVerOrden={setVerOrden} setPosicion={setPosicion} />
+            <Elements proveedores={props.ordenes} setVerOrden={setVerOrden} setPosicion={setPosicion} nuevasOrdenes={props.nuevasOrdenes} setNuevasOrdenes={props.setNuevasOrdenes} />
             <IonItemDivider />
 
             <CampanaPublicidad></CampanaPublicidad>
@@ -96,10 +99,12 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any, sin
         isOpen={verOrden}
         onDidDismiss={() => setVerOrden( false )}
       >
-        <ModalVerOrdenesProveedor 
+        <ModalVerOrdenesProveedor
           datos={props.ordenes[posicion-1]}
           setVolver={setVerOrden}
           emailProveedor={props.emailProveedor}
+          setNuevasOrdenes={props.setNuevasOrdenes}
+        nuevasOrdenes={props.nuevasOrdenes}
           
         />  
       </IonModal>
@@ -139,7 +144,7 @@ const Solicitudes  = () => {
 }
 
 
-const Elements = (props:{ proveedores: Array <ordenes> , setVerOrden:any,setPosicion:any }) => {
+const Elements = (props:{ proveedores: Array <ordenes> , setVerOrden:any,setPosicion:any, nuevasOrdenes:any, setNuevasOrdenes:any }) => {
 
   var i=0
   //if (props.proveedores!=[]){
@@ -154,7 +159,7 @@ const Elements = (props:{ proveedores: Array <ordenes> , setVerOrden:any,setPosi
           return (
           <IonSlide>
             <CardVistaVariasOrdenes key={i} posicion={i} rubro={a.rubro} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket} 
-            dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_cliente} setVerOrden={props.setVerOrden} setPosicion={props.setPosicion}></CardVistaVariasOrdenes>
+            dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_cliente} setVerOrden={props.setVerOrden} setPosicion={props.setPosicion} nuevasOrdenes={props.nuevasOrdenes} setNuevasOrdenes={props.setNuevasOrdenes}></CardVistaVariasOrdenes>
            </IonSlide>
            ) 
         })
@@ -172,19 +177,21 @@ const Elements = (props:{ proveedores: Array <ordenes> , setVerOrden:any,setPosi
 
 
 const CardVistaVariasOrdenes= (props:{posicion:any,rubro:string, tipo:string,status:string,fecha_creacion:string,ticket: string,
-  dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, setPosicion:any }) => {
+  dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, setPosicion:any, nuevasOrdenes:any, setNuevasOrdenes:any }) => {
         
     const [mensaje, setMensaje] = useState("")
 
     const [estado,setEstado]=useState("Enviada")
 
     const [imagen, setImagen] = useState("")
-    const ticketeck = useRef <string>("")
     const [nuevoStatus,setNuevoStatus]=useState(false)
 
+    //const ticketeck = useRef <string>("")
+
+    
     useEffect(() => {
 
-    ticketeck.current= props.ticket 
+    //  ticketeck.current= props.ticket 
 
     if (props.status=="ENV"){
       setEstado("PEDIDO DE TRABAJO")
@@ -207,20 +214,20 @@ const CardVistaVariasOrdenes= (props:{posicion:any,rubro:string, tipo:string,sta
       setEstado("EN SITIO")
     }
 
-    getDB(ticketeck.current.toString( )).then(res => {
-      console.log("EL RES ES: "+res)
-      if(res!=undefined || res!=null){
-       //arreglo.push(res)
-       //aca copia todo, el numero 1 del arreglo no es el rubro sino la primer letra del rubro y así.
-        if(res!=props.status || props.status=="ENV"){
-          setNuevoStatus(true)
-          setDB(ticketeck.current, props.status)
-        }  
-        }else{
-          setDB(ticketeck.current, props.status)
-          setNuevoStatus(false)
-        }
-    })
+ /*   console.log("ENTONCES EL PROBLEMA ESTÁ EN LO QUE HAY EN NUEVAS ORDENES: "+props.nuevasOrdenes)*/
+            getDB(props.ticket).then(res => {
+              if(res!=undefined || res!=null){
+                console.log("RES: "+res)
+               //arreglo.push(res)
+               //aca copia todo, el numero 1 del arreglo no es el rubro sino la primer letra del rubro y así.
+                if(res!=props.status || res=="ENV" ){
+                  setNuevoStatus(true)
+              
+                }  
+                }else{
+                  setNuevoStatus(true)
+                }
+            })
 
   }, [props.status]);
  
@@ -231,7 +238,7 @@ const CardVistaVariasOrdenes= (props:{posicion:any,rubro:string, tipo:string,sta
    
 }, []); 
 
-if(nuevoStatus){
+if(nuevoStatus&&props.status!="PEI"){
 
   return (
     <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
@@ -283,7 +290,6 @@ if(nuevoStatus){
 }
 
 const SinRubro = (props:{sinrubro:boolean, setCargarRubro:any}) => {
-  console.log("esto es loq ue hay: "+props.sinrubro)
   if (props.sinrubro==true){
 
     return(

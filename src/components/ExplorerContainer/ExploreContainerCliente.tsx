@@ -44,6 +44,8 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
   
   //const [proveedores, setProveedores]=useState()
 
+
+  const [recargarOrden, setRecargarOrden] = useState(false)
   
   const [verEmail, setVerEmail]=useState("")
   const[item, setItem]=useState("")
@@ -148,7 +150,7 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
           <div id="container-principal-ExplorerContainer-Cliente">  
             <Tabs setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal} ></Tabs>
             <IonItemDivider />
-            <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={props.ordenes}  setVerOrden={setVerOrden} setPosicion={setPosicion}></MisOrdenes>
+            <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={props.ordenes}  setVerOrden={setVerOrden} setPosicion={setPosicion} recargarOrden={verOrden} ></MisOrdenes>
             <IonItemDivider />
 
             <CategoriasUtiles setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal}/>
@@ -170,6 +172,8 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
               datos={props.ordenes[posicion-1]}
               setVolver={setVerOrden}
               emailCliente={props.emailCliente}
+
+            
             />  
         </IonModal>
 
@@ -188,6 +192,7 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
               isOpen={pediOrden}
               onDidDismiss={() => setPediOrden( false )}>
               <OrdenSimple
+              
                 data={datosDeOrdenes} 
                 clienteEmail={props.emailCliente} 
                 proveedorVaALocacion={true}
@@ -418,7 +423,7 @@ const VerProveedorParticular = (  props:{url:string, emailCliente:String, email:
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , hayOrdenes:any, setVerOrden:any,setPosicion:any }) => {
+const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , hayOrdenes:any, setVerOrden:any,setPosicion:any , recargarOrden:any }) => {
 
   var i=0
   //if (props.proveedores!=[]){
@@ -438,7 +443,7 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , hayOrdenes:any,
               <IonSlide>
                 <CardVistaVariasOrdenes key={i} posicion={i} rubro={a.rubro} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket}
                   dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_proveedor} setVerOrden={props.setVerOrden} setPosicion={props.setPosicion}
-                  presupuesto={a.presupuesto} masInfo={a.pedido_mas_información} masInfoEnviada={a.respuesta_cliente_pedido_mas_información}></CardVistaVariasOrdenes>
+                  presupuesto={a.presupuesto} masInfo={a.pedido_mas_información} masInfoEnviada={a.respuesta_cliente_pedido_mas_información} recargarOrden={props.recargarOrden}></CardVistaVariasOrdenes>
               </IonSlide>
                           
             );
@@ -462,7 +467,7 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , hayOrdenes:any,
 }
 
 const CardVistaVariasOrdenes= (props:{rubro:any, posicion:any,tipo:string,status:string,fecha_creacion:string,ticket: string,
-  dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, setPosicion:any, presupuesto:any, masInfo:any, masInfoEnviada:string}) => {
+  dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, setPosicion:any, presupuesto:any, masInfo:any, masInfoEnviada:string, recargarOrden:any}) => {
         
     const [estado,setEstado]=useState("Enviada")
 
@@ -519,21 +524,22 @@ const CardVistaVariasOrdenes= (props:{rubro:any, posicion:any,tipo:string,status
       }
 
     getDB(ticketeck.current.toString( )).then(res => {
+
       if(res!=undefined || res!=null){
        //arreglo.push(res)
        //aca copia todo, el numero 1 del arreglo no es el rubro sino la primer letra del rubro y así.
         if(res!=props.status){
           setNuevoStatus(true)
-          setDB(ticketeck.current, props.status)
         }  
         }else{
-          setDB(ticketeck.current, props.status)
           setNuevoStatus(false)
         }
+        setDB(ticketeck.current, props.status)
+
     })
     
 
-  }, [props.status])
+  }, [props.status, props.recargarOrden])
 
 
     if(nuevoStatus){

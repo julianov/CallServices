@@ -18,6 +18,7 @@ import { useUserContext } from "../../Contexts/UserContext";
 import { itemRubro, usuario } from "../../Interfaces/interfaces";
 import { IonActionSheet, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonDatetime, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRange, IonRow, IonSelect, IonSelectOption, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
 import { retornarIconoCategoria } from "../../utilidades/retornarIconoCategoria";
+import { clearDB } from "../../utilidades/dataBase";
 
 //const url='http://127.0.0.1:8000/';
 //const url="https://callservicesvps.online:443/"
@@ -243,6 +244,8 @@ const DatosUsuario = (props:{setIsReg:any, completarInfoPersonal:any, onClose:an
     removeItem("nombre")
     removeItem("apellido")
     removeItem("calificacion")
+  
+    localStorage.clear()
 
     props.setIsReg(false)
 

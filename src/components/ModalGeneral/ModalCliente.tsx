@@ -19,6 +19,7 @@ import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import { PedirOrdenEmergencia } from "../../pages/PedirOrdenes/PedirOrdenEmergencia";
 import { retornarIconoCategoria } from "../../utilidades/retornarIconoCategoria";
 import { menuController } from '@ionic/core/components';
+import { clearDB } from "../../utilidades/dataBase";
 
 const url=Https
 
@@ -236,7 +237,7 @@ const DatosUsuario = (props:{setIsReg:any,email:string, completarInfoPersonal:an
     removeItem("nombre")
     removeItem("apellido")
     removeItem("calificacion")
-
+    localStorage.clear()
   
     //setDone(true)
     props.setIsReg(false)

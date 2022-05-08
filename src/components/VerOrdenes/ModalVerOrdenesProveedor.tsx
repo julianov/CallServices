@@ -8,6 +8,8 @@ import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import Https from "../../utilidades/HttpsURL";
 import Chat from "../Chat/Chat";
 import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCheckbox, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonLoading, IonRow, IonSegment, IonSegmentButton, IonTitle } from "@ionic/react";
+import { getDB, setDB } from "../../utilidades/dataBase";
+import { Redirect } from "react-router";
 
 const url=Https
 
@@ -32,7 +34,7 @@ const verUbicacion = (latitud:any, longitud:any) =>{
 
 
 
-const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:any})  =>{
+const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:any,setNuevasOrdenes:any, nuevasOrdenes:any})  =>{
 
 
     const [vista, setVista] = useState("primero")
@@ -48,9 +50,12 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
     const precio = useRef ("")
 
     const desdeDondeEstoy=useRef("")
+    const ticketeck = useRef <string>("")
 
 
     useEffect(() => {
+      ticketeck.current= props.datos.ticket 
+
             if (props.datos.status=="ENV"){
               setEstado("GENERADO POR CLIENTE")
               axios.get(url+"orden/cambiarestado/"+props.datos.ticket+"/"+props.datos.tipo+"/"+"REC", {timeout: 7000})
@@ -79,7 +84,31 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
             }else if(props.datos.status=="ENS"){
               setEstado("EN SITIO")
               setVista("EN SITIO")
+            }else{
+
             }
+
+
+            console.log("ENTONCES EL PROBLEMA ESTÁ EN LO QUE HAY EN NUEVAS ORDENES: "+props.nuevasOrdenes)
+            getDB(ticketeck.current.toString( )).then(res => {
+              if(res!=undefined || res!=null){
+               //arreglo.push(res)
+               //aca copia todo, el numero 1 del arreglo no es el rubro sino la primer letra del rubro y así.
+                if(res!=props.datos.status || props.datos.status=="ENV"){
+                 // setNuevoStatus(true)
+                  setDB(ticketeck.current, props.datos.status)
+        
+                  console.log("veamos lo que hay al principio: "+props.nuevasOrdenes)
+                  console.log("veamos lo que hay al principio JSON: "+JSON.stringify(props.nuevasOrdenes))
+                  props.setNuevasOrdenes(props.nuevasOrdenes.filter((item:string) => item !== ticketeck.current));
+                  console.log("veamos lo que hay al final: "+props.nuevasOrdenes)
+                  console.log("veamos lo que hay al final JSON: "+JSON.stringify(props.nuevasOrdenes))
+                }  
+                }else{
+                  setDB(ticketeck.current, props.datos.status)
+                  //setNuevoStatus(false)
+                }
+            })
         
       }, [vista])
 
@@ -90,6 +119,9 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
 
             if(resp.data!="bad"){
               setEstado("ORDEN RECHAZADA")
+              setVista("ir a home")
+              window.location.reload();
+
             }
     
            })
@@ -176,8 +208,8 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
   }
   else{
     return (
-      <IonContent>
-      </IonContent>
+      <><Redirect push={true} to="/home" />
+      </> 
              
     );
   }

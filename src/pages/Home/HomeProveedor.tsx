@@ -184,17 +184,23 @@ const HomeProveedor = (props:{setIsReg:any,
     if (misOrdenes.length !=0 || misOrdenes!=undefined || misOrdenes!=[]){
 
       for (let i=0; i<misOrdenes.length; i++){
+        console.log(" mis ordenes: "+misOrdenes[i].status)
+        if(misOrdenes[i].status=="ENV"){
+          setNuevasOrdenes([...nuevasOrdenes , (misOrdenes[i].ticket)])
+
+        }
         getDB(misOrdenes[i].ticket!).then(res => {
           if(res!=undefined || res!=null ){
-            console.log("aca deberia haber entrado")
            //arreglo.push(res)
            //aca copia todo, el numero 1 del arreglo no es el rubro sino la primer letra del rubro y así.
-            if(res!=misOrdenes[i].status || misOrdenes[i].status=="ENV"){
+            if(res!=misOrdenes[i].status ){
+              console.log(" mis ordenes: "+misOrdenes[i].status)
               setNuevasOrdenes([...nuevasOrdenes , (misOrdenes[i].ticket)])
               }
           }
         })
       }
+    }else{
     }
   
 }, [misOrdenes]);
@@ -254,13 +260,13 @@ const HomeProveedor = (props:{setIsReg:any,
           </IonModal>
 
           <ExploreContainerProveedor  
-          ordenes={misOrdenes} 
-         
-          emailProveedor={user!.email}  
-          sinRubro={sinRubro}
-          setIsReg={props.setIsReg} 
-          tipodeCliente={user!.tipoCliente}  
-         
+            ordenes={misOrdenes}
+            setNuevasOrdenes={setNuevasOrdenes}
+            emailProveedor={user!.email}
+            sinRubro={sinRubro}
+            setIsReg={props.setIsReg}
+            tipodeCliente={user!.tipoCliente} 
+            nuevasOrdenes={nuevasOrdenes}         
           />
          
           <IonAlert 
@@ -310,7 +316,6 @@ const HomeProveedor = (props:{setIsReg:any,
 
 const NuevasOrdenesAviso = (props: {nuevasOrdenes:string []})=>{
 
-  console.log(" ahora checkemos: "+props.nuevasOrdenes)
  if (props.nuevasOrdenes!=[]){
    return(
      <div id="elementos">

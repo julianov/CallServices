@@ -138,7 +138,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                     if(res.data!="bad" && res.data!="ya hay una orden"){
                         ticket.current=res.data
                         setShowAlertOrdenCreada(true)
-                        setDB(res.data.toString(), "ENV")
+                        setDB(res.data, "ENV")
 
 
                     }
@@ -187,20 +187,20 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
                         <IonItemDivider />
 
                             <div id="contenedorCamposCentro">
-                                <h2 style={{fontSize:"1.3em"}}>INGRESE UN TÍTULO PARA EL SERVICIO</h2 >
+                                <h2 style={{fontSize:"1.3em"}}>TÍTULO DEL SERVICIO</h2 >
                             </div>
                             <div style={{display:"flex", width:"90%", justifyContent:"center", alignItems:"center"}}>
                                 <IonItem >
-                                    <IonLabel position="floating">TÍTULO</IonLabel>
+                                    <IonLabel position="floating">INGRESE TÍTULO</IonLabel>
                                     <IonInput onIonInput={(e: any) => titulo.current = (e.target.value)}></IonInput>
                                 </IonItem>
                             </div>
                             <div id="contenedorCamposCentro">
-                                <h2 style={{fontSize:"1.3em"}}>INGRESE UNA BREVE DESCRIPCIÓN DEL PROBLEMA</h2>
+                                <h2 style={{fontSize:"1.3em"}}>BREVE DESCRIPCIÓN DEL PROBLEMA</h2>
                             </div>
                             <div style={{display:"flex", width:"90%", justifyContent:"center", alignItems:"center"}}>
                                 <IonItem >
-                                    <IonLabel position="floating">DESCRIPCIÓN</IonLabel>
+                                    <IonLabel position="floating">INGRESE DESCRIPCIÓN</IonLabel>
                                     <IonInput onIonInput={(e: any) => descripcion.current = (e.target.value)}></IonInput>
                                 </IonItem>
                             </div>

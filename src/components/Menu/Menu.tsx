@@ -107,6 +107,8 @@ import {
     removeItem("nombre")
     removeItem("apellido")
     
+    localStorage.clear()
+
     props.setIsReg(false)
 
     window.location.href="/"
