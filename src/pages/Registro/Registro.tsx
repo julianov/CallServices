@@ -112,7 +112,18 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
       props.setShowAlertEmailSending(true)
 
       const axios = require('axios');
-      axios.get(url+tipoUsuario.current+"/"+email.current+"/"+password.current).then((res: { data: any; }) => {
+
+      var formDataToUpload = new FormData();
+      formDataToUpload.append("tipo",tipoUsuario.current )
+      formDataToUpload.append("email",email.current)
+      formDataToUpload.append("password",password.current )
+
+      axios({
+        url:url,
+        method:'POST',
+        headers: {"content-type": "multipart/form-data"},
+        data:formDataToUpload
+        }).then((res: { data: any; }) => {
         const resquest = res.data;
         if(resquest==="User alredy taken"){
           props.setShowAlertUsuarioRegistrado(true);

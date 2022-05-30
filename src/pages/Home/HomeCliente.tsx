@@ -109,11 +109,9 @@ const HomeCliente = (props:{setIsReg:any,
 
   const [notifications, setNotifications] =  useState < newMessage []> ( [])
   
- // const [notificaciones, setNotificaciones] = useState(false)
+  const [popoverState, setShowPopover] = useState({ showPopover: false, event: undefined });
 
- const [popoverState, setShowPopover] = useState({ showPopover: false, event: undefined });
-
- const [nuevasOrdenes, setNuevasOrdenes] = useState<string []>([]);
+  const [nuevasOrdenes, setNuevasOrdenes] = useState<string []>([]);
 
   useEffect(() => {
 
@@ -122,6 +120,7 @@ const HomeCliente = (props:{setIsReg:any,
     }
 
   }, [proveedoresEnZona]);
+
 
 //General useEffect
   useEffect(() => {
@@ -134,6 +133,7 @@ const HomeCliente = (props:{setIsReg:any,
         setShowCargandoProveedores(false)   
         setProveedoresEnZona(res)}
       }
+     
     })
         
     const ubicacion = getLocation();
@@ -143,7 +143,7 @@ const HomeCliente = (props:{setIsReg:any,
         setShowAlertUbicación(true)
       }
 
-    
+      
       axios.get(url+"home/cliente/"+value).then((resp: { data: any; }) => {
 
         if (resp.data!="bad"){
@@ -394,7 +394,6 @@ export const ListaDeMensajes = ( props:{otra:any, setMostrarChat:any, ticket:any
 
 export const CardCampanaNotificacion = (props:{nuevasOrdenes:any, notify:any, setMostrarChat:any}) => {
  
- console.log("aca esta lo de campana: "+props.nuevasOrdenes.length)
   if (props.notify.length>0 || props.nuevasOrdenes.length>0){
     return (
       <div>  

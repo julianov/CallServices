@@ -361,6 +361,7 @@ const getLocation = async () => {
      }
  
      if(vista==0){
+         //Vista 0 son los rubros cargados
          return(
              <IonPage>
             
@@ -371,6 +372,7 @@ const getLocation = async () => {
            );
      }
      if(vista==1){
+         //muestra informacion del rubro cargado
          return(
              <IonPage>
                <IonHeader>
@@ -397,6 +399,7 @@ const getLocation = async () => {
            );
      }
      if(vista==2){
+         //seleccion de tipo de rubro, hora y dias
      return(
  
              <IonPage>
@@ -422,6 +425,7 @@ const getLocation = async () => {
      }
  
      if (vista==3){
+         //descripcion del rubro
              return(
              <IonPage>
                
@@ -444,6 +448,7 @@ const getLocation = async () => {
            );
      }
      if(vista==4){
+         //radio de trabajo
          return(
              <IonPage>
               
@@ -471,6 +476,8 @@ const getLocation = async () => {
      }
      
      if(vista==6){
+
+        //agregar certificado
                      return(
              <IonPage>
               
@@ -496,7 +503,7 @@ const getLocation = async () => {
      }
  
      if(vista==5){
- 
+ //agregar imagenes de referencia
          return(
              <IonPage>
               
@@ -1134,7 +1141,7 @@ const getLocation = async () => {
              <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto",alignItems:"center", textAlign:"center", marginTop:"25px"}}>
                 <h1>DATOS PRINCIPALES</h1>
              </div>
-             <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100%"}}>
+             <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"auto"}}>
                  
                  <div className="caja">
                      <IonGrid>

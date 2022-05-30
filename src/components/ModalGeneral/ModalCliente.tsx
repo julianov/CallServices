@@ -453,6 +453,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
         var realData = block[1].split(",")[1];
         var blob = b64toBlob(realData, contentType,1);
         formDataToUpload.append("image", blob);
+        
         const axios = require('axios');
         axios({
             url:url+"cambiarInfoPersonal",
