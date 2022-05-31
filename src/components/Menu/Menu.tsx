@@ -149,7 +149,7 @@ import {
           <IonList id="inbox-list">
           <div ><img src={imagen} id="foto_usuario" />
           </div>
-          <IonNote id="user">{user!.email}</IonNote>
+          <IonNote id="user">{user!.nombre}</IonNote>
 
             {appPages.map((appPage, index) => {
               return (
