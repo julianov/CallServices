@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { useUserContext } from "../../Contexts/UserContext"
 import Https from "../../utilidades/HttpsURL"
 import { retornarIconoCategoria } from "../../utilidades/retornarIconoCategoria"
-import { getLocation } from "./PedirOrden"
+import { getLocation, TomarFotografia } from "./PedirOrden"
 
 
 const url=Https+"orden/ordenEmergencia/"
@@ -28,6 +28,14 @@ export const PedirOrdenEmergencia = (props:{setVolver:any}) => {
 
     const  {user,setUser}  = useUserContext()
 
+    const foto1Mostrar= useRef <String>()
+    const foto2Mostrar= useRef <String>()
+
+    const foto1= useRef <Blob>()
+    const foto2= useRef <Blob>()
+
+    const [ticket, setTicket]=useState(0)
+
     useEffect(() => {
         
         const ubicacion = getLocation();
@@ -45,11 +53,18 @@ export const PedirOrdenEmergencia = (props:{setVolver:any}) => {
         if ( (user!.email!="" && user!.email!=undefined) && latitudCliente.current!="" && longitudCliente.current!="" && descripcionProblema.current!="" ){
             
             formDataToUpload.append("clienteEmail", user!.email)
-            formDataToUpload.append("rubro", rubroSeleccionado)
-            formDataToUpload.append("latitud", latitudCliente.current)
-            formDataToUpload.append("longitud", longitudCliente.current)
-            formDataToUpload.append("descripcion", descripcionProblema.current)
+            formDataToUpload.append("categoria", rubroSeleccionado)
+            formDataToUpload.append("clienteLat", latitudCliente.current)
+            formDataToUpload.append("clienteLong", longitudCliente.current)
+            formDataToUpload.append("descripcion_problema", descripcionProblema.current)
             formDataToUpload.append("ubicacion", descripcionUbicacion.current)
+
+            if(foto1.current!=null || foto1.current!=undefined){
+                formDataToUpload.append("imagen1", foto1.current);
+            }
+            if(foto2.current!=null || foto2.current!=undefined){
+                formDataToUpload.append("imagen2", foto2.current); 
+            }
 
             const axios = require('axios');
                     axios({
@@ -59,9 +74,11 @@ export const PedirOrdenEmergencia = (props:{setVolver:any}) => {
                         data:formDataToUpload
                     }).then(function(res: any){
 
+                        console.log("lo que llego es: "+res.data)
                         if(res.data!="bad" && res.data!="ya hay una orden"){
 
                             setVista("ordenEnProgreso")
+                            setTicket(res.data)
 
                         }
           
@@ -99,9 +116,6 @@ export const PedirOrdenEmergencia = (props:{setVolver:any}) => {
                             </IonItem>                            
                             ) 
                     })}
-
-                
-                
                 </div>
             </div>
         )
@@ -120,6 +134,8 @@ export const PedirOrdenEmergencia = (props:{setVolver:any}) => {
                     </div>
                 </div>
                 <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center",textAlign:"center", width:"100%", height:"100%"}}>                  
+                                              
+                    
                     <p style={{fontSize:"1.2em",color:"black"}}>Ingrese descripción del problema</p>
                     <IonItem >
                         <IonLabel position="floating">DESCRIPCIÓN</IonLabel>
@@ -133,10 +149,40 @@ export const PedirOrdenEmergencia = (props:{setVolver:any}) => {
                     </IonItem>
                 </div>
                 <div style={{width:"100%", display:"flex", justifyContent:"center", margin:"0px 0px 15px 0px"}}>
-                        <IonButton shape="round" color="warning" style={{float:"right",width:"50%", marginTop:"20px"}} onClick={() => solicitar()}>SOLICITAR</IonButton>
+                        <IonButton shape="round" color="warning" style={{float:"right",width:"50%", marginTop:"20px"}} onClick={() => setVista("agregarImagenes")}>SIGUIENTE</IonButton>
                 </div>
             </div>
         )
+    }else if(vista=="agregarImagenes"){
+
+        return(
+
+    <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%"}}> 
+                <div style={{width:"100%", height:"auto"}}>
+                    <div id="modalProveedor-flechaVolver">
+                        <IonIcon icon={arrowBack} onClick={() => {setVista("rubros"); setRubroSeleccionado("")} } slot="start" id="flecha-volver">  </IonIcon>
+                    </div>
+                    <div style={{display:"flex", flexDirection:"column", alignItems:"center", textAlign:"center", width:"100%", height:"auto"}}>
+                        <h1>EMERGENCIAS</h1>
+                        <p style={{fontSize:"1.2em",color:"black"}}>{rubroSeleccionado}</p>
+                        <img style={{width:"64px", height:"64px"}} src={retornarIconoCategoria(rubroSeleccionado)}></img>
+
+                    </div>
+                </div>
+                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center",textAlign:"center", width:"100%", height:"100%"}}>                  
+                    <p style={{fontSize:"1.2em",color:"black"}}>¿Desea ingresar imágenes?</p>
+                    
+                    <TomarFotografia imagen={foto1Mostrar} setFilepath={foto1} />
+                    <TomarFotografia imagen={foto1Mostrar} setFilepath={foto1} />
+
+                </div>
+                <div style={{width:"100%", display:"flex", justifyContent:"center", margin:"0px 0px 15px 0px"}}>
+                        <IonButton shape="round" color="warning" style={{float:"right",width:"50%", marginTop:"20px"}} onClick={() => solicitar()}>SOLICITAR</IonButton>
+                </div>
+            </div>
+
+        )
+
     }else if(vista=="ordenEnProgreso"){
         return (
             <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%"}}> 
@@ -152,11 +198,13 @@ export const PedirOrdenEmergencia = (props:{setVolver:any}) => {
                     </div>
                 </div>
                 <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center",textAlign:"center", width:"100%", height:"100%"}}>
-              
+                <h1>BUSCANDO PROVEEDORES</h1>
+                <h3>TICKET DE ORDEN: {ticket} </h3>
+
                 
                 </div>
                 <div style={{width:"100%", display:"flex", justifyContent:"center", margin:"0px 0px 15px 0px"}}>
-                        <IonButton shape="round" color="warning" style={{float:"right",width:"50%", marginTop:"20px"}} onClick={() => cancelar()}>CANCELAR</IonButton>
+                        <IonButton shape="round" color="warning" style={{float:"right",width:"50%", marginTop:"20px"}} onClick={() => cancelar()}>CANCELAR ORDEN</IonButton>
                 </div>
             </div>
         )

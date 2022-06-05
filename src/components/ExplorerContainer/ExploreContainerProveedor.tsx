@@ -69,12 +69,12 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any, sin
 
   const [cargarRubro, setCargarRubro] = useState(false)
 
-  console.log("EL PROPS NUEVAS ORDENES EN EXPLORER CONTAINER ES: "+props.nuevasOrdenes)
 
     if(cargarRubro){
       return (<CompletarRubros setIsReg={props.setIsReg} clientType= {props.tipodeCliente} email={props.emailProveedor} ></CompletarRubros>);
     }else{
       if(hayOrdenes){
+
         return (
           <><div id="container-principal-ExplorerContainer-Cliente">
            
@@ -156,12 +156,21 @@ const Elements = (props:{ proveedores: Array <ordenes> , setVerOrden:any,setPosi
 
         {props.proveedores.map((a) => {
           i=i+1
+          if (a.tipo=="Orden de emergencia"){
+            return (
+              <IonSlide>
+                <CardVistaVariasOrdenesEmergencia key={i} posicion={i} rubro={a.rubro} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket} 
+                dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_cliente} setVerOrden={props.setVerOrden} setPosicion={props.setPosicion} nuevasOrdenes={props.nuevasOrdenes} setNuevasOrdenes={props.setNuevasOrdenes}></CardVistaVariasOrdenes>
+               </IonSlide>
+               )
+          }else{
           return (
           <IonSlide>
             <CardVistaVariasOrdenes key={i} posicion={i} rubro={a.rubro} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket} 
             dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_cliente} setVerOrden={props.setVerOrden} setPosicion={props.setPosicion} nuevasOrdenes={props.nuevasOrdenes} setNuevasOrdenes={props.setNuevasOrdenes}></CardVistaVariasOrdenes>
            </IonSlide>
-           ) 
+           )
+           } 
         })
         }
         </IonSlides>
