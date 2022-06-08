@@ -29,14 +29,13 @@ import { getLocation } from "../../pages/PedirOrdenes/PedirOrden";
 
     useEffect(() => {
 
-      if(props.email!="" && props.item!="") {const ubicacion = getLocation();
+      if(props.email!="" && props.item!="") {
+       
+      const ubicacion = getLocation();
       ubicacion.then((value)=>{
+       
         if (value!=""){
   
-          console.log("el email es: "+props.email)
-    
-      console.log("el email es: "+props.item)
-
           const posicion=value
           props.setShowCargandoProveedores(true)
           const axios = require('axios');
