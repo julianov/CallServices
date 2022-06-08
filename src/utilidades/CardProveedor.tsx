@@ -53,10 +53,6 @@ export interface datosOrden{
 
 
 const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, proveedorEmail:string	}) => {
-
-  //el email del props es el email del proveedor
-  //asi que al parecer tenemos 2 correos del proveedor
-
    
   const [showModalOrden, setShowModalOrden] = useState( false );
   const [showModalVerReseñas, setShowModalVerReseñas] = useState( false );
@@ -80,9 +76,6 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
         dias_proveedor:"",
          }
     )
-
-    
-
  
   const [datosProveedoresArray, setDatosProveedores] = useState <datosProveedor>(
             {nombre:"nombre",
