@@ -13,11 +13,9 @@ import { getLocation } from "../../pages/PedirOrdenes/PedirOrden";
   const [locacionBloqueada, setAlertLocation]=useState(false)
   
 
-    const volver = ( )=> {
-      console.log("se ejecuto volver")
+  const volver = () => {
       props.setVerProveedor(false) 
-
-    }
+  }
     
     //ordenes son las ordenes que hay que checkear si ya hay una orden con el proveedor. Esta data viene del home
 
