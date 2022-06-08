@@ -122,13 +122,6 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
   )
 
   var tipo=""
-     
-      //en último tiene que ir:
-      //"Juan Carlos","Electricidad","Proveedor de servicio independiente"
-      // mas el email y una imagen
-
-   // const [arreglo_resultado_busqueda, set_arreglo_resultado_busqueda] =  useState <categoriaBuscada []> ( [])
-
  
     useEffect(() => {
       
@@ -143,9 +136,6 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
           proveedorVaALocacion.current=(true)
 
         }
-
-      //  console.log("la calificación que llego es: "+props.data.qualification)
-      //  console.log("el tipo de la calificación es: "+typeof(props.data.qualification))
         
         setDatosProveedores({nombre:props.data.name,
           last_name:props.data.last_name,
@@ -196,14 +186,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
 
       }
 
-   /*   if(props.proveedorEmail!="" && props.data!=undefined && datosProveedoresArray.nombre!="nombre" && datosProveedoresArray.last_name!="apellido" && datosProveedoresArray.qualification!=undefined){
-        
-        guardarUltimoProveedor()
-
-      }*/
     }, [props.data, props.imagenes])
-    
-
     
      
     useEffect(() => {   
@@ -211,25 +194,10 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
       if (datosProveedoresArray.nombre!="nombre" && datosProveedoresArray.last_name!="apellido" && datosProveedoresArray.picture!="" && datosProveedoresArray.qualification!=undefined && datosProveedoresArray.items!=""){
         console.log("tiene que haberse ejecutado getDB")
         getDB("UltimosProveedores").then(res => {
-          // console.log("veamos entonces lo que es res: "+JSON.stringify(res))
            if(res!=null){
-            /* setUltimos(res.map((d: { item: any; tipo: any; nombre: any; apellido: any; imange: any; calificacion: any; email: any; }) => ({
-               item:d.item,
-               tipo:d.tipo,
-               nombre:d.nombre,
-               apellido:d.apellido,
-               imagen:d.imange,
-               calificacion:d.calificacion,
-               email:d.email
-                }))
-              );       */
-  
-              console.log("TIENE QUE HABER ENTRADO ACÁ"+res.length)
              if(res.length<5){
                if ( ! ultimos.includes(  {item:datosProveedoresArray.items,tipo:datosProveedoresArray.tipo,nombre:datosProveedoresArray.nombre,apellido:datosProveedoresArray.last_name,imagen:datosProveedoresArray.picture,calificacion:datosProveedoresArray.qualification.toString(),email:props.proveedorEmail}  ) )
-               {
-                 console.log("TIENE QUE HABER ENTRADO ACÁ")
-  
+               {  
                  setUltimos([...ultimos, {item:datosProveedoresArray.items,tipo:datosProveedoresArray.tipo,nombre:datosProveedoresArray.nombre,apellido:datosProveedoresArray.last_name,imagen:datosProveedoresArray.picture,calificacion:datosProveedoresArray.qualification.toString(),email:props.proveedorEmail} ] )
                  setDB("UltimosProveedores", ultimos)
                }              
@@ -243,12 +211,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
               
              }
            }else{
-  
-             console.log("entonces no hay nada che")
-            // var arreglo_guardar=[]
-            // arreglo_guardar.push([props.proveedorEmail,datosProveedoresArray.nombre,datosProveedoresArray.last_name,tipo,datosProveedoresArray.picture, datosProveedoresArray.qualification,datosProveedoresArray.items])
             setUltimos([{item:datosProveedoresArray.items,tipo:datosProveedoresArray.tipo,nombre:datosProveedoresArray.nombre,apellido:datosProveedoresArray.last_name,imagen:datosProveedoresArray.picture,calificacion:datosProveedoresArray.qualification!.toString(),email:props.proveedorEmail} ] )
-  
             setDB("UltimosProveedores", ultimos)
            
            }
@@ -258,7 +221,6 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
   
       useEffect(() => {
   
-        console.log("LLEGO AQUI "+  (ultimos) )
         if (ultimos.length  > 0 ){
           setDB("UltimosProveedores", (ultimos))
   
@@ -267,10 +229,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
         }, [ultimos])
   
 
-
-
       const contratar = () =>{
-
         datosDeOrdenes.current= (
         {
           clienteEmail:props.emailCliente,
@@ -288,10 +247,6 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
     
       }
 
-
-
-
-     
       
       if(datosProveedoresArray.tipo=="Proveedor de servicio independiente"){
         return (
@@ -333,7 +288,6 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
               </IonGrid>
             </IonCardHeader>
           </IonCard>
-
          
           <IonCard id="ionCard-CardProveedor">
             <div style={{display:"flex", flexDirection:"column", textAlign:"center"}}>
@@ -344,7 +298,6 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
               <IonItem lines="none"> {datosProveedoresArray.locacion} </IonItem>
               </div>
                 <div id="CardProveedorContainer">
-
                   <IonItem  lines="none"> DISTANCIA ACTUAL AL PROVEEDOR: {Math.round(datosProveedoresArray.distancia)} km </IonItem>
                   <IonItem lines="none"> PAÍS: {datosProveedoresArray.pais}  </IonItem>
                   <IonItem lines="none"> PROVINCIA/DEPARTAMENTO/ESTADO: {datosProveedoresArray.provincia}  </IonItem>
@@ -359,7 +312,6 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
               <h1 style={{fontSize:"1em",fontWeight:"bold", color:"black"}}>DATOS DE JORNADA LABORAL</h1>
               </div>
               <IonItemDivider></IonItemDivider>
-
                 <div id="CardProveedorContainer">
                   <IonItem lines="none"> DIAS LABORALES: {datosProveedoresArray.days_of_works}  </IonItem>
                   <IonItem lines="none"> HORA DE INICIO DE LA JORNADA: {datosProveedoresArray.hour_init}  </IonItem>
@@ -373,17 +325,14 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
               <h1 style={{fontSize:"1em",fontWeight:"bold", color:"black"}}>CERTIFICADO</h1>
               </div>
               <IonItemDivider></IonItemDivider>
-
                 <Certificado certificado={imagenesProveedoresArray.certificate}></Certificado>
             </IonCard>
-
            
             <IonCard id="ionCard-CardProveedor">
             <div style={{display:"flex", flexDirection:"column", textAlign:"center"}}>
             <h1 style={{fontSize:"1em",fontWeight:"bold", color:"black"}}> IMÁGENES DE REFERENCIA</h1>
             </div>
             <IonItemDivider></IonItemDivider>
-
                 <Imagenes picture1={imagenesProveedoresArray.picture1} picture2={imagenesProveedoresArray.picture2} picture3={imagenesProveedoresArray.picture3}></Imagenes>              
             </IonCard>
 
@@ -402,13 +351,12 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
             animated={true}
             isOpen={showModalOrden}
             onDidDismiss={() => setShowModalOrden( false)}
-          >
+            >
             <OrdenSimple
               data={datosDeOrdenes.current} 
               clienteEmail={props.emailCliente}
               proveedorVaALocacion={proveedorVaALocacion.current}
               setVolver={setShowModalOrden} />
-
           </IonModal>
           
           <IonModal
@@ -421,11 +369,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
               email_a_ver_reseñas={datosDeOrdenes.current.proveedorEmail}
               setVolver={setShowModalVerReseñas} />
           </IonModal>
-          
-
           </>
-      
-      
              
         )
       }else{
@@ -491,7 +435,6 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
               <h1 style={{fontSize:"1em",fontWeight:"bold", color:"black"}}>CERTIFICADO</h1>
               </div>
               <IonItemDivider></IonItemDivider>
-
                 <Certificado certificado={imagenesProveedoresArray.certificate}></Certificado>
             </IonCard>
 
@@ -501,7 +444,6 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
             <h1 style={{fontSize:"1em",fontWeight:"bold", color:"black"}}> IMÁGENES DE REFERENCIA</h1>
             </div>
             <IonItemDivider></IonItemDivider>
-
                 <Imagenes picture1={imagenesProveedoresArray.picture1} picture2={imagenesProveedoresArray.picture2} picture3={imagenesProveedoresArray.picture3}></Imagenes>              
             </IonCard>
 
@@ -518,26 +460,23 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
                     <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => contratar()} >CONTRATAR</IonButton>
                 </IonRow>
               </IonGrid>
-
             </IonCard>
+            
             <IonModal
             animated={true}
             isOpen={showModalOrden}
-            onDidDismiss={() => setShowModalOrden( false )}
-          >
+            onDidDismiss={() => setShowModalOrden( false )}>
             <OrdenSimple
               data={datosDeOrdenes.current} 
               clienteEmail={props.emailCliente} 
               proveedorVaALocacion={proveedorVaALocacion.current}
               setVolver={setShowModalOrden} />
-
           </IonModal>
           
           <IonModal
             animated={true}
             isOpen={showModalVerReseñas}
-            onDidDismiss={() => setShowModalVerReseñas( false )}
-          >
+            onDidDismiss={() => setShowModalVerReseñas( false )} >
             <Resenas
               tipo={datosDeOrdenes.current.tipo}
               email_a_ver_reseñas={datosDeOrdenes.current.proveedorEmail}
@@ -551,8 +490,6 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
 
 
   const Imagenes= (props:{ picture1:any,picture2:any, picture3:any	}) => {
-
-
     if(props.picture1!="" && props.picture2!="" &&props.picture3!=""){
       return(
         <div id="CardProveedoresImg"><img id="ionCard-explorerContainer-Cliente-Imagen" src={props.picture1}></img>
