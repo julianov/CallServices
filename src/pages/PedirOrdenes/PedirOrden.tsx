@@ -3,11 +3,11 @@ import axios from "axios";
 
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import React, { useEffect, useRef, useState } from 'react';
-import { arrowBack, camera, logoWindows, trash } from 'ionicons/icons';
+import { arrowBack, camera, close, logoWindows, trash } from 'ionicons/icons';
 import { isSetAccessorDeclaration } from 'typescript';
 import { allowedNodeEnvironmentFlags } from 'process';
 import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent, IonDatetime, IonCheckbox, IonLoading, IonTitle, IonSegment, IonSegmentButton, IonItemDivider } from '@ionic/react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Https from '../../utilidades/HttpsURL';
 import { setDB } from '../../utilidades/dataBase';
 import Estrellas from '../../components/Estrellas/Estrellas';
@@ -61,6 +61,14 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
     const [showAlertYaHayOrden,setShowAlertYaHayOrden]=useState(false)
     
     const ticket = useRef()
+    let history = useHistory();
+
+    const irAHome = () => {
+
+        history.push("/home");
+        window.location.reload();
+
+    }
 
     useEffect(() => {
         
@@ -428,13 +436,11 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
        // aca tengo que cambiar que la flecha valla al home
         return(
 
-
-            <div style={{display:"flex", flexDirection:"column", width:"100%", minHeight:"100%" ,height:"100vh", background: "#f3f2ef"}}>
-                <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto"}}>
-                    <div id="modalProveedor-flechaVolver">
-                    <IonIcon icon={arrowBack} onClick={() => props.setVolver( false )} slot="start" id="flecha-volver">  </IonIcon>
+<IonContent>
+            <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", background: "#f3f2ef"}}>
+                    <div style={{width:"100%", height:"auto", justifyContent:"right"}}>
+                    <IonIcon icon={close} onClick={() => irAHome( )} slot="end" id="flecha-cerrar">  </IonIcon>
                     </div>
-                </div>
 
                 <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center", alignItems:"center"}}>
 
@@ -464,7 +470,7 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
             <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => reload()}>IR A HOME</IonButton>
             </div>
           </div> 
-
+          </IonContent>
         )
     }
    

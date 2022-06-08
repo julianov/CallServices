@@ -160,7 +160,7 @@ const Elements = (props:{ proveedores: Array <ordenes> , setVerOrden:any,setPosi
             return (
               <IonSlide>
                 <CardVistaVariasOrdenesEmergencia key={i} posicion={i} rubro={a.rubro} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket} 
-                dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_cliente} setVerOrden={props.setVerOrden} setPosicion={props.setPosicion} nuevasOrdenes={props.nuevasOrdenes} setNuevasOrdenes={props.setNuevasOrdenes}></CardVistaVariasOrdenes>
+                dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_cliente} setVerOrden={props.setVerOrden} setPosicion={props.setPosicion} nuevasOrdenes={props.nuevasOrdenes} setNuevasOrdenes={props.setNuevasOrdenes}></CardVistaVariasOrdenesEmergencia>
                </IonSlide>
                )
           }else{
@@ -349,6 +349,13 @@ const CardSinRubro = (props:{ setCargarRubro:any}) => {
 )
  
 
+}
+
+const CardVistaVariasOrdenesEmergencia =  (props:{posicion:any,rubro:string, tipo:string,status:string,fecha_creacion:string,ticket: string,
+  dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, setPosicion:any, nuevasOrdenes:any, setNuevasOrdenes:any }) => {
+  return (
+    <></>
+  )
 }
 
 const CampanaPublicidad  = () => {
