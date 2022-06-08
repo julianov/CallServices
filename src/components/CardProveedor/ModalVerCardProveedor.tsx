@@ -23,10 +23,6 @@ import { getLocation } from "../../pages/PedirOrdenes/PedirOrden";
     
     //ordenes son las ordenes que hay que checkear si ya hay una orden con el proveedor. Esta data viene del home
 
-    console.log("el email es: "+props.email)
-    
-    console.log("el email es: "+props.item)
-
     useEffect(() => {
 
       if(props.email!="" && props.item!="") {
