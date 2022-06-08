@@ -31,19 +31,11 @@ const getLocation = async () => {
     return 0;
   }
 }
-//var ultimos: never[]=[]
-
-//let proveedores = new Array<ordenesCliente>();
-
 
 
 const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGeneralesVariosProveedores>, url:string, setShowCargandoProveedores:any, 
   setShowModal:any, setTipoDeVistaEnModal:any, emailCliente:String,
   buscar:any, busqueda_categorias:any, busquedaDatosProveedores:Array<proveedorBuscado>}) => {
-
-  
-  //const [proveedores, setProveedores]=useState()
-
 
   const [recargarOrden, setRecargarOrden] = useState(false)
   
@@ -58,7 +50,6 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
   const [posicion, setPosicion] = useState(0)
   const [locacion, setLocacion] = useState("")
 
-
   const [verProveedor,setVerProveedor]= useState(false);
   const [pediOrden, setPediOrden] = useState(false);
   const [verReseña, setVerReseña] = useState(false);
@@ -66,7 +57,6 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
   const tiipo = useRef("")
 
   const [ultimos, setUltimos] =  useState <categoriaBuscada []> ( [])
-
 
   const [datosDeOrdenes,setDatosDeOrdenes]=useState<datosOrden>(
     {
@@ -81,8 +71,6 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
       dias_proveedor:"",
        }
   )
-
-
 
   useEffect(() => {
 
@@ -116,15 +104,10 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
           }
         })
     }
-
-  
-
   }, [props.ordenes, pediOrden]);
 
   
   useEffect(() => {
-
-
     getDB("UltimosProveedores").then(res => {
       if(res!=null){
         setUltimos(res.map((d: { item: any; tipo: any; nombre: any; apellido: any; imagen: any; calificacion: any; email: any; }) => ({
@@ -166,59 +149,52 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
           <IonModal
             animated={true}
             isOpen={verOrden}
-            onDidDismiss={() => setVerOrden( false )}
-            >
+            onDidDismiss={() => setVerOrden( false )}>
             <ModalVerOrdenesCliente 
               datos={props.ordenes[posicion-1]}
               setVolver={setVerOrden}
-              emailCliente={props.emailCliente}
-
-            
-            />  
+              emailCliente={props.emailCliente} />  
         </IonModal>
 
         <IonModal
-              animated={true}
-              isOpen={verReseña}
-              onDidDismiss={() =>setVerReseña(false )} >
-              <Resenas
-                tipo={tiipo.current}
-                email_a_ver_reseñas={verEmail}
-                setVolver={setVerReseña} />
-          </IonModal>
-
-          <IonModal
-              animated={true}
-              isOpen={pediOrden}
-              onDidDismiss={() => setPediOrden( false )}>
-              <OrdenSimple
-              
-                data={datosDeOrdenes} 
-                clienteEmail={props.emailCliente} 
-                proveedorVaALocacion={true}
-                setVolver={setPediOrden} />
-          </IonModal>
-
-          <IonModal
             animated={true}
-            isOpen={verProveedor}
-            onDidDismiss={() => setVerProveedor( false )}
-          >
-            <ModalVerCardProveedor 
-                ordenes={props.ordenes}
-                email={verEmail}
-                emailCliente={props.emailCliente}
-                proveedorEmail={verEmail}
-                setVerEmail={setVerEmail}
-                setItem={setItem}
-                setVerProveedor={setVerProveedor} 
-                url={props.url} 
-                setShowCargandoProveedores={props.setShowCargandoProveedores} 
-                item={item}            />  
-          </IonModal>
+            isOpen={verReseña}
+            onDidDismiss={() =>setVerReseña(false )} >
+            <Resenas
+              tipo={tiipo.current}
+              email_a_ver_reseñas={verEmail}
+              setVolver={setVerReseña} />
+        </IonModal>
 
-              </>
-          );
+        <IonModal
+            animated={true}
+            isOpen={pediOrden}
+            onDidDismiss={() => setPediOrden( false )}>
+            <OrdenSimple
+              data={datosDeOrdenes} 
+              clienteEmail={props.emailCliente} 
+              proveedorVaALocacion={true}
+              setVolver={setPediOrden} />
+        </IonModal>
+
+        <IonModal
+          animated={true}
+          isOpen={verProveedor}
+          onDidDismiss={() => setVerProveedor( false )}>
+          <ModalVerCardProveedor 
+              ordenes={props.ordenes}
+              email={verEmail}
+              emailCliente={props.emailCliente}
+              proveedorEmail={verEmail}
+              setVerEmail={setVerEmail}
+              setItem={setItem}
+              setVerProveedor={setVerProveedor} 
+              url={props.url} 
+              setShowCargandoProveedores={props.setShowCargandoProveedores} 
+              item={item}/>  
+        </IonModal>
+     </>
+ );
   
       
      
