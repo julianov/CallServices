@@ -6,8 +6,6 @@ import { IonAlert, IonContent, IonIcon } from "@ionic/react";
 import { getLocation } from "../../pages/PedirOrdenes/PedirOrden";
 
 
-
-
  const ModalVerCardProveedor = (props:{ordenes:any, url:string, setShowCargandoProveedores:any, setVerProveedor:any,emailCliente:String, email:any, proveedorEmail:string, setVerEmail:any, setItem:any, item:any})  =>{
 
   const [caracteres,setCaracteres]=useState([])
