@@ -8,7 +8,7 @@ import { getLocation } from "../../pages/PedirOrdenes/PedirOrden";
 
 
 
- const ModalVerCardProveedor = (props:{url:string, setShowCargandoProveedores:any, setVerProveedor:any,emailCliente:String, email:any, proveedorEmail:string, setVerEmail:any, setItem:any, item:any})  =>{
+ const ModalVerCardProveedor = (props:{ordenes:any, url:string, setShowCargandoProveedores:any, setVerProveedor:any,emailCliente:String, email:any, proveedorEmail:string, setVerEmail:any, setItem:any, item:any})  =>{
 
   const [caracteres,setCaracteres]=useState([])
   const [imagenes,setImagenes]=useState([])
@@ -19,9 +19,9 @@ import { getLocation } from "../../pages/PedirOrdenes/PedirOrden";
       console.log("se ejecuto volver")
       props.setVerProveedor(false) 
 
-    // props.setVerEmail("")
-    // props.setItem("")
     }
+    
+    //ordenes son las ordenes que hay que checkear si ya hay una orden con el proveedor. Esta data viene del home
 
     console.log("el email es: "+props.email)
     
