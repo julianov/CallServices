@@ -205,6 +205,7 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
             onDidDismiss={() => setVerProveedor( false )}
           >
             <ModalVerCardProveedor 
+                ordenes={props.ordenes}
                 email={verEmail}
                 emailCliente={props.emailCliente}
                 proveedorEmail={verEmail}
