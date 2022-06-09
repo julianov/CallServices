@@ -50,7 +50,7 @@ export interface categoriaBuscada{
     email:string
 }
 
-const ResultadoBusqueda =  (props:{arreglo_ultimos:any, emailCliente:any, arreglo_categorias:any, busquedaDatosProveedores:any})=> {
+const ResultadoBusqueda =  (props:{ordenes:any, arreglo_ultimos:any, emailCliente:any, arreglo_categorias:any, busquedaDatosProveedores:any})=> {
 
     //var ultimos=props.arreglo_ultimos
 
@@ -196,7 +196,7 @@ const ResultadoBusqueda =  (props:{arreglo_ultimos:any, emailCliente:any, arregl
                 </div> 
 
                 <div id="contenedorCentral-busqueda">
-                    <CardProveedor data={caracteres} imagenes={imagenes} emailCliente={email.current} proveedorEmail={email.current} ></CardProveedor>
+                    <CardProveedor ordenes={props.ordenes} data={caracteres} imagenes={imagenes} emailCliente={email.current} proveedorEmail={email.current} ></CardProveedor>
                 </div>
             </>
         )

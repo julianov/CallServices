@@ -171,6 +171,7 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
             isOpen={pediOrden}
             onDidDismiss={() => setPediOrden( false )}>
             <OrdenSimple
+            ordenes={props.ordenes}
               data={datosDeOrdenes} 
               clienteEmail={props.emailCliente} 
               proveedorVaALocacion={true}
@@ -205,7 +206,7 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
    
     return (
       <div id="container-principal-ExplorerContainer-Cliente">   
-        <ResultadoBusqueda emailCliente={props.emailCliente} arreglo_categorias={props.busqueda_categorias} arreglo_ultimos={ultimos} busquedaDatosProveedores={props.busquedaDatosProveedores} ></ResultadoBusqueda>
+        <ResultadoBusqueda  ordenes={props.ordenes} emailCliente={props.emailCliente} arreglo_categorias={props.busqueda_categorias} arreglo_ultimos={ultimos} busquedaDatosProveedores={props.busquedaDatosProveedores} ></ResultadoBusqueda>
       </div>
     )
   }

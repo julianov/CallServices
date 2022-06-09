@@ -32,7 +32,7 @@ export const getLocation = async () => {
     }
   }
 
-const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedorVaALocacion:any}) => {
+const OrdenSimple = (props:{ordenes:any,data:any, clienteEmail:any , setVolver:any, proveedorVaALocacion:any}) => {
 
     
     const [vista,setVista] = useState ("primeraVista")
@@ -63,6 +63,9 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
     const ticket = useRef()
     let history = useHistory();
 
+    const[yaTieneRubro, setYaTieneRubro] = useState(false)
+
+
     const irAHome = () => {
 
         history.push("/home");
@@ -78,6 +81,13 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
             latitudCliente.current=(value).split("/")[0]
             longitudCliente.current=(value).split("/")[1]
         });
+
+        props.ordenes.map((a: any) => {
+        
+            if (a.rubro==props.data.items && a.email_proveedor==props.data.proveedorEmail){
+              setYaTieneRubro(true)
+            }
+          })
 
       }, [])
 
@@ -171,73 +181,92 @@ const OrdenSimple = (props:{data:any, clienteEmail:any , setVolver:any, proveedo
 
   
     if (vista=="primeraVista"){
-        return (
-            <IonContent >
-                <div id="GenerarOrdenContainer">
-                    <div id="modalProveedor-flechaVolver">
-                        <IonIcon icon={arrowBack} onClick={() => props.setVolver( false )} slot="start" id="flecha-volver">  </IonIcon>
-                    </div>
-                    <div id="contenderCentralOrden">
-                        <IonCard id="ionCardOrden">
-                            <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
-                                <h2 id="tituloPedirOrdenEnCard">RUBRO DE SERVICIO:</h2>
-                                <p style={{fontWeight:"600", fontSize:"1.2em", marginBottom:"15px"}}>{props.data.items}</p>
-                                <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(props.data.items)}></img>
-                                <IonItemDivider />
-                                <h2 id="tituloPedirOrdenEnCard">PROVEEDOR DEL SERVICIO:</h2> 
-                                <p style={{fontWeight:"600", fontSize:"1.2em", marginBottom:"15px"}}> {props.data.nombre} </p>
-                                <Estrellas calificacion={props.data.qualification}></Estrellas>
-                            </div>
-                        </IonCard>
-
-                        <IonCard id="ionCardOrden">
-                        <h1 style={{fontSize:"1.2em", color:"black", fontWeight:"bold"}}>FORMULARIO DE SOLICITUD DE SERVICIO</h1>
-                        <IonItemDivider />
-
-                            <div id="contenedorCamposCentro">
-                                <h2 style={{fontSize:"1.3em"}}>TÍTULO DEL SERVICIO</h2 >
-                            </div>
-                            <div style={{display:"flex", width:"90%", justifyContent:"center", alignItems:"center"}}>
-                                <IonItem >
-                                    <IonLabel position="floating">INGRESE TÍTULO</IonLabel>
-                                    <IonInput onIonInput={(e: any) => titulo.current = (e.target.value)}></IonInput>
-                                </IonItem>
-                            </div>
-                            <div id="contenedorCamposCentro">
-                                <h2 style={{fontSize:"1.3em"}}>BREVE DESCRIPCIÓN DEL PROBLEMA</h2>
-                            </div>
-                            <div style={{display:"flex", width:"90%", justifyContent:"center", alignItems:"center"}}>
-                                <IonItem >
-                                    <IonLabel position="floating">INGRESE DESCRIPCIÓN</IonLabel>
-                                    <IonInput onIonInput={(e: any) => descripcion.current = (e.target.value)}></IonInput>
-                                </IonItem>
-                            </div>
-                        </IonCard>
-                            
-                        <IonCard id="ionCardOrden">
-                        <h1 style={{fontSize:"1.2em", color:"black", fontWeight:"bold"}}>DIRECCIÓN DEL SERVICIO</h1>
-                        <IonItemDivider />
-                            <LocacionServicio direccion={direccion} posicionCliente={posicionCliente} latitudCliente={latitudCliente} longitudCliente={longitudCliente} ></LocacionServicio>
-                        </IonCard>
-
-                        <div style={{width:"100%", display:"flex", justifyContent:"right", marginRight:"15px"}}>
-                        <IonButton shape="round" color="warning" style={{float:"right",width:"50%", marginTop:"20px"}} onClick={() => irASiguiente()}>SIGUIENTE</IonButton>
+        if (yaTieneRubro){
+            return(
+              <IonContent>
+                <div style={{display:"flex", flexDirection:"row", width:"100%", height:"100vh", justifyContent:"center"}}>
+                  <IonIcon icon={arrowBack} onClick={() => props.setVolver( false )} slot="start" id="flecha-volver">  </IonIcon>
+        
+                  <div id="contenedor-central">
+                  <h1>YA POSEE UNA ORDEN ACTIVA</h1>
+                  <h1>CON EL PROVEEDOR</h1>
+    
+                  </div> 
+                  </div> 
+                </IonContent>
+              )
+    
+          }
+          else{
+            return (
+                <IonContent >
+                    <div id="GenerarOrdenContainer">
+                        <div id="modalProveedor-flechaVolver">
+                            <IonIcon icon={arrowBack} onClick={() => props.setVolver( false )} slot="start" id="flecha-volver">  </IonIcon>
                         </div>
-                    </div>
-
-                    
-                        <IonAlert
-                            isOpen={showAlertCompletarCampos}
-                            onDidDismiss={() => setShowAlertCompletarCampos(false)}
-                            cssClass='my-custom-class'
-                            header={'COMPLETAR CAMPOS'}
-                            subHeader={''}
-                            mode='ios'
-                            message={'Debe completar todos los campos para continuar'}
-                            buttons={['OK']} />
-            </div>
-        </IonContent>
-        )
+                        <div id="contenderCentralOrden">
+                            <IonCard id="ionCardOrden">
+                                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
+                                    <h2 id="tituloPedirOrdenEnCard">RUBRO DE SERVICIO:</h2>
+                                    <p style={{fontWeight:"600", fontSize:"1.2em", marginBottom:"15px"}}>{props.data.items}</p>
+                                    <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(props.data.items)}></img>
+                                    <IonItemDivider />
+                                    <h2 id="tituloPedirOrdenEnCard">PROVEEDOR DEL SERVICIO:</h2> 
+                                    <p style={{fontWeight:"600", fontSize:"1.2em", marginBottom:"15px"}}> {props.data.nombre} </p>
+                                    <Estrellas calificacion={props.data.qualification}></Estrellas>
+                                </div>
+                            </IonCard>
+    
+                            <IonCard id="ionCardOrden">
+                            <h1 style={{fontSize:"1.2em", color:"black", fontWeight:"bold"}}>FORMULARIO DE SOLICITUD DE SERVICIO</h1>
+                            <IonItemDivider />
+    
+                                <div id="contenedorCamposCentro">
+                                    <h2 style={{fontSize:"1.3em"}}>TÍTULO DEL SERVICIO</h2 >
+                                </div>
+                                <div style={{display:"flex", width:"90%", justifyContent:"center", alignItems:"center"}}>
+                                    <IonItem >
+                                        <IonLabel position="floating">INGRESE TÍTULO</IonLabel>
+                                        <IonInput onIonInput={(e: any) => titulo.current = (e.target.value)}></IonInput>
+                                    </IonItem>
+                                </div>
+                                <div id="contenedorCamposCentro">
+                                    <h2 style={{fontSize:"1.3em"}}>BREVE DESCRIPCIÓN DEL PROBLEMA</h2>
+                                </div>
+                                <div style={{display:"flex", width:"90%", justifyContent:"center", alignItems:"center"}}>
+                                    <IonItem >
+                                        <IonLabel position="floating">INGRESE DESCRIPCIÓN</IonLabel>
+                                        <IonInput onIonInput={(e: any) => descripcion.current = (e.target.value)}></IonInput>
+                                    </IonItem>
+                                </div>
+                            </IonCard>
+                                
+                            <IonCard id="ionCardOrden">
+                            <h1 style={{fontSize:"1.2em", color:"black", fontWeight:"bold"}}>DIRECCIÓN DEL SERVICIO</h1>
+                            <IonItemDivider />
+                                <LocacionServicio direccion={direccion} posicionCliente={posicionCliente} latitudCliente={latitudCliente} longitudCliente={longitudCliente} ></LocacionServicio>
+                            </IonCard>
+    
+                            <div style={{width:"100%", display:"flex", justifyContent:"right", marginRight:"15px"}}>
+                            <IonButton shape="round" color="warning" style={{float:"right",width:"50%", marginTop:"20px"}} onClick={() => irASiguiente()}>SIGUIENTE</IonButton>
+                            </div>
+                        </div>
+    
+                        
+                            <IonAlert
+                                isOpen={showAlertCompletarCampos}
+                                onDidDismiss={() => setShowAlertCompletarCampos(false)}
+                                cssClass='my-custom-class'
+                                header={'COMPLETAR CAMPOS'}
+                                subHeader={''}
+                                mode='ios'
+                                message={'Debe completar todos los campos para continuar'}
+                                buttons={['OK']} />
+                </div>
+            </IonContent>
+            )
+          }
+        
     }
    else if (vista=="imagenes"){
 

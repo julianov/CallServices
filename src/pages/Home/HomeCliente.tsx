@@ -301,6 +301,7 @@ const HomeCliente = (props:{setIsReg:any,
               onDidDismiss={() => setShowModal({ isOpen: false })}
               >
               <ModalCliente 
+                ordenes={misOrdenes}
                 setIsReg={props.setIsReg}
                 email={user!.email}
                 tipoVista={tipoDeVistaEnModal}

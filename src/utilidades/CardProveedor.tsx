@@ -52,7 +52,7 @@ export interface datosOrden{
   }
 
 
-const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, proveedorEmail:string	}) => {
+const CardProveedor= (props:{ ordenes:any, data:any, imagenes:any, emailCliente:String, proveedorEmail:string	}) => {
    
   const [showModalOrden, setShowModalOrden] = useState( false );
   const [showModalVerReseñas, setShowModalVerReseñas] = useState( false );
@@ -346,6 +346,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
             onDidDismiss={() => setShowModalOrden( false)}
             >
             <OrdenSimple
+              ordenes={props.ordenes}
               data={datosDeOrdenes.current} 
               clienteEmail={props.emailCliente}
               proveedorVaALocacion={proveedorVaALocacion.current}
@@ -460,6 +461,7 @@ const CardProveedor= (props:{ data:any, imagenes:any, emailCliente:String, prove
             isOpen={showModalOrden}
             onDidDismiss={() => setShowModalOrden( false )}>
             <OrdenSimple
+              ordenes={props.ordenes}
               data={datosDeOrdenes.current} 
               clienteEmail={props.emailCliente} 
               proveedorVaALocacion={proveedorVaALocacion.current}

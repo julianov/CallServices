@@ -40,9 +40,9 @@ const getLocation = async () => {
 
 const ModalCliente: React.FC<{setIsReg:any, onClose: any; tipoVista: string; 
   email:any; completarInfoPersonal:boolean, fotoPersonal:any
-  nombre:any, apellido:any, calificacion:any, setFoto:any, setNombre:any,setApellido:any}> 
+  nombre:any, apellido:any, calificacion:any, setFoto:any, setNombre:any,setApellido:any, ordenes:any}> 
   = ({setIsReg, onClose, tipoVista, email, calificacion, completarInfoPersonal, fotoPersonal,
-    nombre, apellido, setFoto, setNombre,setApellido }) => {
+    nombre, apellido, setFoto, setNombre,setApellido,ordenes }) => {
                    
   
     
@@ -76,7 +76,7 @@ const ModalCliente: React.FC<{setIsReg:any, onClose: any; tipoVista: string;
       return (
         <>
           <IonContent>
-            <Categorias emailCliente={email} onClose={onClose} ></Categorias>
+            <Categorias ordenes={ordenes} emailCliente={email} onClose={onClose} ></Categorias>
             </IonContent>
       </>
       );
@@ -617,7 +617,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
   }
 
 
-  const Categorias = (props: {emailCliente:string, onClose:any}) => {
+  const Categorias = (props: {ordenes:any, emailCliente:string, onClose:any}) => {
 
     const arreglo_categorias=["CARPINTERÍA","CERRAJERÍA","CONSTRUCCIÓN","CONTADURÍA","ELECTRICIDAD","ELECTRÓNICA","ESTÉTICA","FLETE","FUMIGACIÓN","GASISTA","HERRERÍA","INFORMÁTICA","JARDINERÍA","MECÁNICA","MODA","PASEADOR DE MASCOTAS","PINTOR","PLOMERÍA","REFRIGERACIÓN","REMOLQUES - GRÚAS","TELEFONÍA CELULAR","TEXTIL"]
     var i=0
@@ -663,7 +663,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
             <IonIcon icon={close} onClick={() => props.onClose(null)}  id="flecha-cerrar">  </IonIcon>
           </div>
           <div id="contenedorCentral-busqueda">
-          <Rubros rubro={categoriaABuscar} setRubro={setCategoriaABuscar} emailCliente={ props.emailCliente} setShowLoading={setShowLoading} ></Rubros>
+          <Rubros ordenes={props.ordenes} rubro={categoriaABuscar} setRubro={setCategoriaABuscar} emailCliente={ props.emailCliente} setShowLoading={setShowLoading} ></Rubros>
           <IonLoading
                   cssClass='my-custom-class'
                   isOpen={showLoading}
@@ -680,7 +680,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
   }
 
   //con setRubro vuelvo atrás si es igual a ""
-  const Rubros = (props:{rubro:string, setRubro:any, emailCliente:string,setShowLoading:any}) => {
+  const Rubros = (props:{ordenes:any, rubro:string, setRubro:any, emailCliente:string,setShowLoading:any}) => {
 
     const [arregloRubroBuscado, setArregloRubroBuscado] =  useState <categoriaBuscada []> ( [])
     const [proveedorEncontrado, BuscarProveedor] = useState("")
@@ -784,7 +784,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
               
 
               <div id="contenedorCentral-busqueda">
-                  <CardProveedor data={caracteres} imagenes={imagenes} emailCliente={props.emailCliente} proveedorEmail={proveedorEncontrado.split("/")[0]} ></CardProveedor>
+                  <CardProveedor ordenes={props.ordenes} data={caracteres} imagenes={imagenes} emailCliente={props.emailCliente} proveedorEmail={proveedorEncontrado.split("/")[0]} ></CardProveedor>
               </div>
           </>
       )
