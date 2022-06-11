@@ -89,7 +89,7 @@ const OrdenSimple = (props:{ordenes:any,data:any, clienteEmail:any , setVolver:a
             }
           })
 
-      }, [])
+      }, [props.data])
 
     const irASiguiente =() => {
         if (vista=="primeraVista")
