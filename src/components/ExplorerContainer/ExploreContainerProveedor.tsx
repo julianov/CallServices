@@ -35,7 +35,7 @@ const getLocation = async () => {
 //let proveedores = new Array<ordenes>();
 
 
-const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any, sinRubro:boolean, 
+const ExploreContainerProveedor  = (props:{ notifications:any ,setNotifications:any,ordenes:any, emailProveedor:any, sinRubro:boolean, 
   setIsReg:any
   tipodeCliente:any
   setNuevasOrdenes:any
@@ -100,6 +100,7 @@ const ExploreContainerProveedor  = (props:{ ordenes:any, emailProveedor:any, sin
         onDidDismiss={() => setVerOrden( false )}
       >
         <ModalVerOrdenesProveedor
+        notifications={props.notifications} setNotifications={props.setNotifications}
           datos={props.ordenes[posicion-1]}
           setVolver={setVerOrden}
           emailProveedor={props.emailProveedor}

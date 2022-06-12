@@ -112,14 +112,6 @@ const HomeProveedor = (props:{setIsReg:any,
     }
   }, [user!.foto]);
 
-  /*useEffect(() => {
-    if (user!.foto==""|| user!.foto==null || user!.foto==undefined){
-      setImagen ("./assets/icon/nuevoUsuario.png") 
-    }else{
-      setImagen(user!.foto)
-    }
-  }, []);*/
-
   useEffect(() => {
     if(user!.email!=""){
       const ubicacion = getLocation();
@@ -208,7 +200,7 @@ const HomeProveedor = (props:{setIsReg:any,
   if (mostrarChat){
     return(
       <IonContent>
-        <Chat email={user!.email}  ticket={ticket.current} setVolver={null} setVista={setMostrarChat} desdeDondeEstoy={false} /> 
+        <Chat email={user!.email}  ticket={ticket.current} setVolver={null} setVista={setMostrarChat} desdeDondeEstoy={false} notifications={notifications} setNotifications={setNotifications} /> 
 
       </IonContent>
 
@@ -260,6 +252,7 @@ const HomeProveedor = (props:{setIsReg:any,
           </IonModal>
 
           <ExploreContainerProveedor  
+          notifications={notifications} setNotifications={setNotifications}
             ordenes={misOrdenes}
             setNuevasOrdenes={setNuevasOrdenes}
             emailProveedor={user!.email}
@@ -282,13 +275,13 @@ const HomeProveedor = (props:{setIsReg:any,
       <IonPopover 
         event={popoverState.event}
         isOpen={popoverState.showPopover}
-        onDidDismiss={() => setShowPopover({ showPopover: false, event: undefined })}
-      >
+        dismissOnSelect={true}
+        >
           
         <IonContent>
           <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center" ,width:"100%", height:"100%"}} >
             <NuevasOrdenesAviso nuevasOrdenes={nuevasOrdenes}   />
-            <ListaDeMensajes otra={notifications} setMostrarChat={setMostrarChat} ticket={ticket} />
+            <ListaDeMensajes setShowPopover={setShowPopover} otra={notifications} setMostrarChat={setMostrarChat} ticket={ticket} />
           </div>
 
         </IonContent>

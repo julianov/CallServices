@@ -224,18 +224,24 @@ const HomeCliente = (props:{setIsReg:any,
       }
     });
 
-    axios.get(url+"chatsinleer/"+user!.email).then((resp: { data: any; }) => {
-      if (resp.data!="bad"){
-        setNotifications(resp.data.map((d: { de: any; ticket: any; }) => ({
-          de:d.de,
-          ticket:d.ticket,
-          })));
-      }
-
-    })}
+ }
 
   }, [user!.email]);
 
+  useEffect(() => {
+
+    if(user!.email!="" && popoverState){
+      axios.get(url+"chatsinleer/"+user!.email).then((resp: { data: any; }) => {
+        if (resp.data!="bad"){
+          setNotifications(resp.data.map((d: { de: any; ticket: any; }) => ({
+            de:d.de,
+            ticket:d.ticket,
+            })));
+        }
+  
+      })
+    }
+  }, [user!.email, popoverState]);
 
   const [imagen, setImagen] = useState (user!.foto)
 
@@ -252,9 +258,10 @@ const HomeCliente = (props:{setIsReg:any,
   const ticket = useRef ("")
 
   if (mostrarChat){
+    
     return(
       <IonContent>
-        <Chat email={user!.email}  ticket={ticket.current} setVolver={null} setVista={setMostrarChat} desdeDondeEstoy={false} /> 
+        <Chat email={user!.email} ticket={ticket.current} setVolver={null} setVista={setMostrarChat} desdeDondeEstoy={false} notifications={notifications} setNotifications={setNotifications} /> 
 
       </IonContent>
 
@@ -262,13 +269,29 @@ const HomeCliente = (props:{setIsReg:any,
 
   }else{
     return (
+      
       <IonPage >
+
+        <IonPopover 
+                event={popoverState.event}
+                isOpen={popoverState.showPopover}
+                dismissOnSelect={true}
+              >
+                  
+                <IonContent>
+                  <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center" ,width:"100%", height:"100%"}} >
+                    <NuevasOrdenesAviso nuevasOrdenes={nuevasOrdenes}   />
+                    <ListaDeMensajes setShowPopover={setShowPopover} otra={notifications} setMostrarChat={setMostrarChat} ticket={ticket} />
+                  </div>
+                </IonContent>
+              </IonPopover>
+
         <IonHeader>
             <IonGrid>
               <IonRow id="header">
                 <IonCol id="columna" size="1.5"><IonButtons ><IonMenuButton /> </IonButtons></IonCol>
                 <IonCol id="columna2" ><Busqueda categorias={categorias} setCategorias={setCategorias} setProveedorBuscadoHook={setProveedorBuscadoHook} setBuscar={setBuscar} /></IonCol>
-                <IonCol id="columna3" size="1.5" onClick={(e: any) => { e.persist(); setShowPopover({ showPopover: true, event: e })}}>
+                <IonCol id="columna3" size="1.5" onClick={(e: any) => {  setShowPopover({ showPopover: true, event: e })}}>
                   <CardCampanaNotificacion nuevasOrdenes={nuevasOrdenes} notify={notifications} setMostrarChat={setMostrarChat}></CardCampanaNotificacion>
                 </IonCol>
                 <IonCol id="columna3" size="1.5"> 
@@ -318,7 +341,9 @@ const HomeCliente = (props:{setIsReg:any,
                 }} />  
             </IonModal>
           
-            <ExploreContainerCliente setShowCargandoProveedores={setShowCargandoProveedores} 
+            <ExploreContainerCliente 
+            notifications={notifications} setNotifications={setNotifications}
+            setShowCargandoProveedores={setShowCargandoProveedores} 
               ordenes={misOrdenes}
               proveedores={proveedoresEnZona}
               emailCliente={user!.email}
@@ -339,19 +364,7 @@ const HomeCliente = (props:{setIsReg:any,
               message={'Debe habilitar el acceso a la ubicación en el dispositivo'}
               buttons={['ENTENDIDO']}/>
 
-      <IonPopover 
-        event={popoverState.event}
-        isOpen={popoverState.showPopover}
-        onDidDismiss={() => setShowPopover({ showPopover: false, event: undefined })}
-      >
-          
-        <IonContent>
-          <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center" ,width:"100%", height:"100%"}} >
-            <NuevasOrdenesAviso nuevasOrdenes={nuevasOrdenes}   />
-            <ListaDeMensajes otra={notifications} setMostrarChat={setMostrarChat} ticket={ticket} />
-          </div>
-        </IonContent>
-      </IonPopover>
+      
           </div>
 
           
@@ -363,7 +376,9 @@ const HomeCliente = (props:{setIsReg:any,
     
 }
 
-export const ListaDeMensajes = ( props:{otra:any, setMostrarChat:any, ticket:any}) =>{
+
+
+export const ListaDeMensajes = ( props:{setShowPopover:any, otra:any, setMostrarChat:any, ticket:any}) =>{
   var i=0
   if(props.otra.length >0 ){
     return(
@@ -375,7 +390,7 @@ export const ListaDeMensajes = ( props:{otra:any, setMostrarChat:any, ticket:any
       {props.otra.map((a: { de: string; ticket: string; }) => {
         i=i+1
         return (
-          <IonCardNotificaciones key={i} de={a.de} ticket={a.ticket} setMostrarChat={props.setMostrarChat} ticket_={props.ticket}></IonCardNotificaciones> 
+          <IonCardNotificaciones setShowPopover={props.setShowPopover} key={i} de={a.de} ticket={a.ticket} setMostrarChat={props.setMostrarChat} ticket_={props.ticket}></IonCardNotificaciones> 
           ) 
       })
      }   </div>  </>
@@ -409,11 +424,11 @@ export const CardCampanaNotificacion = (props:{nuevasOrdenes:any, notify:any, se
 
 }
 
-export const IonCardNotificaciones = (props:{de:string, ticket:string, setMostrarChat:any, ticket_:any}) => {
+export const IonCardNotificaciones = (props:{setShowPopover:any, de:string, ticket:string, setMostrarChat:any, ticket_:any}) => {
 
   props.ticket_.current=props.ticket
   return(
-    <IonCard id="ionCard-CardProveedor" onClick={()=> props.setMostrarChat(true)}>
+    <IonCard id="ionCard-CardProveedor" onClick={(e: any)=> {props.setMostrarChat(true); props.setShowPopover(  {showPopover:false, event: e} )} }>
       <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center", width:"100%", height:"auto"}}>
         <IonItem lines="none">MENSAJE DE: {props.de}</IonItem>
         <IonItem lines="none">ORDEN TICKET Nº: {props.ticket}</IonItem>
@@ -547,3 +562,7 @@ const Busqueda = (props:{categorias:any, setCategorias:any, setBuscar:any, setPr
   
   
   export default HomeCliente
+
+function showPopover(showPopover: any, arg1: boolean) {
+  throw new Error('Function not implemented.');
+}

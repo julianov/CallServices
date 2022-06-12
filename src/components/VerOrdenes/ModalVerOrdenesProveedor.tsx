@@ -34,7 +34,7 @@ const verUbicacion = (latitud:any, longitud:any) =>{
 
 
 
-const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:any,setNuevasOrdenes:any, nuevasOrdenes:any})  =>{
+const ModalVerOrdenesProveedor = (props:{notifications:any,setNotifications:any,datos:any,emailProveedor:any,setVolver:any,setNuevasOrdenes:any, nuevasOrdenes:any})  =>{
 
 
     const [vista, setVista] = useState("primero")
@@ -55,6 +55,8 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
 
     useEffect(() => {
       ticketeck.current= props.datos.ticket 
+
+      console.log("el estatus es; "+props.datos.status)
 
             if (props.datos.status=="ENV"){
               setEstado("GENERADO POR CLIENTE")
@@ -110,7 +112,7 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
                 }
             })
         
-      }, [vista])
+      }, [])
 
 
       const rechazarOrden = ()=> {
@@ -179,13 +181,14 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
     )
   } else if (vista=="datosClientes"){
     return (
-      < VerDatosCliente ticket={props.datos.ticket} tipo={props.datos.tipo} latitud={props.datos.location_lat} longitud={props.datos.location_long} setVista={setVista}  />
+      < VerDatosCliente dondeEstoy={desdeDondeEstoy.current} ticket={props.datos.ticket} tipo={props.datos.tipo} latitud={props.datos.location_lat} longitud={props.datos.location_long} setVista={setVista}  />
     )
   }else if (vista=="chat") {
+    console.log("LLEGO A CHAT")
     return(
       <>
 
-      <Chat email={props.emailProveedor}  ticket={props.datos.ticket} setVolver={props.setVolver} setVista={setVista} desdeDondeEstoy={desdeDondeEstoy.current} />
+      <Chat notifications={props.notifications} setNotifications={props.setNotifications} email={props.emailProveedor}  ticket={props.datos.ticket} setVolver={props.setVolver} setVista={setVista} desdeDondeEstoy={desdeDondeEstoy.current} />
 
       <IonAlert
             isOpen={showAlertInconvenienteChat}
@@ -193,6 +196,7 @@ const ModalVerOrdenesProveedor = (props:{datos:any,emailProveedor:any,setVolver:
             cssClass='my-custom-class'
             header={'NO ES POSIBLE ABRIR COMUNICACIÓN CON EL CLIENTE'}
             subHeader={''}
+            mode='ios'
             message={'Para poder dialogar con el cliente debe aceptar la orden de trabajo'}
             buttons={[
               {
@@ -260,6 +264,13 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
                 <IonIcon icon={eye} /> </IonRow>
                 <IonRow id="ionrow-homecliente"><small>VER DATOS CLIENTE</small></IonRow>
               </IonCol>
+
+              <IonCol id="ioncol-homecliente"  onClick={() =>setShowAlertUbicacion(true) }   >
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={location} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
+              </IonCol>
+
             </IonRow>
           </IonGrid>
        
@@ -273,15 +284,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
             <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
             <p>{props.datos.descripcion}</p>
           </div>
-          <IonGrid>
-            <IonRow>
-              <IonCol id="ioncol-homecliente"  onClick={() =>setShowAlertUbicacion(true) }   >
-                <IonRow id="ionrow-homecliente">
-                <IonIcon icon={location} /> </IonRow>
-                <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
-              </IonCol>
-            </IonRow>
-          </IonGrid>
+        
 
         
         </IonCard>
@@ -349,7 +352,8 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
               cssClass='my-custom-class'
               header={'UBICACIÓN DEL CLIENTE'}
               subHeader={''}
-              message={'La orden debe ser aceptada para ver ubicación del cliente'}
+              mode='ios'
+              message={'La orden debe ser aceptada para ver la ubicación del cliente'}
               buttons={['OK']}
               />
     </div>
@@ -568,10 +572,10 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
 
   const [showLoading, setShowLoading] =useState(false)
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false) 
-
+  const [showAlertIngresarPresupuesto,setShowAlertIngresarPresupuesto]= useState(false) 
 
   const enviarPresupuesto = ()=>{
-    if (precio.current!="0"){
+    if (precio.current!="0" ){
       setShowLoading(true)
       var formDataToUpload = new FormData();
       formDataToUpload.append("precio", precio.current)
@@ -597,6 +601,8 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
 //              setVista(0)
         //Network error comes in
     });
+    }else{
+      setShowAlertIngresarPresupuesto(true)
     }
 
   }
@@ -616,7 +622,29 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
               <p>STATUS: {props.estado}</p>
               <p>TICKET: {props.datos.ticket}</p>
             </div>
-            <IonButton  id="botonContratar" onClick={() => props.setVista("datosClientes")} >DATOS DE CLIENTE</IonButton>
+             <IonGrid>
+            <IonRow>
+              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={eye} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER DATOS CLIENTE</small></IonRow>
+              </IonCol>
+
+              <IonCol id="ioncol-homecliente"  onClick={() => verUbicacion(props.datos.latitud, props.datos.longitud) }  >
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={location} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
+              </IonCol>
+
+              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={chatbox} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
+                </IonCol>
+
+            </IonRow>
+          </IonGrid>
+          
           </IonCard>
           <IonCard id="ionCard-explorerContainer-Proveedor">
             <div id="divSentencias">
@@ -628,21 +656,7 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
               <p>{props.datos.descripcion}</p>
             </div>
 
-            <IonGrid>
-              <IonRow>
-                <IonCol id="ioncol-homecliente" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) }>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={location} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DEL CLIENTE</small></IonRow>
-                </IonCol>
-                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={chatbox} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
-
+         
           </IonCard>
           <IonCard id="ionCard-explorerContainer-Proveedor">
                 < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}   ></Imagenes>
@@ -727,6 +741,24 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
                     }
                   }
                 ]} />
+
+            <IonAlert
+                isOpen={showAlertIngresarPresupuesto}
+                onDidDismiss={() => setShowAlertIngresarPresupuesto(false)}
+                cssClass='my-custom-class'
+                header={'INGRESE PRESUPUESTO'}
+                subHeader={''}
+                message={'Debe ingresar un presupuesto para continuar'}
+                buttons={[
+                  {
+                    text: 'OK',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: blah => {
+                      setShowAlertIngresarPresupuesto(false);
+                    }
+                  }
+                ]} />
       </div>
         </IonContent>
     )
@@ -748,20 +780,29 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
               <p>TICKET: {props.datos.ticket}</p>
             </div>
             <IonGrid>
-              <IonRow>
-                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={eye} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENTE</small></IonRow>
-                </IonCol>
-                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+            <IonRow>
+              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={eye} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER DATOS CLIENTE</small></IonRow>
+              </IonCol>
+
+              <IonCol id="ioncol-homecliente"  onClick={() => verUbicacion(props.datos.latitud, props.datos.longitud) }  >
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={location} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
+              </IonCol>
+
+              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
                   <IonRow id="ionrow-homecliente">
                   <IonIcon icon={chatbox} /> </IonRow>
                   <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
                 </IonCol>
-              </IonRow>
-            </IonGrid>
+
+            </IonRow>
+          </IonGrid>
           </IonCard>
+
           <IonCard id="ionCard-explorerContainer-Proveedor">
             <div id="divSentencias">
               <p>FECHA DE SOLICITUD:</p>
@@ -771,15 +812,7 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
               <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
               <p>{props.datos.descripcion}</p>
             </div>
-            <IonGrid>
-              <IonRow>
-                <IonCol id="ioncol-homecliente" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) }>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={location} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DEL CLIENTE</small></IonRow>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
+          
           </IonCard>
 
           <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -881,19 +914,27 @@ const Presupuestada = (props:{datos:any, estado:any, setVolver:any, setVista:any
               <p>TICKET: {props.datos.ticket}</p>
             </div>
             <IonGrid>
-                <IonRow>
-                  <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
-                    <IonRow id="ionrow-homecliente">
-                    <IonIcon icon={eye} /> </IonRow>
-                    <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENTE</small></IonRow>
-                  </IonCol>
-                  <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
-                    <IonRow id="ionrow-homecliente">
-                    <IonIcon icon={chatbox} /> </IonRow>
-                    <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
-                  </IonCol>
-                </IonRow>
-              </IonGrid>
+            <IonRow>
+              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={eye} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER DATOS CLIENTE</small></IonRow>
+              </IonCol>
+
+              <IonCol id="ioncol-homecliente"  onClick={() => verUbicacion(props.datos.latitud, props.datos.longitud) }  >
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={location} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
+              </IonCol>
+
+              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+                  <IonRow id="ionrow-homecliente">
+                  <IonIcon icon={chatbox} /> </IonRow>
+                  <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
+                </IonCol>
+
+            </IonRow>
+          </IonGrid>
           </IonCard>
     
           <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -906,15 +947,7 @@ const Presupuestada = (props:{datos:any, estado:any, setVolver:any, setVista:any
               <p>{props.datos.descripcion}</p>
             </div>
   
-            <IonGrid>
-                <IonRow>
-                  <IonCol id="ioncol-homecliente" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) }>
-                    <IonRow id="ionrow-homecliente">
-                    <IonIcon icon={location} /> </IonRow>
-                    <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DEL CLIENTE</small></IonRow>
-                  </IonCol>
-                </IonRow>
-              </IonGrid>
+          
   
           </IonCard>
 
@@ -1004,19 +1037,27 @@ const Presupuestada = (props:{datos:any, estado:any, setVolver:any, setVista:any
             <p>TICKET: {props.datos.ticket}</p>
           </div>
           <IonGrid>
-              <IonRow>
-                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={eye} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENTE</small></IonRow>
-                </IonCol>
-                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+            <IonRow>
+              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={eye} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER DATOS CLIENTE</small></IonRow>
+              </IonCol>
+
+              <IonCol id="ioncol-homecliente"  onClick={() => verUbicacion(props.datos.latitud, props.datos.longitud) }  >
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={location} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
+              </IonCol>
+
+              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
                   <IonRow id="ionrow-homecliente">
                   <IonIcon icon={chatbox} /> </IonRow>
                   <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
                 </IonCol>
-              </IonRow>
-            </IonGrid>
+
+            </IonRow>
+          </IonGrid>
         </IonCard>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -1029,16 +1070,7 @@ const Presupuestada = (props:{datos:any, estado:any, setVolver:any, setVista:any
             <p>{props.datos.descripcion}</p>
           </div>
 
-          <IonGrid>
-              <IonRow>
-                <IonCol id="ioncol-homecliente" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) }>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={location} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DEL CLIENTE</small></IonRow>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
-
+      
         </IonCard>
 
         <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -1146,19 +1178,27 @@ const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any
             <p>TICKET: {props.datos.ticket}</p>
           </div>
           <IonGrid>
-              <IonRow>
-                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={eye} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENTE</small></IonRow>
-                </IonCol>
-                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+            <IonRow>
+              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={eye} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER DATOS CLIENTE</small></IonRow>
+              </IonCol>
+
+              <IonCol id="ioncol-homecliente"  onClick={() => verUbicacion(props.datos.latitud, props.datos.longitud) }  >
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={location} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
+              </IonCol>
+
+              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
                   <IonRow id="ionrow-homecliente">
                   <IonIcon icon={chatbox} /> </IonRow>
                   <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
                 </IonCol>
-              </IonRow>
-            </IonGrid>
+
+            </IonRow>
+          </IonGrid>
         </IonCard>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -1170,15 +1210,7 @@ const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any
           <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
           <p>{props.datos.descripcion}</p>
         </div>
-        <IonGrid>
-              <IonRow>
-                <IonCol id="ioncol-homecliente" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) }>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={location} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DEL CLIENTE</small></IonRow>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
+       
         </IonCard>
   
   
@@ -1293,19 +1325,27 @@ const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any
           <p>TICKET: {props.datos.ticket}</p>
         </div>
         <IonGrid>
-              <IonRow>
-                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={eye} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENTE</small></IonRow>
-                </IonCol>
-                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+            <IonRow>
+              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={eye} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER DATOS CLIENTE</small></IonRow>
+              </IonCol>
+
+              <IonCol id="ioncol-homecliente"  onClick={() => verUbicacion(props.datos.latitud, props.datos.longitud) }  >
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={location} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
+              </IonCol>
+
+              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
                   <IonRow id="ionrow-homecliente">
                   <IonIcon icon={chatbox} /> </IonRow>
                   <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
                 </IonCol>
-              </IonRow>
-            </IonGrid>
+
+            </IonRow>
+          </IonGrid>
       </IonCard>
 
       <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -1317,15 +1357,7 @@ const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any
           <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
           <p>{props.datos.descripcion}</p>
         </div>
-        <IonGrid>
-              <IonRow>
-                <IonCol id="ioncol-homecliente" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) }>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={location} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DEL CLIENTE</small></IonRow>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
+      
       </IonCard>
 
       <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -1460,19 +1492,27 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
             <p>TICKET: {props.datos.ticket}</p>
           </div>
           <IonGrid>
-              <IonRow>
-                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={eye} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENTE</small></IonRow>
-                </IonCol>
-                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+            <IonRow>
+              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={eye} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER DATOS CLIENTE</small></IonRow>
+              </IonCol>
+
+              <IonCol id="ioncol-homecliente"  onClick={() => verUbicacion(props.datos.latitud, props.datos.longitud) }  >
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={location} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
+              </IonCol>
+
+              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
                   <IonRow id="ionrow-homecliente">
                   <IonIcon icon={chatbox} /> </IonRow>
                   <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
                 </IonCol>
-              </IonRow>
-            </IonGrid>
+
+            </IonRow>
+          </IonGrid>
         </IonCard>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -1484,15 +1524,7 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
             <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
             <p>{props.datos.descripcion}</p>
           </div>
-          <IonGrid>
-              <IonRow>
-                <IonCol id="ioncol-homecliente" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) }>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={location} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DEL CLIENTE</small></IonRow>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
+        
         </IonCard>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -1608,19 +1640,27 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
             <p>TICKET: {props.datos.ticket}</p>
           </div>
           <IonGrid>
-              <IonRow>
-                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={eye} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENTE</small></IonRow>
-                </IonCol>
-                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+            <IonRow>
+              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={eye} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER DATOS CLIENTE</small></IonRow>
+              </IonCol>
+
+              <IonCol id="ioncol-homecliente"  onClick={() => verUbicacion(props.datos.latitud, props.datos.longitud) }  >
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={location} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
+              </IonCol>
+
+              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
                   <IonRow id="ionrow-homecliente">
                   <IonIcon icon={chatbox} /> </IonRow>
                   <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
                 </IonCol>
-              </IonRow>
-            </IonGrid>
+
+            </IonRow>
+          </IonGrid>
         </IonCard>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -1632,15 +1672,7 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
             <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
             <p>{props.datos.descripcion}</p>
           </div>
-          <IonGrid>
-              <IonRow>
-                <IonCol id="ioncol-homecliente" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) }>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={location} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DEL CLIENTE</small></IonRow>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
+          
         </IonCard>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -1768,19 +1800,27 @@ const EnSitio  = (props:{datos:any, setVolver:any, setVista:any, estado:any, set
             <p>TICKET: {props.datos.ticket}</p>
           </div>
           <IonGrid>
-              <IonRow>
-                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={eye} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENTE</small></IonRow>
-                </IonCol>
-                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+            <IonRow>
+              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={eye} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER DATOS CLIENTE</small></IonRow>
+              </IonCol>
+
+              <IonCol id="ioncol-homecliente"  onClick={() => verUbicacion(props.datos.latitud, props.datos.longitud) }  >
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={location} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
+              </IonCol>
+
+              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
                   <IonRow id="ionrow-homecliente">
                   <IonIcon icon={chatbox} /> </IonRow>
                   <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
                 </IonCol>
-              </IonRow>
-            </IonGrid>
+
+            </IonRow>
+          </IonGrid>
         </IonCard>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -1792,15 +1832,7 @@ const EnSitio  = (props:{datos:any, setVolver:any, setVista:any, estado:any, set
             <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
             <p>{props.datos.descripcion}</p>
           </div>
-          <IonGrid>
-              <IonRow>
-                <IonCol id="ioncol-homecliente" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) }>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={location} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DEL CLIENTE</small></IonRow>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
+         
         </IonCard>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -1913,19 +1945,27 @@ const EnSitio  = (props:{datos:any, setVolver:any, setVista:any, estado:any, set
           <p>TICKET: {props.datos.ticket}</p>
         </div>
         <IonGrid>
-              <IonRow>
-                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={eye} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER DATOS DEL CLIENTE</small></IonRow>
-                </IonCol>
-                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+            <IonRow>
+              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={eye} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER DATOS CLIENTE</small></IonRow>
+              </IonCol>
+
+              <IonCol id="ioncol-homecliente"  onClick={() => verUbicacion(props.datos.latitud, props.datos.longitud) }  >
+                <IonRow id="ionrow-homecliente">
+                <IonIcon icon={location} /> </IonRow>
+                <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
+              </IonCol>
+
+              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
                   <IonRow id="ionrow-homecliente">
                   <IonIcon icon={chatbox} /> </IonRow>
                   <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
                 </IonCol>
-              </IonRow>
-            </IonGrid>
+
+            </IonRow>
+          </IonGrid>
       </IonCard>
 
       <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -1937,15 +1977,7 @@ const EnSitio  = (props:{datos:any, setVolver:any, setVista:any, estado:any, set
           <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
           <p>{props.datos.descripcion}</p>
         </div>
-        <IonGrid>
-              <IonRow>
-                <IonCol id="ioncol-homecliente" onClick={() =>verUbicacion(props.datos.location_lat, props.datos.location_long) }>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={location} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DEL CLIENTE</small></IonRow>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
+       
       </IonCard>
 
       <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -2123,7 +2155,7 @@ const Finalizar  = (props:{datos:any, setVolver:any, setVista:any, estado:any, s
       </IonContent>)
 }
 
-const VerDatosCliente = (props:{ticket:any, tipo:any,latitud:any, longitud:any,setVista:any})  =>{
+const VerDatosCliente = (props:{dondeEstoy:string, ticket:any, tipo:any,latitud:any, longitud:any,setVista:any})  =>{
 
   const [datosCliente, setDatosCliente] = useState <datos_cliente>({
     nombre:"",
@@ -2141,35 +2173,59 @@ const VerDatosCliente = (props:{ticket:any, tipo:any,latitud:any, longitud:any,s
   }) 
 }, []);
 
-  return (
-    <IonContent>
-      <div id="ionContentModalOrdenes">
-      <div id="modalProveedor-flechaVolver">
-        <IonIcon icon={arrowBack} onClick={() => props.setVista("primero")} slot="start" id="flecha-volver">  </IonIcon>
-      </div>
-      <IonCard id="ionCard-explorerContainer-Proveedor">
-        <img id="img-orden" src={datosCliente.imagen}></img>
-        <div id="divSentencias">
-        <p>NOMBRE: {datosCliente.nombre}</p>
-        <p>APELLIDO: {datosCliente.apellido}</p>
-        <p>CALIFICACIÓN: {datosCliente.calificacion}</p>
+
+  if (props.dondeEstoy=="primero"){
+    return (
+      <IonContent>
+        <div id="ionContentModalOrdenes">
+        <div id="modalProveedor-flechaVolver">
+          <IonIcon icon={arrowBack} onClick={() => props.setVista("primero")} slot="start" id="flecha-volver">  </IonIcon>
         </div>
-        <IonGrid>
-            <IonRow>
-            <IonCol id="ioncol-homecliente"  onClick={() => verUbicacion(props.latitud, props.longitud) }  >
-            <IonRow id="ionrow-homecliente">
-            <IonIcon icon={location} /> </IonRow>
-            <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
-          </IonCol>
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          <img id="img-orden" src={datosCliente.imagen}></img>
+          <div id="divSentencias">
+          <p>NOMBRE: {datosCliente.nombre}</p>
+          <p>APELLIDO: {datosCliente.apellido}</p>
+          <p>CALIFICACIÓN: {datosCliente.calificacion}</p>
+          </div>  
+    </IonCard>
+    </div>
+    </IonContent>
+         
+  );
+  }else{
+    return (
+      <IonContent>
+        <div id="ionContentModalOrdenes">
+        <div id="modalProveedor-flechaVolver">
+          <IonIcon icon={arrowBack} onClick={() => props.setVista("primero")} slot="start" id="flecha-volver">  </IonIcon>
+        </div>
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          <img id="img-orden" src={datosCliente.imagen}></img>
+          <div id="divSentencias">
+          <p>NOMBRE: {datosCliente.nombre}</p>
+          <p>APELLIDO: {datosCliente.apellido}</p>
+          <p>CALIFICACIÓN: {datosCliente.calificacion}</p>
+          </div>
+          <IonGrid>
+              <IonRow>
+              <IonCol id="ioncol-homecliente"  onClick={() => verUbicacion(props.latitud, props.longitud) }  >
+              <IonRow id="ionrow-homecliente">
+              <IonIcon icon={location} /> </IonRow>
+              <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
+            </IonCol>
+  
+              </IonRow>
+            </IonGrid>
+  
+    </IonCard>
+    </div>
+    </IonContent>
+         
+  );
+  }
 
-            </IonRow>
-          </IonGrid>
-
-  </IonCard>
-  </div>
-  </IonContent>
-       
-);
+  
 }
 
 

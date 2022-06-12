@@ -33,7 +33,7 @@ const getLocation = async () => {
 }
 
 
-const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGeneralesVariosProveedores>, url:string, setShowCargandoProveedores:any, 
+const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any ,ordenes:any ,proveedores: Array<datosGeneralesVariosProveedores>, url:string, setShowCargandoProveedores:any, 
   setShowModal:any, setTipoDeVistaEnModal:any, emailCliente:String,
   buscar:any, busqueda_categorias:any, busquedaDatosProveedores:Array<proveedorBuscado>}) => {
 
@@ -151,6 +151,7 @@ const ExploreContainerCliente  = (props:{ordenes:any ,proveedores: Array<datosGe
             isOpen={verOrden}
             onDidDismiss={() => setVerOrden( false )}>
             <ModalVerOrdenesCliente 
+              notifications={props.notifications} setNotifications={props.setNotifications}
               datos={props.ordenes[posicion-1]}
               setVolver={setVerOrden}
               emailCliente={props.emailCliente} />  
