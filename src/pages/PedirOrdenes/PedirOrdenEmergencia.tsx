@@ -15,7 +15,7 @@ let posicion: string | number;
 
 export const PedirOrdenEmergencia = (props:{setVolver:any}) => {
 
-    const rubrosEmergencia = ["PLOMERÍA","GASISTA","CERRAJERÍA","ELECTRICIDAD","FLETE","MECANICA","REMOLQUES - GRÚAS" ]
+    const rubrosEmergencia = ["PLOMERÍA","GASISTA","CERRAJERÍA","ELECTRICIDAD","FLETE","MECÁNICA","REMOLQUES - GRÚAS" ]
 
     const [vista,setVista] = useState("rubros")
     const [rubroSeleccionado,setRubroSeleccionado] = useState("")
