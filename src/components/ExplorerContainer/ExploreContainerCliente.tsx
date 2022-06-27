@@ -33,21 +33,25 @@ const getLocation = async () => {
 }
 
 
-const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any ,ordenes:any ,proveedores: Array<datosGeneralesVariosProveedores>, url:string, setShowCargandoProveedores:any, 
+const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any ,ordenes:any,  setOrdenes:any, proveedores: Array<datosGeneralesVariosProveedores>, url:string, setShowCargandoProveedores:any, 
   setShowModal:any, setTipoDeVistaEnModal:any, emailCliente:String,
-  buscar:any, busqueda_categorias:any, busquedaDatosProveedores:Array<proveedorBuscado>}) => {
+  buscar:any, busqueda_categorias:any, busquedaDatosProveedores:Array<proveedorBuscado>, nuevasOrdenes:any, setNuevasOrdenes:any}) => {
 
   const [recargarOrden, setRecargarOrden] = useState(false)
   
   const [verEmail, setVerEmail]=useState("")
   const[item, setItem]=useState("")
 
-  const [arregloOrdenesCliente, setArregloOrdenesCliente] =  useState <ordenesCliente []> ( [])
+  //const [arregloOrdenesCliente, setArregloOrdenesCliente] =  useState <ordenesCliente []> ( [])
 
   const [hayOrdenes, setHayOrdenes]=useState(false)
   const [verOrden, setVerOrden] = useState( false );
 
-  const [posicion, setPosicion] = useState(0)
+  //  const [posicion, setPosicion] = useState(0)
+
+  //aca va lo nuevo
+  const [ticket, setTicket] = useState(0)
+
   const [locacion, setLocacion] = useState("")
 
   const [verProveedor,setVerProveedor]= useState(false);
@@ -133,7 +137,7 @@ const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any
           <div id="container-principal-ExplorerContainer-Cliente">  
             <Tabs setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal} ></Tabs>
             <IonItemDivider />
-            <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={props.ordenes}  setVerOrden={setVerOrden} setPosicion={setPosicion} recargarOrden={verOrden} ></MisOrdenes>
+            <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={props.ordenes} setTicket={setTicket} setVerOrden={setVerOrden} recargarOrden={verOrden} ></MisOrdenes>
             <IonItemDivider />
 
             <CategoriasUtiles setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal}/>
@@ -150,11 +154,21 @@ const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any
             animated={true}
             isOpen={verOrden}
             onDidDismiss={() => setVerOrden( false )}>
+
             <ModalVerOrdenesCliente 
-              notifications={props.notifications} setNotifications={props.setNotifications}
-              datos={props.ordenes[posicion-1]}
+              notifications={props.notifications} 
+              setNotifications={props.setNotifications}
+              
+
+              ticket={ticket}
+              datosCompletos={props.ordenes}
+              setDatosCompletos={props.setOrdenes}
+
               setVolver={setVerOrden}
-              emailCliente={props.emailCliente} />  
+              emailCliente={props.emailCliente} 
+              nuevasOrdenes={props.nuevasOrdenes}
+              setNuevasOrdenes={props.setNuevasOrdenes}
+              />  
         </IonModal>
 
         <IonModal
@@ -198,18 +212,12 @@ const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any
      </>
  );
   
-      
-     
-
-    
     }else{
-
-   
-    return (
-      <div id="container-principal-ExplorerContainer-Cliente">   
-        <ResultadoBusqueda  ordenes={props.ordenes} emailCliente={props.emailCliente} arreglo_categorias={props.busqueda_categorias} arreglo_ultimos={ultimos} busquedaDatosProveedores={props.busquedaDatosProveedores} ></ResultadoBusqueda>
-      </div>
-    )
+      return (
+        <div id="container-principal-ExplorerContainer-Cliente">   
+          <ResultadoBusqueda  ordenes={props.ordenes} emailCliente={props.emailCliente} arreglo_categorias={props.busqueda_categorias} arreglo_ultimos={ultimos} busquedaDatosProveedores={props.busquedaDatosProveedores} ></ResultadoBusqueda>
+        </div>
+      )
   }
   
 }
@@ -402,7 +410,7 @@ const VerProveedorParticular = (  props:{url:string, emailCliente:String, email:
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , hayOrdenes:any, setVerOrden:any,setPosicion:any , recargarOrden:any }) => {
+const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , setTicket:any, hayOrdenes:any, setVerOrden:any, recargarOrden:any }) => {
 
   var i=0
   //if (props.proveedores!=[]){
@@ -420,8 +428,8 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , hayOrdenes:any,
             return (
               
               <IonSlide>
-                <CardVistaVariasOrdenes key={i} posicion={i} rubro={a.rubro} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket}
-                  dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_proveedor} setVerOrden={props.setVerOrden} setPosicion={props.setPosicion}
+                <CardVistaVariasOrdenes key={i} setTicket={props.setTicket} posicion={i} rubro={a.rubro} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket}
+                  dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_proveedor} setVerOrden={props.setVerOrden} 
                   presupuesto={a.presupuesto} masInfo={a.pedido_mas_información} masInfoEnviada={a.respuesta_cliente_pedido_mas_información} recargarOrden={props.recargarOrden}></CardVistaVariasOrdenes>
               </IonSlide>
                           
@@ -445,8 +453,8 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , hayOrdenes:any,
       
 }
 
-const CardVistaVariasOrdenes= (props:{rubro:any, posicion:any,tipo:string,status:string,fecha_creacion:string,ticket: string,
-  dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, setPosicion:any, presupuesto:any, masInfo:any, masInfoEnviada:string, recargarOrden:any}) => {
+const CardVistaVariasOrdenes= (props:{setTicket:any, rubro:any, posicion:any,tipo:string,status:string,fecha_creacion:string,ticket: string,
+  dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, presupuesto:any, masInfo:any, masInfoEnviada:string, recargarOrden:any}) => {
         
     const [estado,setEstado]=useState("Enviada")
 
@@ -470,51 +478,56 @@ const CardVistaVariasOrdenes= (props:{rubro:any, posicion:any,tipo:string,status
 
       ticketeck.current= props.ticket 
 
-      if (props.status=="ENV"){
-        setEstado("PEDIDO DE TRABAJO ENVIADO")
-      }else if(props.status=="REC"){
-        setEstado("PEDIDO DE TRABAJO RECIBIDO")
-      }else if(props.status=="ABI"){
-        setEstado("PEDIDO DE TRABAJO RECIBIDO")
-      }else if(props.status=="PEI"){
 
-      if(props.masInfoEnviada!="" && props.masInfoEnviada!=undefined){
-        setEstado("MÁS INFORMACIÓN ENVIADA")
-        setMensaje1("En espera de respuesta del proveedor")
-      }else{
+      if (props.status=="ENV"){
+        setEstado("SOLICITUD DE TRABAJO ENVIADO")
+      }
+      else if(props.status=="REC"){
+        setEstado("ORDEN RECIBIDA POR PROVEEDOR")
+
+      }else if(props.status=="PEI"){
         setEstado("SOLILCITUD DE MÁS INFORMACIÓN")
         setMensaje1("EL PROVEEDOR SOLICITA MÁS INFORMACIÓN")
-        //setMensaje2("Ingrese para aceptarlo o rechazarlo")
-      }
+
+      }else if(props.status=="RES"){
+        setEstado("INFORMACIÓN ADICIONAL ENVIADA")
+        setMensaje1("EN ESPERA DE PRESUPUESTO")
+
       }else if(props.status=="PRE"){
-        setEstado("TRABAJO PRESUPUESTADO")
+        setEstado("PRESUPUESTADA")
         setMensaje1("EL PROVEEDOR HA ENVIADO COTIZACIÓN")
-        //setMensaje2("Ingrese responder")
-      } else if(props.status=="ACE"){
-        setEstado("PEDIDO DE TRABAJO ACEPTADO")
+
+      }else if(props.status=="ACE"){
+        setEstado("PRESUPUESTO ACEPTADO")
+        setMensaje1("EN ESPERA DEL PROVEEDOR")
+
       }else if(props.status=="EVI"){
-        setEstado("EN VIAJE")
+        setEstado("PROVEEDOR EN VIAJE")
         setMensaje1("EL PROVEEDOR ESTÁ EN CAMINO!")
+
       }else if(props.status=="ENS"){
-        setEstado("EN SITIO")
+        setEstado("PROVEEDOR EN SITIO")
+
       }else if(props.status=="RED"){
-        setEstado("ORDEN DE TRABAJO FINALIZADA")
+        setEstado("REALIZADA")
         setMensaje1("CALIFIQUE AL PROVEEDOR DEL SERVICIO")
+
+      }else if (props.status=="REX"){
+        setEstado("RECHAZADA")
+
+      }else if (props.status=="CAN"){
+        setEstado("CANCELADA")
+
       }
 
-    getDB(ticketeck.current.toString( )).then(res => {
-
+    getDB(ticketeck.current.toString( )+"cliente").then(res => {
       if(res!=undefined || res!=null){
-       //arreglo.push(res)
-       //aca copia todo, el numero 1 del arreglo no es el rubro sino la primer letra del rubro y así.
         if(res!=props.status){
           setNuevoStatus(true)
         }  
         }else{
           setNuevoStatus(false)
         }
-        setDB(ticketeck.current, props.status)
-
     })
     
 
@@ -523,23 +536,22 @@ const CardVistaVariasOrdenes= (props:{rubro:any, posicion:any,tipo:string,status
 
     if(nuevoStatus){
       return (
-        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
+        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setTicket(props.ticket)}}>
 
         <div id="iconoDerecha">            
           <IonIcon icon={alert} id="iconoNuevaStatus" ></IonIcon>
         </div > 
           <IonGrid>
-            <IonRow  id="row-busqueda">
-              <IonCol   id="col-explorerContainerCliente">
+            <IonRow id="row-busqueda">
+              <IonCol id="col-explorerContainerCliente">
                 <img id="imgOrden" src={imagenes}></img>
               </IonCol>
             </IonRow>
             <IonRow  id="row-busqueda">
               <IonCol   id="col-explorerContainerCliente">
-                <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>STATUS: {estado}</h2>
-                <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>TICKET: {props.ticket}</h2>  
-                <h2 style={{margin:"0px 0px 25px 0px", color:"black", fontSize:"0.75em"}}>{mensaje1}</h2>
-
+                <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>{estado}</h2>
+                <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>{mensaje1}</h2>
+                <h2 style={{margin:"0px 0px 20px 0px", color:"black", fontSize:"0.75em"}}>TICKET: {props.ticket}</h2>  
               </IonCol>
             </IonRow>
             
@@ -548,7 +560,7 @@ const CardVistaVariasOrdenes= (props:{rubro:any, posicion:any,tipo:string,status
       )    
     }else{
       return (
-        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setPosicion(props.posicion)}}>
+        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setTicket(props.ticket)}}>
 
           <IonGrid>
             <IonRow  id="row-busqueda">
@@ -558,10 +570,9 @@ const CardVistaVariasOrdenes= (props:{rubro:any, posicion:any,tipo:string,status
             </IonRow>
             <IonRow  id="row-busqueda">
               <IonCol   id="col-explorerContainerCliente">
-                <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>STATUS: {estado}</h2>
-                <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>TICKET: {props.ticket}</h2>  
-                <h2 style={{margin:"0px 0px 25px 0px", color:"black", fontSize:"0.75em"}}>{mensaje1}</h2>
-
+                <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>{estado}</h2>
+                <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>{mensaje1}</h2>
+                <h2 style={{margin:"0px 0px 20px 0px", color:"black", fontSize:"0.75em"}}>TICKET: {props.ticket}</h2>  
               </IonCol>
             </IonRow>
             

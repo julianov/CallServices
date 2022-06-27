@@ -90,7 +90,9 @@ const HomeCliente = (props:{setIsReg:any,
   const axios = require('axios');
 
   const [categorias, setCategorias] = useState ([])
+
   const [proveedorBuscadoHook, setProveedorBuscadoHook] =  useState < proveedorBuscado []> ( [])
+ 
   const [buscar, setBuscar]=useState("")
   
   const [showModal, setShowModal] = useState({ isOpen: false });
@@ -105,6 +107,7 @@ const HomeCliente = (props:{setIsReg:any,
   const primeraVezProveedores = useRef()
 
   const [proveedoresEnZona, setProveedoresEnZona] = useState <datosGeneralesVariosProveedores []> ( [])
+  
   const [misOrdenes, setMisOrdenes] = useState <ordenesCliente []>([]);
 
   const [notifications, setNotifications] =  useState < newMessage []> ( [])
@@ -176,17 +179,20 @@ const HomeCliente = (props:{setIsReg:any,
       for (let i=0; i<misOrdenes.length; i++){
 
 
-        getDB(misOrdenes[i].ticket!).then(res => {
-          console.log("se ejecutó????"+misOrdenes[i].status+" - "+misOrdenes[i].ticket+" - "+res)
+        getDB(misOrdenes[i].ticket!+"cliente").then(res => {
+          
+          console.log("el res es: "+res)
           if(res!=undefined || res!=null){
-           //arreglo.push(res)
-           //aca copia todo, el numero 1 del arreglo no es el rubro sino la primer letra del rubro y así.
+           console.log("ESTATUS GUARDADO: "+res)
+           console.log("ESTATUS ORDEN: "+misOrdenes[i].status)
             if(res!=misOrdenes[i].status){
-              setNuevasOrdenes([...nuevasOrdenes , (misOrdenes[i].ticket)])
+              if(misOrdenes[i].status!="ENV" && misOrdenes[i].status!="RES"&&misOrdenes[i].status!="ACE"){
+                setNuevasOrdenes([...nuevasOrdenes , (misOrdenes[i].ticket)])
+              }
               }else{
                 
               }
-            }
+            }else{}
           })
       }
     }
@@ -342,9 +348,13 @@ const HomeCliente = (props:{setIsReg:any,
             </IonModal>
           
             <ExploreContainerCliente 
-            notifications={notifications} setNotifications={setNotifications}
-            setShowCargandoProveedores={setShowCargandoProveedores} 
+              notifications={notifications} 
+              setNotifications={setNotifications}
+              setShowCargandoProveedores={setShowCargandoProveedores} 
+
               ordenes={misOrdenes}
+              setOrdenes={setMisOrdenes }
+
               proveedores={proveedoresEnZona}
               emailCliente={user!.email}
               url={url} 
@@ -352,7 +362,10 @@ const HomeCliente = (props:{setIsReg:any,
               busqueda_categorias={categorias}
               busquedaDatosProveedores={proveedorBuscadoHook}
               setShowModal={setShowModal}
-              setTipoDeVistaEnModal={setTipoDeVistaEnModal } />
+              setTipoDeVistaEnModal={setTipoDeVistaEnModal } 
+              nuevasOrdenes={nuevasOrdenes}
+              setNuevasOrdenes={setNuevasOrdenes}
+              />
 
             <IonAlert 
               isOpen={showAlertUbicación} 
@@ -482,14 +495,6 @@ const Busqueda = (props:{categorias:any, setCategorias:any, setBuscar:any, setPr
 
         if (resp.data!="bad"){
           
-          /*proveedorBuscado= []         
-          for (let i=0; i<resp.data.length;i++){
-            proveedorBuscado.push({item:resp.data[i].item,tipo:resp.data[i].tipo,nombre:resp.data[i].nombre,apellido:resp.data[i].apellido,imagen:resp.data[i].imagen,calificacion:resp.data[i].calificacion,email:resp.data[i].email})
-          }
-
-          props.setProveedorBuscadoHook(proveedorBuscado)
-
-*/
           props.setProveedorBuscadoHook(resp.data.map((d: { item: any; tipo: any; nombre: any; apellido: any; imagen: any; calificacion: any; email: any; }) => ({
             item:d.item,
     	      tipo:d.tipo,

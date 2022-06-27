@@ -156,7 +156,9 @@ const OrdenSimple = (props:{ordenes:any,data:any, clienteEmail:any , setVolver:a
                     if(res.data!="bad" && res.data!="ya hay una orden"){
                         ticket.current=res.data
                         setShowAlertOrdenCreada(true)
-                        setDB(res.data, "ENV")
+                        
+                        setDB(ticket.current+"cliente", "ENV")
+
 
 
                     }

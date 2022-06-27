@@ -7,6 +7,7 @@ import Https from '../utilidades/HttpsURL';
 import { IonCard, IonContent, IonIcon, IonTitle } from '@ionic/react';
 
 import './VerOrdenes.css';
+import { retornarIconoCategoria } from '../utilidades/retornarIconoCategoria';
 
 const url=Https
 
@@ -48,33 +49,37 @@ const VerOrdenesCliente = (props:{clienteEmail:any , tipo:string, setCerrar:any}
 
     }, [])
 
+
     if(ticket==""){
       if(informacion.length>0){
         return( 
             <IonContent>
+             <div id="fondeVerOrdenes">
                 <div id="flechaVolver">
                     <IonIcon icon={arrowBack} onClick={() => props.setCerrar(null)} slot="start" id="flecha-volver">  </IonIcon>
                 </div>
                 <div id="contenedorCentroVerOrdenes">
-
-                    <MostrarOrdenes informacion={informacion} setCerrar={props.setCerrar} setTicket={setTicket} />
+                  <MostrarOrdenes informacion={informacion} setCerrar={props.setCerrar} setTicket={setTicket} />
                 </div>
+              </div>
             </IonContent>
         )
     }else{
         return (
           <IonContent>
-          <div id="flechaVolver">
-              <IonIcon icon={arrowBack} onClick={() => props.setCerrar(null)} slot="start" id="flecha-volver">  </IonIcon>
-          </div>
-                <div id="contenedorCentroVerOrdenes">
-                    <div id="contenedorPrincipal">
-                        <div id="contenedorHijoCentrado">
-                            <IonTitle>NO HA SOLICITADO ÓRDENES DE TRABAJO</IonTitle>
-                        </div>
-                    </div>
+            <div id="fondeVerOrdenes">
+              <div id="flechaVolver">
+                  <IonIcon icon={arrowBack} onClick={() => props.setCerrar(null)} slot="start" id="flecha-volver">  </IonIcon>
+              </div>
+              <div id="contenedorCentroVerOrdenes">
+                <div id="contenedorPrincipal">
+                  <div id="contenedorHijoCentrado">
+                    <IonTitle>NO HA SOLICITADO ÓRDENES DE TRABAJO</IonTitle>
+                  </div>
                 </div>
-                </IonContent>
+              </div>
+            </div>
+          </IonContent>
         )
     }
     }else{
@@ -100,7 +105,7 @@ const MostrarOrdenes = (props:{ informacion:Array<informacionOrdenes>,setCerrar:
     var i=0
     //if (props.proveedores!=[]){
       return (
-        <div id="elementos">
+        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", justifyContent:"center", alignItems:"center"}}>
           {props.informacion.map((a) => {
             i=i+1
             //item, imagen personal, distancia, calificación, email, nombre, apellido, tipo
@@ -120,21 +125,35 @@ const MostrarOrdenes = (props:{ informacion:Array<informacionOrdenes>,setCerrar:
 const Card = (props:{ rubro: string, status:string, fecha:string, ticket:string, setTicket:any}) => {
 
     const [estado, setEstado] = useState("REALIZADA")
+
+    const [imagenes,setImagen]=useState ("")
+
+
     useEffect(() => {
-    if (props.status=="ENV"){
+
+      setImagen(retornarIconoCategoria(props.rubro)) 
+
+      if (props.status=="ENV"){
         setEstado("GENERADA")
-      }else if(props.status=="REC"){
+      }
+      else if(props.status=="REC"){
         setEstado("ORDEN RECIBIDA POR PROVEEDOR")
-      }else if(props.status=="ABI"){
-        setEstado("ORDEN RECIBIDA POR PROVEEDOR")
+
       }else if(props.status=="PEI"){
         setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
-      } else if(props.status=="PRE"){
-        setEstado("ORDEN PRE ACEPTADA POR PROVEEDOR")
+
+      }else if(props.status=="RES"){
+        setEstado("INFORMACIÓN ADICIONAL REQUERIDA ENVIADA")
+
+      }else if(props.status=="PRE"){
+        setEstado("PRESUPUESTADA")
+
       }else if(props.status=="ACE"){
         setEstado("ORDEN ACEPTADA")
+
       }else if(props.status=="EVI"){
         setEstado("PROVEEDOR EN VIAJE")
+
       }else if(props.status=="ENS"){
         setEstado("PROVEEDOR EN SITIO")
       }else if(props.status=="RED"){
@@ -144,16 +163,19 @@ const Card = (props:{ rubro: string, status:string, fecha:string, ticket:string,
       }else if (props.status=="CAN"){
         setEstado("CANCELADA")
       }
+
+
+
+
     }, [])
     return(
-        <IonCard id="ionCardOrden" onClick={() => props.setTicket(props.ticket) }>
-        <div id="contenedorCamposCentro">
-        <div id="divSentencias">
-        <p>RUBRO: {props.rubro} </p>
-        <p>ESTADO: {estado} </p> 
-        <p>FECHA DE ORDEN: {props.fecha} </p>
-        </div>
-        </div>
+        <IonCard id="CardOrden" onClick={() => props.setTicket(props.ticket) }>
+          <img id="imgOrden" src={imagenes}></img> 
+          <div id="contenedorCamposCentro">
+              <p>RUBRO: {props.rubro} </p>
+              <p>ESTADO: {estado} </p> 
+              <p>FECHA DE ORDEN: {props.fecha} </p>
+          </div>
         </IonCard>
     )
 }
@@ -208,13 +230,7 @@ const VerOrdenParticular = (props:{ ticket: string }) => {
                   descripcion:resp.data.descripcion,
                   reseña_al_proveedor:resp.data.reseña_al_proveedor,
                   proveedor_nombre:resp.data.proveedor_nombre,}
-              )
-
-         
-             //s informacion.push({rubro:resp.data[i].rubro,status:resp.data[i].status, fecha:resp.data[i].fecha})
-              
-            
-       
+              )          
         }
       })
 
@@ -252,8 +268,8 @@ const VerOrdenParticular = (props:{ ticket: string }) => {
 //aca en el return hay que dar vuelta la fecha porque está en año, mes y dia
     return(
       <div id="ionContentModalVerOrdenes">
-          <IonCard id="ionCard-explorerContainer-Proveedor">
-            <div id="divSentencias">
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          <div id="divSentencias">
             <p >TIPO: {datosOrdenGeneral.tipo.toUpperCase()}</p>
             <p >STATUS: {estado}</p>
             <p >TICKET: {datosOrdenGeneral.ticket}</p>
@@ -262,12 +278,10 @@ const VerOrdenParticular = (props:{ ticket: string }) => {
             <p >DESCRIPCIÓN: {datosOrdenGeneral.descripcion}</p>
             <p >PROVEEDOR: {datosOrdenGeneral.proveedor_nombre}</p>
             <p >RESEÑA AL PROVEEDOR: {datosOrdenGeneral.reseña_al_proveedor}</p>
-            </div>
-            </IonCard >
-            </div>
-
+          </div>
+        </IonCard >
+      </div>
     )
-
 }
 
 export default VerOrdenesCliente 

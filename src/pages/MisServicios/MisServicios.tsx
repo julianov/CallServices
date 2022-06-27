@@ -111,43 +111,6 @@ const MisServicios = () => {
       }
         }
   };
-
- /* class Segmentos extends Component{
-
-    Seleccionado = (seleccion: string | undefined)  =>{
-      var input=(document.getElementById("prueba") as HTMLTextAreaElement);
-
-      if(seleccion==="pendientes"){
-
-        input.innerHTML='Sin Servicios Pendientes';
-       
-       
-      }
-      if(seleccion==="curso"){
-                input.innerHTML="Sin Servicios en Curso";
-      }
-      if(seleccion==="cancelados"){
-        input.innerHTML="Sin Servicios en Cancelados";
-
-      }
-    }
-    render(){
-      return(
-        <IonSegment mode="ios" onIonChange={e => this.Seleccionado(e.detail.value)} value="curso" color="primary" scrollable={true}>
-          <IonSegmentButton value="pendientes">
-          <IonLabel>REALIZADOS</IonLabel>
-          </IonSegmentButton>
-          <IonSegmentButton value="curso">
-          <IonLabel>EN CURSO</IonLabel>
-        </IonSegmentButton>
-        <IonSegmentButton value="cancelados">
-          <IonLabel>CANCELADOS</IonLabel>
-        </IonSegmentButton>
-      </IonSegment>
-      );
-    }
-  };*/
-
  
 const SegmentosServicios = (props: {tipo:string, email:string}) => {
 
@@ -305,28 +268,42 @@ const Card = (props:{ rubro: string, status:string, fecha:string, ticket:string,
   const [estado, setEstado] = useState("REALIZADA")
 
   useEffect(() => {
-  if (props.status=="ENV"){
-      setEstado("GENERADA")
-    }else if(props.status=="REC"){
+
+    if (props.status=="ENV"){
+      setEstado("ORDEN GENERADA")
+    }
+    else if(props.status=="REC"){
       setEstado("ORDEN RECIBIDA POR PROVEEDOR")
-    }else if(props.status=="ABI"){
-      setEstado("ORDEN RECIBIDA POR PROVEEDOR")
+
     }else if(props.status=="PEI"){
       setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
-    } else if(props.status=="PRE"){
-      setEstado("ORDEN PRE ACEPTADA POR PROVEEDOR")
+
+    }else if(props.status="RES"){
+      setEstado("INFORMACIÓN ADICIONAL ENVIADA")
+
+    }else if(props.status=="PRE"){
+      setEstado("ORDEN PRESUPUESTADA")
+
     }else if(props.status=="ACE"){
       setEstado("ORDEN ACEPTADA")
+
     }else if(props.status=="EVI"){
       setEstado("PROVEEDOR EN VIAJE")
+
     }else if(props.status=="ENS"){
       setEstado("PROVEEDOR EN SITIO")
+
     }else if(props.status=="RED"){
       setEstado("REALIZADA")
+
     }else if (props.status=="REX"){
       setEstado("RECHAZADA")
+
     }else if (props.status=="CAN"){
       setEstado("CANCELADA")
+      
+    }else{
+
     }
   }, [])
   return(
@@ -401,33 +378,6 @@ useEffect(() => {
     })
 
   }, [])
-
- /* useEffect(() => {
-    if (props.status=="ENV"){
-        setEstado("GENERADA")
-      }else if(props.status=="REC"){
-        setEstado("ORDEN RECIBIDA POR PROVEEDOR")
-      }else if(props.status=="ABI"){
-        setEstado("ORDEN RECIBIDA POR PROVEEDOR")
-      }else if(props.status=="PEI"){
-        setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
-      } else if(props.status=="PRE"){
-        setEstado("ORDEN PRE ACEPTADA POR PROVEEDOR")
-      }else if(props.status=="ACE"){
-        setEstado("ORDEN ACEPTADA")
-      }else if(props.status=="EVI"){
-        setEstado("PROVEEDOR EN VIAJE")
-      }else if(props.status=="ENS"){
-        setEstado("PROVEEDOR EN SITIO")
-      }else if(props.status=="RED"){
-        setEstado("REALIZADA")
-      }else if (props.status=="REX"){
-        setEstado("RECHAZADA")
-      }else if (props.status=="CAN"){
-        setEstado("CANCELADA")
-      }
-    }, [])*/
-
 
   return(
     <div id="ionContentModalVerOrdenes">

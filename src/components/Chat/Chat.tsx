@@ -1,10 +1,11 @@
 import axios from 'axios';
-import { arrowBack, send } from 'ionicons/icons';
+import { arrowBack, close, send } from 'ionicons/icons';
 import React, { useEffect, useState } from 'react';
 import Https from '../../utilidades/HttpsURL';
 import { IonCard, IonChip,  IonContent,  IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonTitle } from '@ionic/react';
 
 import './Chat.css';
+import { useHistory } from 'react-router-dom';
 
 const url = Https 
 
@@ -28,6 +29,9 @@ const Chat = (props:{notifications:any, setNotifications:any,email:any,  ticket:
     const [mensaje, setMensaje ] = useState("")
     
     const [arregloMensajes, setArregloMensajes] =  useState <mensajes []> ( [])
+
+    let history = useHistory();
+
 
     useEffect(() => {
 
@@ -85,6 +89,12 @@ const Chat = (props:{notifications:any, setNotifications:any,email:any,  ticket:
         }
     }
 
+    const cerrar = ()=>{
+
+        history.push("/")
+        window.location.reload();
+    }
+
     if(hayMensajes){
 
         return (
@@ -92,11 +102,14 @@ const Chat = (props:{notifications:any, setNotifications:any,email:any,  ticket:
             <IonContent>
                 <div id="contenedorChat">
 
-                    <div id="modalChat-flechaVolver">
+                    <div id="modalProveedor-flechaVolver">
                         <IonIcon icon={arrowBack} onClick={() => props.setVista(props.desdeDondeEstoy)} slot="start" id="flecha-volver">  </IonIcon>
+                        <IonIcon icon={close} onClick={() => cerrar()} slot="end" id="flecha-cerrar">  </IonIcon>
                     </div>
+
+                    
                     <div id="modalChat-titulo">
-                        <IonTitle id="chatTitulo">CHAT</IonTitle>
+                        <IonTitle id="chatTitulo">CONVERSACIÓN</IonTitle>
                     </div>
                     <div id="modalChat-card">
 
@@ -133,12 +146,14 @@ const Chat = (props:{notifications:any, setNotifications:any,email:any,  ticket:
         return (
 
 
-            <IonContent><div id="contenedorChat">
-                <div id="modalChat-flechaVolver">
-                    <IonIcon icon={arrowBack} onClick={() => props.setVista(props.desdeDondeEstoy)} slot="start" id="flecha-volver">  </IonIcon>
-                </div>
+            <IonContent>
+            <div id="contenedorChat">
+                <div id="modalProveedor-flechaVolver">
+                        <IonIcon icon={arrowBack} onClick={() => props.setVista(props.desdeDondeEstoy)} slot="start" id="flecha-volver">  </IonIcon>
+                        <IonIcon icon={close} onClick={() => cerrar()} slot="end" id="flecha-cerrar">  </IonIcon>
+                    </div>
                 <div id="modalChat-titulo">
-                    <IonTitle id="chatTitulo">CHAT</IonTitle>
+                    <IonTitle id="chatTitulo">CONVERSACIÓN</IonTitle>
                 </div>
                 <div id="modalChat-card">
 

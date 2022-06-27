@@ -97,6 +97,7 @@ const HomeProveedor = (props:{setIsReg:any, setNombre:any, setApellido:any, setF
     }
   }, [user!.foto]);
 
+
   useEffect(() => {
     if(user!.email!=""){
       const ubicacion = getLocation();
@@ -168,10 +169,18 @@ const HomeProveedor = (props:{setIsReg:any, setNombre:any, setApellido:any, setF
           setNuevasOrdenes([...nuevasOrdenes , (misOrdenes[i].ticket)])
         }
 
-        getDB(misOrdenes[i].ticket!).then(res => {
+        getDB(misOrdenes[i].ticket!+"proveedor").then(res => {
+          
           if(res!=undefined || res!=null ){
             if(res!=misOrdenes[i].status ){
+              if(misOrdenes[i].status!="PEI"&&misOrdenes[i].status!="PRE"&&misOrdenes[i].status!="EVI"&&misOrdenes[i].status!="ENS"){
+                setNuevasOrdenes([...nuevasOrdenes , (misOrdenes[i].ticket)])
+              }
+            }
+          }else{
+            if(misOrdenes[i].status!="PEI"&&misOrdenes[i].status!="PRE"&&misOrdenes[i].status!="EVI"&&misOrdenes[i].status!="ENS"){
               setNuevasOrdenes([...nuevasOrdenes , (misOrdenes[i].ticket)])
+
             }
           }
         })
@@ -179,6 +188,8 @@ const HomeProveedor = (props:{setIsReg:any, setNombre:any, setApellido:any, setF
     }
   
 }, [misOrdenes]);
+
+
 
   if (mostrarChat){
     return(
@@ -231,15 +242,20 @@ const HomeProveedor = (props:{setIsReg:any, setNombre:any, setApellido:any, setF
             </IonModal>
 
             <ExploreContainerProveedor  
-              notifications={notifications} setNotifications={setNotifications}
+              notifications={notifications} 
+              setNotifications={setNotifications}
+
               ordenes={misOrdenes}
+              setMisOrdenes={setMisOrdenes}
+
               setNuevasOrdenes={setNuevasOrdenes}
               emailProveedor={user!.email}
               sinRubro={sinRubro}
               setIsReg={props.setIsReg}
               tipodeCliente={user!.tipoCliente} 
-              nuevasOrdenes={nuevasOrdenes}         
+              nuevasOrdenes={nuevasOrdenes}  
             />
+
 
             <IonPopover event={popoverState.event} isOpen={popoverState.showPopover} dismissOnSelect={true}>
               <IonContent>
@@ -286,7 +302,7 @@ const NuevasOrdenesAviso = (props: {nuevasOrdenes:string []})=>{
       <div id="elementos">
         {(props.nuevasOrdenes || []).map((a) => {
           return (  
-            <IonCard id="ionCard-CardProveedor" onClick={} >
+            <IonCard id="ionCard-CardProveedor"  >
               <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center", width:"100%", height:"auto"}}>
                 <IonItem lines="none">ORDEN DE SERVICIO</IonItem>
                 <IonItem lines="none">TICKET Nº: {a}</IonItem>

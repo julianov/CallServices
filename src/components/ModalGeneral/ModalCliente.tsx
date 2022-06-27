@@ -239,7 +239,6 @@ const DatosUsuario = (props:{setIsReg:any,email:string, completarInfoPersonal:an
     removeItem("calificacion")
     localStorage.clear()
   
-    //setDone(true)
     props.setIsReg(false)
     window.location.reload();
 
@@ -286,44 +285,39 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
       <>
       <IonHeader>
         <IonToolbar>
-        <div className="header">
-        <IonIcon icon={close} onClick={() => props.onClose(null)} slot="start" id="flecha-cerrar">  </IonIcon>
-        <IonTitle>CallServices</IonTitle></div>
-        </IonToolbar>
+          <div className="header">
+            <IonIcon icon={close} onClick={() => props.onClose(null)} slot="start" id="flecha-cerrar">  </IonIcon>
+            <IonTitle>CallServices</IonTitle>
+          </div>
+          </IonToolbar>
       </IonHeader>
       <IonContent>
-      <div id="contenedor-izquierda">
-        <button  onClick={() => { props.closeSesion () } } className="cerrarsesion" >CERRAR SESIÓN</button>
-          </div>
+        <div id="contenedor-izquierda">
+          <button  onClick={() => { props.closeSesion () } } className="cerrarsesion" >CERRAR SESIÓN</button>
+        </div>
         <div id="contenedor-central">
-        
-        <IonTitle>PERFIL</IonTitle>
-        <strong>Debe completar su información personal </strong>
-        
-        <IonGrid id="ModalGrid">
-        <IonList>
-  
+          <IonTitle>PERFIL</IonTitle>
+          <strong>Debe completar su información personal </strong>
+            
+          <IonGrid id="ModalGrid">
+            <IonList>
+              <IonRow><IonCol className="col"><IonItem id="item-modal" button href={"/Completarinfo"}  >
+                <IonLabel>Completar Información personal</IonLabel>
+                <IonIcon className="iconosModal" icon={person} ></IonIcon>
+              </IonItem></IonCol></IonRow>
 
-          <IonRow><IonCol className="col"><IonItem id="item-modal" button href={"/Completarinfo"}  >
-            <IonLabel>Completar Información personal</IonLabel>
-            <IonIcon className="iconosModal" icon={person} ></IonIcon>
-          </IonItem></IonCol></IonRow>
+              <IonRow><IonCol className="col"><IonItem id="item-modal" button onClick={() => { }}>
+                <IonLabel>Preguntas</IonLabel>
+                <IonIcon className="iconosModal" icon={help} ></IonIcon>
+              </IonItem></IonCol></IonRow>
 
-          <IonRow><IonCol className="col"><IonItem id="item-modal" button onClick={() => { }}>
-            <IonLabel>Preguntas</IonLabel>
-            <IonIcon className="iconosModal" icon={help} ></IonIcon>
-          </IonItem></IonCol></IonRow>
-
-          <IonRow><IonCol className="col"><IonItem id="item-modal" button onClick={() => { }}>
-            <IonLabel>Soporte</IonLabel>
-            <IonIcon className="iconosModal" icon={chatbubble} ></IonIcon>
-          </IonItem></IonCol></IonRow>
-          </IonList>  
-
+              <IonRow><IonCol className="col"><IonItem id="item-modal" button onClick={() => { }}>
+                <IonLabel>Soporte</IonLabel>
+                <IonIcon className="iconosModal" icon={chatbubble} ></IonIcon>
+              </IonItem></IonCol></IonRow>
+            </IonList>  
           </IonGrid>
-        
-
-          </div>
+        </div>
       </IonContent>
     </>
     );
@@ -334,16 +328,12 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
   if (props.datosPersonales){
     return (
       <>
-    
       <IonContent>
- 
         <div id="contenedor-central-Modal">
-        
-        <MostrarDatosPersonales setShowAlertDatosPersonales={setShowAlertDatosPersonales} setDatosPersonales={props.setDatosPersonales} onClose={props.onClose} 
-        email={props.email} foto={props.foto} 
-        nombre={props.nombre} apellido={props.apellido} calificacion={props.calificacion} setFoto={props.setFoto} 
-        setNombre={props.setNombre} setApellido={props.setApellido}></MostrarDatosPersonales>
-        
+          <MostrarDatosPersonales setShowAlertDatosPersonales={setShowAlertDatosPersonales} setDatosPersonales={props.setDatosPersonales} onClose={props.onClose} 
+          email={props.email} foto={props.foto} 
+          nombre={props.nombre} apellido={props.apellido} calificacion={props.calificacion} setFoto={props.setFoto} 
+          setNombre={props.setNombre} setApellido={props.setApellido}></MostrarDatosPersonales>
         </div>
 
         <IonLoading  isOpen={showAlertDatosPersonales}   onDidDismiss={() => setShowAlertDatosPersonales(false)}
@@ -351,7 +341,6 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
           message={'Esperando respuesta del servidor...'}
           duration={10000}
         />
-
       </IonContent>
     </>
     );
@@ -359,40 +348,40 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
     return (
       <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh"}}>
       
-      <header style={{display:"flex", alignItems:"right", justifyContent:"right",width:"100%",height:"auto"}}>
-        <IonIcon icon={close} onClick={() => props.onClose(null)} slot="right" id="flecha-cerrar">  </IonIcon>
-      </header>
+        <header style={{display:"flex", alignItems:"right", justifyContent:"right",width:"100%",height:"auto"}}>
+          <IonIcon icon={close} onClick={() => props.onClose(null)} slot="right" id="flecha-cerrar">  </IonIcon>
+        </header>
 
-      <div style={{display:"flex",flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%",height:"100%"}}>
-        <img onClick={() => props.setDatosPersonales(true)} src={imagen} id="foto-usuario-grande"/>
+        <div style={{display:"flex",flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%",height:"100%"}}>
+          <img onClick={() => props.setDatosPersonales(true)} src={imagen} id="foto-usuario-grande"/>
 
-        <div style={{display:"flex",flexDirection:"column", justifyContent:"center", alignItems:"center", width:"80%",height:"auto", marginTop:"15px"}}>
+          <div style={{display:"flex",flexDirection:"column", justifyContent:"center", alignItems:"center", width:"80%",height:"auto", marginTop:"15px"}}>
 
-        <IonItem id="item-modal" button onClick={() => { props.setDatosPersonales(true)}}>
-            <IonLabel style={{ with:"100%" }}>DATOS PERSONALES</IonLabel>
-            <IonIcon className="iconosModal" icon={person} ></IonIcon>
-          </IonItem>
+            <IonItem id="item-modal" button onClick={() => { props.setDatosPersonales(true)}}>
+                <IonLabel style={{ with:"100%" }}>DATOS PERSONALES</IonLabel>
+                <IonIcon className="iconosModal" icon={person} ></IonIcon>
+              </IonItem>
 
-        <IonItem id="item-modal" button onClick={() => { }}>
-            <IonLabel>MIS TICKETS</IonLabel>
-            <IonIcon className="iconosModal" icon={receipt} ></IonIcon>
-          </IonItem>
+            <IonItem id="item-modal" button onClick={() => { }}>
+                <IonLabel>MIS TICKETS</IonLabel>
+                <IonIcon className="iconosModal" icon={receipt} ></IonIcon>
+            </IonItem>
 
-          <IonItem id="item-modal" button onClick={() => { }}>
-            <IonLabel>PREGUNTAS</IonLabel>
-            <IonIcon className="iconosModal" icon={help} ></IonIcon>
-          </IonItem>
+            <IonItem id="item-modal" button onClick={() => { }}>
+                <IonLabel>PREGUNTAS</IonLabel>
+                <IonIcon className="iconosModal" icon={help} ></IonIcon>
+            </IonItem>
 
-         <IonItem id="item-modal" button onClick={() => { }}>
-            <IonLabel>SOPORTE</IonLabel>
-            <IonIcon className="iconosModal" icon={chatbubble} ></IonIcon>
-          </IonItem>
+            <IonItem id="item-modal" button onClick={() => { }}>
+                <IonLabel>SOPORTE</IonLabel>
+                <IonIcon className="iconosModal" icon={chatbubble} ></IonIcon>
+            </IonItem>
           </div>
         </div>
         <div style={{display:"flex", alignItems:"center", justifyContent:"center", width:"100%",height:"auto"}}>
-        <button  onClick={() => { props.closeSesion () } } className="cerrarsesion" >CERRAR SESIÓN</button>
+          <button  onClick={() => { props.closeSesion () } } className="cerrarsesion" >CERRAR SESIÓN</button>
         </div>
-        </div>
+      </div>
    
     );
   }

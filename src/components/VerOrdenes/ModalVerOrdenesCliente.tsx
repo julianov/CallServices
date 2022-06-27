@@ -1,6 +1,6 @@
-import { arrowBack, camera, chatbox, eye, location, logoWindows } from "ionicons/icons";
+import { arrowBack, camera, chatbox, close, eye, location, logoWindows } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
-import { isConstructorDeclaration, isSetAccessorDeclaration } from "typescript";
+import { isConstructorDeclaration, isPropertyDeclaration, isSetAccessorDeclaration } from "typescript";
 
 import Https from "../../utilidades/HttpsURL";
 import '../ModalGeneral/Modal.css';
@@ -8,7 +8,7 @@ import '../ModalGeneral/Modal.css';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import axios from "axios";
 import { Calificacion } from "./ModalVerOrdenesProveedor";
-import { createStore, removeDB } from "../../utilidades/dataBase";
+import { createStore, removeDB, setDB } from "../../utilidades/dataBase";
 import Chat from "../Chat/Chat";
 import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonRow, IonTitle } from "@ionic/react";
 import { ordenesCliente } from "../../pages/Home/HomeCliente";
@@ -32,8 +32,9 @@ const verUbicacion = ( latitud:any, longitud:any) =>{
 
   }
 
-const ModalVerOrdenesCliente = (props:{notifications:any, setNotifications:any, datos:any,emailCliente:any, setVolver:any})  =>{
-    const [vista, setVista] = useState("primero")
+const ModalVerOrdenesCliente = (props:{ticket:any, datosCompletos:any, setDatosCompletos:any, nuevasOrdenes:any, setNuevasOrdenes:any, notifications:any, setNotifications:any,emailCliente:any, setVolver:any})  =>{
+   
+  const [vista, setVista] = useState("primero")
 
     const [estado, setEstado] =useState("Enviada")
 
@@ -41,46 +42,120 @@ const ModalVerOrdenesCliente = (props:{notifications:any, setNotifications:any, 
    
     const desdeDondeEstoy=useRef("")
 
-    
+    const respuesta=useRef("")
+    const imagen1=useRef<String>()
+    const imagen2=useRef<String>()
+
+
+    const [orden, setOrden] = useState <ordenesCliente>(
+      {
+        rubro:"",
+        tipo:"",
+        status:"",
+        fecha_creacion:"",
+        ticket:"",
+        dia:"",
+        hora:"",
+        titulo:"",
+        descripcion:"",
+        email_proveedor:"",
+        imagen_proveedor:"",
+        location_lat:"",
+        location_long:"",
+        picture1:"",
+        picture2:"",
+        presupuesto:"",
+        pedido_mas_información:"",
+        respuesta_cliente_pedido_mas_información:"",
+        picture1_mas_información:"",
+        picture2_mas_información:"",
+      }
+    );
+
+ 
     useEffect(() => {
-        
-          if (props.datos.status=="ENV"){
+
+      if(orden.ticket!=""){
+        console.log("ESTE MENSAJE INDICA QUE SE GUARDO EN LA BASE DE DATOS")
+        setDB(orden.ticket+"cliente", orden.status)
+        props.setNuevasOrdenes(props.nuevasOrdenes.filter((item:string) => item !== orden.ticket));
+  
+      }
+      
+            if (orden.status=="ENV"){
               setEstado("GENERADA")
-            }else if(props.datos.status=="REC"){
+
+            }
+            else if(orden.status=="REC"){
               setEstado("ORDEN RECIBIDA POR PROVEEDOR")
-            }else if(props.datos.status=="ABI"){
-              setEstado("ORDEN RECIBIDA POR PROVEEDOR")
-            }else if(props.datos.status=="PEI"){
-              
-              if(props.datos.respuesta_cliente_pedido_mas_información!="0" && props.datos.respuesta_cliente_pedido_mas_información!=undefined){
-                setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
-                setVista("respuestaEnviada")
-              }else{
-                setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
-                setVista("masinfo")
-              }
-              
-            } else if(props.datos.status=="PRE"){
-              setEstado("ORDEN PRE ACEPTADA POR PROVEEDOR")
-              setVista("preaceptada")
-            }else if(props.datos.status=="ACE"){
+
+            }else if(orden.status=="PEI"){
+              setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
+              setVista("masinfo")
+
+            }else if(orden.status=="RES"){
+              setEstado("INFORMACIÓN ADICIONAL ENVIADA")
+              setVista("respuestaEnviada")
+
+            }else if(orden.status=="PRE"){
+              setEstado("PRESUPUESTADA")
+              setVista("PRESUPUESTADA")
+            }else if(orden.status=="ACE"){
+              setEstado("PRESUPUESTO ACEPTADO")
+              setVista("enEsperaDelPRoveedor")
+            }else if(orden.status=="EVI"){
               setEstado("ORDEN ACEPTADA")
               setVista("enEsperaDelPRoveedor")
-            }else if(props.datos.status=="EVI"){
-              setEstado("PROVEEDOR EN VIAJE")
-              setVista("proveedorEnViaje")
-
-            }else if(props.datos.status=="ENS"){
+            }else if(orden.status=="ENS"){
               setEstado("PROVEEDOR EN SITIO")
-            }else if(props.datos.status=="RED"){
+            }else if(orden.status=="RED"){
               setVista("finalizada")
+            }else{
+
             }
         
-      }, []) 
+      }, [orden]) 
+
+
+      useEffect(() => {
+
+        for (let i=0; i < props.datosCompletos.length ; i++){
+
+          if(props.datosCompletos[i].ticket==props.ticket){
+            setOrden(
+              {
+                rubro:props.datosCompletos[i].rubro,
+                tipo:props.datosCompletos[i].tipo,
+                status:props.datosCompletos[i].status,
+                fecha_creacion:props.datosCompletos[i].fecha_creacion,
+                ticket: props.datosCompletos[i].ticket,
+                dia: props.datosCompletos[i].dia,
+                hora:props.datosCompletos[i].hora,
+                titulo:props.datosCompletos[i].titulo,
+                descripcion:props.datosCompletos[i].descripcion,
+                email_proveedor:props.datosCompletos[i].email_proveedor,
+                imagen_proveedor:props.datosCompletos[i].imagen_proveedor,
+                location_lat:props.datosCompletos[i].location_lat,
+                location_long:props.datosCompletos[i].location_long,
+                picture1:props.datosCompletos[i].picture1,
+                picture2:props.datosCompletos[i].picture2,
+                presupuesto:props.datosCompletos[i].presupuesto,
+                pedido_mas_información:props.datosCompletos[i].pedido_mas_información,
+                respuesta_cliente_pedido_mas_información:props.datosCompletos[i].respuesta_cliente_pedido_mas_información,
+                picture1_mas_información:props.datosCompletos[i].picture1_mas_información,
+                picture2_mas_información:props.datosCompletos[i].picture2_mas_información
+              }
+            )
+          }
+
+        }
+
+          
+        }, [props.datosCompletos]) 
 
       const cancelarOrden = ()=> {
 
-          axios.get(url+"orden/cambiarestado/"+props.datos.ticket+"/"+props.datos.tipo+"/"+"CAN", {timeout: 7000})
+          axios.get(url+"orden/cambiarestado/"+orden!.ticket+"/"+orden!.tipo+"/"+"CAN", {timeout: 7000})
           .then((resp: { data: any; }) => {
             if(resp.data!="bad"){
               console.log("se cancelò")
@@ -88,7 +163,7 @@ const ModalVerOrdenesCliente = (props:{notifications:any, setNotifications:any, 
               setVista("cancelarOrden")
 
               createStore("ordenesActivas")
-              removeDB(props.datos.ticket.toString())
+              removeDB(orden.ticket.toString())
 
               props.setVolver(false)
               window.location.reload()
@@ -103,7 +178,7 @@ const ModalVerOrdenesCliente = (props:{notifications:any, setNotifications:any, 
 
         desdeDondeEstoy.current="primero"
         return (
-          < Primero datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
+          < Primero datos={orden!} setVista={setVista} estado={estado} setEstado={setEstado}
           setVolver={props.setVolver} cancelarOrden={cancelarOrden} />
       );
 
@@ -111,15 +186,15 @@ const ModalVerOrdenesCliente = (props:{notifications:any, setNotifications:any, 
 
         desdeDondeEstoy.current="masinfo"
         return(
-          < PedidoMasInfo datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
+          < PedidoMasInfo setOrden={setOrden} datos={orden!} respuesta={respuesta} imagen1={imagen1} imagen2={imagen2} setVista={setVista} estado={estado} setEstado={setEstado}
           setVolver={props.setVolver} cancelarOrden={cancelarOrden}/>
         )
 
-      } else if (vista=="preaceptada"){
+      } else if (vista=="PRESUPUESTADA"){
 
-        desdeDondeEstoy.current="preaceptada"
+        desdeDondeEstoy.current="PRESUPUESTADA"
         return(
-          <OrdenPreAceptada datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
+          <OrdenPresupuestada datos={orden!} setVista={setVista} estado={estado} setEstado={setEstado}
           setVolver={props.setVolver} cancelarOrden={cancelarOrden}/>
         )
 
@@ -127,15 +202,15 @@ const ModalVerOrdenesCliente = (props:{notifications:any, setNotifications:any, 
 
         desdeDondeEstoy.current="respuestaEnviada"
         return(
-          <RespuestaEnviada datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
-          setVolver={props.setVolver} cancelarOrden={cancelarOrden} />
+          <RespuestaEnviada datos={orden!} setVista={setVista} estado={estado} setEstado={setEstado}
+          setVolver={props.setVolver} cancelarOrden={cancelarOrden} respuesta={respuesta} imagen1={imagen1} imagen2={imagen2} />
           )
 
       } else if (vista=="enEsperaDelPRoveedor"){
 
         desdeDondeEstoy.current="enEsperaDelPRoveedor"
         return(
-          <EnEsperaDelProveedor datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
+          <EnEsperaDelProveedor datos={orden!} setVista={setVista} estado={estado} setEstado={setEstado}
           setVolver={props.setVolver} cancelarOrden={cancelarOrden} />
           )
 
@@ -143,28 +218,28 @@ const ModalVerOrdenesCliente = (props:{notifications:any, setNotifications:any, 
 
         desdeDondeEstoy.current="proveedorEnViaje"
         return(
-          <OrdenEnViaje datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
+          <OrdenEnViaje datos={orden!} setVista={setVista} estado={estado} setEstado={setEstado}
           setVolver={props.setVolver} cancelarOrden={cancelarOrden} />
         )
 
       }else if(vista=="finalizada"){
 
         return(
-        <Finalizada datos={props.datos} setVista={setVista} estado={estado} setEstado={setEstado}
+        <Finalizada datos={orden!} setVista={setVista} estado={estado} setEstado={setEstado}
           setVolver={props.setVolver} />
         )
 
       } else if (vista=="datosProveedor"){
 
         return (
-        < VerDatosProveedor ticket={props.datos.ticket} tipo={props.datos.tipo} latitud={props.datos.location_lat} longitud={props.datos.location_long} setVista={setVista}  />
+        < VerDatosProveedor ticket={orden.ticket} tipo={orden.tipo} latitud={orden.location_lat} longitud={orden.location_long} setVista={setVista}  />
         )
 
       }else if (vista=="chat") {
 
         return(
         <>
-        <Chat notifications={props.notifications} setNotifications={props.setNotifications} email={props.emailCliente}  ticket={props.datos.ticket} setVolver={props.setVolver} setVista={setVista} desdeDondeEstoy={desdeDondeEstoy.current}/>
+        <Chat notifications={props.notifications} setNotifications={props.setNotifications} email={props.emailCliente}  ticket={orden.ticket} setVolver={props.setVolver} setVista={setVista} desdeDondeEstoy={desdeDondeEstoy.current}/>
         </>
         )
         
@@ -284,7 +359,7 @@ return (
 
 }
 
-const PedidoMasInfo = ( props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any, cancelarOrden:any} )=>{
+const PedidoMasInfo = ( props:{setOrden:any, datos:any, setVolver:any, setVista:any, setEstado:any, estado:any, cancelarOrden:any, respuesta:any, imagen1:any, imagen2:any} )=>{
 
   const respuesta_informacion=useRef("")
   const foto1Mostrar= useRef <String>()
@@ -302,13 +377,40 @@ const PedidoMasInfo = ( props:{datos:any, setVolver:any, setVista:any, setEstado
       var formDataToUpload = new FormData();
       formDataToUpload.append("ticket",props.datos.ticket)
       formDataToUpload.append("respuesta_informacion",respuesta_informacion.current)
+      props.respuesta.current=respuesta_informacion.current
 
       if(foto1.current!=null || foto1.current!=undefined){
         formDataToUpload.append("imagen1", foto1.current);
+        props.imagen1.current=foto1Mostrar.current
+        
       }
       if(foto2.current!=null || foto2.current!=undefined){
         formDataToUpload.append("imagen2", foto2.current); 
+        props.imagen2.current=foto2Mostrar.current
       }
+
+      props.setOrden({
+        rubro:props.datos.rubro, 
+        tipo:props.datos.tipo,
+        status:props.datos.status,
+        fecha_creacion:props.datos.fecha_creacion,
+        ticket:props.datos.ticket,
+        dia:props.datos.dia,
+        hora:props.datos.hora,
+        titulo:props.datos.titulo,
+        descripcion:props.datos.descripcion,
+        email_proveedor:props.datos.email_proveedor,
+        presupuesto:props.datos.presupuesto,
+        imagen_proveedor:props.datos.imagen_proveedor,
+        location_lat:props.datos.lacation_lat,
+        location_long:props.datos.location_long,
+        picture1:props.datos.picture1,
+        picture2:props.datos.picture2,
+        pedido_mas_información:props.datos.pedidoMasInformacion,
+        respuesta_cliente_pedido_mas_información:respuesta_informacion.current,
+        picture1_mas_información:foto1Mostrar.current,
+        picture2_mas_información:foto2Mostrar.current
+      })
       
       const axios = require('axios');
                 axios({
@@ -320,8 +422,12 @@ const PedidoMasInfo = ( props:{datos:any, setVolver:any, setVista:any, setEstado
 
                   if(res.data=="ok"){
                    // aca cambiar porque cuando se envia lo que el proveedor requiere aparece como aceptada pero en realidad no está aceptada, solo se envio lo que pedía el proveedor
-                   props.setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
-                   props.setVista("respuestaEnviada")
+
+                  props.setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
+                  props.setVista("respuestaEnviada")
+                  setDB(props.datos.ticket+"cliente", "RES")
+
+
                   }
     
                   
@@ -426,31 +532,32 @@ const PedidoMasInfo = ( props:{datos:any, setVolver:any, setVista:any, setEstado
           </div>
 
         <IonAlert
-        isOpen={showAlertRechazarOrden}
-        onDidDismiss={() => setShowAlertRechazarOrden(false)}
-        cssClass='my-custom-class'
-        header={'¿DESEA CANCELAR LA ORDEN?'}
-        subHeader={''}
-        message={'Agregar una indicación de por qué es mala rechazar ordenes'}
-        buttons={[
-        {
-          text: 'SI',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: blah => {
-              props.cancelarOrden();
-          },  
-        
-        },
-        {
-          text: 'NO',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: blah => {
-            setShowAlertRechazarOrden(false);
+          isOpen={showAlertRechazarOrden}
+          onDidDismiss={() => setShowAlertRechazarOrden(false)}
+          cssClass='my-custom-class'
+          header={'¿DESEA CANCELAR LA ORDEN?'}
+          subHeader={''}
+          mode='ios'
+          message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+          buttons={[
+          {
+            text: 'SI',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: blah => {
+                props.cancelarOrden();
+            },  
+          
+          },
+          {
+            text: 'NO',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: blah => {
+              setShowAlertRechazarOrden(false);
+            }
           }
-        }
-        ]} />
+          ]} />
 
    
 
@@ -461,7 +568,7 @@ const PedidoMasInfo = ( props:{datos:any, setVolver:any, setVista:any, setEstado
 }
 
 
-const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any, cancelarOrden:any} )=>{
+const OrdenPresupuestada = ( props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any, cancelarOrden:any} )=>{
 
 
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
@@ -483,6 +590,8 @@ const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEst
           props.setEstado("ORDEN ACEPTADA")
           props.setVista("enEsperaDelPRoveedor")
           props.datos.status="ACE"
+          setDB(props.datos.ticket+"cliente", "ACE")
+
       }
 
       
@@ -671,6 +780,7 @@ const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEst
         cssClass='my-custom-class'
         header={'¿DESEA CANCELAR LA ORDEN?'}
         subHeader={''}
+        mode='ios'
         message={'Agregar una indicación de por qué es mala rechazar ordenes'}
         buttons={[
           {
@@ -701,17 +811,22 @@ const OrdenPreAceptada = ( props:{datos:any, setVolver:any, setVista:any, setEst
 
 }
 
-const RespuestaEnviada  = (props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any, cancelarOrden:any} )=>{
+const RespuestaEnviada  = (props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any, cancelarOrden:any, respuesta:any, imagen1:any, imagen2:any} )=>{
   
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
- // const [showAlertUbicacion,setShowAlertUbicacion] = useState(false)
+
+ 
+const volver = () => {
+  props.setVolver(false)
+  window.location.reload()
+}
 
   return (
 
     <IonContent>
       <div id="ionContentModalOrdenes">
-          <div id="modalProveedor-flechaVolver">
-            <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+          <div style={{display:"flex", alignItems:"right", justifyContent:"right",width:"100%",height:"auto"}}>
+            <IonIcon icon={close} onClick={() => volver()} slot="right" id="flecha-cerrar">  </IonIcon>
           </div>
           <IonTitle>ESPERE PRESUPUESTO DEL PROVEEDOR</IonTitle>  
 
@@ -795,6 +910,7 @@ const RespuestaEnviada  = (props:{datos:any, setVolver:any, setVista:any, setEst
             cssClass='my-custom-class'
             header={'¿DESEA CANCELAR LA ORDEN?'}
             subHeader={''}
+            mode='ios'
             message={'Agregar una indicación de por qué es mala rechazar ordenes'}
             buttons={[
               {
@@ -829,14 +945,19 @@ const EnEsperaDelProveedor = (props:{datos:any, setVolver:any, setVista:any, set
   //const [showAlertUbicacion,setShowAlertUbicacion] = useState(false)
 
 
+  const volver = () => {
+    props.setVolver(false)
+    window.location.reload()
+  }
+
   if(props.datos.pedido_mas_información!=""){
     return (
 
       <IonContent>
         <div id="ionContentModalOrdenes">
-            <div id="modalProveedor-flechaVolver">
-              <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
-            </div>
+        <div style={{display:"flex", alignItems:"right", justifyContent:"right",width:"100%",height:"auto"}}>
+            <IonIcon icon={close} onClick={() => volver()} slot="right" id="flecha-cerrar">  </IonIcon>
+          </div>
             <IonTitle>ORDEN ACEPTADA </IonTitle>  
             <IonTitle>ESPERE AL PROVEEDOR</IonTitle>  
   
@@ -915,6 +1036,7 @@ const EnEsperaDelProveedor = (props:{datos:any, setVolver:any, setVista:any, set
               cssClass='my-custom-class'
               header={'¿DESEA CANCELAR LA ORDEN?'}
               subHeader={''}
+              mode='ios'
               message={'Agregar una indicación de por qué es mala rechazar ordenes'}
               buttons={[
                 {
@@ -945,9 +1067,9 @@ const EnEsperaDelProveedor = (props:{datos:any, setVolver:any, setVista:any, set
 
       <IonContent>
         <div id="ionContentModalOrdenes">
-            <div id="modalProveedor-flechaVolver">
-              <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
-            </div>
+        <div style={{display:"flex", alignItems:"right", justifyContent:"right",width:"100%",height:"auto"}}>
+            <IonIcon icon={close} onClick={() => volver()} slot="right" id="flecha-cerrar">  </IonIcon>
+          </div>
             <IonTitle>ORDEN ACEPTADA </IonTitle>  
             <IonTitle>ESPERE AL PROVEEDOR</IonTitle>  
   
@@ -1000,6 +1122,7 @@ const EnEsperaDelProveedor = (props:{datos:any, setVolver:any, setVista:any, set
               cssClass='my-custom-class'
               header={'¿DESEA CANCELAR LA ORDEN?'}
               subHeader={''}
+              mode='ios'
               message={'Agregar una indicación de por qué es mala rechazar ordenes'}
               buttons={[
                 {
@@ -1113,6 +1236,7 @@ const OrdenEnViaje = ( props:{datos:any, setVolver:any, setVista:any, setEstado:
               cssClass='my-custom-class'
               header={'¿DESEA RECHAZAR LA ORDEN?'}
               subHeader={''}
+              mode='ios'
               message={'Agregar una indicación de por qué es mala rechazar ordenes'}
               buttons={[
                 {
@@ -1247,6 +1371,7 @@ const OrdenEnViaje = ( props:{datos:any, setVolver:any, setVista:any, setEstado:
               cssClass='my-custom-class'
               header={'¿DESEA RECHAZAR LA ORDEN?'}
               subHeader={''}
+              mode='ios'
               message={'Agregar una indicación de por qué es mala rechazar ordenes'}
               buttons={[
                 {
