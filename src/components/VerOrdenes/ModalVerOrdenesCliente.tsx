@@ -34,18 +34,15 @@ const verUbicacion = ( latitud:any, longitud:any) =>{
 
 const ModalVerOrdenesCliente = (props:{ticket:any, datosCompletos:any, setDatosCompletos:any, nuevasOrdenes:any, setNuevasOrdenes:any, notifications:any, setNotifications:any,emailCliente:any, setVolver:any})  =>{
    
-  const [vista, setVista] = useState("primero")
+    const [vista, setVista] = useState("primero")
 
     const [estado, setEstado] =useState("Enviada")
-
-   // const [showAlertInconvenienteChat, setShowAlertInconvenienteChat] = useState(false)
    
     const desdeDondeEstoy=useRef("")
 
     const respuesta=useRef("")
     const imagen1=useRef<String>()
     const imagen2=useRef<String>()
-
 
     const [orden, setOrden] = useState <ordenesCliente>(
       {
@@ -74,47 +71,40 @@ const ModalVerOrdenesCliente = (props:{ticket:any, datosCompletos:any, setDatosC
 
  
     useEffect(() => {
-
-      if(orden.ticket!=""){
-        console.log("ESTE MENSAJE INDICA QUE SE GUARDO EN LA BASE DE DATOS")
-        setDB(orden.ticket+"cliente", orden.status)
-        props.setNuevasOrdenes(props.nuevasOrdenes.filter((item:string) => item !== orden.ticket));
-  
-      }
-      
-            if (orden.status=="ENV"){
-              setEstado("GENERADA")
-
-            }
-            else if(orden.status=="REC"){
-              setEstado("ORDEN RECIBIDA POR PROVEEDOR")
-
-            }else if(orden.status=="PEI"){
-              setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
-              setVista("masinfo")
-
-            }else if(orden.status=="RES"){
-              setEstado("INFORMACIÓN ADICIONAL ENVIADA")
-              setVista("respuestaEnviada")
-
-            }else if(orden.status=="PRE"){
-              setEstado("PRESUPUESTADA")
-              setVista("PRESUPUESTADA")
-            }else if(orden.status=="ACE"){
-              setEstado("PRESUPUESTO ACEPTADO")
-              setVista("enEsperaDelPRoveedor")
-            }else if(orden.status=="EVI"){
-              setEstado("ORDEN ACEPTADA")
-              setVista("enEsperaDelPRoveedor")
-            }else if(orden.status=="ENS"){
-              setEstado("PROVEEDOR EN SITIO")
-            }else if(orden.status=="RED"){
-              setVista("finalizada")
-            }else{
-
-            }
         
-      }, [orden]) 
+        if(orden.ticket!=""){
+            console.log("ESTE MENSAJE INDICA QUE SE GUARDO EN LA BASE DE DATOS")
+            setDB(orden.ticket+"cliente", orden.status)
+            props.setNuevasOrdenes(props.nuevasOrdenes.filter((item:string) => item !== orden.ticket));
+        }
+        if (orden.status=="ENV"){
+            setEstado("GENERADA")
+        }else if(orden.status=="REC"){
+            setEstado("ORDEN RECIBIDA POR PROVEEDOR")
+        }else if(orden.status=="PEI"){
+            setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
+            setVista("masinfo")
+        }else if(orden.status=="RES"){
+            setEstado("INFORMACIÓN ADICIONAL ENVIADA")
+            setVista("respuestaEnviada")
+        }else if(orden.status=="PRE"){
+            setEstado("PRESUPUESTADA")
+            setVista("PRESUPUESTADA")
+        }else if(orden.status=="ACE"){
+            setEstado("PRESUPUESTO ACEPTADO")
+            setVista("enEsperaDelPRoveedor")
+        }else if(orden.status=="EVI"){
+            setEstado("ORDEN ACEPTADA")
+            setVista("enEsperaDelPRoveedor")
+        }else if(orden.status=="ENS"){
+            setEstado("PROVEEDOR EN SITIO")
+        }else if(orden.status=="RED"){
+            setVista("finalizada")
+        }else{
+
+        }
+        
+    }, [orden]) 
 
 
       useEffect(() => {
@@ -147,18 +137,14 @@ const ModalVerOrdenesCliente = (props:{ticket:any, datosCompletos:any, setDatosC
               }
             )
           }
-
         }
-
-          
-        }, [props.datosCompletos]) 
+      }, [props.datosCompletos]) 
 
       const cancelarOrden = ()=> {
 
           axios.get(url+"orden/cambiarestado/"+orden!.ticket+"/"+orden!.tipo+"/"+"CAN", {timeout: 7000})
           .then((resp: { data: any; }) => {
             if(resp.data!="bad"){
-              console.log("se cancelò")
               setEstado("ORDEN RECHAZADA")
               setVista("cancelarOrden")
 
@@ -170,8 +156,6 @@ const ModalVerOrdenesCliente = (props:{ticket:any, datosCompletos:any, setDatosC
 
             }
            })
-        
-
       }
    
       if(vista=="primero"){
@@ -180,8 +164,8 @@ const ModalVerOrdenesCliente = (props:{ticket:any, datosCompletos:any, setDatosC
         return (
           < Primero datos={orden!} setVista={setVista} estado={estado} setEstado={setEstado}
           setVolver={props.setVolver} cancelarOrden={cancelarOrden} />
-      );
-
+        );
+          
       }else if(vista=="masinfo"){
 
         desdeDondeEstoy.current="masinfo"
@@ -204,7 +188,7 @@ const ModalVerOrdenesCliente = (props:{ticket:any, datosCompletos:any, setDatosC
         return(
           <RespuestaEnviada datos={orden!} setVista={setVista} estado={estado} setEstado={setEstado}
           setVolver={props.setVolver} cancelarOrden={cancelarOrden} respuesta={respuesta} imagen1={imagen1} imagen2={imagen2} />
-          )
+        )
 
       } else if (vista=="enEsperaDelPRoveedor"){
 
@@ -212,7 +196,7 @@ const ModalVerOrdenesCliente = (props:{ticket:any, datosCompletos:any, setDatosC
         return(
           <EnEsperaDelProveedor datos={orden!} setVista={setVista} estado={estado} setEstado={setEstado}
           setVolver={props.setVolver} cancelarOrden={cancelarOrden} />
-          )
+        )
 
       }else if(vista=="proveedorEnViaje"){
 
@@ -238,16 +222,16 @@ const ModalVerOrdenesCliente = (props:{ticket:any, datosCompletos:any, setDatosC
       }else if (vista=="chat") {
 
         return(
-        <>
-        <Chat notifications={props.notifications} setNotifications={props.setNotifications} email={props.emailCliente}  ticket={orden.ticket} setVolver={props.setVolver} setVista={setVista} desdeDondeEstoy={desdeDondeEstoy.current}/>
-        </>
+            <>
+                <Chat notifications={props.notifications} setNotifications={props.setNotifications} email={props.emailCliente}  ticket={orden.ticket} setVolver={props.setVolver} setVista={setVista} desdeDondeEstoy={desdeDondeEstoy.current}/>
+            </>
         )
         
       }else if (vista=="cancelarOrden") {
-        return(
-        <>        
-        </>
+        
+        return(<></>
         )
+          
       }else{
 
         return (
@@ -265,97 +249,93 @@ const ModalVerOrdenesCliente = (props:{ticket:any, datosCompletos:any, setDatosC
 
 const Primero = ( props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any, cancelarOrden:any} )=>{
 
-  const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
-  //const [showAlertUbicacion,setShowAlertUbicacion] = useState(false)
+    const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
+  
+    return (
+        <IonContent >
+            <div id="ionContentModalOrdenes">
+                <div id="modalProveedor-flechaVolver">
+                    <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+                </div>
+                <IonCard id="ionCard-explorerContainer-Proveedor">
 
-return (
-  <IonContent >
-    <div id="ionContentModalOrdenes">
-          <div id="modalProveedor-flechaVolver">
-            <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
-          </div>
-        <IonCard id="ionCard-explorerContainer-Proveedor">
+                    <img id="img-orden" src={props.datos.imagen_proveedor}></img>
 
-          <img id="img-orden" src={props.datos.imagen_proveedor}></img>
+                      <div id="divSentencias">
+                        <p >TIPO: {props.datos.tipo.toUpperCase()}</p>
+                        <p >STATUS: {props.estado}</p>
+                        <p >TICKET: {props.datos.ticket}</p>
+                      </div>
 
-          <div id="divSentencias">
-          <p >TIPO: {props.datos.tipo.toUpperCase()}</p>
-          <p >STATUS: {props.estado}</p>
-          <p >TICKET: {props.datos.ticket}</p>
-          </div>
+                      <IonGrid>
+                        <IonRow>
 
-          <IonGrid>
-            <IonRow>
+                        <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosProveedor")}>
+                              <IonRow id="ionrow-homecliente">
+                              <IonIcon icon={eye} /> </IonRow>
+                              <IonRow id="ionrow-homecliente"><small>VER DATOS PROVEEDOR</small></IonRow>
+                            </IonCol>
 
-            <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosProveedor")}>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={eye} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER DATOS PROVEEDOR</small></IonRow>
+                          <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+                              <IonRow id="ionrow-homecliente">
+                              <IonIcon icon={chatbox} /> </IonRow>
+                              <IonRow id="ionrow-homecliente"><small>CHAT PROVEEDOR</small></IonRow>
+                            </IonCol>
+
+                        </IonRow>
+                      </IonGrid>
+                </IonCard>
+  
+                <div id="titulo">
+                    <IonTitle >DATOS DE ORDEN DE SERVICIO</IonTitle>  
+                </div>
+                <IonCard id="ionCard-explorerContainer-Proveedor">
+                    <div id="divSentencias">
+                        <p>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
+                        <p>TÍTULO: {props.datos.titulo}</p>
+                        <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+                        <p>{props.datos.descripcion}</p>
+                    </div>
+                </IonCard>
+  
+                <IonCard id="ionCard-explorerContainer-Proveedor">
+                    <Imagenes picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
+                </IonCard>
+                
+                <IonCol>
+                    <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton>
                 </IonCol>
-             
-              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={chatbox} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>CHAT PROVEEDOR</small></IonRow>
-                </IonCol>
+                
+                <IonAlert
+                    isOpen={showAlertRechazarOrden}
+                    mode='ios'
+                    onDidDismiss={() => setShowAlertRechazarOrden(false)}
+                    cssClass='my-custom-class'
+                    header={'¿DESEA CANCELAR LA ORDEN?'}
+                    subHeader={''}
+                    message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+                    buttons={[
+                      {
+                        text: 'SI',
+                        role: 'cancel',
+                        cssClass: 'secondary',
+                        handler: blah => {
+                            props.cancelarOrden();
+                        },  
 
-            </IonRow>
-          </IonGrid>
-        </IonCard>
-  
-        <div id="titulo">
-        <IonTitle >DATOS DE ORDEN DE SERVICIO</IonTitle>  
-        </div>
-        <IonCard id="ionCard-explorerContainer-Proveedor">
-
-          <div id="divSentencias">
-            <p>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
-            <p>TÍTULO: {props.datos.titulo}</p>
-            <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-            <p>{props.datos.descripcion}</p>
-          </div>
-        </IonCard>
-  
-        <IonCard id="ionCard-explorerContainer-Proveedor">
-          < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
-        </IonCard>
-  
-        
-        <IonCol><IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton></IonCol>
-
-          <IonAlert
-            isOpen={showAlertRechazarOrden}
-            mode='ios'
-            onDidDismiss={() => setShowAlertRechazarOrden(false)}
-            cssClass='my-custom-class'
-            header={'¿DESEA CANCELAR LA ORDEN?'}
-            subHeader={''}
-            message={'Agregar una indicación de por qué es mala rechazar ordenes'}
-            buttons={[
-              {
-                text: 'SI',
-                role: 'cancel',
-                cssClass: 'secondary',
-                handler: blah => {
-                    props.cancelarOrden();
-                },  
-               
-              },
-              {
-                text: 'NO',
-                role: 'cancel',
-                cssClass: 'secondary',
-                handler: blah => {
-                  setShowAlertRechazarOrden(false);
-                }
-              }
-            ]} />
-
-       
-  </div>
+                      },
+                      {
+                        text: 'NO',
+                        role: 'cancel',
+                        cssClass: 'secondary',
+                        handler: blah => {
+                          setShowAlertRechazarOrden(false);
+                        }
+                      }]}
+                    />
+            </div>
         </IonContent>
-             
-)
+    )
 
 }
 
@@ -373,206 +353,190 @@ const PedidoMasInfo = ( props:{setOrden:any, datos:any, setVolver:any, setVista:
 
   const enviarMasInfo = () =>{
 
-    if(respuesta_informacion.current!=""){
-      var formDataToUpload = new FormData();
-      formDataToUpload.append("ticket",props.datos.ticket)
-      formDataToUpload.append("respuesta_informacion",respuesta_informacion.current)
-      props.respuesta.current=respuesta_informacion.current
+      if(respuesta_informacion.current!=""){
+          var formDataToUpload = new FormData();
+          formDataToUpload.append("ticket",props.datos.ticket)
+          formDataToUpload.append("respuesta_informacion",respuesta_informacion.current)
+          props.respuesta.current=respuesta_informacion.current
 
-      if(foto1.current!=null || foto1.current!=undefined){
-        formDataToUpload.append("imagen1", foto1.current);
-        props.imagen1.current=foto1Mostrar.current
-        
+          if(foto1.current!=null || foto1.current!=undefined){
+            formDataToUpload.append("imagen1", foto1.current);
+            props.imagen1.current=foto1Mostrar.current
+
+          }
+          if(foto2.current!=null || foto2.current!=undefined){
+            formDataToUpload.append("imagen2", foto2.current); 
+            props.imagen2.current=foto2Mostrar.current
+          }
+
+          props.setOrden({
+            rubro:props.datos.rubro, 
+            tipo:props.datos.tipo,
+            status:props.datos.status,
+            fecha_creacion:props.datos.fecha_creacion,
+            ticket:props.datos.ticket,
+            dia:props.datos.dia,
+            hora:props.datos.hora,
+            titulo:props.datos.titulo,
+            descripcion:props.datos.descripcion,
+            email_proveedor:props.datos.email_proveedor,
+            presupuesto:props.datos.presupuesto,
+            imagen_proveedor:props.datos.imagen_proveedor,
+            location_lat:props.datos.lacation_lat,
+            location_long:props.datos.location_long,
+            picture1:props.datos.picture1,
+            picture2:props.datos.picture2,
+            pedido_mas_información:props.datos.pedidoMasInformacion,
+            respuesta_cliente_pedido_mas_información:respuesta_informacion.current,
+            picture1_mas_información:foto1Mostrar.current,
+            picture2_mas_información:foto2Mostrar.current
+          })
+
+          const axios = require('axios');
+                    axios({
+                        url:url+"orden/masInfo/cliente",
+                        method:'POST',
+                        headers: {"content-type": "multipart/form-data"},
+                        data:formDataToUpload
+                    }).then(function(res: any){
+
+                      if(res.data=="ok"){
+                       // aca cambiar porque cuando se envia lo que el proveedor requiere aparece como aceptada pero en realidad no está aceptada, solo se envio lo que pedía el proveedor
+
+                      props.setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
+                      props.setVista("respuestaEnviada")
+                      setDB(props.datos.ticket+"cliente", "RES")
+
+
+                      }
+
+
+
+                    }).catch((error: any) =>{
+          //              setVista(0)
+                        //Network error comes in
+                    });
       }
-      if(foto2.current!=null || foto2.current!=undefined){
-        formDataToUpload.append("imagen2", foto2.current); 
-        props.imagen2.current=foto2Mostrar.current
-      }
-
-      props.setOrden({
-        rubro:props.datos.rubro, 
-        tipo:props.datos.tipo,
-        status:props.datos.status,
-        fecha_creacion:props.datos.fecha_creacion,
-        ticket:props.datos.ticket,
-        dia:props.datos.dia,
-        hora:props.datos.hora,
-        titulo:props.datos.titulo,
-        descripcion:props.datos.descripcion,
-        email_proveedor:props.datos.email_proveedor,
-        presupuesto:props.datos.presupuesto,
-        imagen_proveedor:props.datos.imagen_proveedor,
-        location_lat:props.datos.lacation_lat,
-        location_long:props.datos.location_long,
-        picture1:props.datos.picture1,
-        picture2:props.datos.picture2,
-        pedido_mas_información:props.datos.pedidoMasInformacion,
-        respuesta_cliente_pedido_mas_información:respuesta_informacion.current,
-        picture1_mas_información:foto1Mostrar.current,
-        picture2_mas_información:foto2Mostrar.current
-      })
-      
-      const axios = require('axios');
-                axios({
-                    url:url+"orden/masInfo/cliente",
-                    method:'POST',
-                    headers: {"content-type": "multipart/form-data"},
-                    data:formDataToUpload
-                }).then(function(res: any){
-
-                  if(res.data=="ok"){
-                   // aca cambiar porque cuando se envia lo que el proveedor requiere aparece como aceptada pero en realidad no está aceptada, solo se envio lo que pedía el proveedor
-
-                  props.setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
-                  props.setVista("respuestaEnviada")
-                  setDB(props.datos.ticket+"cliente", "RES")
-
-
-                  }
-    
-                  
-                
-                }).catch((error: any) =>{
-      //              setVista(0)
-                    //Network error comes in
-                });
-    }
-
   }
 
   return (
-    <IonContent>
-      <div id="ionContentModalOrdenes">
-        <div id="modalProveedor-flechaVolver">
-          <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
-        </div>
-
-        <IonCard id="ionCard-explorerContainer-Proveedor">
-          <div id="divSentencias">
-            <p>TIPO: {props.datos.tipo}</p>
-            <p>STATUS: {props.estado}</p>
-            <p>TICKET: {props.datos.ticket}</p>
-          </div>
-          <IonGrid>
-            <IonRow>
-
-            <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosProveedor")}>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={eye} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER DATOS PROVEEDOR</small></IonRow>
-                </IonCol>
-             
-              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={chatbox} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>CHAT PROVEEDOR</small></IonRow>
-                </IonCol>
-
-            </IonRow>
-          </IonGrid> 
-        </IonCard>
-
-        <div id="titulo">
-            <h1>SOLICITUD DE MÁS INFORMACIÓN </h1>
-        </div>
-
-        <IonCard id="ionCard-explorerContainer-Proveedor">
-
-          <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
-            <h2 style={{fontWeight:"100", fontSize:"1em"}}>EL PROVEEDOR DE SERVICIO LE HA ENVIADO EL SIGUIENTE COMENTARIO</h2> 
-          </div>
-            <IonItemDivider style={{margin:"0px"}}></IonItemDivider>
-          <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
-            <p style={{fontWeight:"600", fontSize:"1.2em", marginBottom:"25px"}}>{props.datos.pedido_mas_información}</p> 
-          </div>
-        </IonCard>
-
-        <IonItemDivider></IonItemDivider>
-
-        <IonCard id="ionCard-explorerContainer-Proveedor">
-        <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
-            <h2 style={{fontWeight:"100", fontSize:"1em"}}>INGRESE SU RESPUESTA</h2> 
-          </div>
-          <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
-
-            <IonItem style={{width:"90%",margin:"0px 0px 20px 0px"}}>
-              <IonLabel position="floating">Respuesta</IonLabel>
-              <IonInput onIonInput={(e: any) => respuesta_informacion.current = (e.target.value)}></IonInput>
-            </IonItem>
+      <IonContent>
+        <div id="ionContentModalOrdenes">
+            <div id="modalProveedor-flechaVolver">
+                <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
             </div>
-            <IonItemDivider/>
-
-            <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
-            <h2 style={{fontWeight:"100", fontSize:"1em"}}>¿DESEA AGREGAR FOTOS?</h2> 
-          </div>
-          
-                      <IonGrid>
-              <IonRow>
-                <IonCol>
-                  <TomarFotografia imagen={foto1Mostrar} setFilepath={foto1} />
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol >
-                  <TomarFotografia imagen={foto2Mostrar} setFilepath={foto2} />
-                </IonCol>
-              </IonRow>                                              
-            </IonGrid>
-          </IonCard>
-
-          <div id="botonCentral">
-            <div id="botonCentralIzquierda">
-            <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton>
-
+            
+            <IonCard id="ionCard-explorerContainer-Proveedor">
+                <div id="divSentencias">
+                    <p>TIPO: {props.datos.tipo}</p>
+                    <p>STATUS: {props.estado}</p>
+                    <p>TICKET: {props.datos.ticket}</p>
+                </div>
+                <IonGrid>
+                    <IonRow>
+                        <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosProveedor")}>
+                            <IonRow id="ionrow-homecliente">
+                            <IonIcon icon={eye} /> </IonRow>
+                            <IonRow id="ionrow-homecliente"><small>VER DATOS PROVEEDOR</small></IonRow>
+                        </IonCol>
+                        <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+                          <IonRow id="ionrow-homecliente">
+                          <IonIcon icon={chatbox} /> </IonRow>
+                          <IonRow id="ionrow-homecliente"><small>CHAT PROVEEDOR</small></IonRow>
+                        </IonCol>
+                    </IonRow>
+                </IonGrid> 
+            </IonCard>
+            
+            <div id="titulo">
+                <h1>SOLICITUD DE MÁS INFORMACIÓN </h1>
             </div>
-            <div id="botonCentralDerecha">  
-            <IonButton shape="round" color="warning" id="botonContratar" onClick={() => enviarMasInfo()}>RESPONDER</IonButton>
-
+            
+            <IonCard id="ionCard-explorerContainer-Proveedor">
+                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
+                    <h2 style={{fontWeight:"100", fontSize:"1em"}}>EL PROVEEDOR DE SERVICIO LE HA ENVIADO EL SIGUIENTE COMENTARIO</h2> 
+                </div>
+                <IonItemDivider style={{margin:"0px"}}></IonItemDivider>
+                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
+                    <p style={{fontWeight:"600", fontSize:"1.2em", marginBottom:"25px"}}>{props.datos.pedido_mas_información}</p> 
+                </div>
+            </IonCard>
+            
+            <IonItemDivider></IonItemDivider>
+            
+            <IonCard id="ionCard-explorerContainer-Proveedor">
+                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
+                    <h2 style={{fontWeight:"100", fontSize:"1em"}}>INGRESE SU RESPUESTA</h2> 
+                </div>
+                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
+                    <IonItem style={{width:"90%",margin:"0px 0px 20px 0px"}}>
+                      <IonLabel position="floating">Respuesta</IonLabel>
+                      <IonInput onIonInput={(e: any) => respuesta_informacion.current = (e.target.value)}></IonInput>
+                    </IonItem>
+                </div>
+                <IonItemDivider/>
+                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
+                    <h2 style={{fontWeight:"100", fontSize:"1em"}}>¿DESEA AGREGAR FOTOS?</h2> 
+                </div>
+                <IonGrid>
+                    <IonRow>
+                        <IonCol>
+                            <TomarFotografia imagen={foto1Mostrar} setFilepath={foto1} />
+                        </IonCol>
+                    </IonRow>
+                    <IonRow>
+                        <IonCol >
+                            <TomarFotografia imagen={foto2Mostrar} setFilepath={foto2} />
+                        </IonCol>
+                    </IonRow>
+                </IonGrid>
+            </IonCard>
+            
+            <div id="botonCentral">
+                <div id="botonCentralIzquierda">
+                    <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton>
+                </div>
+                <div id="botonCentralDerecha">  
+                    <IonButton shape="round" color="warning" id="botonContratar" onClick={() => enviarMasInfo()}>RESPONDER</IonButton>
+                </div>
             </div>
+
+            <IonAlert
+              isOpen={showAlertRechazarOrden}
+              onDidDismiss={() => setShowAlertRechazarOrden(false)}
+              cssClass='my-custom-class'
+              header={'¿DESEA CANCELAR LA ORDEN?'}
+              subHeader={''}
+              mode='ios'
+              message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+              buttons={[
+              {
+                text: 'SI',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: blah => {
+                    props.cancelarOrden();
+                },  
+
+              },
+              {
+                text: 'NO',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: blah => {
+                  setShowAlertRechazarOrden(false);
+                }
+              }
+              ]} />
           </div>
-
-        <IonAlert
-          isOpen={showAlertRechazarOrden}
-          onDidDismiss={() => setShowAlertRechazarOrden(false)}
-          cssClass='my-custom-class'
-          header={'¿DESEA CANCELAR LA ORDEN?'}
-          subHeader={''}
-          mode='ios'
-          message={'Agregar una indicación de por qué es mala rechazar ordenes'}
-          buttons={[
-          {
-            text: 'SI',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: blah => {
-                props.cancelarOrden();
-            },  
-          
-          },
-          {
-            text: 'NO',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: blah => {
-              setShowAlertRechazarOrden(false);
-            }
-          }
-          ]} />
-
-   
-
-      </div>
-  </IonContent>
-
+      </IonContent>
   )
 }
 
 
 const OrdenPresupuestada = ( props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any, cancelarOrden:any} )=>{
 
-
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
- // const [showAlertUbicacion,setShowAlertUbicacion] = useState(false)
 
   const aceptarPresupuesto = () => {
 
@@ -594,8 +558,6 @@ const OrdenPresupuestada = ( props:{datos:any, setVolver:any, setVista:any, setE
 
       }
 
-      
-    
     }).catch((error: any) =>{
 //              setVista(0)
         //Network error comes in
@@ -603,339 +565,316 @@ const OrdenPresupuestada = ( props:{datos:any, setVolver:any, setVista:any, setE
 }
 
 
-    //ACA ACEPTAR PRESUPUESTO 
+    //SI HAY PEDIDO DE MAS INFORMACION POR PARTE DEL PROVEEDOR
     if(props.datos.pedido_mas_información!=""){
+        return(
+            <IonContent>
+                <div id="ionContentModalOrdenes">
+                    <div id="modalProveedor-flechaVolver">
+                        <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+                    </div>
 
-      return(
-        <IonContent>
-        <div id="ionContentModalOrdenes">
-          <div id="modalProveedor-flechaVolver">
-            <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
-          </div>
+                    <IonTitle>SOLICITUD PRESUPUESTADA</IonTitle>  
+                    <IonCard id="ionCard-explorerContainer-Proveedor">
+                        <div id="divSentencias">
+                            <p>TIPO: {props.datos.tipo}</p>
+                             <p>STATUS: {props.estado}</p>
+                             <p>TICKET: {props.datos.ticket}</p>
+                        </div>
+                        <IonGrid>
+                            <IonRow> 
+                                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosProveedor")}>
+                                    <IonRow id="ionrow-homecliente">
+                                        <IonIcon icon={eye} /> 
+                                    </IonRow>
+                                    <IonRow id="ionrow-homecliente">
+                                        <small>VER DATOS PROVEEDOR</small>
+                                    </IonRow>
+                                </IonCol>
+                                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+                                    <IonRow id="ionrow-homecliente">
+                                        <IonIcon icon={chatbox} /> </IonRow>
+                                    <IonRow id="ionrow-homecliente">
+                                        <small>CHAT PROVEEDOR</small>
+                                    </IonRow>
+                                </IonCol>
+                            </IonRow>
+                        </IonGrid>
+                    </IonCard>
+                    
+                    <IonCard id="ionCard-explorerContainer-Proveedor">
+                        <Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
+                    </IonCard>
+                    
+                    <IonItemDivider />
+                    
+                    <div id="contenedorcentro">
+                        <IonTitle>PRESUPUESTO DEL TRABAJO</IonTitle>  
+                    </div>
+                    
+                    <IonCard id="ionCard-explorerContainer-Proveedor">
+                        <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO RECIBIDO:</h1>
+                        <h2 style={{fontSize:"1.2em", color:"blue"}}>{props.datos.presupuesto}</h2>
+                    </IonCard>
+                    
+                    <div style={{display:"flex", flexDirection:"column", textAlign:"center", width:"100%", height:"auto"}}>
+                        <h1 style={{fontSize:"1.2em"}}>INFORMACIÓN INTERCAMBIADA</h1>
+                    </div>
+                    
+                    <IonCard id="ionCard-explorerContainer-Proveedor">
+                        <h1 style={{fontSize:"1em", color:"black", marginTop:"20px"}}>INFORMACIÓN SOLICITADA AL CLIENTE:</h1>
+                        <h2 style={{fontSize:"1em", color:"blue"}}>{props.datos.pedido_mas_información}</h2>
+                        <IonItemDivider />
+                        <h1 style={{fontSize:"1em", color:"black"}}>RESPUESTA:</h1>
+                        <h2 style={{fontSize:"1em", color:"blue"}}>{props.datos.respuesta_cliente_pedido_mas_información}</h2>
+                        <Imagenes2 picture1={props.datos.picture1_mas_información} picture2={props.datos.picture2_mas_información} />
+                    </IonCard>
+                    
+                    <div id="botonCentral">
+                        <div id="botonCentralIzquierda">
+                            <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton>
+                        </div>
+                        <div id="botonCentralDerecha">  
+                            <IonButton shape="round" color="warning" id="botonContratar" onClick={() => aceptarPresupuesto()}>ACEPTAR PRESUPUESTO</IonButton>
+                        </div>
+                    </div>
+                    
+                    <IonAlert
+                        isOpen={showAlertRechazarOrden}
+                        onDidDismiss={() => setShowAlertRechazarOrden(false)}
+                        cssClass='my-custom-class'
+                        header={'¿DESEA CANCELAR LA ORDEN?'}
+                        subHeader={''}
+                        message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+                        buttons={[
+                          {
+                            text: 'SI',
+                            role: 'cancel',
+                            cssClass: 'secondary',
+                            handler: blah => {
+                                props.cancelarOrden();
+                            },  
 
-      <IonTitle>SOLICITUD PRESUPUESTADA</IonTitle>  
-      <IonCard id="ionCard-explorerContainer-Proveedor">
-        <div id="divSentencias">
-          <p>TIPO: {props.datos.tipo}</p>
-          <p>STATUS: {props.estado}</p>
-          <p>TICKET: {props.datos.ticket}</p>
-        </div>
-
-        <IonGrid>
-          <IonRow> 
-
-          <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosProveedor")}>
-              <IonRow id="ionrow-homecliente">
-              <IonIcon icon={eye} /> </IonRow>
-              <IonRow id="ionrow-homecliente"><small>VER DATOS PROVEEDOR</small></IonRow>
-            </IonCol>
-
-            <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
-              <IonRow id="ionrow-homecliente">
-              <IonIcon icon={chatbox} /> </IonRow>
-              <IonRow id="ionrow-homecliente"><small>CHAT PROVEEDOR</small></IonRow>
-            </IonCol>
-            
-
-          </IonRow>
-        </IonGrid>
-      </IonCard>
-
-      <IonCard id="ionCard-explorerContainer-Proveedor">
-            < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
-          </IonCard>
-
-      <IonItemDivider />
-
-      <div id="contenedorcentro">
-      <IonTitle>PRESUPUESTO DEL TRABAJO</IonTitle>  
-      </div>
-     
-      <IonCard id="ionCard-explorerContainer-Proveedor">
-        <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO RECIBIDO:</h1>
-        <h2 style={{fontSize:"1.2em", color:"blue"}}>{props.datos.presupuesto}</h2>
-      </IonCard>
-
-      <div style={{display:"flex", flexDirection:"column", textAlign:"center", width:"100%", height:"auto"}}>
-            <h1 style={{fontSize:"1.2em"}}>INFORMACIÓN INTERCAMBIADA</h1>
-          </div>
-          <IonCard id="ionCard-explorerContainer-Proveedor">
-          <h1 style={{fontSize:"1em", color:"black", marginTop:"20px"}}>INFORMACIÓN SOLICITADA AL CLIENTE:</h1>
-          <h2 style={{fontSize:"1em", color:"blue"}}>{props.datos.pedido_mas_información}</h2>
-          <IonItemDivider />
-
-            <h1 style={{fontSize:"1em", color:"black"}}>RESPUESTA:</h1>
-            <h2 style={{fontSize:"1em", color:"blue"}}>{props.datos.respuesta_cliente_pedido_mas_información}</h2>
-            
-            <Imagenes2 picture1={props.datos.picture1_mas_información} picture2={props.datos.picture2_mas_información} />
-          </IonCard>
-
-      <div id="botonCentral">
-        <div id="botonCentralIzquierda">
-          <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton>
-        </div>
-        <div id="botonCentralDerecha">  
-          <IonButton shape="round" color="warning" id="botonContratar" onClick={() => aceptarPresupuesto()}>ACEPTAR PRESUPUESTO</IonButton>
-        </div>
-     </div>
-     
-
-      <IonAlert
-        isOpen={showAlertRechazarOrden}
-        onDidDismiss={() => setShowAlertRechazarOrden(false)}
-        cssClass='my-custom-class'
-        header={'¿DESEA CANCELAR LA ORDEN?'}
-        subHeader={''}
-        message={'Agregar una indicación de por qué es mala rechazar ordenes'}
-        buttons={[
-          {
-            text: 'SI',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: blah => {
-                props.cancelarOrden();
-            },  
-          
-          },
-          {
-            text: 'NO',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: blah => {
-              setShowAlertRechazarOrden(false);
-            }
-          }
-        ]} />
-
-      
-  </div>
-    </IonContent>
-
-      )
+                          },
+                          {
+                            text: 'NO',
+                            role: 'cancel',
+                            cssClass: 'secondary',
+                            handler: blah => {
+                              setShowAlertRechazarOrden(false);
+                            }
+                          }
+                    ]} />
+                </div>
+            </IonContent>
+        )
     }else{
-    return (
-      <IonContent>
-        <div id="ionContentModalOrdenes">
-          <div id="modalProveedor-flechaVolver">
-            <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
-          </div>
+        return (
+          <IonContent>
+                <div id="ionContentModalOrdenes">
+                    <div id="modalProveedor-flechaVolver">
+                        <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+                    </div>
+                    <IonTitle>SOLICITUD PRESUPUESTADA</IonTitle>  
+                    
+                    <IonCard id="ionCard-explorerContainer-Proveedor">
+                        <div id="divSentencias">
+                          <p>TIPO: {props.datos.tipo}</p>
+                          <p>STATUS: {props.estado}</p>
+                          <p>TICKET: {props.datos.ticket}</p>
+                        </div>
+                        <IonGrid>
+                            <IonRow>
+                                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosProveedor")}>
+                                    <IonRow id="ionrow-homecliente">
+                                        <IonIcon icon={eye} />
+                                    </IonRow>
+                                    <IonRow id="ionrow-homecliente">
+                                        <small>VER DATOS PROVEEDOR</small>
+                                    </IonRow>
+                                </IonCol>
+                                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+                                    <IonRow id="ionrow-homecliente">
+                                        <IonIcon icon={chatbox} /> 
+                                    </IonRow>
+                                    <IonRow id="ionrow-homecliente">
+                                        <small>CHAT PROVEEDOR</small>
+                                    </IonRow>
+                                </IonCol>
+                            </IonRow>
+                        </IonGrid>
+                    </IonCard>
+                    
+                    <IonCard id="ionCard-explorerContainer-Proveedor">
+                        <Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
+                    </IonCard>
+                    <IonItemDivider />
+                    
+                    <div id="contenedorcentro">
+                        <IonTitle>PRESUPUESTO DEL TRABAJO</IonTitle>
+                    </div>
+                    
+                    <IonCard id="ionCard-explorerContainer-Proveedor">
+                        <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO RECIBIDO:</h1>
+                        <h2 style={{fontSize:"1.2em", color:"blue"}}>{props.datos.presupuesto}</h2>
+                    </IonCard>
+                    
+                    <div id="botonCentral">
+                        <div id="botonCentralIzquierda">
+                          <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton>
+                        </div>
+                        <div id="botonCentralDerecha">  
+                          <IonButton shape="round" color="warning" id="botonContratar" onClick={() => aceptarPresupuesto()}>ACEPTAR PRESUPUESTO</IonButton>
+                        </div>
+                    </div>
+                    
+                    <IonAlert
+                        isOpen={showAlertRechazarOrden}
+                        onDidDismiss={() => setShowAlertRechazarOrden(false)}
+                        cssClass='my-custom-class'
+                        header={'¿DESEA CANCELAR LA ORDEN?'}
+                        subHeader={''}
+                        mode='ios'
+                        message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+                        buttons={[
+                          {
+                            text: 'SI',
+                            role: 'cancel',
+                            cssClass: 'secondary',
+                            handler: blah => {
+                                props.cancelarOrden();
+                            },  
 
-      <IonTitle>SOLICITUD PRESUPUESTADA</IonTitle>  
-      <IonCard id="ionCard-explorerContainer-Proveedor">
-        <div id="divSentencias">
-          <p>TIPO: {props.datos.tipo}</p>
-          <p>STATUS: {props.estado}</p>
-          <p>TICKET: {props.datos.ticket}</p>
-        </div>
-
-        <IonGrid>
-          <IonRow> 
-
-          <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosProveedor")}>
-              <IonRow id="ionrow-homecliente">
-              <IonIcon icon={eye} /> </IonRow>
-              <IonRow id="ionrow-homecliente"><small>VER DATOS PROVEEDOR</small></IonRow>
-            </IonCol>
-
-            <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
-              <IonRow id="ionrow-homecliente">
-              <IonIcon icon={chatbox} /> </IonRow>
-              <IonRow id="ionrow-homecliente"><small>CHAT PROVEEDOR</small></IonRow>
-            </IonCol>
-
-          </IonRow>
-        </IonGrid>
-      </IonCard>
-
-      <IonCard id="ionCard-explorerContainer-Proveedor">
-        < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
-      </IonCard>
-
-      <IonItemDivider />
-
-      <div id="contenedorcentro">
-      <IonTitle>PRESUPUESTO DEL TRABAJO</IonTitle>  
-      </div>
-     
-
-      <IonCard id="ionCard-explorerContainer-Proveedor">
-            <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO RECIBIDO:</h1>
-            <h2 style={{fontSize:"1.2em", color:"blue"}}>{props.datos.presupuesto}</h2>
-
-        </IonCard>
-
-      <div id="botonCentral">
-        <div id="botonCentralIzquierda">
-          <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton>
-        </div>
-        <div id="botonCentralDerecha">  
-          <IonButton shape="round" color="warning" id="botonContratar" onClick={() => aceptarPresupuesto()}>ACEPTAR PRESUPUESTO</IonButton>
-        </div>
-     </div>
-     
-
-      <IonAlert
-        isOpen={showAlertRechazarOrden}
-        onDidDismiss={() => setShowAlertRechazarOrden(false)}
-        cssClass='my-custom-class'
-        header={'¿DESEA CANCELAR LA ORDEN?'}
-        subHeader={''}
-        mode='ios'
-        message={'Agregar una indicación de por qué es mala rechazar ordenes'}
-        buttons={[
-          {
-            text: 'SI',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: blah => {
-                props.cancelarOrden();
-            },  
-          
-          },
-          {
-            text: 'NO',
-            role: 'cancel',
-            cssClass: 'secondary',
-            handler: blah => {
-              setShowAlertRechazarOrden(false);
-            }
-          }
-        ]} />
-
-  
-  </div>
-    </IonContent>
-
-    )
-  }
-
+                          },
+                          {
+                            text: 'NO',
+                            role: 'cancel',
+                            cssClass: 'secondary',
+                            handler: blah => {
+                              setShowAlertRechazarOrden(false);
+                            }
+                          }
+                        ]} />
+                </div>
+            </IonContent>
+        )
+    }
 }
 
 const RespuestaEnviada  = (props:{datos:any, setVolver:any, setVista:any, setEstado:any, estado:any, cancelarOrden:any, respuesta:any, imagen1:any, imagen2:any} )=>{
   
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
-
- 
-const volver = () => {
-  props.setVolver(false)
-  window.location.reload()
-}
+  
+  const volver = () => {
+    props.setVolver(false)
+    window.location.reload()
+    }
 
   return (
-
-    <IonContent>
-      <div id="ionContentModalOrdenes">
+      <IonContent>
+        <div id="ionContentModalOrdenes">
           <div style={{display:"flex", alignItems:"right", justifyContent:"right",width:"100%",height:"auto"}}>
             <IonIcon icon={close} onClick={() => volver()} slot="right" id="flecha-cerrar">  </IonIcon>
           </div>
-          <IonTitle>ESPERE PRESUPUESTO DEL PROVEEDOR</IonTitle>  
+          <IonTitle>ESPERE PRESUPUESTO DEL PROVEEDOR</IonTitle>
+            
+            <IonCard id="ionCard-explorerContainer-Proveedor">
+                <img id="img-orden" src={props.datos.imagen_proveedor}></img>
+                <div id="divSentencias">
+                  <p>TIPO: {props.datos.tipo}</p>
+                  <p>STATUS: {props.estado}</p>
+                  <p>TICKET: {props.datos.ticket}</p>
+                </div>
+                <IonGrid>
+                    <IonRow>
 
-        <IonCard id="ionCard-explorerContainer-Proveedor">
-          <img id="img-orden" src={props.datos.imagen_proveedor}></img>
-          <div id="divSentencias">
-          <p>TIPO: {props.datos.tipo}</p>
-          <p>STATUS: {props.estado}</p>
-          <p>TICKET: {props.datos.ticket}</p>
-          </div>
+                    <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosProveedor")}>
+                        <IonRow id="ionrow-homecliente">
+                        <IonIcon icon={eye} /> </IonRow>
+                        <IonRow id="ionrow-homecliente"><small>VER DATOS PROVEEDOR</small></IonRow>
+                      </IonCol>
 
-          <IonGrid>
-        <IonRow>
-          
-        <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosProveedor")}>
-            <IonRow id="ionrow-homecliente">
-            <IonIcon icon={eye} /> </IonRow>
-            <IonRow id="ionrow-homecliente"><small>VER DATOS PROVEEDOR</small></IonRow>
-          </IonCol>
+                    <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+                        <IonRow id="ionrow-homecliente">
+                        <IonIcon icon={chatbox} /> </IonRow>
+                        <IonRow id="ionrow-homecliente"><small>CHAT PROVEEDOR</small></IonRow>
+                      </IonCol>
 
-        <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
-            <IonRow id="ionrow-homecliente">
-            <IonIcon icon={chatbox} /> </IonRow>
-            <IonRow id="ionrow-homecliente"><small>CHAT PROVEEDOR</small></IonRow>
-          </IonCol>
+                    </IonRow>
+                </IonGrid>
+            </IonCard>
+            
+            <IonCard id="ionCard-explorerContainer-Proveedor">
+                <div id="divSentencias">
+                    <p>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
+                    <p>TÍTULO: {props.datos.titulo}</p>
+                    <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+                    <p>{props.datos.descripcion}</p>
+                </div>
+            </IonCard>
+            
+            <IonCard id="ionCard-explorerContainer-Proveedor">
+                <Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
+            </IonCard>
         
-        </IonRow>
-    </IonGrid>
-        </IonCard>
-  
-        <IonCard id="ionCard-explorerContainer-Proveedor">
-          <div id="divSentencias">
-            <p>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
-            <p>TÍTULO: {props.datos.titulo}</p>
-            <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-            <p>{props.datos.descripcion}</p>
-          </div>
-        </IonCard>
-  
-        <IonCard id="ionCard-explorerContainer-Proveedor">
-          < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
-        </IonCard>
-        <IonItemDivider style={{margin:"35px 0px 0px 0px"}}></IonItemDivider>
+            <IonItemDivider style={{margin:"35px 0px 0px 0px"}}></IonItemDivider>
 
-        <div id="titulo">
-          <strong>PEDIDO DE MÁS INFORMACIÓN</strong>
-        </div>
-     
-        <IonCard id="ionCard-explorerContainer-Proveedor">
-          <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
-            <h2 style={{fontWeight:"100", fontSize:"1em"}}>PREGUNTA PROVEEDOR:</h2>
-          </div>
-
-          <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
-            <p style={{fontWeight:"600", fontSize:"1.2em", marginBottom:"15px"}}>{props.datos.pedido_mas_información}</p>
-          </div>
-
-          <IonItemDivider style={{margin:"35px 0px 0px 0px"}}></IonItemDivider>
-
-          
-          <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
-            <h2 style={{fontWeight:"100", fontSize:"1em"}}>RESPUESTA SUMINISTRADA AL PROVEEDOR:</h2>
-          </div>
-
-          <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
-            <p style={{fontWeight:"600", fontSize:"1.2em", marginBottom:"15px"}}>{props.datos.respuesta_cliente_pedido_mas_información}</p>
-          </div>
-
-          <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
-            <h2 style={{fontWeight:"100", fontSize:"1em"}}>IMÁGENES SUMINISTRADAS:</h2>
-          </div>
-
-          <Imagenes2 picture1={props.datos.picture1_mas_información} picture2={props.datos.picture2_mas_información} />
-        </IonCard>
-  
-        <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton>
+            <div id="titulo">
+                <strong>PEDIDO DE MÁS INFORMACIÓN</strong>
+            </div>
         
-        <IonAlert
-            isOpen={showAlertRechazarOrden}
-            onDidDismiss={() => setShowAlertRechazarOrden(false)}
-            cssClass='my-custom-class'
-            header={'¿DESEA CANCELAR LA ORDEN?'}
-            subHeader={''}
-            mode='ios'
-            message={'Agregar una indicación de por qué es mala rechazar ordenes'}
-            buttons={[
-              {
-                text: 'SI',
-                role: 'cancel',
-                cssClass: 'secondary',
-                handler: blah => {
-                    props.cancelarOrden();
-                },  
-               
-              },
-              {
-                text: 'NO',
-                role: 'cancel',
-                cssClass: 'secondary',
-                handler: blah => {
-                  setShowAlertRechazarOrden(false);
-                }
-              }
+            <IonCard id="ionCard-explorerContainer-Proveedor">
+                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
+                    <h2 style={{fontWeight:"100", fontSize:"1em"}}>PREGUNTA PROVEEDOR:</h2>
+                </div>
+                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
+                    <p style={{fontWeight:"600", fontSize:"1.2em", marginBottom:"15px"}}>{props.datos.pedido_mas_información}</p>
+                </div>
+                <IonItemDivider style={{margin:"35px 0px 0px 0px"}}></IonItemDivider>
+                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
+                    <h2 style={{fontWeight:"100", fontSize:"1em"}}>RESPUESTA SUMINISTRADA AL PROVEEDOR:</h2>
+                </div>
+                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
+                    <p style={{fontWeight:"600", fontSize:"1.2em", marginBottom:"15px"}}>{props.datos.respuesta_cliente_pedido_mas_información}</p>
+                </div>
+                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
+                    <h2 style={{fontWeight:"100", fontSize:"1em"}}>IMÁGENES SUMINISTRADAS:</h2>
+                </div>
+                <Imagenes2 picture1={props.datos.picture1_mas_información} picture2={props.datos.picture2_mas_información} />
+            </IonCard>
+  
+            <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton>
+
+            <IonAlert
+                isOpen={showAlertRechazarOrden}
+                onDidDismiss={() => setShowAlertRechazarOrden(false)}
+                cssClass='my-custom-class'
+                header={'¿DESEA CANCELAR LA ORDEN?'}
+                subHeader={''}
+                mode='ios'
+                message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+                buttons={[
+                  {
+                    text: 'SI',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: blah => {
+                        props.cancelarOrden();
+                    },  
+
+                  },
+                  {
+                    text: 'NO',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: blah => {
+                      setShowAlertRechazarOrden(false);
+                    }
+                  }
             ]} />
-</div>
 
-
-        </IonContent>
-
+          </div>
+      </IonContent>
   )
 }
 
@@ -951,202 +890,192 @@ const EnEsperaDelProveedor = (props:{datos:any, setVolver:any, setVista:any, set
   }
 
   if(props.datos.pedido_mas_información!=""){
-    return (
-
-      <IonContent>
-        <div id="ionContentModalOrdenes">
-        <div style={{display:"flex", alignItems:"right", justifyContent:"right",width:"100%",height:"auto"}}>
-            <IonIcon icon={close} onClick={() => volver()} slot="right" id="flecha-cerrar">  </IonIcon>
-          </div>
-            <IonTitle>ORDEN ACEPTADA </IonTitle>  
-            <IonTitle>ESPERE AL PROVEEDOR</IonTitle>  
+      return (
+        <IonContent>
+              <div id="ionContentModalOrdenes">
+                  <div style={{display:"flex", alignItems:"right", justifyContent:"right",width:"100%",height:"auto"}}>
+                      <IonIcon icon={close} onClick={() => volver()} slot="right" id="flecha-cerrar">  </IonIcon>
+                  </div>
+                  <IonTitle>ORDEN ACEPTADA </IonTitle>  
+                  <IonTitle>ESPERE AL PROVEEDOR</IonTitle>  
   
-          <IonCard id="ionCard-explorerContainer-Proveedor">
-            <img id="img-orden" src={props.datos.imagen_proveedor}></img>
-            <div id="divSentencias">
-              <p>TIPO: {props.datos.tipo}</p>
-              <p>STATUS: {props.estado}</p>
-              <p>TICKET: {props.datos.ticket}</p>
-            </div>
-  
-            <IonGrid>
-              <IonRow>  
+          
+                  <IonCard id="ionCard-explorerContainer-Proveedor">
+                      <img id="img-orden" src={props.datos.imagen_proveedor}></img>
+                      <div id="divSentencias">
+                          <p>TIPO: {props.datos.tipo}</p>
+                          <p>STATUS: {props.estado}</p>
+                          <p>TICKET: {props.datos.ticket}</p>
+                      </div>
+                      <IonGrid>
+                          <IonRow>  
+                          <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosProveedor")}>
+                              <IonRow id="ionrow-homecliente">
+                              <IonIcon icon={eye} /> </IonRow>
+                              <IonRow id="ionrow-homecliente"><small>VER DATOS PROVEEDOR</small></IonRow>
+                            </IonCol>
 
-              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosProveedor")}>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={eye} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER DATOS PROVEEDOR</small></IonRow>
-                </IonCol>
-                
-                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={chatbox} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>CHAT PROVEEDOR</small></IonRow>
-                </IonCol>              
+                            <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+                              <IonRow id="ionrow-homecliente">
+                              <IonIcon icon={chatbox} /> </IonRow>
+                              <IonRow id="ionrow-homecliente"><small>CHAT PROVEEDOR</small></IonRow>
+                            </IonCol>              
 
-              </IonRow>
-            </IonGrid>
-          </IonCard>
+                          </IonRow>
+                      </IonGrid>
+                  </IonCard>
+
+                  <IonCard id="ionCard-explorerContainer-Proveedor">
+                      <div id="divSentencias">
+                          <p>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
+                          <p>TÍTULO: {props.datos.titulo}</p>
+                          <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+                          <p>{props.datos.descripcion}</p>
+                      </div>
+                  </IonCard>
     
-          <IonCard id="ionCard-explorerContainer-Proveedor">
-            <div id="divSentencias">
-              <p>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
-              <p>TÍTULO: {props.datos.titulo}</p>
-              <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-              <p>{props.datos.descripcion}</p>
-            </div>
-          </IonCard>
+                  <IonCard id="ionCard-explorerContainer-Proveedor">
+                      <Imagenes picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
+                  </IonCard>
+
+                  <IonItemDivider />
+
+                  <div id="contenedorcentro">
+                      <IonTitle>PRESUPUESTO DEL TRABAJO</IonTitle>  
+                  </div>
+
+                  <IonCard id="ionCard-explorerContainer-Proveedor">
+                      <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO RECIBIDO:</h1>
+                      <h2 style={{fontSize:"1.2em", color:"blue"}}>{props.datos.presupuesto}</h2>
+                  </IonCard>
+
+                  <div style={{display:"flex", flexDirection:"column", textAlign:"center", width:"100%", height:"auto"}}>
+                      <h1 style={{fontSize:"1.2em"}}>INFORMACIÓN INTERCAMBIADA</h1>
+                  </div>
+          
+                  <IonCard id="ionCard-explorerContainer-Proveedor">
+                      <h1 style={{fontSize:"1em", color:"black", marginTop:"20px"}}>INFORMACIÓN SOLICITADA AL CLIENTE:</h1>
+                      <h2 style={{fontSize:"1em", color:"blue"}}>{props.datos.pedido_mas_información}</h2>
+                      <IonItemDivider />
+                      <h1 style={{fontSize:"1em", color:"black"}}>RESPUESTA:</h1>
+                      <h2 style={{fontSize:"1em", color:"blue"}}>{props.datos.respuesta_cliente_pedido_mas_información}</h2>
+                      <Imagenes2 picture1={props.datos.picture1_mas_información} picture2={props.datos.picture2_mas_información} />
+                  </IonCard>
     
-          <IonCard id="ionCard-explorerContainer-Proveedor">
-            < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
-          </IonCard>
-
+                  <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton>
           
-      <IonItemDivider />
+                  <IonAlert
+                      isOpen={showAlertRechazarOrden}
+                      onDidDismiss={() => setShowAlertRechazarOrden(false)}
+                      cssClass='my-custom-class'
+                      header={'¿DESEA CANCELAR LA ORDEN?'}
+                      subHeader={''}
+                      mode='ios'
+                      message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+                      buttons={[
+                        {
+                          text: 'SI',
+                          role: 'cancel',
+                          cssClass: 'secondary',
+                          handler: blah => {
+                              props.cancelarOrden();
+                          },  
 
-      <div id="contenedorcentro">
-      <IonTitle>PRESUPUESTO DEL TRABAJO</IonTitle>  
-      </div>
-
-      <IonCard id="ionCard-explorerContainer-Proveedor">
-        <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO RECIBIDO:</h1>
-        <h2 style={{fontSize:"1.2em", color:"blue"}}>{props.datos.presupuesto}</h2>
-      </IonCard>
-
-      <div style={{display:"flex", flexDirection:"column", textAlign:"center", width:"100%", height:"auto"}}>
-            <h1 style={{fontSize:"1.2em"}}>INFORMACIÓN INTERCAMBIADA</h1>
-          </div>
-          <IonCard id="ionCard-explorerContainer-Proveedor">
-          <h1 style={{fontSize:"1em", color:"black", marginTop:"20px"}}>INFORMACIÓN SOLICITADA AL CLIENTE:</h1>
-          <h2 style={{fontSize:"1em", color:"blue"}}>{props.datos.pedido_mas_información}</h2>
-          <IonItemDivider />
-
-            <h1 style={{fontSize:"1em", color:"black"}}>RESPUESTA:</h1>
-            <h2 style={{fontSize:"1em", color:"blue"}}>{props.datos.respuesta_cliente_pedido_mas_información}</h2>
-            
-            <Imagenes2 picture1={props.datos.picture1_mas_información} picture2={props.datos.picture2_mas_información} />
-          </IonCard>
-    
-          
-          <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton>
-          
-          <IonAlert
-              isOpen={showAlertRechazarOrden}
-              onDidDismiss={() => setShowAlertRechazarOrden(false)}
-              cssClass='my-custom-class'
-              header={'¿DESEA CANCELAR LA ORDEN?'}
-              subHeader={''}
-              mode='ios'
-              message={'Agregar una indicación de por qué es mala rechazar ordenes'}
-              buttons={[
-                {
-                  text: 'SI',
-                  role: 'cancel',
-                  cssClass: 'secondary',
-                  handler: blah => {
-                      props.cancelarOrden();
-                  },  
-                 
-                },
-                {
-                  text: 'NO',
-                  role: 'cancel',
-                  cssClass: 'secondary',
-                  handler: blah => {
-                    setShowAlertRechazarOrden(false);
-                  }
-                }
-              ]} />
-          
-  </div>
+                        },
+                        {
+                          text: 'NO',
+                          role: 'cancel',
+                          cssClass: 'secondary',
+                          handler: blah => {
+                            setShowAlertRechazarOrden(false);
+                          }
+                        }
+                      ]} />
+              </div>
           </IonContent>
-  
-    )
+      )
   }else{
     return (
 
-      <IonContent>
-        <div id="ionContentModalOrdenes">
-        <div style={{display:"flex", alignItems:"right", justifyContent:"right",width:"100%",height:"auto"}}>
-            <IonIcon icon={close} onClick={() => volver()} slot="right" id="flecha-cerrar">  </IonIcon>
-          </div>
-            <IonTitle>ORDEN ACEPTADA </IonTitle>  
-            <IonTitle>ESPERE AL PROVEEDOR</IonTitle>  
-  
-          <IonCard id="ionCard-explorerContainer-Proveedor">
-            <img id="img-orden" src={props.datos.imagen_proveedor}></img>
-            <div id="divSentencias">
-              <p>TIPO: {props.datos.tipo}</p>
-              <p>STATUS: {props.estado}</p>
-              <p>TICKET: {props.datos.ticket}</p>
-            </div>
-  
-            <IonGrid>
-              <IonRow>  
-
-              <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosProveedor")}>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={eye} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER DATOS PROVEEDOR</small></IonRow>
-                </IonCol>         
-
-                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={chatbox} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>CHAT PROVEEDOR</small></IonRow>
-                </IonCol>               
-
-              </IonRow>
-            </IonGrid>
-          </IonCard>
-    
-          <IonCard id="ionCard-explorerContainer-Proveedor">
-            <div id="divSentencias">
-              <p>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
-              <p>TÍTULO: {props.datos.titulo}</p>
-              <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-              <p>{props.datos.descripcion}</p>
-            </div>
-          </IonCard>
-    
-          <IonCard id="ionCard-explorerContainer-Proveedor">
-            < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
-          </IonCard>
+      
+        <IonContent>
+            <div id="ionContentModalOrdenes">
+                <div style={{display:"flex", alignItems:"right", justifyContent:"right",width:"100%",height:"auto"}}>
+                    <IonIcon icon={close} onClick={() => volver()} slot="right" id="flecha-cerrar">  </IonIcon>
+                </div>
+                <IonTitle>ORDEN ACEPTADA </IonTitle>  
+                <IonTitle>ESPERE AL PROVEEDOR</IonTitle>  
+          
+                <IonCard id="ionCard-explorerContainer-Proveedor">
+                    <img id="img-orden" src={props.datos.imagen_proveedor}></img>
+                    <div id="divSentencias">
+                      <p>TIPO: {props.datos.tipo}</p>
+                      <p>STATUS: {props.estado}</p>
+                      <p>TICKET: {props.datos.ticket}</p>
+                    </div>
+                    <IonGrid>
+                        <IonRow>
+                            <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosProveedor")}>
+                              <IonRow id="ionrow-homecliente">
+                              <IonIcon icon={eye} /> </IonRow>
+                              <IonRow id="ionrow-homecliente"><small>VER DATOS PROVEEDOR</small></IonRow>
+                            </IonCol>         
+                            <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+                              <IonRow id="ionrow-homecliente">
+                              <IonIcon icon={chatbox} /> </IonRow>
+                              <IonRow id="ionrow-homecliente"><small>CHAT PROVEEDOR</small></IonRow>
+                            </IonCol>               
+                        </IonRow>
+                    </IonGrid>
+                </IonCard>
     
           
-          <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton>
+                <IonCard id="ionCard-explorerContainer-Proveedor">
+                    <div id="divSentencias">
+                        <p>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
+                         <p>TÍTULO: {props.datos.titulo}</p>
+                         <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+                         <p>{props.datos.descripcion}</p>
+                    </div>
+                </IonCard>
+
+                <IonCard id="ionCard-explorerContainer-Proveedor">
+                    < Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
+                </IonCard>
+    
+                <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >CANCELAR ORDEN</IonButton>
           
-          <IonAlert
-              isOpen={showAlertRechazarOrden}
-              onDidDismiss={() => setShowAlertRechazarOrden(false)}
-              cssClass='my-custom-class'
-              header={'¿DESEA CANCELAR LA ORDEN?'}
-              subHeader={''}
-              mode='ios'
-              message={'Agregar una indicación de por qué es mala rechazar ordenes'}
-              buttons={[
-                {
-                  text: 'SI',
-                  role: 'cancel',
-                  cssClass: 'secondary',
-                  handler: blah => {
-                      props.cancelarOrden();
-                  },  
+                <IonAlert
+                  isOpen={showAlertRechazarOrden}
+                  onDidDismiss={() => setShowAlertRechazarOrden(false)}
+                  cssClass='my-custom-class'
+                  header={'¿DESEA CANCELAR LA ORDEN?'}
+                  subHeader={''}
+                  mode='ios'
+                  message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+                  buttons={[
+                    {
+                      text: 'SI',
+                      role: 'cancel',
+                      cssClass: 'secondary',
+                      handler: blah => {
+                          props.cancelarOrden();
+                      },  
+
+                    },
+                    {
+                      text: 'NO',
+                      role: 'cancel',
+                      cssClass: 'secondary',
+                      handler: blah => {
+                        setShowAlertRechazarOrden(false);
+                      }
+                    }
+                  ]} />
                  
-                },
-                {
-                  text: 'NO',
-                  role: 'cancel',
-                  cssClass: 'secondary',
-                  handler: blah => {
-                    setShowAlertRechazarOrden(false);
-                  }
-                }
-              ]} />
-                 
-  </div>
-          </IonContent>
-  
+            </div>
+        </IonContent>
+
     )
   }
   
