@@ -184,9 +184,6 @@ const CardVistaVariasOrdenes= (props:{posicion:any,rubro:string, tipo:string,sta
     
     useEffect(() => {
 
-      console.log("%%%"+props.ticket )
-
-
     if (props.status=="ENV"){
       setEstado("PEDIDO DE TRABAJO")
     }else if(props.status=="REC"){

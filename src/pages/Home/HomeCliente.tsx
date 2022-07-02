@@ -279,18 +279,18 @@ const HomeCliente = (props:{setIsReg:any,
       <IonPage >
 
         <IonPopover 
-                event={popoverState.event}
-                isOpen={popoverState.showPopover}
-                dismissOnSelect={true}
-              >
+          event={popoverState.event}
+          isOpen={popoverState.showPopover}
+          dismissOnSelect={true}
+        >
                   
-                <IonContent>
-                  <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center" ,width:"100%", height:"100%"}} >
-                    <NuevasOrdenesAviso nuevasOrdenes={nuevasOrdenes}   />
-                    <ListaDeMensajes setShowPopover={setShowPopover} otra={notifications} setMostrarChat={setMostrarChat} ticket={ticket} />
-                  </div>
-                </IonContent>
-              </IonPopover>
+          <IonContent>
+            <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center" ,width:"100%", height:"100%"}} >
+              <NuevasOrdenesAviso nuevasOrdenes={nuevasOrdenes}   />
+              <ListaDeMensajes setShowPopover={setShowPopover} otra={notifications} setMostrarChat={setMostrarChat} ticket={ticket} />
+            </div>
+          </IonContent>
+        </IonPopover>
 
         <IonHeader>
             <IonGrid>
@@ -450,6 +450,9 @@ export const IonCardNotificaciones = (props:{setShowPopover:any, de:string, tick
     </IonCard>
   )
 }
+
+
+//aca en el ioncard puedo poner un onclick
 
 const NuevasOrdenesAviso = (props: {nuevasOrdenes:string []})=>{
 

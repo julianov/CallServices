@@ -159,7 +159,6 @@ const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any
               notifications={props.notifications} 
               setNotifications={props.setNotifications}
               
-
               ticket={ticket}
               datosCompletos={props.ordenes}
               setDatosCompletos={props.setOrdenes}
