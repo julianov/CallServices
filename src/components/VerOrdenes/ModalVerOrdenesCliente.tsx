@@ -351,6 +351,8 @@ const ProveedorPideMasInfo = ( props:{setOrden:any, datos:any, setVolver:any, se
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
  // const [showAlertUbicacion,setShowAlertUbicacion] = useState(false)
 
+ const [showAlerAgregarPresupuesto, setShowAlerAgregarPresupuesto]= useState(false)
+
   const enviarMasInfo = () =>{
 
       if(respuesta_informacion.current!=""){
@@ -416,6 +418,8 @@ const ProveedorPideMasInfo = ( props:{setOrden:any, datos:any, setVolver:any, se
           //              setVista(0)
                         //Network error comes in
                     });
+      }else{
+        setShowAlerAgregarPresupuesto(true)
       }
   }
 
@@ -527,6 +531,27 @@ const ProveedorPideMasInfo = ( props:{setOrden:any, datos:any, setVolver:any, se
                   setShowAlertRechazarOrden(false);
                 }
               }
+              ]} />
+
+            <IonAlert
+              isOpen={showAlerAgregarPresupuesto}
+              onDidDismiss={() => setShowAlerAgregarPresupuesto(false)}
+              cssClass='my-custom-class'
+              header={'RESPONDER AL PROVEEDOR'}
+              subHeader={''}
+              mode='ios'
+              message={'Debe responderle al proveedor para continuar'}
+              buttons={[
+              {
+                text: 'OK',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: blah => {
+                  setShowAlerAgregarPresupuesto(false);
+                },  
+
+              }
+              
               ]} />
           </div>
       </IonContent>
@@ -723,6 +748,8 @@ const OrdenPresupuestada = ( props:{datos:any, setVolver:any, setVista:any, setE
                     </IonCard>
                     
                     <IonItemDivider />
+
+                    <Presupuesto presupuesto={props.datos.presupuesto} />
                     
                     <InfoIntercambiada 
                       pedido_mas_información={props.datos.pedido_mas_información} 
@@ -836,14 +863,7 @@ const EnEsperaDelProveedor = (props:{datos:any, setVolver:any, setVista:any, set
 
                   <IonItemDivider />
 
-                  <div id="contenedorcentro">
-                      <IonTitle>PRESUPUESTO DEL TRABAJO</IonTitle>  
-                  </div>
-
-                  <IonCard id="ionCard-explorerContainer-Proveedor">
-                      <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO RECIBIDO:</h1>
-                      <h2 style={{fontSize:"1.2em", color:"blue"}}>{props.datos.presupuesto}</h2>
-                  </IonCard>
+                  <Presupuesto presupuesto={props.datos.presupuesto} />
 
                   <InfoIntercambiada 
                       pedido_mas_información={props.datos.pedido_mas_información} 
@@ -951,17 +971,10 @@ const OrdenEnViaje = ( props:{datos:any, setVolver:any, setVista:any, setEstado:
         </IonCard>
   
         <IonItemDivider style={{margin:"35px 0px 0px 0px"}}></IonItemDivider>
-        
-        <div id="titulo">
-          <strong>PRESUPUESTO DEL TRABAJO</strong>
-        </div>
 
-      <IonCard id="ionCard-explorerContainer-Proveedor">
-        <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO RECIBIDO:</h1>
-        <h2 style={{fontSize:"1.2em", color:"blue"}}>{props.datos.presupuesto}</h2>
-      </IonCard>
+        <Presupuesto presupuesto={props.datos.presupuesto} />
 
-      <InfoIntercambiada 
+        <InfoIntercambiada 
                       pedido_mas_información={props.datos.pedido_mas_información} 
                       respuesta_cliente_pedido_mas_información={props.datos.respuesta_cliente_pedido_mas_información}
                       picture1_mas_información={props.datos.picture1_mas_información}
@@ -1412,7 +1425,7 @@ const Presupuesto = ( props:{presupuesto:any}) =>
         <IonTitle>PRESUPUESTO DEL TRABAJO</IonTitle>
       </div>
       <IonCard id="ionCard-explorerContainer-Proveedor">
-          <h1 style={{ fontSize: "1.2em", color: "black" }}>PRESUPUESTO RECIBIDO:</h1>
+          <h1 style={{ fontSize: "1.2em", color: "black" }}>PRESUPUESTO DEL PROVEEDOR:</h1>
           <h2 style={{ fontSize: "1.2em", color: "blue" }}>{props.presupuesto}</h2>
       </IonCard>
     </>

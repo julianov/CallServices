@@ -13,7 +13,7 @@ import { UserContext } from '../../Contexts/UserContext';
 import ExploreContainerProveedor from '../../components/ExplorerContainer/ExploreContainerProveedor';
 import ModalProveedor from '../../components/ModalGeneral/ModalProveedor';
 import Chat from '../../components/Chat/Chat';
-import { IonAlert, IonAvatar, IonButton, IonButtons, IonCard, IonCardHeader, IonChip, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonItemOptions, IonItemSliding, IonLabel, IonList, IonLoading, IonMenuButton, IonModal, IonPage, IonPopover, IonRow, IonSearchbar, IonTitle, IonToolbar} from '@ionic/react';
+import { IonAlert, IonAvatar, IonButton, IonButtons, IonCard, IonCardHeader, IonChip, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonItemDivider, IonItemOptions, IonItemSliding, IonLabel, IonList, IonLoading, IonMenuButton, IonModal, IonPage, IonPopover, IonRow, IonSearchbar, IonTitle, IonToolbar} from '@ionic/react';
 import { getDB } from '../../utilidades/dataBase';
 
 
@@ -84,6 +84,10 @@ const HomeProveedor = (props:{setIsReg:any, setNombre:any, setApellido:any, setF
 
   const [popoverState, setShowPopover] = useState({ showPopover: false, event: undefined });
 
+
+  const [verOrden, setVerOrden] = useState( false );
+
+  const [ticket_para_ver_orden, setTicket] = useState(0)
 
   getLocation()
 
@@ -160,7 +164,6 @@ const HomeProveedor = (props:{setIsReg:any, setNombre:any, setApellido:any, setF
 
 
   useEffect(() => {
-
     if (misOrdenes.length !=0 || misOrdenes!=undefined || misOrdenes!=[]){
 
       for (let i=0; i<misOrdenes.length; i++){
@@ -169,12 +172,11 @@ const HomeProveedor = (props:{setIsReg:any, setNombre:any, setApellido:any, setF
           setNuevasOrdenes([...nuevasOrdenes , (misOrdenes[i].ticket)])
         }
 
-        getDB(misOrdenes[i].ticket!+"proveedor").then(res => {
-          
+        getDB(misOrdenes[i].ticket!+"proveedor").then(res => {          
           if(res!=undefined || res!=null ){
             if(res!=misOrdenes[i].status ){
               if(misOrdenes[i].status!="PEI"&&misOrdenes[i].status!="PRE"&&misOrdenes[i].status!="EVI"&&misOrdenes[i].status!="ENS"){
-                setNuevasOrdenes([...nuevasOrdenes , (misOrdenes[i].ticket)])
+                setNuevasOrdenes([...nuevasOrdenes , (misOrdenes[i].ticket+"%%%"+misOrdenes[i].status)])
               }
             }
           }else{
@@ -188,8 +190,6 @@ const HomeProveedor = (props:{setIsReg:any, setNombre:any, setApellido:any, setF
     }
   
 }, [misOrdenes]);
-
-
 
   if (mostrarChat){
     return(
@@ -242,7 +242,7 @@ const HomeProveedor = (props:{setIsReg:any, setNombre:any, setApellido:any, setF
             </IonModal>
 
             <ExploreContainerProveedor  
-              notifications={notifications} 
+              notifications={notifications}
               setNotifications={setNotifications}
 
               ordenes={misOrdenes}
@@ -252,15 +252,18 @@ const HomeProveedor = (props:{setIsReg:any, setNombre:any, setApellido:any, setF
               emailProveedor={user!.email}
               sinRubro={sinRubro}
               setIsReg={props.setIsReg}
-              tipodeCliente={user!.tipoCliente} 
-              nuevasOrdenes={nuevasOrdenes}  
+              tipodeCliente={user!.tipoCliente}
+              nuevasOrdenes={nuevasOrdenes} 
+              
+              ticket={ticket_para_ver_orden} setTicket={setTicket} 
+              verOrden={verOrden} setVerOrden={setVerOrden}     
             />
 
 
             <IonPopover event={popoverState.event} isOpen={popoverState.showPopover} dismissOnSelect={true}>
               <IonContent>
                 <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center" ,width:"100%", height:"100%"}} >
-                  <NuevasOrdenesAviso nuevasOrdenes={nuevasOrdenes} />
+                  <NuevasOrdenesAviso nuevasOrdenes={nuevasOrdenes} setVerOrden={setVerOrden} setTicket={setTicket} />
                   <ListaDeMensajes setShowPopover={setShowPopover} otra={notifications} setMostrarChat={setMostrarChat} ticket={ticket} />
                 </div>
               </IonContent>
@@ -295,20 +298,50 @@ const HomeProveedor = (props:{setIsReg:any, setNombre:any, setApellido:any, setF
 
 
 
-const NuevasOrdenesAviso = (props: {nuevasOrdenes:string []})=>{
+const NuevasOrdenesAviso = (props: {nuevasOrdenes:string [], setVerOrden:any, setTicket:any})=>{
 
   if (props.nuevasOrdenes!=[]){
     return(
       <div id="elementos">
         {(props.nuevasOrdenes || []).map((a) => {
-          return (  
-            <IonCard id="ionCard-CardProveedor"  >
-              <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center", width:"100%", height:"auto"}}>
-                <IonItem lines="none">ORDEN DE SERVICIO</IonItem>
-                <IonItem lines="none">TICKET Nº: {a}</IonItem>
-              </div>
+          
+          let estado="";
+          if(a.split("%%%")[1]=="RES"){
+            estado="EL CLIENTE HA RESPONDIDO"
+            return (  
+              <IonCard id="ionCard-CardProveedor" onClick={ () =>{props.setVerOrden(true);props.setTicket(Number(a.split("%%%")[0]))}} >
+                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center", width:"100%", height:"auto"}}>
+                  <h1 style={{fontSize:"1em"}}>ORDEN DE SERVICIO</h1>
+                  <IonItemDivider />
+                  <h3 style={{fontSize:"0.8em"}}>TICKET Nº:{a.split("%%%")[0]} </h3>
+                  <h3 style={{fontSize:"0.8em"}}>{estado}</h3>
+                </div>
             </IonCard> 
-         )}
+            ) 
+          }else if(a.split("%%%")[1]=="ACE"){
+            estado="EL CLIENTE HA ACEPTADO EL PRESUPUESTO"
+            return (  
+              <IonCard id="ionCard-CardProveedor" onClick={ () =>{props.setVerOrden(true);props.setTicket(Number(a.split("%%%")[0]))}} >
+                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center", width:"100%", height:"auto"}}>
+                  <h1 style={{fontSize:"1em"}}>ORDEN DE SERVICIO</h1>
+                  <IonItemDivider />
+                  <h3 style={{fontSize:"0.8em"}}>TICKET Nº:{a.split("%%%")[0]} </h3>
+                  <h3 style={{fontSize:"0.8em"}}>{estado}</h3>
+                </div>
+            </IonCard> 
+            ) 
+          }
+          else{ 
+            return (  
+            <IonCard id="ionCard-CardProveedor" onClick={ () =>{props.setVerOrden(true);props.setTicket(Number(a.split("%%%")[0]))}} >
+             <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center", width:"100%", height:"auto"}}>
+                  <h1 style={{fontSize:"1em"}}>ORDEN DE SERVICIO</h1>
+                  <IonItemDivider />
+                  <h3 style={{fontSize:"0.8em"}}>TICKET Nº:{a.split("%%%")[0]} </h3>
+                </div>
+            </IonCard> 
+         )
+        }}
        )}
     </div>
   )

@@ -20,6 +20,7 @@ import Resenas from '../Reseñas/Resenas';
 import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonChip, IonCol, IonContent, IonGrid, IonIcon, IonItem, IonItemDivider, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal, IonRow, IonSlide, IonSlides } from '@ionic/react';
 import { retornarIconoCategoria } from '../../utilidades/retornarIconoCategoria';
 import OrdenSimple from '../../pages/PedirOrdenes/PedirOrden';
+import VerOrdenesCliente from '../../pages/VerOrdenes';
 
 const getLocation = async () => {
   try {
@@ -35,7 +36,8 @@ const getLocation = async () => {
 
 const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any ,ordenes:any,  setOrdenes:any, proveedores: Array<datosGeneralesVariosProveedores>, url:string, setShowCargandoProveedores:any, 
   setShowModal:any, setTipoDeVistaEnModal:any, emailCliente:String,
-  buscar:any, busqueda_categorias:any, busquedaDatosProveedores:Array<proveedorBuscado>, nuevasOrdenes:any, setNuevasOrdenes:any}) => {
+  buscar:any, busqueda_categorias:any, busquedaDatosProveedores:Array<proveedorBuscado>, nuevasOrdenes:any, setNuevasOrdenes:any,
+  ticket:any, setTicket:any, verOrden:any, setVerOrden:any}) => {
 
   const [recargarOrden, setRecargarOrden] = useState(false)
   
@@ -45,12 +47,10 @@ const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any
   //const [arregloOrdenesCliente, setArregloOrdenesCliente] =  useState <ordenesCliente []> ( [])
 
   const [hayOrdenes, setHayOrdenes]=useState(false)
-  const [verOrden, setVerOrden] = useState( false );
-
+  
   //  const [posicion, setPosicion] = useState(0)
 
   //aca va lo nuevo
-  const [ticket, setTicket] = useState(0)
 
   const [locacion, setLocacion] = useState("")
 
@@ -137,7 +137,7 @@ const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any
           <div id="container-principal-ExplorerContainer-Cliente">  
             <Tabs setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal} ></Tabs>
             <IonItemDivider />
-            <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={props.ordenes} setTicket={setTicket} setVerOrden={setVerOrden} recargarOrden={verOrden} ></MisOrdenes>
+            <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={props.ordenes} setTicket={props.setTicket} setVerOrden={props.setVerOrden} recargarOrden={props.verOrden} ></MisOrdenes>
             <IonItemDivider />
 
             <CategoriasUtiles setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal}/>
@@ -152,18 +152,18 @@ const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any
   
           <IonModal
             animated={true}
-            isOpen={verOrden}
-            onDidDismiss={() => setVerOrden( false )}>
+            isOpen={props.verOrden}
+            onDidDismiss={() => props.setVerOrden( false )}>
 
             <ModalVerOrdenesCliente 
               notifications={props.notifications} 
               setNotifications={props.setNotifications}
               
-              ticket={ticket}
+              ticket={props.ticket}
               datosCompletos={props.ordenes}
               setDatosCompletos={props.setOrdenes}
 
-              setVolver={setVerOrden}
+              setVolver={props.setVerOrden}
               emailCliente={props.emailCliente} 
               nuevasOrdenes={props.nuevasOrdenes}
               setNuevasOrdenes={props.setNuevasOrdenes}

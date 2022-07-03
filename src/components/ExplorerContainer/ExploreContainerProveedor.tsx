@@ -31,14 +31,13 @@ const ExploreContainerProveedor  = (props:{
   tipodeCliente:any
   setNuevasOrdenes:any
   nuevasOrdenes:any
-  
+  ticket:any, setTicket:any, 
+  verOrden:any, setVerOrden:any
  } ) => {
 
   
   const [hayOrdenes, setHayOrdenes]=useState(false)
-  const [verOrden, setVerOrden] = useState( false );
-
-  const [ticket, setTicket] = useState(0)
+  
 
   const [sinRubro, setSinRubro] = useState(false)
   const [cargarRubro, setCargarRubro] = useState(false)
@@ -65,7 +64,7 @@ const ExploreContainerProveedor  = (props:{
           <div style={{width:"90%", height:"auto", textAlign:"center"}}>
             <h1 style={{marginTop:"35px",fontWeight:"600", fontSize:"1.3em"}}> ORDENES DE TRABAJO ACTIVAS </h1>
           </div>
-          <MisOrdenes misOrdenes={props.ordenes} setVerOrden={setVerOrden} setTicket={setTicket} nuevasOrdenes={props.nuevasOrdenes} setNuevasOrdenes={props.setNuevasOrdenes} />
+          <MisOrdenes misOrdenes={props.ordenes} setVerOrden={props.setVerOrden} setTicket={props.setTicket} nuevasOrdenes={props.nuevasOrdenes} setNuevasOrdenes={props.setNuevasOrdenes} />
           <IonItemDivider />
 
           <CampanaPublicidad></CampanaPublicidad>
@@ -78,16 +77,16 @@ const ExploreContainerProveedor  = (props:{
           />
         </div>
         
-        <IonModal animated={true} isOpen={verOrden} onDidDismiss={() => setVerOrden( false )}  >
+        <IonModal animated={true} isOpen={props.verOrden} onDidDismiss={() => props.setVerOrden( false )}  >
           <ModalVerOrdenesProveedor
             notifications={props.notifications} 
             setNotifications={props.setNotifications}
 
-            ticket={ticket}
+            ticket={props.ticket}
             datosCompletos={props.ordenes}
             setDatosCompletos={props.setMisOrdenes}
 
-            setVolver={setVerOrden}
+            setVolver={props.setVerOrden}
             emailProveedor={props.emailProveedor}
             setNuevasOrdenes={props.setNuevasOrdenes}
             nuevasOrdenes={props.nuevasOrdenes}
