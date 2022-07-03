@@ -335,76 +335,6 @@ const CardVistaVariosProveedores= (props:{item:any, personalImg:any ,distancia: 
        
   );
 }
-/*
-const VerProveedorParticular = (  props:{url:string, emailCliente:String, email:any, setVerEmail:any, item:any, setItem:any, 
-  setShowCargandoProveedores:any, verProveedor:any, setVerProveedor:any} ) =>{
-
-  const [caracteres,setCaracteres]=useState([])
-  const [imagenes,setImagenes]=useState([])
-  const [locacionBloqueada, setAlertLocation]=useState(false)
-
-  useEffect(() => {
-
-    const ubicacion = getLocation();
-    ubicacion.then((value)=>{
-      if (value!=0){
-
-        const posicion=value
-        props.setShowCargandoProveedores(true)
-        const axios = require('axios');
-
-        axios.get(props.url+"home/cliente/pedirdatos/"+props.email+"/"+props.item+"/"+"caracteres"+"/"+posicion).then((resp: { data: any; }) => {
-          if (resp.data!="bad" && caracteres.length==0){
-            setCaracteres(resp.data)
-            props.setShowCargandoProveedores(false)
-            
-          }else{
-            props.setShowCargandoProveedores(false)
-          }
-        })
-        axios.get(props.url+"home/cliente/pedirdatos/"+props.email+"/"+props.item+"/"+"imagenes"+"/"+posicion).then((resp: { data: any; }) => {
-          if (resp.data!="bad"&& imagenes.length==0){
-            setImagenes(resp.data)
-          }
-        })
-      }else{
-        setAlertLocation(true)
-      }
-    
-    })
-
-  }, []);
-
-    if(locacionBloqueada){    
-      return(
-      <>
-        <IonAlert isOpen={locacionBloqueada} onDidDismiss={() => setAlertLocation(false)} cssClass='my-custom-class'
-            header={'UBICACIÓN DE DISPOSITIVO'}
-            subHeader={''}
-            message={'Debe activar la ubicación de su dispositivo'}
-            buttons={[
-              {
-                text: 'OK',
-                role: 'cancel',
-                cssClass: 'secondary',
-                handler: blah => {
-                  props.setVerEmail("");
-                  props.setItem("")
-                }
-              }
-            
-            ]}  />
-            </>
-      )
-    }else{
-      return (
-        <div id="volver-contenedor-ExplorerContainer">
-          
-      </div>
-      )
-    } 
-
-}*/
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -585,28 +515,40 @@ const CardVistaVariasOrdenes= (props:{setTicket:any, rubro:any, posicion:any,tip
 
 const Tabs= (props:{setShowModal:any,setTipoDeVistaEnModal:any }) => {
   return(
-  <IonCard id="IonCardTabs">
-  <IonGrid id="ExplorerContainerCliente-Tabs">
+  
+  <IonGrid >
   <IonRow>
 
+    
     <IonCol id="ioncol-homecliente" onClick={() => {  props.setShowModal({ isOpen: true});  props.setTipoDeVistaEnModal("categorias")}}>
-      <IonRow id="ionrow-homecliente"><small>CATEGORÍAS</small></IonRow>
-      <IonRow id="ionrow-homecliente"><img src={"./assets/icon/servicio.png"} className="imagen-boton-principal"/></IonRow>
+    <IonCard id="IonCardTabs">
+      
+      <img src={"./assets/icon/servicio-en-espera.png"} style={{width:"50px", height:"50px"}} />
+      <h1 style={{fontWeight:"600", fontSize:"1em", color:"black"}}>CATEGORÍAS</h1>
+
+      </IonCard>     
     </IonCol>
 
     <IonCol id="ioncol-homecliente" onClick={() => {  props.setShowModal({ isOpen: true});  props.setTipoDeVistaEnModal("emergencias")}}>
-      <IonRow id="ionrow-homecliente"><small>EMERGENCIAS</small></IonRow>
-      <IonRow id="ionrow-homecliente"><img src={"./assets/icon/sirena.png"} className="imagen-boton-principal"/></IonRow>
+    <IonCard id="IonCardTabs">
+      <img src={"./assets/icon/sirena.png"} style={{width:"50px", height:"50px"}} />
+      <h1 style={{fontWeight:"600", fontSize:"1em", color:"black"}}>EMERGENCIAS</h1>
+
+      </IonCard> 
     </IonCol>
 
     <IonCol id="ioncol-homecliente" onClick={() => {  props.setShowModal({ isOpen: true});  props.setTipoDeVistaEnModal("programar")}}>
-      <IonRow id="ionrow-homecliente"><small className="textoIconos">MIS ORDENES</small></IonRow>
-      <IonRow id="ionrow-homecliente"><img src={"./assets/icon/time.png"} className="imagen-boton-principal"/></IonRow>
+    <IonCard id="IonCardTabs">
+      
+      <img src={"./assets/icon/tiket.png"} style={{width:"50px", height:"50px"}} />
+      <h1 style={{fontWeight:"600", fontSize:"1em", color:"black"}}>MIS ORDENES</h1>
+
+      </IonCard> 
     </IonCol>
   
   </IonRow>
   </IonGrid>
-  </IonCard> 
+  
   )
 
 }

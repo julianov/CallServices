@@ -191,6 +191,7 @@ Barra de búsqueda
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    text-align: center;
   }
 
   #ionrow-homecliente{

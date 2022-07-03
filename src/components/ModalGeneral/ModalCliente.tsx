@@ -14,7 +14,7 @@ import VerOrdenesCliente from "../../pages/VerOrdenes";
 import { isPropertySignature } from "typescript";
 import CardProveedor from "../../utilidades/CardProveedor";
 import { categoriaBuscada } from "../ResultadoBusqueda/ResultadoBusqueda";
-import { IonActionSheet, IonAlert, IonButton, IonCard, IonCol, IonContent, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonTitle, IonToolbar } from "@ionic/react";
+import { IonActionSheet, IonAlert, IonButton, IonCard, IonCol, IonContent, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonItemDivider, IonLabel, IonList, IonLoading, IonRow, IonTitle, IonToolbar } from "@ionic/react";
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import { PedirOrdenEmergencia } from "../../pages/PedirOrdenes/PedirOrdenEmergencia";
 import { retornarIconoCategoria } from "../../utilidades/retornarIconoCategoria";
@@ -620,27 +620,28 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
       return (
       
         <IonContent>
-          <div id="headerModalFlechas">
-          <IonIcon icon={close} onClick={() => props.onClose(null)} slot="start" id="flecha-cerrar">  </IonIcon>
-        </div>
-        <div id="contenedorCentral-busqueda">
+          <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", justifyContent:"center", alignItems:"center", background:"#f3f2ef"}}>
+            <div id="headerModalFlechas">
+            <IonIcon icon={close} onClick={() => props.onClose(null)} slot="start" id="flecha-cerrar">  </IonIcon>
+            </div>
+            <div style={{display:"flex", flexDirection:"column", width:"95%", height:"auto", justifyContent:"center", alignItems:"center"}}>
+              <IonTitle>CATEGORÍAS</IonTitle>
+              <IonItemDivider />
+              <IonCard>
+                  {arreglo_categorias.map((a) => {
+                    i = i + 1;
+                    return (
+                      <IonItem key={i} id="item-busqueda" onClick={() => setCategoriaABuscar(a)}>
+                        <IonTitle id="titulo-busqueda">{a}</IonTitle>
+                        <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(a)}></img>
+                      </IonItem>
+                    );
+                  })}
+              </IonCard>
 
-            <IonTitle id="titulo-busqueda">CATEGORÍAS</IonTitle>
-            <IonCard>
-              {arreglo_categorias.map((a) => {
-                i = i + 1;
-                return (
-                  <IonItem key={i} id="item-busqueda" onClick={() => setCategoriaABuscar(a)}>
-                    <IonTitle id="titulo-busqueda">{a}</IonTitle>
-                    <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(a)}></img>
-
-                  </IonItem>
-                );
-              })}
-            </IonCard>
-
+            </div>
           </div>
-          </IonContent>
+        </IonContent>
         )
     }else{
       

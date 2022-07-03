@@ -476,15 +476,13 @@ const OrdenSimple = (props:{ordenes:any,data:any, clienteEmail:any , setVolver:a
                 <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center", alignItems:"center"}}>
 
                 <IonCard id="ionCardOrden">
-
-                        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center", alignItems:"center"}}>
-                            <IonCardTitle style={{margin:"0px 0px 15px 0px"}}> NÚMERO DE TICKET: {ticket.current} </IonCardTitle>
-                            <IonCardTitle style={{margin:"0px 0px 0px 0px"}}>SOLICITUD ENVIADA </IonCardTitle>
-                            <p id="p-estado">En espera de confirmación por parte del proveedor </p>
-                            <img style={{width:"64px", height:"64px"}} src={"./assets/icon/servicio-en-espera.png"} />
-
-                        </div>
-                    </IonCard>
+                    <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center", alignItems:"center"}}>
+                        <IonCardTitle style={{margin:"0px 0px 15px 0px"}}> NÚMERO DE TICKET: {ticket.current} </IonCardTitle>
+                        <IonCardTitle style={{margin:"0px 0px 0px 0px"}}>SOLICITUD ENVIADA </IonCardTitle>
+                        <p id="p-estado">En espera de confirmación por parte del proveedor </p>
+                        <img style={{width:"64px", height:"64px"}} src={"./assets/icon/servicio-en-espera.png"} />
+                    </div>
+                </IonCard>
                 
                 <IonCard id="ionCardOrden">
                     <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center", alignItems:"center"}}>
@@ -495,7 +493,6 @@ const OrdenSimple = (props:{ordenes:any,data:any, clienteEmail:any , setVolver:a
                         <img id="ionCard-explorerContainer-Cliente-Imagen" src={props.data.picture}></img>
                         <IonCardTitle style={{marginTop:"20px", marginBottom:"20px"}}> {props.data.nombre} </IonCardTitle>
                         <Estrellas calificacion={props.data.qualification} />
-
                     </div>
                 </IonCard>        
                 </div>

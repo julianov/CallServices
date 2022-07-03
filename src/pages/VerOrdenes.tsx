@@ -67,17 +67,18 @@ const VerOrdenesCliente = (props:{clienteEmail:any , tipo:string, setCerrar:any}
     }else{
         return (
           <IonContent>
-            <div id="fondeVerOrdenes">
-              <div id="flechaVolver">
-                  <IonIcon icon={arrowBack} onClick={() => props.setCerrar(null)} slot="start" id="flecha-volver">  </IonIcon>
-              </div>
-              <div id="contenedorCentroVerOrdenes">
-                <div id="contenedorPrincipal">
-                  <div id="contenedorHijoCentrado">
-                    <IonTitle>NO HA SOLICITADO ÓRDENES DE TRABAJO</IonTitle>
-                  </div>
+            <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh", background:"#f3f2ef"}}>
+
+              
+            <div id="modalProveedor-flechaVolver">
+                    <IonIcon icon={arrowBack} onClick={() => props.setCerrar(null)} slot="start" id="flecha-volver">  </IonIcon>
                 </div>
-              </div>
+                <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center", alignItems:"center"}}>
+                  
+                  <IonTitle>NO HA SOLICITADO ÓRDENES DE TRABAJO</IonTitle>
+                    
+                </div>
+           
             </div>
           </IonContent>
         )
@@ -85,15 +86,16 @@ const VerOrdenesCliente = (props:{clienteEmail:any , tipo:string, setCerrar:any}
     }else{
 
       return( 
-        <IonContent>
-            <div id="flechaVolver">
+        <div style={{width:"100%", height:"100%", display:"flex", flexDirection:"column"}}>
+          <div id="flechaVolver">
                 <IonIcon icon={arrowBack} onClick={() => setTicket("")} slot="start" id="flecha-volver">  </IonIcon>
             </div>
-            <div id="contenedorCentroVerOrdenes">
+          <div id="contenedorCentroVerOrdenes">
 
-                <VerOrdenParticular ticket={ticket} />
+            <VerOrdenParticular ticket={ticket} />
+            
             </div>
-        </IonContent>
+        </div>
     )
     }
 
@@ -171,11 +173,11 @@ const Card = (props:{ rubro: string, status:string, fecha:string, ticket:string,
     return(
         <IonCard id="CardOrden" onClick={() => props.setTicket(props.ticket) }>
           <img id="imgOrden" src={imagenes}></img> 
-          <div id="contenedorCamposCentro">
-              <p>RUBRO: {props.rubro} </p>
-              <p>ESTADO: {estado} </p> 
-              <p>FECHA DE ORDEN: {props.fecha} </p>
-          </div>
+          
+              <h1 style={{fontSize:"1em", color:"black", marginTop:"10px"}}>RUBRO: {props.rubro} </h1>
+              <h1 style={{fontSize:"1em", color:"black", marginTop:"10px"}}>ESTADO: {estado} </h1> 
+              <h1 style={{fontSize:"1em", color:"black", marginTop:"10px"}}>FECHA DE ORDEN: {props.fecha} </h1>
+          
         </IonCard>
     )
 }
@@ -267,20 +269,18 @@ const VerOrdenParticular = (props:{ ticket: string }) => {
 
 //aca en el return hay que dar vuelta la fecha porque está en año, mes y dia
     return(
-      <div id="ionContentModalVerOrdenes">
-        <IonCard id="ionCard-explorerContainer-Proveedor">
-          <div id="divSentencias">
-            <p >TIPO: {datosOrdenGeneral.tipo.toUpperCase()}</p>
-            <p >STATUS: {estado}</p>
-            <p >TICKET: {datosOrdenGeneral.ticket}</p>
-            <p >FECHA CREACIÓN: {datosOrdenGeneral.fecha_creacion}</p>
-            <p >TITULO: {datosOrdenGeneral.titulo}</p>
-            <p >DESCRIPCIÓN: {datosOrdenGeneral.descripcion}</p>
-            <p >PROVEEDOR: {datosOrdenGeneral.proveedor_nombre}</p>
-            <p >RESEÑA AL PROVEEDOR: {datosOrdenGeneral.reseña_al_proveedor}</p>
-          </div>
+        <IonCard style={{width:"90%", height:"100%", display:"flex", flexDirection:"column", alignItems:"center"}} >
+          
+            <h1 style={{fontSize:"1em", color:"black", marginTop:"10px"}} >TIPO: {datosOrdenGeneral.tipo.toUpperCase()}</h1>
+            <h1 style={{fontSize:"1em", color:"black", marginTop:"10px"}}>STATUS: {estado}</h1>
+            <h1 style={{fontSize:"1em", color:"black", marginTop:"10px"}}>TICKET: {datosOrdenGeneral.ticket}</h1>
+            <h1 style={{fontSize:"1em", color:"black", marginTop:"10px"}}>FECHA CREACIÓN: {datosOrdenGeneral.fecha_creacion}</h1>
+            <h1 style={{fontSize:"1em", color:"black", marginTop:"10px"}}>TITULO: {datosOrdenGeneral.titulo}</h1>
+            <h1 style={{fontSize:"1em", color:"black", marginTop:"10px"}}>DESCRIPCIÓN: {datosOrdenGeneral.descripcion}</h1>
+            <h1 style={{fontSize:"1em", color:"black", marginTop:"10px"}}>PROVEEDOR: {datosOrdenGeneral.proveedor_nombre}</h1>
+            <h1 style={{fontSize:"1em", color:"black", marginTop:"10px"}}>RESEÑA AL PROVEEDOR: {datosOrdenGeneral.reseña_al_proveedor}</h1>
+          
         </IonCard >
-      </div>
     )
 }
 

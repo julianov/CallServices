@@ -11,16 +11,12 @@
 }
 
 #titulo-busqueda{
-    margin-top: 10px;
     margin-bottom: 10px;
     height: 100%;
     width: 100%;
    
 }
 
-#titulo-busqueda{
-    margin-top:5px;
-}
 
 #row-busqueda{
 justify-content: center;
