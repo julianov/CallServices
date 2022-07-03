@@ -330,6 +330,18 @@ const NuevasOrdenesAviso = (props: {nuevasOrdenes:string [], setVerOrden:any, se
                 </div>
             </IonCard> 
             ) 
+          }else if(a.split("%%%")[1]=="ENV"){
+            estado="NUEVA SOLICITUD DE SERVICIO"
+            return (  
+              <IonCard id="ionCard-CardProveedor" onClick={ () =>{props.setVerOrden(true);props.setTicket(Number(a.split("%%%")[0]))}} >
+                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center", width:"100%", height:"auto"}}>
+                  <h1 style={{fontSize:"1em"}}>ORDEN DE SERVICIO</h1>
+                  <IonItemDivider />
+                  <h3 style={{fontSize:"0.8em"}}>TICKET Nº:{a.split("%%%")[0]} </h3>
+                  <h3 style={{fontSize:"0.8em"}}>{estado}</h3>
+                </div>
+            </IonCard> 
+            ) 
           }
           else{ 
             return (  

@@ -3,7 +3,7 @@ import axios from "axios";
 
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import React, { useEffect, useRef, useState } from 'react';
-import { arrowBack, camera, close, logoWindows, trash } from 'ionicons/icons';
+import { arrowBack, camera, close, location, logoWindows, trash } from 'ionicons/icons';
 import { isSetAccessorDeclaration } from 'typescript';
 import { allowedNodeEnvironmentFlags } from 'process';
 import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent, IonDatetime, IonCheckbox, IonLoading, IonTitle, IonSegment, IonSegmentButton, IonItemDivider } from '@ionic/react';
@@ -158,9 +158,6 @@ const OrdenSimple = (props:{ordenes:any,data:any, clienteEmail:any , setVolver:a
                         setShowAlertOrdenCreada(true)
                         
                         setDB(ticket.current+"cliente", "ENV")
-
-
-
                     }
                     else{
                         if(res.data=="ya hay una orden"){
@@ -220,6 +217,8 @@ const OrdenSimple = (props:{ordenes:any,data:any, clienteEmail:any , setVolver:a
                             </IonCard>
     
                             <IonCard id="ionCardOrden">
+                            <img style={{width:"32px", height:"32px"}} src={"./assets/icon/formulario-de-contacto.png"} />
+
                             <h1 style={{fontSize:"1.2em", color:"black", fontWeight:"bold"}}>FORMULARIO DE SOLICITUD DE SERVICIO</h1>
                             <IonItemDivider />
     
@@ -228,7 +227,7 @@ const OrdenSimple = (props:{ordenes:any,data:any, clienteEmail:any , setVolver:a
                                 </div>
                                 <div style={{display:"flex", width:"90%", justifyContent:"center", alignItems:"center"}}>
                                     <IonItem >
-                                        <IonLabel position="floating">INGRESE TÍTULO</IonLabel>
+                                        <IonLabel position="floating">INGRESE                                                                           TÍTULO</IonLabel>
                                         <IonInput onIonInput={(e: any) => titulo.current = (e.target.value)}></IonInput>
                                     </IonItem>
                                 </div>
@@ -244,6 +243,7 @@ const OrdenSimple = (props:{ordenes:any,data:any, clienteEmail:any , setVolver:a
                             </IonCard>
                                 
                             <IonCard id="ionCardOrden">
+                            <img style={{width:"32px", height:"32px"}} src={"./assets/icon/locacion.png"} />
                             <h1 style={{fontSize:"1.2em", color:"black", fontWeight:"bold"}}>DIRECCIÓN DEL SERVICIO</h1>
                             <IonItemDivider />
                                 <LocacionServicio direccion={direccion} posicionCliente={posicionCliente} latitudCliente={latitudCliente} longitudCliente={longitudCliente} ></LocacionServicio>
@@ -476,10 +476,13 @@ const OrdenSimple = (props:{ordenes:any,data:any, clienteEmail:any , setVolver:a
                 <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center", alignItems:"center"}}>
 
                 <IonCard id="ionCardOrden">
+
                         <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center", alignItems:"center"}}>
                             <IonCardTitle style={{margin:"0px 0px 15px 0px"}}> NÚMERO DE TICKET: {ticket.current} </IonCardTitle>
-                            <IonCardTitle style={{margin:"0px 0px 0px 0px"}}>STATUS: SOLICITUD ENVIADA </IonCardTitle>
+                            <IonCardTitle style={{margin:"0px 0px 0px 0px"}}>SOLICITUD ENVIADA </IonCardTitle>
                             <p id="p-estado">En espera de confirmación por parte del proveedor </p>
+                            <img style={{width:"64px", height:"64px"}} src={"./assets/icon/servicio-en-espera.png"} />
+
                         </div>
                     </IonCard>
                 
