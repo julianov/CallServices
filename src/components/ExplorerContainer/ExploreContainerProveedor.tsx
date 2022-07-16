@@ -51,9 +51,12 @@ const ExploreContainerProveedor  = (props:{
 
   useEffect(() => {
     if(props.ordenes.length > 0){
+      console.log(props.ordenes)
+
       setHayOrdenes(true)
     }
   }, [props.ordenes]);
+
 
 
   if(hayOrdenes){

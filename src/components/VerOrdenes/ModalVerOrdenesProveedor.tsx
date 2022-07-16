@@ -7,11 +7,13 @@ import '../ModalGeneral/Modal.css';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import Https from "../../utilidades/HttpsURL";
 import Chat from "../Chat/Chat";
-import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCheckbox, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonLoading, IonRow, IonSegment, IonSegmentButton, IonTitle } from "@ionic/react";
+import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCheckbox, IonCol, IonContent, IonDatetime, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonLoading, IonRow, IonSegment, IonSegmentButton, IonTitle } from "@ionic/react";
 import { getDB, setDB } from "../../utilidades/dataBase";
 import { Redirect } from "react-router";
 import { ordenesCliente } from "../../pages/Home/HomeCliente";
 import { ordenes } from "../../pages/Home/HomeProveedor";
+
+
 
 const url=Https
 
@@ -28,7 +30,6 @@ interface datos_cliente {
 
 const verUbicacion = (latitud:any, longitud:any) =>{
 
-
   const link="https://www.google.com/maps/search/?api=1&query="+latitud+"%2C"+longitud
   const win= window.open(   link, '_blank')?.focus();
   
@@ -38,7 +39,6 @@ const verUbicacion = (latitud:any, longitud:any) =>{
 
 const ModalVerOrdenesProveedor = (props:{notifications:any,setNotifications:any, datosCompletos:any, setDatosCompletos:any,emailProveedor:any,setVolver:any,setNuevasOrdenes:any, nuevasOrdenes:any, ticket:any})  =>{
 
-
     const [vista, setVista] = useState("PRIMERO")
 
     const [estado, setEstado] =useState("ENVIADA POR EL CLIENTE")
@@ -47,7 +47,6 @@ const ModalVerOrdenesProveedor = (props:{notifications:any,setNotifications:any,
     const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
 
     const presupuestoValor = useRef("0")
-
 
     const precio = useRef ("")
 
@@ -79,9 +78,6 @@ const ModalVerOrdenesProveedor = (props:{notifications:any,setNotifications:any,
         picture2_mas_información:"",
       }
     );
-
-
-    console.log(props.ticket)
 
 
     useEffect(() => {
@@ -161,7 +157,7 @@ const ModalVerOrdenesProveedor = (props:{notifications:any,setNotifications:any,
               location_long:props.datosCompletos[i].location_long,
               picture1:props.datosCompletos[i].picture1,
               picture2:props.datosCompletos[i].picture2,
-              presupuesto_inicial:props.datosCompletos[i].presupuesto,
+              presupuesto_inicial:props.datosCompletos[i].presupuesto_inicial,
               pedido_mas_información:props.datosCompletos[i].pedidoMasInformacion,
               respuesta_cliente_pedido_mas_información:props.datosCompletos[i].respuesta_cliente_pedido_mas_información,
               picture1_mas_información:props.datosCompletos[i].picture1_mas_información,
@@ -171,8 +167,6 @@ const ModalVerOrdenesProveedor = (props:{notifications:any,setNotifications:any,
         }
 
       }
-
-        
       }, [props.datosCompletos]) 
 
 
@@ -180,7 +174,6 @@ const ModalVerOrdenesProveedor = (props:{notifications:any,setNotifications:any,
 
       const rechazarOrden = ()=> {
 
-        console.log("rechazar: "+orden.ticket!+" - "+orden.tipo!)
           axios.get(url+"orden/cambiarestado/"+orden.ticket+"/"+orden.tipo+"/"+"REX", {timeout: 7000})
           .then((resp: { data: any; }) => {
 
@@ -424,15 +417,17 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
 
 
 
-const Presupuestar = (props: {setVista:any, datos:any,setEstado:any,setVolver:any, ticket:any}) => {
+const Presupuestar = (props: {setVista:any, datos:any, setDatos ,setEstado:any,setVolver:any, ticket:any}) => {
 
   const [presupuestar, setPresupuestar]= useState("SI")
 
   const precio=useRef ("0")
   const informacion= useRef("")
 
+  const dia = useRef ("")
+  const hora = useRef ("")
   const [showLoading, setShowLoading] =useState(false)
-
+ 
   const enviarPresupuesto = ()=>{
 
     if (precio.current!="0"){
@@ -443,6 +438,8 @@ const Presupuestar = (props: {setVista:any, datos:any,setEstado:any,setVolver:an
       formDataToUpload.append("ticket", props.ticket)
       formDataToUpload.append("estado", "PRE")
       formDataToUpload.append("tipoOrden","Orden general" )
+      formDataToUpload.append("dia", dia.current )
+      formDataToUpload.append("hora", hora.current )
 
       const axios = require('axios');
        axios({
@@ -501,6 +498,8 @@ const Presupuestar = (props: {setVista:any, datos:any,setEstado:any,setVolver:an
   if (presupuestar=="SI"){
     
     return (
+      <IonContent>
+
       <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh",background:"#f3f2ef" }}>
 
         <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto"}}>
@@ -541,6 +540,9 @@ const Presupuestar = (props: {setVista:any, datos:any,setEstado:any,setVolver:an
           </IonCard>
         </div>
 
+        <SeleccionarFecha hora={hora} dia={dia} horaactual={props.datos.hora} 
+        diaactual={props.datos.dia} orden={props.orden} setOrden={undefined} />
+
         <IonLoading
           cssClass='my-custom-class'
           isOpen={showLoading}
@@ -552,6 +554,8 @@ const Presupuestar = (props: {setVista:any, datos:any,setEstado:any,setVolver:an
           <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviarPresupuesto()} >ENVIAR PRESUPUESTO</IonButton>            
         </div>
       </div>
+      </IonContent>
+
     )
   }else{
     return(
@@ -709,6 +713,7 @@ const EnEsperaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any,
         </IonCard>
 
         <IonItemDivider/>
+        
 
         <div style={{display:"flex", flexDirection:"column", textAlign:"center", width:"100%", height:"auto"}}>
           <h1 style={{fontSize:"1.2em"}}>PRESUPUESTO</h1>
@@ -964,6 +969,9 @@ const Presupuestada = (props:{datos:any, estado:any, setVolver:any, setVista:any
 
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false) 
 
+  const dia = useRef("")
+  const hora = useRef("")
+
   const volver = () => {
     props.setVolver(false)
     window.location.reload()
@@ -1035,6 +1043,8 @@ const Presupuestada = (props:{datos:any, estado:any, setVolver:any, setVista:any
     
           <Presupuesto presupuesto={props.datos.presupuesto_inicial} />
 
+          <SeleccionarFecha hora={hora} dia={dia} horaactual={props.datos.hora} diaactual={props.datos.dia} />
+
           <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton>
   
           <IonAlert
@@ -1070,12 +1080,14 @@ const Presupuestada = (props:{datos:any, estado:any, setVolver:any, setVista:any
   
 }
 
-Aca en OrdenAceptada tengo que poner la estimación de la fecha de visitParameterList.
-
 const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any, setEstado:any})=>{
 
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
   const [showAlertEnViaje,setShowAlertEnViaje]= useState(false)
+
+  const hora = useRef ("")
+  const dia = useRef ("")
+  aca hay que enviar la nueva dia y hora. 
 
   const rechazarOrden = ()=> {
 
@@ -1163,10 +1175,12 @@ const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any
 
           <InfoIntercambiada pedido_mas_información={props.datos.pedido_mas_información} respuesta_cliente_pedido_mas_información={props.datos.respuesta_cliente_pedido_mas_información} picture1_mas_información={props.datos.picture1_mas_información} picture2_mas_información={props.datos.picture2_mas_información} ></InfoIntercambiada>
 
-          <Presupuesto presupuesto={props.datos.presupuesto_inicial} />
+          <Presupuesto presupuesto={props.datos.presupuesto_inicial} />       
+
+          <SeleccionarFecha hora={hora} dia={dia} horaactual={props.datos.hora} diaactual={props.datos.dia} />
 
         <div id="botonCentral">
- <div id="botonCentralIzquierda">
+          <div id="botonCentralIzquierda">
             <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton>
             </div>
             <div id="botonCentralDerecha"> 
@@ -1840,16 +1854,15 @@ const InfoIntercambiada = (props:{pedido_mas_información:any, respuesta_cliente
     }
   }, []);
 
-  if (props.pedido_mas_información!=""){
+  if (props.pedido_mas_información!=""&& props.pedido_mas_información!=undefined){
     return (
-      <><div style={{ display: "flex", flexDirection: "column", textAlign: "center", width: "100%", height: "auto" }}>
-        <h1 style={{ fontSize: "1.2em" }}>INFORMACIÓN CONSULTADA</h1>
-      </div><IonCard id="ionCard-explorerContainer-Proveedor">
+      <><IonCard id="ionCard-explorerContainer-Proveedor">
           <h1 style={{ fontSize: "1em", color: "black", marginTop: "20px" }}>INFORMACIÓN SOLICITADA AL CLIENTE:</h1>
+          <IonItemDivider />
           <h2 style={{ fontSize: "1em", color: "blue" }}>{props.pedido_mas_información}</h2>
           <IonItemDivider />
 
-          <h1 style={{ fontSize: "1em", color: "black" }}>RESPUESTA:</h1>
+          <h1 style={{ fontSize: "1em", color: "black" }}>RESPUESTA DEL CLIENTE:</h1>
           <h2 style={{ fontSize: "1em", color: "blue" }}>{props.respuesta_cliente_pedido_mas_información}</h2>
 
           <Imagenes picture1={props.picture1_mas_información} picture2={props.picture2_mas_información} />
@@ -1865,17 +1878,126 @@ const InfoIntercambiada = (props:{pedido_mas_información:any, respuesta_cliente
 
 const Presupuesto = ( props:{presupuesto:any}) => 
 {
-  return (
-    <>
-      <div style={{display:"flex", flexDirection:"column", textAlign:"center", width:"100%", height:"auto"}}>
-            <h1 style={{fontSize:"1.2em"}}>PRESUPUESTO</h1>
-          </div>
-          <IonCard id="ionCard-explorerContainer-Proveedor">
-            <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO ENVIADO:</h1>
-            <h2 style={{fontSize:"1.2em", color:"blue"}}>{props.presupuesto}</h2>
-          </IonCard>
-    </>
-  )
+
+  if(props.presupuesto!="" && props.presupuesto!=undefined){
+    return (
+      <>
+        <IonCard id="ionCard-explorerContainer-Proveedor">
+          <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO ENVIADO A CLIENTE:</h1>
+          <IonItemDivider />
+          <h2 style={{fontSize:"1.2em", color:"blue", marginBottom:"30px"}}>{props.presupuesto}</h2>
+        </IonCard>
+      </>
+    )
+  }else{
+    return (
+      <></>
+    )
+  }
+  
 }
+
+
+const SeleccionarFecha = ( props:{hora:any, dia:any, horaactual:any, diaactual:any, orden:any, setOrden:any}) => {
+
+  const [fechas, setFecha]=useState <string> ("")
+
+  useEffect(() => {
+
+    if (fechas!=""){
+      props.dia.current= fechas.split("T")[0].split("-")[2]+"/"+fechas.split("T")[0].split("-")[1]+"/"+fechas.split("T")[0].split("-")[0]
+      props.hora.current= fechas.split("T")[1].split("-")[0]
+    }
+  }, [fechas]);
+
+  const enviar = ()=>{ 
+
+    const datos={
+      dia:fechas.split("T")[0].split("-")[2]+"/"+fechas.split("T")[0].split("-")[1]+"/"+fechas.split("T")[0].split("-")[0],
+      hora:fechas.split("T")[1].split("-")[0],
+      ticket:props.orden.ticket
+    }
+
+    axios({
+      url:url+"orden/cambiarfecharubrogeneral",
+      method:'POST',
+      headers: {"content-type": "multipart/form-data"},
+      data:datos
+  }).then(function(res: any){
+   
+    if(res.data=="ok"){
+      props.setOrden(
+        {
+          rubro:props.orden.rubro,
+          tipo:props.orden.tipo,
+          status:props.orden.status,
+          fecha_creacion:props.orden.fecha_creacion,
+          ticket:props.orden.ticket,
+          dia:fechas.split("T")[0].split("-")[2]+"/"+fechas.split("T")[0].split("-")[1]+"/"+fechas.split("T")[0].split("-")[0],
+          hora:fechas.split("T")[1].split("-")[0],
+          titulo:props.orden.titulo,
+          descripcion:props.orden.descripcion,
+          email_cliente:props.orden.email_cliente,
+          imagen_cliente:props.orden.imagen_cliente,
+          location_lat:props.orden.location_lat,
+          location_long:props.orden.location_long,
+          picture1:props.orden.picture1,
+          picture2:props.orden.picture2,
+          presupuesto_inicial:props.orden.presupuesto_inicial,
+          pedido_mas_información:props.orden.pedidoMasInformacion,
+          respuesta_cliente_pedido_mas_información:props.orden.respuesta_cliente_pedido_mas_información,
+          picture1_mas_información:props.orden.picture1_mas_información,
+          picture2_mas_información:props.orden.picture2_mas_información,
+        }
+      )
+    }
+    
+
+  
+  }) 
+
+  }
+
+  if (props.horaactual==""&&props.diaactual==""){
+    return (
+      <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"100%", justifyContent:"center",alignItems:"center"}}>
+        <IonCard style={{display:"flex",flexDirection:"column", width:"90%",  height:"100%", justifyContent:"center",alignItems:"center"}}>
+          <h1 style={{ fontSize: "1em", color: "black", marginTop: "20px" }}>SELECIONE FECHA Y HORA DE VISITA ESTIMATIVA:</h1>
+          <h3 style={{ fontSize: "1em", color: "black", marginTop: "20px" }}>LA FECHA LUEGO PODRÁ SER MODIFICADA</h3>
+    
+              <IonItemDivider />
+          <IonDatetime style={{height:"100%"}} locale="es-ES" onIonChange={e => setFecha(e.detail.value!)}>
+            <span slot="time-label">HORA</span>
+          </IonDatetime>
+        </IonCard>
+        </div>
+      );
+  }else{
+    return (
+      <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"100%", justifyContent:"center",alignItems:"center"}}>
+        <IonCard style={{display:"flex",flexDirection:"column", width:"90%",  height:"100%", justifyContent:"center",alignItems:"center"}}>
+          <h2 style={{ fontSize: "1em", color: "black" }}>DÍA DE VISITA PROPUESTA</h2>
+          <h2 style={{ fontSize: "0.9em", color: "blue" }}>{props.diaactual}</h2>
+          <h2 style={{ fontSize: "1em", color: "black" }}>HORA DE VISITA PROPUESTA</h2>
+          <h2 style={{ fontSize: "0.9em", color: "blue" }}>{props.horaactual} hs.</h2>
+          <h1 style={{ fontSize: "1em", color: "black", marginTop: "20px" }}>¿DESEA CAMBIAR LA FECHA Y HORA?</h1>
+          <h3 style={{ fontSize: "1em", color: "black", marginTop: "20px" }}>INGRESE NUEVA FECHA Y HORA</h3>
+    
+              <IonItemDivider />
+          <IonDatetime style={{height:"100%"}} locale="es-ES" onIonChange={e => setFecha(e.detail.value!)}>
+            <span slot="time-label">HORA</span>
+          </IonDatetime>
+
+          <IonButton shape="round" style={{width:"50%", marginTop:"15px", marginBottom:"32px"}} onClick={() => enviar()}>CAMBIAR</IonButton>
+
+        </IonCard>
+        </div>
+      );
+  }
+ 
+
+
+}
+
 
 export default ModalVerOrdenesProveedor

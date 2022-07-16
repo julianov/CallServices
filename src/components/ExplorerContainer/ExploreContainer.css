@@ -152,6 +152,7 @@ height: 100%;
 
 #ionCard-explorerContainer-Proveedor{
   display: flex;
+  height: auto;
   flex-direction: column;
   justify-content: center;
   text-align: center;

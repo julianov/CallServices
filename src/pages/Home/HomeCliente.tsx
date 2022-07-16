@@ -208,14 +208,14 @@ const HomeCliente = (props:{setIsReg:any,
       if (resp.data!="bad"){
 
         setMisOrdenes(    
-            resp.data.map((d: { rubro:any; tipo: any; status: any; fecha_creacion: any; ticket: any; dia: any; hora: any; titulo: any; descripcion: any; email_proveedor: any; presupuesto: any; imagen_proveedor: any; lacation_lat: any; location_long: any; picture1: any; picture2: any; pedidoMasInformacion: any; respuesta_cliente_pedido_mas_información: any; picture1_mas_información: any; picutre2_mas_información: any; }) => ({
+            resp.data.map((d: { rubro:any; tipo: any; status: any; fecha_creacion: any; ticket: any; dia: any; time: any; titulo: any; descripcion: any; email_proveedor: any; presupuesto: any; imagen_proveedor: any; lacation_lat: any; location_long: any; picture1: any; picture2: any; pedidoMasInformacion: any; respuesta_cliente_pedido_mas_información: any; picture1_mas_información: any; picutre2_mas_información: any; }) => ({
               rubro:d.rubro, 
               tipo:d.tipo,
               status:d.status,
               fecha_creacion:d.fecha_creacion,
               ticket:d.ticket,
               dia:d.dia,
-              hora:d.hora,
+              hora:d.time,
               titulo:d.titulo,
               descripcion:d.descripcion,
               email_proveedor:d.email_proveedor,

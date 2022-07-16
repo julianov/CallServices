@@ -222,9 +222,11 @@ const ModalVerOrdenesCliente = (props:{ticket:any, datosCompletos:any, setDatosC
       }else if (vista=="chat") {
 
         return(
-            <>
+          <IonContent>
+            <div style={{display:"flex",height:"100%", width:"100%"}}>
                 <Chat notifications={props.notifications} setNotifications={props.setNotifications} email={props.emailCliente}  ticket={orden.ticket} setVolver={props.setVolver} setVista={setVista} desdeDondeEstoy={desdeDondeEstoy.current}/>
-            </>
+            </div>
+          </IonContent>
         )
         
       }else if (vista=="cancelarOrden") {
@@ -750,6 +752,8 @@ const OrdenPresupuestada = ( props:{datos:any, setVolver:any, setVista:any, setE
                     <IonItemDivider />
 
                     <Presupuesto presupuesto={props.datos.presupuesto} />
+
+                    <FechaProgramadaPorProveedor hora={props.datos.hora} dia={props.datos.dia} setVista={props.setVista} />
                     
                     <InfoIntercambiada 
                       pedido_mas_información={props.datos.pedido_mas_información} 
@@ -865,6 +869,8 @@ const EnEsperaDelProveedor = (props:{datos:any, setVolver:any, setVista:any, set
 
                   <Presupuesto presupuesto={props.datos.presupuesto} />
 
+                  <FechaProgramadaPorProveedor hora={props.datos.hora} dia={props.datos.dia} setVista={props.setVista} />
+
                   <InfoIntercambiada 
                       pedido_mas_información={props.datos.pedido_mas_información} 
                       respuesta_cliente_pedido_mas_información={props.datos.respuesta_cliente_pedido_mas_información}
@@ -973,6 +979,8 @@ const OrdenEnViaje = ( props:{datos:any, setVolver:any, setVista:any, setEstado:
         <IonItemDivider style={{margin:"35px 0px 0px 0px"}}></IonItemDivider>
 
         <Presupuesto presupuesto={props.datos.presupuesto} />
+
+        <FechaProgramadaPorProveedor hora={props.datos.hora} dia={props.datos.dia} setVista={props.setVista} />
 
         <InfoIntercambiada 
                       pedido_mas_información={props.datos.pedido_mas_información} 
@@ -1421,15 +1429,34 @@ const Presupuesto = ( props:{presupuesto:any}) =>
 {
   return (
     <>
-      <div id="contenedorcentro">
-        <IonTitle>PRESUPUESTO DEL TRABAJO</IonTitle>
-      </div>
+     
       <IonCard id="ionCard-explorerContainer-Proveedor">
           <h1 style={{ fontSize: "1.2em", color: "black" }}>PRESUPUESTO DEL PROVEEDOR:</h1>
           <h2 style={{ fontSize: "1.2em", color: "blue" }}>{props.presupuesto}</h2>
       </IonCard>
     </>
   )
+}
+
+
+const FechaProgramadaPorProveedor = ( props:{hora:any, dia:any, setVista:any}) => {
+
+  return (
+
+    <IonCard id="ionCard-explorerContainer-Proveedor">
+      <h1 style={{ fontSize: "1em", color: "black", marginTop: "20px" }}>FECHA Y HORA DE VISITA ESTIMATIVA:</h1>
+      <h3 style={{ fontSize: "0.8em", color: "black", marginTop: "10px" }}>LA FECHA LUEGO PODRÁ SER</h3>
+      <IonItemDivider />
+      <h2 style={{ fontSize: "1em", color: "black" }}>DÍA DE VISITA PROPUESTA</h2>
+      <h2 style={{ fontSize: "0.9em", color: "blue" }}>{props.dia}</h2>
+      <h2 style={{ fontSize: "1em", color: "black" }}>HORA DE VISITA PROPUESTA</h2>
+      <h2 style={{ fontSize: "0.9em", color: "blue" }}>{props.hora} hs.</h2>
+
+      <IonButton shape="round" style={{width:"50%", marginTop:"15px", marginBottom:"32px"}} onClick={() => props.setVista("chat")}>SOLICITAR CAMBIO DE FECHA</IonButton>
+    </IonCard>
+
+  );
+
 }
 
 export default ModalVerOrdenesCliente;

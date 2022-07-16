@@ -1178,7 +1178,7 @@ const getLocation = async () => {
                              <IonCol className="columna">
                                  <IonItem>
                                      <IonLabel id="label">HORA DE INICIO DE TRABAJO DIARIO</IonLabel>
-                                     <IonDatetime presentation="time" value={props.horaInicio.current} onIonChange={e => props.horaInicio.current = (e.detail.value!)}></IonDatetime>
+                                     <IonDatetime locale="es-ES" presentation="time" value={props.horaInicio.current} onIonChange={e => props.horaInicio.current = (e.detail.value!)}></IonDatetime>
                                  </IonItem>
                              </IonCol>
                          </IonRow>
@@ -1186,7 +1186,7 @@ const getLocation = async () => {
                              <IonCol className="columna">
                                  <IonItem>
                                      <IonLabel id="label">HORA DE FINALIZACIÓN DE TRABAJO DIARIO</IonLabel>
-                                     <IonDatetime presentation="time" value={props.horaFin.current} onIonChange={e => props.horaFin.current = (e.detail.value!)}></IonDatetime>
+                                     <IonDatetime locale="es-ES" presentation="time" value={props.horaFin.current} onIonChange={e => props.horaFin.current = (e.detail.value!)}></IonDatetime>
                                  </IonItem>
                              </IonCol>
                          </IonRow>

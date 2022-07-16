@@ -126,7 +126,7 @@ const Chat = (props:{notifications:any, setNotifications:any,email:any,  ticket:
                         <IonItemDivider/>
 
                         <div id="div1">
-                            <IonItem id="item">
+                            <IonItem lines="none" id="item">
                                 <IonInput value={mensaje} placeholder="Mensaje" onIonChange={e => setMensaje(e.detail.value!)} clearInput></IonInput>
                             </IonItem>
                         </div>
@@ -171,8 +171,8 @@ const Chat = (props:{notifications:any, setNotifications:any,email:any,  ticket:
                     </div>
                     <IonItemDivider/>
                     <div id="div1">
-                        <IonItem id="item">
-                            <IonInput value={mensaje} placeholder="Mensaje" onIonChange={e => setMensaje(e.detail.value!)} clearInput></IonInput>
+                        <IonItem lines="none" id="item">
+                            <IonInput style={{backgroundColor:"whtie"}}  value={mensaje} placeholder="Mensaje" onIonChange={e => setMensaje(e.detail.value!)} clearInput></IonInput>
                         </IonItem>
                     </div>
                     <div id="div2">

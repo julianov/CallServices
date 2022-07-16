@@ -122,6 +122,7 @@ const HomeProveedor = (props:{setIsReg:any, setNombre:any, setApellido:any, setF
     })
 
     axios.get(url+"orden/misordenes/"+"proveedor/"+user!.email).then((resp: { data: any; }) => {
+      
       if (resp.data!="bad"){
         
         setMisOrdenes(resp.data.map((d: { rubro:any; tipo: any; status: any; fecha_creacion: any; ticket: any; dia: any; time: any; titulo: any; descripcion: any; email_cliente: any; imagen_cliente: any; location_lat: any; location_long: any; picture1: any; picture2: any; presupuesto: any; pedidoMasInformacion: any; respuesta_cliente_pedido_mas_información: any; picture1_mas_información: any; picture2_mas_información: any; }) => ({
