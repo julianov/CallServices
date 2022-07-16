@@ -83,8 +83,6 @@ const ModalVerOrdenesProveedor = (props:{notifications:any,setNotifications:any,
     useEffect(() => {
       ticketeck.current= orden.ticket 
 
-        console.log("orden tipo: "+orden.ticket)
-
             if (orden.status=="ENV"){
               setVista("PRIMERO")
             }
@@ -148,7 +146,7 @@ const ModalVerOrdenesProveedor = (props:{notifications:any,setNotifications:any,
               fecha_creacion:props.datosCompletos[i].fecha_creacion,
               ticket:props.datosCompletos[i].ticket,
               dia:props.datosCompletos[i].dia,
-              hora:props.datosCompletos[i].time,
+              hora:props.datosCompletos[i].hora,
               titulo:props.datosCompletos[i].titulo,
               descripcion:props.datosCompletos[i].descripcion,
               email_cliente:props.datosCompletos[i].email_cliente,
@@ -195,7 +193,7 @@ const ModalVerOrdenesProveedor = (props:{notifications:any,setNotifications:any,
   }else if (vista=="RECIBIDA") {
     desdeDondeEstoy.current="RECIBIDA"
     return (
-      <Presupuestar setVista={setVista} datos={orden} setEstado={setEstado} ticket={orden.ticket} setVolver={props.setVolver}  />
+      <Presupuestar setVista={setVista} datos={orden} setDatos={setOrden} setEstado={setEstado} ticket={orden.ticket} setVolver={props.setVolver} />
     )
   }else if(vista=="PEDIDO INFORMACION"){
     desdeDondeEstoy.current="PEDIDO INFORMACION"
@@ -211,12 +209,12 @@ const ModalVerOrdenesProveedor = (props:{notifications:any,setNotifications:any,
   }else if(vista=="PRESUPUESTADA"){
     desdeDondeEstoy.current="PRESUPUESTADA"
     return (
-      <Presupuestada datos={orden} estado={estado} setVolver={props.setVolver} setVista={setVista} rechazarOrden={rechazarOrden} />
+      <Presupuestada datos={orden} setDatos={setOrden}  estado={estado} setVolver={props.setVolver} setVista={setVista} rechazarOrden={rechazarOrden} />
     )
   }else if(vista=="ACEPTADA"){
     desdeDondeEstoy.current="ACEPTADA"
     return(
-      <OrdenAceptada datos={orden} setVolver={props.setVolver} setVista={setVista} estado={estado} setEstado={setEstado} />
+      <OrdenAceptada datos={orden} setDatos={setOrden}  setVolver={props.setVolver} setVista={setVista} estado={estado} setEstado={setEstado} />
     )
   }else if(vista=="EN VIAJE"){
     desdeDondeEstoy.current="EN VIAJE"
@@ -417,7 +415,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
 
 
 
-const Presupuestar = (props: {setVista:any, datos:any, setDatos ,setEstado:any,setVolver:any, ticket:any}) => {
+const Presupuestar = (props: {setVista:any, datos:any, setDatos:any ,setEstado:any,setVolver:any, ticket:any}) => {
 
   const [presupuestar, setPresupuestar]= useState("SI")
 
@@ -541,7 +539,7 @@ const Presupuestar = (props: {setVista:any, datos:any, setDatos ,setEstado:any,s
         </div>
 
         <SeleccionarFecha hora={hora} dia={dia} horaactual={props.datos.hora} 
-        diaactual={props.datos.dia} orden={props.orden} setOrden={undefined} />
+        diaactual={props.datos.dia} orden={props.datos} setOrden={props.setDatos} />
 
         <IonLoading
           cssClass='my-custom-class'
@@ -965,7 +963,7 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
 
 }
 
-const Presupuestada = (props:{datos:any, estado:any, setVolver:any, setVista:any, rechazarOrden:any})=> {
+const Presupuestada = (props:{datos:any, setDatos:any, estado:any, setVolver:any, setVista:any, rechazarOrden:any})=> {
 
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false) 
 
@@ -1043,7 +1041,8 @@ const Presupuestada = (props:{datos:any, estado:any, setVolver:any, setVista:any
     
           <Presupuesto presupuesto={props.datos.presupuesto_inicial} />
 
-          <SeleccionarFecha hora={hora} dia={dia} horaactual={props.datos.hora} diaactual={props.datos.dia} />
+          <SeleccionarFecha hora={hora} dia={dia} horaactual={props.datos.hora} 
+            diaactual={props.datos.dia} orden={props.datos} setOrden={props.setDatos} />
 
           <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton>
   
@@ -1080,14 +1079,13 @@ const Presupuestada = (props:{datos:any, estado:any, setVolver:any, setVista:any
   
 }
 
-const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any, setEstado:any})=>{
+const OrdenAceptada = (props:{datos:any, setDatos:any, setVolver:any, setVista:any, estado:any, setEstado:any})=>{
 
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
   const [showAlertEnViaje,setShowAlertEnViaje]= useState(false)
 
   const hora = useRef ("")
   const dia = useRef ("")
-  aca hay que enviar la nueva dia y hora. 
 
   const rechazarOrden = ()=> {
 
@@ -1177,7 +1175,8 @@ const OrdenAceptada = (props:{datos:any, setVolver:any, setVista:any, estado:any
 
           <Presupuesto presupuesto={props.datos.presupuesto_inicial} />       
 
-          <SeleccionarFecha hora={hora} dia={dia} horaactual={props.datos.hora} diaactual={props.datos.dia} />
+          <SeleccionarFecha hora={hora} dia={dia} horaactual={props.datos.hora} 
+        diaactual={props.datos.dia} orden={props.datos} setOrden={props.setDatos} />
 
         <div id="botonCentral">
           <div id="botonCentralIzquierda">
@@ -1902,6 +1901,7 @@ const SeleccionarFecha = ( props:{hora:any, dia:any, horaactual:any, diaactual:a
 
   const [fechas, setFecha]=useState <string> ("")
 
+  console.log("hora actual. "+props.horaactual)
   useEffect(() => {
 
     if (fechas!=""){
@@ -1912,19 +1912,19 @@ const SeleccionarFecha = ( props:{hora:any, dia:any, horaactual:any, diaactual:a
 
   const enviar = ()=>{ 
 
-    const datos={
-      dia:fechas.split("T")[0].split("-")[2]+"/"+fechas.split("T")[0].split("-")[1]+"/"+fechas.split("T")[0].split("-")[0],
-      hora:fechas.split("T")[1].split("-")[0],
-      ticket:props.orden.ticket
-    }
+    var formDataToUpload = new FormData();
+    formDataToUpload.append("dia", fechas.split("T")[0].split("-")[2]+"/"+fechas.split("T")[0].split("-")[1]+"/"+fechas.split("T")[0].split("-")[0])
+    formDataToUpload.append("hora", fechas.split("T")[1].split("-")[0])
+    formDataToUpload.append("ticket",props.orden.ticket)
 
     axios({
       url:url+"orden/cambiarfecharubrogeneral",
       method:'POST',
       headers: {"content-type": "multipart/form-data"},
-      data:datos
-  }).then(function(res: any){
+      data:formDataToUpload
+   }).then(function(res: any){
    
+    console.log(res)
     if(res.data=="ok"){
       props.setOrden(
         {
@@ -1974,24 +1974,24 @@ const SeleccionarFecha = ( props:{hora:any, dia:any, horaactual:any, diaactual:a
       );
   }else{
     return (
-      <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"100%", justifyContent:"center",alignItems:"center"}}>
-        <IonCard style={{display:"flex",flexDirection:"column", width:"90%",  height:"100%", justifyContent:"center",alignItems:"center"}}>
-          <h2 style={{ fontSize: "1em", color: "black" }}>DÍA DE VISITA PROPUESTA</h2>
+      <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto", justifyContent:"center",alignItems:"center"}}>
+        <IonCard style={{display:"flex",flexDirection:"column", width:"95%",  height:"auto", justifyContent:"center",alignItems:"center"}}>
+          <h2 style={{ fontSize: "1em", color: "black" }}>DÍA Y HORA DE VISITA PROPUESTA</h2>
+          <IonItemDivider />
+
           <h2 style={{ fontSize: "0.9em", color: "blue" }}>{props.diaactual}</h2>
-          <h2 style={{ fontSize: "1em", color: "black" }}>HORA DE VISITA PROPUESTA</h2>
           <h2 style={{ fontSize: "0.9em", color: "blue" }}>{props.horaactual} hs.</h2>
+          <IonItemDivider />
           <h1 style={{ fontSize: "1em", color: "black", marginTop: "20px" }}>¿DESEA CAMBIAR LA FECHA Y HORA?</h1>
           <h3 style={{ fontSize: "1em", color: "black", marginTop: "20px" }}>INGRESE NUEVA FECHA Y HORA</h3>
-    
-              <IonItemDivider />
-          <IonDatetime style={{height:"100%"}} locale="es-ES" onIonChange={e => setFecha(e.detail.value!)}>
-            <span slot="time-label">HORA</span>
-          </IonDatetime>
-
-          <IonButton shape="round" style={{width:"50%", marginTop:"15px", marginBottom:"32px"}} onClick={() => enviar()}>CAMBIAR</IonButton>
-
+          <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"100%", justifyContent:"center",alignItems:"center"}}>
+            <IonDatetime style={{height:"100%"}} locale="es-ES" onIonChange={e => setFecha(e.detail.value!)}>
+              <span slot="time-label">HORA</span>
+            </IonDatetime>
+            <IonButton shape="round" style={{width:"50%", marginTop:"15px", marginBottom:"32px"}} onClick={() => enviar()}>CAMBIAR</IonButton>
+          </div>
         </IonCard>
-        </div>
+      </div>
       );
   }
  

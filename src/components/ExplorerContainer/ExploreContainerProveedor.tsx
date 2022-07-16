@@ -57,6 +57,7 @@ const ExploreContainerProveedor  = (props:{
     }
   }, [props.ordenes]);
 
+  console.log(props.ordenes)
 
 
   if(hayOrdenes){
