@@ -156,7 +156,7 @@ const ModalVerOrdenesProveedor = (props:{notifications:any,setNotifications:any,
               picture1:props.datosCompletos[i].picture1,
               picture2:props.datosCompletos[i].picture2,
               presupuesto_inicial:props.datosCompletos[i].presupuesto_inicial,
-              pedido_mas_información:props.datosCompletos[i].pedidoMasInformacion,
+              pedido_mas_información:props.datosCompletos[i].pedido_mas_información,
               respuesta_cliente_pedido_mas_información:props.datosCompletos[i].respuesta_cliente_pedido_mas_información,
               picture1_mas_información:props.datosCompletos[i].picture1_mas_información,
               picture2_mas_información:props.datosCompletos[i].picture2_mas_información,
@@ -198,13 +198,13 @@ const ModalVerOrdenesProveedor = (props:{notifications:any,setNotifications:any,
   }else if(vista=="PEDIDO INFORMACION"){
     desdeDondeEstoy.current="PEDIDO INFORMACION"
     return(
-    <EnEsperaInfo datos={orden} estado={estado} setVista={setVista} setEstado={setEstado} setVolver={props.setVolver} rechazarOrden={rechazarOrden} />
+    <EnEsperaInfo datos={orden} setDatos={setOrden} estado={estado} setVista={setVista} setEstado={setEstado} setVolver={props.setVolver} rechazarOrden={rechazarOrden} />
     )
   }else if (vista=="CLIENTE ENVIÓ INFORMACIÓN"){
     desdeDondeEstoy.current="CLIENTE ENVIÓ INFORMACIÓN"
 
     return (
-      <NuevaInfo datos={orden} estado={estado} setVista={setVista} setEstado={setEstado} setVolver={props.setVolver} rechazarOrden={rechazarOrden} />
+      <NuevaInfo datos={orden} setDatos={setOrden} estado={estado} setVista={setVista} setEstado={setEstado} setVolver={props.setVolver} rechazarOrden={rechazarOrden} />
     )
   }else if(vista=="PRESUPUESTADA"){
     desdeDondeEstoy.current="PRESUPUESTADA"
@@ -305,9 +305,9 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <img id="img-orden" src={props.datos.imagen_cliente}></img>
           <div id="divSentencias">
-            <p>TIPO: {props.datos.tipo}</p>
-            <p>STATUS: {props.estado}</p>
-            <p>TICKET: {props.datos.ticket}</p>
+            <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
+            <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
+            <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
           </div>
           <IonGrid>
             <IonRow>
@@ -329,12 +329,12 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
 
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <div id="divSentencias">
-            <p>FECHA DE SOLICITUD:</p>
-            <p>{props.datos.fecha_creacion}</p>
-            <p>TÍTULO:</p>
-            <p>{props.datos.titulo}</p>
-            <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-            <p>{props.datos.descripcion}</p>
+            <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD:</p>
+            <p style={{fontSize:"1em", color:"blue"}} >{props.datos.fecha_creacion}</p>
+            <p style={{fontSize:"1em", color:"black"}}>TÍTULO:</p>
+            <p style={{fontSize:"1em", color:"blue"}}>{props.datos.titulo}</p>
+            <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+            <p style={{fontSize:"1em", color:"blue"}}>{props.datos.descripcion}</p>
           </div>
         </IonCard>
 
@@ -610,9 +610,11 @@ const Presupuestar = (props: {setVista:any, datos:any, setDatos:any ,setEstado:a
  
 }
 
-const EnEsperaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, setVolver:any, rechazarOrden:any}) =>{
+const EnEsperaInfo = (props: {datos:any, setDatos:any, estado:any, setVista:any,setEstado:any, setVolver:any, rechazarOrden:any}) =>{
 
   const precio=useRef ("0")
+  const dia = useRef ("")
+  const hora = useRef ("")
 
   const [showLoading, setShowLoading] =useState(false)
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false) 
@@ -668,9 +670,9 @@ const EnEsperaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any,
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <img id="img-orden" src={props.datos.imagen_cliente}></img>
           <div id="divSentencias">
-            <p>TIPO: {props.datos.tipo}</p>
-            <p>STATUS: {props.estado}</p>
-            <p>TICKET: {props.datos.ticket}</p>
+            <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
+            <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
+            <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
           </div>
           <IonGrid>
             <IonRow>
@@ -697,12 +699,12 @@ const EnEsperaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any,
 
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <div id="divSentencias">
-            <p>FECHA DE SOLICITUD:</p>
-            <p>{props.datos.fecha_creacion}</p>
-            <p>TÍTULO:</p>
-            <p>{props.datos.titulo}</p>
-            <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-            <p>{props.datos.descripcion}</p>
+            <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD:</p>
+            <p style={{fontSize:"1em", color:"blue"}}>{props.datos.fecha_creacion}</p>
+            <p style={{fontSize:"1em", color:"black"}}>TÍTULO:</p>
+            <p style={{fontSize:"1em", color:"blue"}}>{props.datos.titulo}</p>
+            <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+            <p style={{fontSize:"1em", color:"blue"}}>{props.datos.descripcion}</p>
           </div>
         </IonCard>
 
@@ -725,6 +727,9 @@ const EnEsperaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any,
             <IonInput onIonInput={(e: any) => precio.current = (e.target.value)}></IonInput>
           </IonItem>
         </IonCard>
+
+        <SeleccionarFecha hora={hora} dia={dia} horaactual={props.datos.hora} 
+        diaactual={props.datos.dia} orden={props.datos} setOrden={props.setDatos} />
     
         <IonLoading
           cssClass='my-custom-class'
@@ -774,9 +779,11 @@ const EnEsperaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any,
 
 } 
 
-const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, setVolver:any, rechazarOrden:any}) =>{
+const NuevaInfo = (props: {datos:any, setDatos:any, estado:any, setVista:any,setEstado:any, setVolver:any, rechazarOrden:any}) =>{
 
   const precio=useRef ("0")
+  const dia = useRef ("")
+  const hora = useRef ("")
 
   const [showLoading, setShowLoading] =useState(false)
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false) 
@@ -824,9 +831,9 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
           <IonCard id="ionCard-explorerContainer-Proveedor">
             <img id="img-orden" src={props.datos.imagen_cliente}></img>
             <div id="divSentencias">
-              <p>TIPO: {props.datos.tipo}</p>
-              <p>STATUS: {props.estado}</p>
-              <p>TICKET: {props.datos.ticket}</p>
+              <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
+              <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
+              <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
             </div>
             <IonGrid>
               <IonRow>
@@ -853,12 +860,12 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
 
           <IonCard id="ionCard-explorerContainer-Proveedor">
             <div id="divSentencias">
-              <p>FECHA DE SOLICITUD:</p>
-              <p>{props.datos.fecha_creacion}</p>
-              <p>TÍTULO:</p>
-              <p>{props.datos.titulo}</p>
-              <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-              <p>{props.datos.descripcion}</p>
+              <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD:</p>
+              <p style={{fontSize:"1em", color:"blue"}}>{props.datos.fecha_creacion}</p>
+              <p style={{fontSize:"1em", color:"black"}}>TÍTULO:</p>
+              <p style={{fontSize:"1em", color:"blue"}}>{props.datos.titulo}</p>
+              <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+              <p style={{fontSize:"1em", color:"blue"}}>{props.datos.descripcion}</p>
             </div>
           </IonCard>
           <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -871,10 +878,13 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
               
           <IonItemDivider />
 
-          <div style={{display:"flex", flexDirection:"column", textAlign:"center", width:"100%", height:"auto"}}>
-            <strong>PRESUPUESTO</strong>
-          </div>
+          
           <IonCard id="ionCard-explorerContainer-Proveedor">
+            <div style={{display:"flex", flexDirection:"column", textAlign:"center", width:"100%", height:"auto"}}>
+              <strong>PRESUPUESTO</strong>
+            </div>
+            <IonItemDivider />
+
             <h1 style={{fontSize:"1em", color:"black", marginTop:"20px"}}>¿Está en condiciones de presupuestar?</h1>
 
             <IonItem style={{width:"90%",margin:"25px 0px 25px 0px"}}>
@@ -892,6 +902,9 @@ const NuevaInfo = (props: {datos:any, estado:any, setVista:any,setEstado:any, se
               </IonRow>
             </div>
           </IonCard>
+
+          <SeleccionarFecha hora={hora} dia={dia} horaactual={props.datos.hora} 
+        diaactual={props.datos.dia} orden={props.datos} setOrden={props.setDatos} />
       
           <IonLoading
             cssClass='my-custom-class'
@@ -990,9 +1003,9 @@ const Presupuestada = (props:{datos:any, setDatos:any, estado:any, setVolver:any
           <IonCard id="ionCard-explorerContainer-Proveedor">
             <img id="img-orden" src={props.datos.imagen_cliente}></img>
             <div id="divSentencias">
-              <p>TIPO: {props.datos.tipo}</p>
-              <p>STATUS: {props.estado}</p>
-              <p>TICKET: {props.datos.ticket}</p>
+              <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
+              <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
+              <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
             </div>
             <IonGrid>
               <IonRow>
@@ -1020,12 +1033,12 @@ const Presupuestada = (props:{datos:any, setDatos:any, estado:any, setVolver:any
     
           <IonCard id="ionCard-explorerContainer-Proveedor">
             <div id="divSentencias">
-              <p>FECHA DE SOLICITUD:</p>
-              <p>{props.datos.fecha_creacion}</p>
-              <p>TÍTULO:</p>
-              <p>{props.datos.titulo}</p>
-              <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-              <p>{props.datos.descripcion}</p>
+              <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD:</p>
+              <p style={{fontSize:"1em", color:"blue"}}>{props.datos.fecha_creacion}</p>
+              <p style={{fontSize:"1em", color:"black"}}>TÍTULO:</p>
+              <p style={{fontSize:"1em", color:"blue"}}>{props.datos.titulo}</p>
+              <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+              <p style={{fontSize:"1em", color:"blue"}}>{props.datos.descripcion}</p>
             </div>
           </IonCard>
 
@@ -1125,9 +1138,9 @@ const OrdenAceptada = (props:{datos:any, setDatos:any, setVolver:any, setVista:a
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <img id="img-orden" src={props.datos.imagen_cliente}></img>
           <div id="divSentencias">
-            <p>TIPO: {props.datos.tipo}</p>
-            <p>STATUS: {props.estado}</p>
-            <p>TICKET: {props.datos.ticket}</p>
+            <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
+            <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
+            <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
           </div>
           <IonGrid>
             <IonRow>
@@ -1155,12 +1168,12 @@ const OrdenAceptada = (props:{datos:any, setDatos:any, setVolver:any, setVista:a
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <div id="divSentencias">
-            <p>FECHA DE SOLICITUD:</p>
-            <p>{props.datos.fecha_creacion}</p>
-            <p>TÍTULO:</p>
-            <p>{props.datos.titulo}</p>
-            <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-            <p>{props.datos.descripcion}</p>
+            <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD:</p>
+            <p style={{fontSize:"1em", color:"blue"}}>{props.datos.fecha_creacion}</p>
+            <p style={{fontSize:"1em", color:"black"}}>TÍTULO:</p>
+            <p style={{fontSize:"1em", color:"blue"}}>{props.datos.titulo}</p>
+            <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+            <p style={{fontSize:"1em", color:"blue"}}>{props.datos.descripcion}</p>
           </div>
         </IonCard>
   
@@ -1293,9 +1306,9 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <img id="img-orden" src={props.datos.imagen_cliente}></img>
           <div id="divSentencias">
-            <p>TIPO: {props.datos.tipo}</p>
-            <p>STATUS: {props.estado}</p>
-            <p>TICKET: {props.datos.ticket}</p>
+            <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
+            <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
+            <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
           </div>
           <IonGrid>
             <IonRow>
@@ -1323,12 +1336,12 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <div id="divSentencias">
-            <p>FECHA DE SOLICITUD:</p>
-            <p>{props.datos.fecha_creacion}</p>
-            <p>TÍTULO:</p>
-            <p>{props.datos.titulo}</p>
-            <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-            <p>{props.datos.descripcion}</p>
+            <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD:</p>
+            <p style={{fontSize:"1em", color:"blue"}}>{props.datos.fecha_creacion}</p>
+            <p style={{fontSize:"1em", color:"black"}}>TÍTULO:</p>
+            <p style={{fontSize:"1em", color:"blue"}}>{props.datos.titulo}</p>
+            <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+            <p style={{fontSize:"1em", color:"blue"}}>{props.datos.descripcion}</p>
           </div>
         
         </IonCard>
@@ -1449,9 +1462,9 @@ const EnSitio  = (props:{datos:any, setVolver:any, setVista:any, estado:any, set
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <img id="img-orden" src={props.datos.imagen_cliente}></img>
           <div id="divSentencias">
-            <p>TIPO: {props.datos.tipo}</p>
-            <p>STATUS: {props.estado}</p>
-            <p>TICKET: {props.datos.ticket}</p>
+            <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
+            <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
+            <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
           </div>
           <IonGrid>
             <IonRow>
@@ -1479,12 +1492,12 @@ const EnSitio  = (props:{datos:any, setVolver:any, setVista:any, estado:any, set
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <div id="divSentencias">
-            <p>FECHA DE SOLICITUD:</p>
-            <p>{props.datos.fecha_creacion}</p>
-            <p>TÍTULO:</p>
-            <p>{props.datos.titulo}</p>
-            <p>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-            <p>{props.datos.descripcion}</p>
+            <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD:</p>
+            <p style={{fontSize:"1em", color:"blue"}}>{props.datos.fecha_creacion}</p>
+            <p style={{fontSize:"1em", color:"black"}}>TÍTULO:</p>
+            <p style={{fontSize:"1em", color:"blue"}}>{props.datos.titulo}</p>
+            <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+            <p style={{fontSize:"1em", color:"blue"}}>{props.datos.descripcion}</p>
           </div>
          
         </IonCard>
@@ -1690,9 +1703,9 @@ const VerDatosCliente = (props:{dondeEstoy:string, ticket:any, tipo:any,latitud:
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <img id="img-orden" src={datosCliente.imagen}></img>
           <div id="divSentencias">
-          <p>NOMBRE: {datosCliente.nombre}</p>
-          <p>APELLIDO: {datosCliente.apellido}</p>
-          <p>CALIFICACIÓN: {datosCliente.calificacion}</p>
+          <p style={{fontSize:"1em", color:"black"}}>NOMBRE: {datosCliente.nombre}</p>
+          <p style={{fontSize:"1em", color:"black"}}>APELLIDO: {datosCliente.apellido}</p>
+          <p style={{fontSize:"1em", color:"black"}}>CALIFICACIÓN: {datosCliente.calificacion}</p>
           </div>  
     </IonCard>
     </div>
@@ -1844,6 +1857,10 @@ const Estrella =(props:{buena:any}) =>{
 const InfoIntercambiada = (props:{pedido_mas_información:any, respuesta_cliente_pedido_mas_información:any, picture1_mas_información:any, picture2_mas_información:any}) => 
 {
 
+  console.log("esto es lo que determina: "+props.pedido_mas_información)
+ 
+
+
   let respuesta="No ha sido suministrada"
   useEffect(() => {
     if (props.respuesta_cliente_pedido_mas_información==""){
@@ -1853,16 +1870,15 @@ const InfoIntercambiada = (props:{pedido_mas_información:any, respuesta_cliente
     }
   }, []);
 
-  if (props.pedido_mas_información!=""&& props.pedido_mas_información!=undefined){
+  if (props.pedido_mas_información!=""&&props.pedido_mas_información!=undefined){
     return (
       <><IonCard id="ionCard-explorerContainer-Proveedor">
-          <h1 style={{ fontSize: "1em", color: "black", marginTop: "20px" }}>INFORMACIÓN SOLICITADA AL CLIENTE:</h1>
-          <IonItemDivider />
-          <h2 style={{ fontSize: "1em", color: "blue" }}>{props.pedido_mas_información}</h2>
+          <p style={{ fontSize: "1em", color: "black", marginTop: "20px" }}>INFORMACIÓN SOLICITADA AL CLIENTE:</p>
+          <p style={{ fontSize: "1em", color: "blue" }}>{props.pedido_mas_información}</p>
           <IonItemDivider />
 
-          <h1 style={{ fontSize: "1em", color: "black" }}>RESPUESTA DEL CLIENTE:</h1>
-          <h2 style={{ fontSize: "1em", color: "blue" }}>{props.respuesta_cliente_pedido_mas_información}</h2>
+          <p style={{ fontSize: "1em", color: "black" }}>RESPUESTA DEL CLIENTE:</p>
+          <p style={{ fontSize: "1em", color: "blue" }}>{props.respuesta_cliente_pedido_mas_información}</p>
 
           <Imagenes picture1={props.picture1_mas_información} picture2={props.picture2_mas_información} />
         </IonCard></>
