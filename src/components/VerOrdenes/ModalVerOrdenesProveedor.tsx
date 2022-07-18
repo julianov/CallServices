@@ -1787,8 +1787,8 @@ const Imagenes = (props:{picture1:any,picture2:any})=>{
     )
   }else{
     return(
-      <div id="CardProveedoresImg">
-        <p>CLIENTE NO HA ADJUNTADO IMÁGENES DE REFERENCIA DEL PEDIDO DE SERVICIO</p>
+      <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"100%", justifyContent:"center",alignItems:"center",textAlign:"center"}}>
+        <p>CLIENTE NO HA ADJUNTADO IMÁGENES DE REFERENCIA PARA EL PEDIDO DE SERVICIO</p>
       </div>
     )
   }
