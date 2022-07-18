@@ -506,7 +506,7 @@ const Presupuestar = (props: {setVista:any, datos:any, setDatos:any ,setEstado:a
           <div id="modalProveedor-flechaVolver">
             <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
           </div>
-          <div style={{display:"flex", justifyContent:"center", alignItems:"center", marginTop:"36px"}}>
+          <div style={{display:"flex", justifyContent:"center", alignItems:"center", marginTop:"5px"}}>
             <h1>PRESUPUESTO</h1>
           </div>
         </div>
