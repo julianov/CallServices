@@ -1618,6 +1618,8 @@ const Finalizar  = (props:{datos:any, setVolver:any, setVista:any, estado:any, s
   
         if(res.data=="ok"){
             props.setVolver(false)
+            window.location.reload();
+
         }else{
           setShowAlertConexion(true)
         }
