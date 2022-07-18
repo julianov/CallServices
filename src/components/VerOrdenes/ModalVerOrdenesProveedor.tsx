@@ -328,6 +328,8 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
         </IonCard>
 
         <IonCard id="ionCard-explorerContainer-Proveedor">
+          <h1 style={{fontSize:"1.2em", color:"black"}}>DATOS GENERALES DE ORDEN</h1>
+          <IonItemDivider />
           <div id="divSentencias">
             <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD:</p>
             <p style={{fontSize:"1em", color:"blue"}} >{props.datos.fecha_creacion}</p>
@@ -698,6 +700,8 @@ const EnEsperaInfo = (props: {datos:any, setDatos:any, estado:any, setVista:any,
         </IonCard>
 
         <IonCard id="ionCard-explorerContainer-Proveedor">
+          <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO ENVIADO A CLIENTE:</h1>
+          <IonItemDivider />
           <div id="divSentencias">
             <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD:</p>
             <p style={{fontSize:"1em", color:"blue"}}>{props.datos.fecha_creacion}</p>
@@ -859,6 +863,8 @@ const NuevaInfo = (props: {datos:any, setDatos:any, estado:any, setVista:any,set
           </IonCard>
 
           <IonCard id="ionCard-explorerContainer-Proveedor">
+            <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO ENVIADO A CLIENTE:</h1>
+            <IonItemDivider />
             <div id="divSentencias">
               <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD:</p>
               <p style={{fontSize:"1em", color:"blue"}}>{props.datos.fecha_creacion}</p>
@@ -1032,6 +1038,8 @@ const Presupuestada = (props:{datos:any, setDatos:any, estado:any, setVolver:any
           </IonCard>
     
           <IonCard id="ionCard-explorerContainer-Proveedor">
+            <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO ENVIADO A CLIENTE:</h1>
+            <IonItemDivider />
             <div id="divSentencias">
               <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD:</p>
               <p style={{fontSize:"1em", color:"blue"}}>{props.datos.fecha_creacion}</p>
@@ -1167,6 +1175,8 @@ const OrdenAceptada = (props:{datos:any, setDatos:any, setVolver:any, setVista:a
         </IonCard>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
+          <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO ENVIADO A CLIENTE:</h1>
+          <IonItemDivider />
           <div id="divSentencias">
             <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD:</p>
             <p style={{fontSize:"1em", color:"blue"}}>{props.datos.fecha_creacion}</p>
@@ -1335,6 +1345,8 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
         </IonCard>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
+          <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO ENVIADO A CLIENTE:</h1>
+          <IonItemDivider />
           <div id="divSentencias">
             <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD:</p>
             <p style={{fontSize:"1em", color:"blue"}}>{props.datos.fecha_creacion}</p>
@@ -1900,7 +1912,7 @@ const Presupuesto = ( props:{presupuesto:any}) =>
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO ENVIADO A CLIENTE:</h1>
           <IonItemDivider />
-          <h2 style={{fontSize:"1.2em", color:"blue", marginBottom:"30px"}}>{props.presupuesto}</h2>
+          <h2 style={{fontSize:"1em", color:"blue", marginBottom:"30px"}}>{props.presupuesto}</h2>
         </IonCard>
       </>
     )
@@ -1940,7 +1952,7 @@ const SeleccionarFecha = ( props:{hora:any, dia:any, horaactual:any, diaactual:a
       data:formDataToUpload
    }).then(function(res: any){
    
-    console.log(res)
+    
     if(res.data=="ok"){
       props.setOrden(
         {
@@ -1992,14 +2004,14 @@ const SeleccionarFecha = ( props:{hora:any, dia:any, horaactual:any, diaactual:a
     return (
       <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto", justifyContent:"center",alignItems:"center"}}>
         <IonCard style={{display:"flex",flexDirection:"column", width:"95%",  height:"auto", justifyContent:"center",alignItems:"center"}}>
-          <h2 style={{ fontSize: "1em", color: "black" }}>DÍA Y HORA DE VISITA PROPUESTA</h2>
+          <h2 style={{ fontSize: "1.2em", color: "black" }}>DÍA Y HORA DE VISITA PROPUESTA</h2>
           <IonItemDivider />
 
-          <h2 style={{ fontSize: "0.9em", color: "blue" }}>{props.diaactual}</h2>
-          <h2 style={{ fontSize: "0.9em", color: "blue" }}>{props.horaactual} hs.</h2>
+          <h2 style={{ fontSize: "1em", color: "blue" }}>{props.diaactual}</h2>
+          <h2 style={{ fontSize: "1em", color: "blue" }}>{props.horaactual} hs.</h2>
           <IonItemDivider />
           <h1 style={{ fontSize: "1em", color: "black", marginTop: "20px" }}>¿DESEA CAMBIAR LA FECHA Y HORA?</h1>
-          <h3 style={{ fontSize: "1em", color: "black", marginTop: "20px" }}>INGRESE NUEVA FECHA Y HORA</h3>
+          <h3 style={{ fontSize: "1em", color: "blue", marginTop: "20px" }}>INGRESE NUEVA FECHA Y HORA</h3>
           <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"100%", justifyContent:"center",alignItems:"center"}}>
             <IonDatetime style={{height:"100%"}} locale="es-ES" onIonChange={e => setFecha(e.detail.value!)}>
               <span slot="time-label">HORA</span>
