@@ -1,5 +1,5 @@
 import { IonButton, IonIcon, IonInput, IonItem, IonLabel } from "@ionic/react"
-import { arrowBack } from "ionicons/icons"
+import { arrowBack, close } from "ionicons/icons"
 import { useEffect, useRef, useState } from "react"
 import { useUserContext } from "../../Contexts/UserContext"
 import Https from "../../utilidades/HttpsURL"
@@ -80,6 +80,8 @@ export const PedirOrdenEmergencia = (props:{setVolver:any}) => {
                             setVista("ordenEnProgreso")
                             setTicket(res.data)
 
+                        }else{
+                                setVista("sin proveedores en la zona")
                         }
           
                     }).catch((error: any) =>{
@@ -94,6 +96,12 @@ export const PedirOrdenEmergencia = (props:{setVolver:any}) => {
     }
 
 
+    const volver = () => {
+        props.setVolver(false)
+        window.location.reload()
+      }
+
+      
     if (vista=="rubros"){
         return(
             <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%"}}> 
@@ -187,9 +195,10 @@ export const PedirOrdenEmergencia = (props:{setVolver:any}) => {
         return (
             <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%"}}> 
                 <div style={{width:"100%", height:"auto"}}>
-                    <div id="modalProveedor-flechaVolver">
-                        <IonIcon icon={arrowBack} onClick={() => {setVista("rubros"); setRubroSeleccionado("")} } slot="start" id="flecha-volver">  </IonIcon>
-                    </div>
+                <div style={{display:"flex", alignItems:"right", justifyContent:"right",width:"100%",height:"auto"}}>
+                      <IonIcon icon={close} onClick={() => volver()} slot="right" id="flecha-cerrar">  </IonIcon>
+                  </div>
+                    
                     <div style={{display:"flex", flexDirection:"column", alignItems:"center", textAlign:"center", width:"100%", height:"auto"}}>
                         <h1>EMERGENCIAS</h1>
                         <p style={{fontSize:"1.2em",color:"black"}}>{rubroSeleccionado}</p>
@@ -200,18 +209,26 @@ export const PedirOrdenEmergencia = (props:{setVolver:any}) => {
                 <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center",textAlign:"center", width:"100%", height:"100%"}}>
                 <h1>BUSCANDO PROVEEDORES</h1>
                 <h3>TICKET DE ORDEN: {ticket} </h3>
-
                 
                 </div>
                 <div style={{width:"100%", display:"flex", justifyContent:"center", margin:"0px 0px 15px 0px"}}>
-                        <IonButton shape="round" color="warning" style={{float:"right",width:"50%", marginTop:"20px"}} onClick={() => cancelar()}>CANCELAR ORDEN</IonButton>
+                        <IonButton shape="round" color="danger" style={{float:"right",width:"50%", marginTop:"20px"}} onClick={() => cancelar()}>CANCELAR ORDEN</IonButton>
                 </div>
+            </div>
+        )
+    }else if(vista=="sin proveedores en la zona"){
+        return(
+            <div style={{background:"#f3f2ef",display:"flex", flexDirection:"column", width:"100%", height:"100%", textAlign:"center", justifyContent:"center", alignItems:"center"}}> 
+                <img style={{width:"64px", height:"64px"}} src={"./public/assets/icon/simboloAlerta.png"}></img>
+                <h1>NO HAY PROVEEDORES EN LA ZONA
+                QUE REALICEN ORDENES DE EMERGENCIA
+                PARA ESTE RUBRO</h1>
+                <IonButton shape="round" color="warning" style={{float:"right",width:"50%", marginTop:"20px"}} onClick={() => {setVista("rubros"); setRubroSeleccionado("")} }>VOLVER</IonButton>
             </div>
         )
     }
     else{
-        return(
-            <></>
-        )
+        return (<></>)
+        
     }
 }

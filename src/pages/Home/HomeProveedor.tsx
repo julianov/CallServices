@@ -79,6 +79,7 @@ const HomeProveedor = (props:{setIsReg:any, setNombre:any, setApellido:any, setF
   const ticket = useRef ("")
 
   const [misOrdenes, setMisOrdenes] = useState <ordenes []>( [])
+  
   const [nuevasOrdenes, setNuevasOrdenes] = useState<string []>([]);
   const [notifications, setNotifications] =  useState < newMessage []> ( [])
 
@@ -169,8 +170,10 @@ const HomeProveedor = (props:{setIsReg:any, setNombre:any, setApellido:any, setF
 
       for (let i=0; i<misOrdenes.length; i++){
 
+        console.log("asasdfasdfasdf-"+misOrdenes[i].ticket+"%%%"+misOrdenes[i].status)
         if(misOrdenes[i].status=="ENV"){
-          setNuevasOrdenes([...nuevasOrdenes , (misOrdenes[i].ticket)])
+          setNuevasOrdenes([...nuevasOrdenes , (misOrdenes[i].ticket+"%%%"+misOrdenes[i].status)])
+          
         }
 
         getDB(misOrdenes[i].ticket!+"proveedor").then(res => {          
@@ -182,7 +185,7 @@ const HomeProveedor = (props:{setIsReg:any, setNombre:any, setApellido:any, setF
             }
           }else{
             if(misOrdenes[i].status!="PEI"&&misOrdenes[i].status!="PRE"&&misOrdenes[i].status!="EVI"&&misOrdenes[i].status!="ENS"){
-              setNuevasOrdenes([...nuevasOrdenes , (misOrdenes[i].ticket)])
+              setNuevasOrdenes([...nuevasOrdenes , (misOrdenes[i].ticket+"%%%"+misOrdenes[i].status)])
 
             }
           }
@@ -306,6 +309,7 @@ const NuevasOrdenesAviso = (props: {nuevasOrdenes:string [], setVerOrden:any, se
       <div id="elementos">
         {(props.nuevasOrdenes || []).map((a) => {
           
+          console.log("A ES: "+a)
           let estado="";
           if(a.split("%%%")[1]=="RES"){
             estado="EL CLIENTE HA RESPONDIDO"

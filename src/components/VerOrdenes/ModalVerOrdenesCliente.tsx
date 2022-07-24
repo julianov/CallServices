@@ -288,10 +288,12 @@ const Primero = ( props:{datos:any, setVolver:any, setVista:any, setEstado:any, 
                       </IonGrid>
                 </IonCard>
   
-                <div id="titulo">
-                    <IonTitle >DATOS DE ORDEN DE SERVICIO</IonTitle>  
-                </div>
+                
                 <IonCard id="ionCard-explorerContainer-Proveedor">
+                  <div id="titulo">
+                      <IonTitle >DATOS DE ORDEN DE SERVICIO</IonTitle>  
+                  </div>
+                  <IonItemDivider />
                     <div id="divSentencias">
                         <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
                         <p style={{fontSize:"1em", color:"blue"}}>TÍTULO: {props.datos.titulo}</p>
@@ -820,9 +822,9 @@ const EnEsperaDelProveedor = (props:{datos:any, setVolver:any, setVista:any, set
       return (
         <IonContent>
               <div id="ionContentModalOrdenes">
-                  <div style={{display:"flex", alignItems:"right", justifyContent:"right",width:"100%",height:"auto"}}>
-                      <IonIcon icon={close} onClick={() => volver()} slot="right" id="flecha-cerrar">  </IonIcon>
-                  </div>
+                    <div style={{display:"flex", alignItems:"right", justifyContent:"right",width:"100%",height:"auto"}}>
+                        <IonIcon icon={close} onClick={() => volver()} slot="right" id="flecha-cerrar">  </IonIcon>
+                    </div>
                   <IonTitle>ORDEN ACEPTADA </IonTitle>  
                   <IonTitle>ESPERE AL PROVEEDOR</IonTitle>  
   
@@ -1058,6 +1060,8 @@ const Finalizada = ( props:{datos:any, setVolver:any, setVista:any, setEstado:an
             props.setVolver(false)
             createStore("ordenesActivas")
             removeDB(props.datos.ticket.toString())
+            window.location.reload();
+
         }else{
           setShowAlertConexion(true)
         }
@@ -1078,29 +1082,21 @@ const Finalizada = ( props:{datos:any, setVolver:any, setVista:any, setEstado:an
             <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
         </div>
 
-        <div id="contenedorcentro">
-        <IonGrid>
-        <IonRow><IonCol>
-            <IonTitle>TRABAJO REALIZADO</IonTitle>
-            </IonCol></IonRow>
-            <IonRow><IonCol>   
-            <p id="pcentrado">COMPLETE LOS SIGUIENTES CAMPOS</p>
-            </IonCol></IonRow>
-            </IonGrid>
-          </div>
-          
-          <IonCard id="ionCardModalCentro">
+      
+        <IonCard id="ionCardModalCentro">
+          <h2 style={{ fontSize: "1.2em", color: "black" }}>TRABAJO REALIZADO</h2>
+          <h2 style={{ fontSize: "1em", color: "blue" }}>COMPLETE LOS SIGUIENTES CAMPOS</h2>
+          <IonItemDivider />
 
+          <h2 style={{ fontSize: "1em", color: "black" }}>INGRESE LA CALIFICACIÓN DEL CLIENTE</h2>
+          <Calificacion calificacion={calificacion} ></Calificacion>
 
-        <p>INGRESE LA CALIFICACIÓN DEL CLIENTE</p>
-        <Calificacion calificacion={calificacion} ></Calificacion>
+          <h2 style={{ fontSize: "1em", color: "black" }}>¿DESEA INGRESAR UNA RESEÑA DEL CLIENTE?</h2>
+          <IonItem id="item-completarInfo">
+            <IonLabel position="floating">RESEÑA</IonLabel>
+            <IonInput onIonInput={(e: any) => reseña.current=(e.target.value)}></IonInput>
 
-        <p>¿DESEA INGRESAR UNA RESEÑA DEL CLIENTE=?</p>
-        <IonItem id="item-completarInfo">
-          <IonLabel position="floating">RESEÑA</IonLabel>
-          <IonInput onIonInput={(e: any) => reseña.current=(e.target.value)}></IonInput>
-
-        </IonItem>
+          </IonItem>
 
         </IonCard>
     
@@ -1432,6 +1428,8 @@ const Presupuesto = ( props:{presupuesto:any}) =>
      
       <IonCard id="ionCard-explorerContainer-Proveedor">
           <h1 style={{ fontSize: "1em", color: "black" }}>PRESUPUESTO DEL PROVEEDOR:</h1>
+          <img style={{width:"32px", height:"32px"}} src={"./assets/icon/presupuesto.png"} />
+          <IonItemDivider />
           <h2 style={{ fontSize: "1em", color: "blue" }}>{props.presupuesto}</h2>
       </IonCard>
     </>
@@ -1445,7 +1443,7 @@ const FechaProgramadaPorProveedor = ( props:{hora:any, dia:any, setVista:any}) =
 
     <IonCard id="ionCard-explorerContainer-Proveedor">
       <h1 style={{ fontSize: "1em", color: "black", marginTop: "20px" }}>FECHA Y HORA DE VISITA ESTIMATIVA:</h1>
-      <h3 style={{ fontSize: "0.8em", color: "black", marginTop: "10px" }}>LA FECHA LUEGO PODRÁ SER</h3>
+      <img style={{width:"32px", height:"32px"}} src={"./assets/icon/fecha.png"} />
       <IonItemDivider />
       <h2 style={{ fontSize: "1em", color: "black" }}>DÍA DE VISITA PROPUESTA</h2>
       <h2 style={{ fontSize: "0.9em", color: "blue" }}>{props.dia}</h2>

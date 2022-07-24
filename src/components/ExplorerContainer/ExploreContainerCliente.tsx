@@ -48,10 +48,6 @@ const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any
 
   const [hayOrdenes, setHayOrdenes]=useState(false)
   
-  //  const [posicion, setPosicion] = useState(0)
-
-  //aca va lo nuevo
-
   const [locacion, setLocacion] = useState("")
 
   const [verProveedor,setVerProveedor]= useState(false);
@@ -93,6 +89,7 @@ const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any
       axios.get(props.url+"home/cliente/pedirdatos/"+verEmail+"/"+item+"/"+"caracteres"+"/"+locacion).then((resp: { data: any; }) => {
         if (resp.data!="bad"){
           
+          console.log("A VER CHE QUE VIENE: "+resp.data.items)
          setDatosDeOrdenes( 
             {
               clienteEmail:props.emailCliente,

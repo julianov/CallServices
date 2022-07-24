@@ -450,10 +450,8 @@ const getLocation = async () => {
      if(vista==4){
          //radio de trabajo
          return(
-             <IonPage>
-              
-               <IonContent fullscreen>
- 
+            <div id="contenedorPrincipalCompletarRubroLocacion">
+
                        <IonAlert
                  isOpen={showAlertCompletarCampos}
                  onDidDismiss={() => setShowAlertCompletarCampos(false)}
@@ -470,8 +468,7 @@ const getLocation = async () => {
                  ordenesEmergencia={hace_orden_emergencia} 
                  pais={pais} provincia={provincia} ciudad={ciudad} domicilio_calle={domicilio_calle} domicilio_numeracion={domicilio_numeración} />
  
-               </IonContent>
-             </IonPage>
+               </div>
            );
      }
      
@@ -1235,7 +1232,7 @@ const getLocation = async () => {
                  <IonLabel id="laberCompletarRubrosRubros">ELECTRICIDAD</IonLabel>
                  <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("ELECTRICIDAD")}></img>
                  </IonItem>
-                 <IonItem onClick={()=> {props.rubro.current="ELECTRONICA";setRubroSeleccionado("RUBRO SELECCIONADO: ELECTRONICA"); setSeleccionDeRubro("vistaCompleta")}}>
+                 <IonItem onClick={()=> {props.rubro.current="ELECTRÓNICA";setRubroSeleccionado("RUBRO SELECCIONADO: ELECTRÓNICA"); setSeleccionDeRubro("vistaCompleta")}}>
                  <IonLabel id="laberCompletarRubrosRubros">ELECTRÓNICA</IonLabel>
                  <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("ELECTRÓNICA")}></img>
                  </IonItem>
@@ -1468,11 +1465,6 @@ const getLocation = async () => {
                      
             </div>
         </div>
- 
- 
- 
- 
- 
  
      )
  }
@@ -1758,6 +1750,8 @@ const getLocation = async () => {
          return( 
              
              <div className="caja">      
+                <img src={"./assets/icon/sirena.png"} style={{width:"32px", height:"32px"}} />
+
              <IonTitle style={{margin:"15px 0px 10px 0px"}}>ÓRDENES DE EMERGENCIA</IonTitle>
                  <IonItemDivider />
              <div>

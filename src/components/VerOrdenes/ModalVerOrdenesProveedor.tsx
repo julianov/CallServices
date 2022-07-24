@@ -506,7 +506,7 @@ const Presupuestar = (props: {setVista:any, datos:any, setDatos:any ,setEstado:a
           <div id="modalProveedor-flechaVolver">
             <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
           </div>
-          <div style={{display:"flex", justifyContent:"center", alignItems:"center", marginTop:"5px"}}>
+          <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
             <h1>PRESUPUESTO</h1>
           </div>
         </div>
@@ -700,7 +700,7 @@ const EnEsperaInfo = (props: {datos:any, setDatos:any, estado:any, setVista:any,
         </IonCard>
 
         <IonCard id="ionCard-explorerContainer-Proveedor">
-          <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO ENVIADO A CLIENTE:</h1>
+          <h1 style={{fontSize:"1.2em", color:"black"}}>DATOS GENERALES DE ORDEN:</h1>
           <IonItemDivider />
           <div id="divSentencias">
             <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD:</p>
@@ -863,7 +863,7 @@ const NuevaInfo = (props: {datos:any, setDatos:any, estado:any, setVista:any,set
           </IonCard>
 
           <IonCard id="ionCard-explorerContainer-Proveedor">
-            <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO ENVIADO A CLIENTE:</h1>
+            <h1 style={{fontSize:"1.2em", color:"black"}}>DATOS GENERALES DE ORDEN:</h1>
             <IonItemDivider />
             <div id="divSentencias">
               <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD:</p>
@@ -1038,7 +1038,7 @@ const Presupuestada = (props:{datos:any, setDatos:any, estado:any, setVolver:any
           </IonCard>
     
           <IonCard id="ionCard-explorerContainer-Proveedor">
-            <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO ENVIADO A CLIENTE:</h1>
+            <h1 style={{fontSize:"1.2em", color:"black"}}>DATOS GENERALES DE ORDEN:</h1>
             <IonItemDivider />
             <div id="divSentencias">
               <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD:</p>
@@ -1141,7 +1141,7 @@ const OrdenAceptada = (props:{datos:any, setDatos:any, setVolver:any, setVista:a
         
         
         <div id="contenedorcentro">
-          <IonTitle>CLIENTE HA ENVIADO INFORMACIÓN</IonTitle>
+          <IonTitle>CLIENTE HA ACEPTADO EL PRESUPUESTO</IonTitle>
         </div>
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <img id="img-orden" src={props.datos.imagen_cliente}></img>
@@ -1175,7 +1175,7 @@ const OrdenAceptada = (props:{datos:any, setDatos:any, setVolver:any, setVista:a
         </IonCard>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
-          <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO ENVIADO A CLIENTE:</h1>
+          <h1 style={{fontSize:"1.2em", color:"black"}}>DATOS GENERALES DE ORDEN:</h1>
           <IonItemDivider />
           <div id="divSentencias">
             <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD:</p>
@@ -1345,7 +1345,7 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
         </IonCard>
   
         <IonCard id="ionCard-explorerContainer-Proveedor">
-          <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO ENVIADO A CLIENTE:</h1>
+          <h1 style={{fontSize:"1.2em", color:"black"}}>DATOS GENERALES DE ORDEN:</h1>
           <IonItemDivider />
           <div id="divSentencias">
             <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD:</p>
@@ -1538,6 +1538,7 @@ const EnSitio  = (props:{datos:any, setVolver:any, setVista:any, estado:any, set
             onDidDismiss={() => setShowAlertFinalizar(false)}
             cssClass='my-custom-class'
             header={'FINALIZACIÓN DEL TRABAJO'}
+            mode="ios"
             subHeader={''}
             message={'¿Ha finalizado el trabajo?'}
             buttons={[
@@ -1640,32 +1641,21 @@ const Finalizar  = (props:{datos:any, setVolver:any, setVista:any, estado:any, s
       <div id="modalProveedor-flechaVolver">
           <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
       </div>
-
-      <div id="contenedorcentro">
-      <IonGrid>
-      <IonRow><IonCol>
-          <IonTitle>TRABAJO REALIZADO</IonTitle>
-          </IonCol></IonRow>
-          <IonRow><IonCol>   
-          <p id="pcentrado">COMPLETE LOS SIGUIENTES CAMPOS</p>
-          </IonCol></IonRow>
-          </IonGrid>
-        </div>
         
         <IonCard id="ionCardModalCentro">
+          <h2 style={{ fontSize: "1.2em", color: "black" }}>TRABAJO REALIZADO</h2>
+          <h2 style={{ fontSize: "1em", color: "blue" }}>COMPLETE LOS SIGUIENTES CAMPOS</h2>
+          <IonItemDivider />
 
-      
-      <p>INGRESE LA CALIFICACIÓN DEL CLIENTE</p>
-      <Calificacion calificacion={calificacion} ></Calificacion>
-
-      <p>¿DESEA INGRESAR UNA RESEÑA DEL CLIENTE=?</p>
-      <IonItem id="item-completarInfo">
-        <IonLabel position="floating">RESEÑA</IonLabel>
-        <IonInput onIonInput={(e: any) => reseña.current=(e.target.value)}></IonInput>
-
-      </IonItem>
-
+          <h2 style={{ fontSize: "1em", color: "black" }}>INGRESE LA CALIFICACIÓN DEL CLIENTE</h2>
+          <Calificacion calificacion={calificacion} ></Calificacion>
+          <h2 style={{ fontSize: "1em", color: "black" }}>¿DESEA INGRESAR UNA RESEÑA DEL CLIENTE?</h2>
+          <IonItem id="item-completarInfo">
+            <IonLabel position="floating">RESEÑA</IonLabel>
+            <IonInput onIonInput={(e: any) => reseña.current=(e.target.value)}></IonInput>
+          </IonItem>
       </IonCard>
+
      <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviar()} >ENVIAR</IonButton>
    
           <IonAlert
@@ -1913,6 +1903,7 @@ const Presupuesto = ( props:{presupuesto:any}) =>
       <>
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTO ENVIADO A CLIENTE:</h1>
+          <img style={{width:"32px", height:"32px"}} src={"./assets/icon/presupuesto.png"} />
           <IonItemDivider />
           <h2 style={{fontSize:"1em", color:"blue", marginBottom:"30px"}}>{props.presupuesto}</h2>
         </IonCard>
@@ -1994,7 +1985,8 @@ const SeleccionarFecha = ( props:{hora:any, dia:any, horaactual:any, diaactual:a
         <IonCard style={{display:"flex",flexDirection:"column", width:"90%",  height:"100%", justifyContent:"center",alignItems:"center"}}>
           <h1 style={{ fontSize: "1em", color: "black", marginTop: "20px" }}>SELECIONE FECHA Y HORA DE VISITA ESTIMATIVA:</h1>
           <h3 style={{ fontSize: "1em", color: "black", marginTop: "20px" }}>LA FECHA LUEGO PODRÁ SER MODIFICADA</h3>
-    
+          <img style={{width:"32px", height:"32px"}} src={"./assets/icon/fecha.png"} />
+
               <IonItemDivider />
           <IonDatetime style={{height:"100%"}} locale="es-ES" onIonChange={e => setFecha(e.detail.value!)}>
             <span slot="time-label">HORA</span>
@@ -2007,9 +1999,12 @@ const SeleccionarFecha = ( props:{hora:any, dia:any, horaactual:any, diaactual:a
       <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto", justifyContent:"center",alignItems:"center"}}>
         <IonCard style={{display:"flex",flexDirection:"column", width:"95%",  height:"auto", justifyContent:"center",alignItems:"center"}}>
           <h2 style={{ fontSize: "1.2em", color: "black" }}>DÍA Y HORA DE VISITA PROPUESTA</h2>
-          <IonItemDivider />
+          <img style={{width:"32px", height:"32px"}} src={"./assets/icon/fecha.png"} />
 
+          <IonItemDivider />
+          <h2 style={{ fontSize: "1em", color: "black" }}>DIA:</h2>
           <h2 style={{ fontSize: "1em", color: "blue" }}>{props.diaactual}</h2>
+          <h2 style={{ fontSize: "1em", color: "black" }}>HORA:</h2>
           <h2 style={{ fontSize: "1em", color: "blue" }}>{props.horaactual} hs.</h2>
           <IonItemDivider />
           <h1 style={{ fontSize: "1em", color: "black", marginTop: "20px" }}>¿DESEA CAMBIAR LA FECHA Y HORA?</h1>
