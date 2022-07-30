@@ -383,9 +383,7 @@ const HomeCliente = (props:{setIsReg:any,
               animated={true}
               subHeader={''}
               message={'Debe habilitar el acceso a la ubicación en el dispositivo'}
-              buttons={['ENTENDIDO']}/>
-
-      
+              buttons={['ENTENDIDO']}/>      
           </div>
 
           

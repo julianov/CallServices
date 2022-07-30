@@ -46,7 +46,7 @@
 
 #flechaIngresar{
     width:100%;
-    height: 60px;
+    height: auto;
     display: block;
     text-align: left;
     margin-bottom: 30px;
@@ -204,7 +204,8 @@ height: 100px;
     text-align: center;
     align-items: center;
     background:  #f3f2ef;  
-    height: 100%;
+    width: 100%;
+    height: auto;
   }
 
   #cardItem{

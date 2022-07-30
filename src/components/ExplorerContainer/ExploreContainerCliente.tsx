@@ -382,6 +382,9 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , setTicket:any, 
 const CardVistaVariasOrdenes= (props:{setTicket:any, rubro:any, posicion:any,tipo:string,status:string,fecha_creacion:string,ticket: string,
   dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, presupuesto:any, masInfo:any, masInfoEnviada:string, recargarOrden:any}) => {
         
+
+    console.log("el tipo de orden es: "+props.tipo )
+
     const [estado,setEstado]=useState("Enviada")
 
     const [mensaje1, setMensaje1] = useState("")
@@ -394,8 +397,10 @@ const CardVistaVariasOrdenes= (props:{setTicket:any, rubro:any, posicion:any,tip
 
     const [imagenes,setImagen]=useState ("")
 
+
     useEffect(() => {
 
+      console.log("para la imagen el rubro es: "+props.rubro)
       setImagen(retornarIconoCategoria(props.rubro)) 
      
  }, [props.ticket]); 
