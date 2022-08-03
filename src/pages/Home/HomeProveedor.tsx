@@ -87,7 +87,6 @@ const HomeProveedor = (props:{setIsReg:any, setNombre:any, setApellido:any, setF
 
 
   const [verOrden, setVerOrden] = useState( false );
-
   const [ticket_para_ver_orden, setTicket] = useState(0)
 
   getLocation()
@@ -260,7 +259,8 @@ const HomeProveedor = (props:{setIsReg:any, setNombre:any, setApellido:any, setF
               nuevasOrdenes={nuevasOrdenes} 
               
               ticket={ticket_para_ver_orden} setTicket={setTicket} 
-              verOrden={verOrden} setVerOrden={setVerOrden}     
+              verOrden={verOrden} setVerOrden={setVerOrden}    
+              
             />
 
 

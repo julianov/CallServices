@@ -12,7 +12,7 @@ import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import CompletarRubros from '../../pages/CompletarRubros/CompletarRubros';
 import { ordenes } from '../../pages/Home/HomeProveedor';
-import ModalVerOrdenesProveedor from '../VerOrdenes/ModalVerOrdenesProveedor';
+import ModalVerOrdenesProveedor from '../VerOrdenes/VerOrdenesProveedor/ModalVerOrdenesProveedor';
 import { IonButton, IonCard, IonCardHeader, IonCardSubtitle, IonCol, IonGrid, IonIcon, IonItemDivider, IonModal, IonRow, IonSlide, IonSlides, IonTitle } from '@ionic/react';
 import { retornarIconoCategoria } from '../../utilidades/retornarIconoCategoria';
 import { getDB, setDB } from '../../utilidades/dataBase';
@@ -32,7 +32,7 @@ const ExploreContainerProveedor  = (props:{
   setNuevasOrdenes:any
   nuevasOrdenes:any
   ticket:any, setTicket:any, 
-  verOrden:any, setVerOrden:any
+  verOrden:any, setVerOrden:any,
  } ) => {
 
   
@@ -41,6 +41,8 @@ const ExploreContainerProveedor  = (props:{
 
   const [sinRubro, setSinRubro] = useState(false)
   const [cargarRubro, setCargarRubro] = useState(false)
+
+  const [tipo, setTipo] = useState("")
 
 
   useEffect(() => {
@@ -68,7 +70,7 @@ const ExploreContainerProveedor  = (props:{
           <div style={{width:"90%", height:"auto", textAlign:"center"}}>
             <h1 style={{marginTop:"35px",fontWeight:"600", fontSize:"1.3em"}}> ORDENES DE TRABAJO ACTIVAS </h1>
           </div>
-          <MisOrdenes misOrdenes={props.ordenes} setVerOrden={props.setVerOrden} setTicket={props.setTicket} nuevasOrdenes={props.nuevasOrdenes} setNuevasOrdenes={props.setNuevasOrdenes} />
+          <MisOrdenes misOrdenes={props.ordenes} setVerOrden={props.setVerOrden} setTicket={props.setTicket} nuevasOrdenes={props.nuevasOrdenes} setNuevasOrdenes={props.setNuevasOrdenes} setTipo={setTipo} />
           <IonItemDivider />
 
           <CampanaPublicidad></CampanaPublicidad>
@@ -94,6 +96,7 @@ const ExploreContainerProveedor  = (props:{
             emailProveedor={props.emailProveedor}
             setNuevasOrdenes={props.setNuevasOrdenes}
             nuevasOrdenes={props.nuevasOrdenes}
+            tipo={tipo}
           />  
         </IonModal>
       </>
@@ -136,7 +139,7 @@ const Solicitudes  = () => {
 }
 
 
-const MisOrdenes = (props:{ misOrdenes: Array <ordenes> , setVerOrden:any,setTicket:any, nuevasOrdenes:any, setNuevasOrdenes:any }) => {
+const MisOrdenes = (props:{ misOrdenes: Array <ordenes> , setVerOrden:any,setTicket:any, nuevasOrdenes:any, setNuevasOrdenes:any , setTipo:any}) => {
 
   var i=0
   //if (props.proveedores!=[]){
@@ -153,14 +156,14 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenes> , setVerOrden:any,setTic
             return (
               <IonSlide>
                 <CardVistaVariasOrdenesEmergencia key={i} posicion={i} rubro={a.rubro} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket} 
-                dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_cliente} setVerOrden={props.setVerOrden} setTicket={props.setTicket} nuevasOrdenes={props.nuevasOrdenes} setNuevasOrdenes={props.setNuevasOrdenes}></CardVistaVariasOrdenesEmergencia>
+                dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_cliente} setVerOrden={props.setVerOrden} setTicket={props.setTicket} nuevasOrdenes={props.nuevasOrdenes} setNuevasOrdenes={props.setNuevasOrdenes} setTipo={props.setTipo} ></CardVistaVariasOrdenesEmergencia>
                </IonSlide>
                )
           }else{
           return (
           <IonSlide>
             <CardVistaVariasOrdenes key={i} posicion={i} rubro={a.rubro} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket} 
-            dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_cliente} setVerOrden={props.setVerOrden} setTicket={props.setTicket} nuevasOrdenes={props.nuevasOrdenes} setNuevasOrdenes={props.setNuevasOrdenes}></CardVistaVariasOrdenes>
+            dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_cliente} setVerOrden={props.setVerOrden} setTicket={props.setTicket} nuevasOrdenes={props.nuevasOrdenes} setNuevasOrdenes={props.setNuevasOrdenes} setTipo={props.setTipo}></CardVistaVariasOrdenes>
            </IonSlide>
            )
            } 
@@ -177,7 +180,7 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenes> , setVerOrden:any,setTic
 
 
 const CardVistaVariasOrdenes= (props:{posicion:any,rubro:string, tipo:string,status:string,fecha_creacion:string,ticket: string,
-  dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, setTicket:any, nuevasOrdenes:any, setNuevasOrdenes:any }) => {
+  dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, setTicket:any, nuevasOrdenes:any, setNuevasOrdenes:any, setTipo:any }) => {
         
     const [mensaje, setMensaje] = useState("")
 
@@ -245,7 +248,7 @@ const CardVistaVariasOrdenes= (props:{posicion:any,rubro:string, tipo:string,sta
   if(nuevoStatus&&props.status!="PEI"){
 
     return (
-      <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setTicket(props.ticket)}}>
+      <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setTicket(props.ticket); props.setTipo(props.tipo)}}>
         <div id="iconoDerecha">            
             <IonIcon icon={alert} id="iconoNuevaStatus" ></IonIcon>
           </div > 
@@ -270,7 +273,7 @@ const CardVistaVariasOrdenes= (props:{posicion:any,rubro:string, tipo:string,sta
 
   }else{
     return (
-      <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setTicket(props.ticket)}}>
+      <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setTicket(props.ticket); props.setTipo(props.tipo)}}>
         <IonGrid>
           <IonRow  id="row-busqueda">
             <IonCol   id="col-explorerContainerCliente">
@@ -346,7 +349,7 @@ const CardSinRubro = (props:{ setCargarRubro:any}) => {
 }
 
 const CardVistaVariasOrdenesEmergencia =  (props:{posicion:any,rubro:string, tipo:string,status:string,fecha_creacion:string,ticket: string,
-  dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, setTicket:any, nuevasOrdenes:any, setNuevasOrdenes:any }) => {
+  dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, setTicket:any, nuevasOrdenes:any, setNuevasOrdenes:any, setTipo:any }) => {
 
     const [estado,setEstado]=useState("Enviada")
     const [nuevoStatus,setNuevoStatus]=useState(false)
@@ -401,7 +404,7 @@ const CardVistaVariasOrdenesEmergencia =  (props:{posicion:any,rubro:string, tip
     if(nuevoStatus&&props.status!="ACE"&&props.status!="ENS"){
 
 return (
-  <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setTicket(props.ticket)}}>
+  <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setTicket(props.ticket); props.setTipo(props.tipo)}}>
     <div id="iconoDerecha">            
         <IonIcon icon={alert} id="iconoNuevaStatus" ></IonIcon>
       </div > 
@@ -426,7 +429,7 @@ return (
 
 }else{
 return (
-  <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setTicket(props.ticket)}}>
+  <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setTicket(props.ticket); props.setTipo(props.tipo)}}>
     <IonGrid>
       <IonRow  id="row-busqueda">
         <IonCol   id="col-explorerContainerCliente">

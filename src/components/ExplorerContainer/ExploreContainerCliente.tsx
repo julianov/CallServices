@@ -12,7 +12,7 @@ import {Adsense} from '@ctrl/react-adsense';
 import { datosGeneralesVariosProveedores, ordenesCliente, proveedorBuscado } from '../../pages/Home/HomeCliente';
 import { datosOrden } from '../../utilidades/CardProveedor';
 import { getDB, setDB } from '../../utilidades/dataBase';
-import ModalVerOrdenesCliente from '../VerOrdenes/ModalVerOrdenesCliente';
+import ModalVerOrdenesCliente from '../VerOrdenes/VerOrdenesCliente/ModalVerOrdenesCliente';
 import Estrellas from '../Estrellas/Estrellas';
 import ModalVerCardProveedor from '../CardProveedor/ModalVerCardProveedor';
 import ResultadoBusqueda, { categoriaBuscada } from '../ResultadoBusqueda/ResultadoBusqueda';

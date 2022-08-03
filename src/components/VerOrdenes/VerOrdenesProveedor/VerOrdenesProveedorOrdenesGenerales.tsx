@@ -5,17 +5,12 @@ import { isConstructorDeclaration, isSetAccessorDeclaration, visitParameterList 
 import '../ModalGeneral/Modal.css';
 
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
-import Https from "../../utilidades/HttpsURL";
-import Chat from "../Chat/Chat";
 import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCheckbox, IonCol, IonContent, IonDatetime, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonLoading, IonRow, IonSegment, IonSegmentButton, IonTitle } from "@ionic/react";
-import { getDB, setDB } from "../../utilidades/dataBase";
 import { Redirect } from "react-router";
-import { ordenesCliente } from "../../pages/Home/HomeCliente";
-import { ordenes } from "../../pages/Home/HomeProveedor";
-
-
-
-const url=Https
+import Https from "../../../utilidades/HttpsURL";
+import { ordenes } from "../../../pages/Home/HomeProveedor";
+import { getDB, setDB } from "../../../utilidades/dataBase";
+import Chat from "../../Chat/Chat";
 
 
 const axios = require('axios');
@@ -36,19 +31,18 @@ const verUbicacion = (latitud:any, longitud:any) =>{
 }
 
 
+const url=Https
 
-const ModalVerOrdenesProveedor = (props:{notifications:any,setNotifications:any, datosCompletos:any, setDatosCompletos:any,emailProveedor:any,setVolver:any,setNuevasOrdenes:any, nuevasOrdenes:any, ticket:any})  =>{
+
+
+const ModalVerOrdenesProveedorGenerales = (props:{notifications:any,setNotifications:any, datosCompletos:any, setDatosCompletos:any,emailProveedor:any,setVolver:any,setNuevasOrdenes:any, nuevasOrdenes:any, ticket:any})  =>{
+
 
     const [vista, setVista] = useState("PRIMERO")
 
     const [estado, setEstado] =useState("ENVIADA POR EL CLIENTE")
 
     const [showAlertInconvenienteChat, setShowAlertInconvenienteChat] = useState(false)
-    const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
-
-    const presupuestoValor = useRef("0")
-
-    const precio = useRef ("")
 
     const desdeDondeEstoy=useRef("")
     const ticketeck = useRef <string>("")
@@ -166,8 +160,6 @@ const ModalVerOrdenesProveedor = (props:{notifications:any,setNotifications:any,
 
       }
       }, [props.datosCompletos]) 
-
-
 
 
       const rechazarOrden = ()=> {
@@ -2025,4 +2017,4 @@ const SeleccionarFecha = ( props:{hora:any, dia:any, horaactual:any, diaactual:a
 }
 
 
-export default ModalVerOrdenesProveedor
+export default ModalVerOrdenesProveedorGenerales

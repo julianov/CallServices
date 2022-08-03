@@ -2,19 +2,19 @@ import { arrowBack, camera, chatbox, close, eye, location, logoWindows } from "i
 import React, { useEffect, useRef, useState } from "react";
 import { isConstructorDeclaration, isPropertyDeclaration, isSetAccessorDeclaration } from "typescript";
 
-import Https from "../../utilidades/HttpsURL";
+import Https from "../../../utilidades/HttpsURL";
 import '../ModalGeneral/Modal.css';
 
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import axios from "axios";
-import { Calificacion } from "./ModalVerOrdenesProveedor";
-import { createStore, removeDB, setDB } from "../../utilidades/dataBase";
-import Chat from "../Chat/Chat";
+import { createStore, removeDB, setDB } from "../../../utilidades/dataBase";
+import Chat from "../../Chat/Chat";
 import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonRow, IonTitle } from "@ionic/react";
-import { ordenesCliente } from "../../pages/Home/HomeCliente";
-import { TomarFotografia } from "../../pages/PedirOrdenes/PedirOrden";
+import { ordenesCliente } from "../../../pages/Home/HomeCliente";
+import { TomarFotografia } from "../../../pages/PedirOrdenes/PedirOrden";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
+import { Calificacion } from "../VerOrdenesProveedor/VerOrdenesProveedorOrdenesGenerales";
 
 const url=Https
 
