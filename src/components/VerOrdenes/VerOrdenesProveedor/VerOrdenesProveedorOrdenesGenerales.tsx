@@ -1749,7 +1749,7 @@ const VerDatosCliente = (props:{dondeEstoy:string, ticket:any, tipo:any,latitud:
 
 
 
-const Imagenes = (props:{picture1:any,picture2:any})=>{
+export const Imagenes = (props:{picture1:any,picture2:any})=>{
   if(props.picture1!="" && props.picture2!="" ){
     return(
       <div id="CardProveedoresImg">
