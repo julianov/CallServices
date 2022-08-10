@@ -34,24 +34,17 @@ const verUbicacion = ( latitud:any, longitud:any) =>{
 
   }
 
-
-  
-
-
   const ModalVerOrdenesCliente = (props:{ticket:any, datosCompletos:any, setDatosCompletos:any, nuevasOrdenes:any, setNuevasOrdenes:any, notifications:any, setNotifications:any,emailCliente:any, setVolver:any, tipo:String})  =>{
 
     if (props.tipo=="Orden de emergencia"){
 
       return (
-
-        < ModalVerOrdenesClienteEmergencia ticket={props.ticket} datosCompletos={props.datosCompletos} setDatosCompletos={props.setDatosCompletos} nuevasOrdenes={props.nuevasOrdenes} setNuevasOrdenes={props.setNuevasOrdenes} notifications={props.notifications} setNotifications={props.setNotifications} emailCliente={props.emailCliente} setVolver={props.setVolver} ></ModalVerOrdenesClienteEmergencia>
-
+        <ModalVerOrdenesClienteEmergencia ticket={props.ticket} datosCompletos={props.datosCompletos} setDatosCompletos={props.setDatosCompletos} nuevasOrdenes={props.nuevasOrdenes} setNuevasOrdenes={props.setNuevasOrdenes} notifications={props.notifications} setNotifications={props.setNotifications} emailCliente={props.emailCliente} setVolver={props.setVolver} ></ModalVerOrdenesClienteEmergencia>
       )
 
     }else{
       return (
-
-        < ModalVerOrdenesClienteGenerales ticket={props.ticket} datosCompletos={props.datosCompletos} setDatosCompletos={props.setDatosCompletos} nuevasOrdenes={props.nuevasOrdenes} setNuevasOrdenes={props.setNuevasOrdenes} notifications={props.notifications} setNotifications={props.setNotifications} emailCliente={props.emailCliente} setVolver={props.setVolver} ></ModalVerOrdenesClienteGenerales>
+        <ModalVerOrdenesClienteGenerales ticket={props.ticket} datosCompletos={props.datosCompletos} setDatosCompletos={props.setDatosCompletos} nuevasOrdenes={props.nuevasOrdenes} setNuevasOrdenes={props.setNuevasOrdenes} notifications={props.notifications} setNotifications={props.setNotifications} emailCliente={props.emailCliente} setVolver={props.setVolver} ></ModalVerOrdenesClienteGenerales>
       )
     }
   }
@@ -67,7 +60,6 @@ const verUbicacion = ( latitud:any, longitud:any) =>{
   
     const desdeDondeEstoy=useRef("")
     const ticketeck = useRef <string>("")
-  
   
     const [orden, setOrden] = useState <ordenesCliente>(
       {
@@ -162,26 +154,6 @@ const verUbicacion = ( latitud:any, longitud:any) =>{
     }, [props.datosCompletos]) 
 
 
-    const cancelarOrden = ()=> {
-
-      axios.get(url+"orden/ordenEmergencia/rechazarOrdenCliente/"+orden!.ticket+"/"+motivo_rechazo, {timeout: 7000})
-      .then((resp: { data: any; }) => {
-        if(resp.data!="bad"){
-          setEstado("ORDEN RECHAZADA")
-          setVista("cancelarOrden")
-
-          createStore("ordenesActivas")
-          removeDB(orden.ticket.toString())
-
-          props.setVolver(false)
-          window.location.reload()
-
-        }
-       })
-  }
-
-
-
   if(vista=="PRIMERO"){
     desdeDondeEstoy.current="PRIMERO"
     return (
@@ -198,14 +170,14 @@ const verUbicacion = ( latitud:any, longitud:any) =>{
     <OrdenEnViaje datos={orden} setDatos={setOrden} estado={estado} setVista={setVista} setEstado={setEstado} setVolver={props.setVolver} rechazarOrden={cancelarOrden}  />
     )
   }else if (vista=="EN SITIO"){
+      desdeDondeEstoy.current="EN SITIO"
     return(
       <OrdenEnSitio datos={orden} setDatos={setOrden} estado={estado} setVista={setVista} setEstado={setEstado} setVolver={props.setVolver} rechazarOrden={cancelarOrden}  />
     )
   }else if (vista=="REALIZADA"){
-
+      desdeDondeEstoy.current="REALIZADA"
     return(
       <OrdenRealizada datos={orden} setDatos={setOrden} estado={estado} setVista={setVista} setEstado={setEstado} setVolver={props.setVolver} rechazarOrden={cancelarOrden}  />
-
     )
   }else if (vista=="chat"){
     return(
@@ -232,6 +204,13 @@ const verUbicacion = ( latitud:any, longitud:any) =>{
         />
       </>
     )
+  }else if (vista=="CANCELAR"){
+
+      return(
+        <OrdenCancelar desdeDondeEstoy={desdeDondeEstoy.current} datos={orden} setVista={setVista} cancelarOrden={cancelarOrden}  />
+
+      )
+      
   }else{
     return (
       <></>
@@ -319,7 +298,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
                    role: 'cancel',
                    cssClass: 'secondary',
                    handler: blah => {
-                     props.rechazarOrden();
+                     props.setVista("CANCELAR");
                    },  
                  
                  },
@@ -454,7 +433,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
                     role: 'cancel',
                     cssClass: 'secondary',
                     handler: blah => {
-                      props.rechazarOrden();
+                      props.setVista("CANCELAR");
                     },  
                   
                   },
@@ -579,7 +558,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
                     role: 'cancel',
                     cssClass: 'secondary',
                     handler: blah => {
-                      props.rechazarOrden();
+                      props.setVista("CANCELAR");
                     },  
                   
                   },
@@ -681,7 +660,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
                       role: 'cancel',
                       cssClass: 'secondary',
                       handler: blah => {
-                        props.rechazarOrden();
+                        props.setVista("CANCELAR");
                       },  
                     
                     },
@@ -702,7 +681,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
       )
     }
 
-    const OrdenRealizada = (props:{datos:any, setDatos:any, setVolver:any, estado:any, setEstado:any, 
+ const OrdenRealizada = (props:{datos:any, setDatos:any, setVolver:any, estado:any, setEstado:any, 
       setVista:any, rechazarOrden:any})  =>{
   
         const calificacion = useRef ("0")
@@ -758,9 +737,9 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
                 <h2 style={{ fontSize: "1em", color: "blue" }}>COMPLETE LOS SIGUIENTES CAMPOS</h2>
                 <IonItemDivider />
       
-                <h2 style={{ fontSize: "1em", color: "black" }}>INGRESE LA CALIFICACIÓN DEL CLIENTE</h2>
+                <h2 style={{ fontSize: "1em", color: "black" }}>INGRESE LA CALIFICACIÓN DEL PROVEEDOR</h2>
                 <Calificacion calificacion={calificacion} ></Calificacion>
-                <h2 style={{ fontSize: "1em", color: "black" }}>¿DESEA INGRESAR UNA RESEÑA DEL CLIENTE?</h2>
+                <h2 style={{ fontSize: "1em", color: "black" }}>¿DESEA INGRESAR UNA RESEÑA DEL PROVEEDOR?</h2>
                 <IonItem id="item-completarInfo">
                   <IonLabel position="floating">RESEÑA</IonLabel>
                   <IonInput onIonInput={(e: any) => reseña.current=(e.target.value)}></IonInput>
@@ -791,5 +770,72 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
   
       }
   
+ const OrdenCancelar = (props:{desdeDondeEstoy:any, datos:any, setVista:any, cancelarOrden:any})  =>{
+ 
+     const motivo = useRef("") 
+     
+     const cancelarOrden = ()=> {
+
+      axios.get(url+"orden/ordenEmergencia/rechazarOrdenCliente/"+orden!.ticket+"/"+motivo.current, {timeout: 7000})
+      .then((resp: { data: any; }) => {
+        if(resp.data!="bad"){
+          setEstado("ORDEN RECHAZADA")
+          setVista("cancelarOrden")
+
+          createStore("ordenesActivas")
+          removeDB(orden.ticket.toString())
+
+          props.setVolver(false)
+          window.location.reload()
+
+        }
+       })
+  }
+     
+     return (
+      <IonContent>
+      
+            <div id="ionContentModalOrdenes">
+      
+            <div id="modalProveedor-flechaVolver">
+                <IonIcon icon={arrowBack} onClick={() => props.setVista(desdeDondeEstoy.current)} slot="start" id="flecha-volver">  </IonIcon>
+            </div>
+              
+              <IonCard id="ionCardModalCentro">
+                <h2 style={{ fontSize: "1.2em", color: "black" }}>CANCELAR ORDEN</h2>
+                <h2 style={{ fontSize: "1em", color: "blue" }}>PARA CANCELAR COMPLETE LOS SIGUIENTES CAMPOS</h2>
+                <IonItemDivider />
+                 
+                <h2 style={{ fontSize: "1em", color: "black" }}>MOTIVO DE CANCELACIÓN</h2>
+                <IonItem id="item-completarInfo">
+                  <IonLabel position="floating">INGRESE MOTIVO</IonLabel>
+                  <IonInput onIonInput={(e: any) => motivo.current=(e.target.value)}></IonInput>
+                </IonItem>
+            </IonCard>
+      
+           <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => cancelar()}>CANCELAR</IonButton>
+         
+                <IonAlert
+                      isOpen={showAlertCalificacion}
+                      onDidDismiss={() => setShowAlertCalificacion(false)}
+                      cssClass='my-custom-class'
+                      header={'CALIFICACIÓN'}
+                      subHeader={''}
+                      message={'Debe ingresra una calificación para el cliente'}
+                      buttons={['OK']} />
+                <IonAlert
+                      isOpen={showAlertConexion}
+                      onDidDismiss={() => setShowAlertConexion(false)}
+                      cssClass='my-custom-class'
+                      header={'INCONVENIENTE CON EL SERVIDOR'}
+                      subHeader={''}
+                      message={'Ingrese la calificación luego'}
+                      buttons={['OK']} />
+           </div>
+            </IonContent>
+        )
+  
+ 
+ }
 
 export default ModalVerOrdenesCliente;
