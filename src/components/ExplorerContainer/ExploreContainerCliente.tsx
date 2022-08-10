@@ -55,6 +55,7 @@ const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any
   const [verReseña, setVerReseña] = useState(false);
 
   const tiipo = useRef("")
+  const [tipo, setTipo] = useState("")
 
   const [ultimos, setUltimos] =  useState <categoriaBuscada []> ( [])
 
@@ -134,7 +135,7 @@ const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any
           <div id="container-principal-ExplorerContainer-Cliente">  
             <Tabs setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal} ></Tabs>
             <IonItemDivider />
-            <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={props.ordenes} setTicket={props.setTicket} setVerOrden={props.setVerOrden} recargarOrden={props.verOrden} ></MisOrdenes>
+            <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={props.ordenes} setTicket={props.setTicket} setVerOrden={props.setVerOrden} recargarOrden={props.verOrden} setTipo={setTipo}></MisOrdenes>
             <IonItemDivider />
 
             <CategoriasUtiles setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal}/>
@@ -164,6 +165,7 @@ const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any
               emailCliente={props.emailCliente} 
               nuevasOrdenes={props.nuevasOrdenes}
               setNuevasOrdenes={props.setNuevasOrdenes}
+              tipo={tipo}
               />  
         </IonModal>
 
@@ -336,7 +338,7 @@ const CardVistaVariosProveedores= (props:{item:any, personalImg:any ,distancia: 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , setTicket:any, hayOrdenes:any, setVerOrden:any, recargarOrden:any }) => {
+const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , setTicket:any, hayOrdenes:any, setVerOrden:any, recargarOrden:any, setTipo:any }) => {
 
   var i=0
   //if (props.proveedores!=[]){
@@ -356,7 +358,7 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , setTicket:any, 
               <IonSlide>
                 <CardVistaVariasOrdenes key={i} setTicket={props.setTicket} posicion={i} rubro={a.rubro} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket}
                   dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_proveedor} setVerOrden={props.setVerOrden} 
-                  presupuesto={a.presupuesto} masInfo={a.pedido_mas_información} masInfoEnviada={a.respuesta_cliente_pedido_mas_información} recargarOrden={props.recargarOrden}></CardVistaVariasOrdenes>
+                  presupuesto={a.presupuesto} masInfo={a.pedido_mas_información} masInfoEnviada={a.respuesta_cliente_pedido_mas_información} recargarOrden={props.recargarOrden} setTipo={props.setTipo}></CardVistaVariasOrdenes>
               </IonSlide>
                           
             );
@@ -380,7 +382,7 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , setTicket:any, 
 }
 
 const CardVistaVariasOrdenes= (props:{setTicket:any, rubro:any, posicion:any,tipo:string,status:string,fecha_creacion:string,ticket: string,
-  dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, presupuesto:any, masInfo:any, masInfoEnviada:string, recargarOrden:any}) => {
+  dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, presupuesto:any, masInfo:any, masInfoEnviada:string, recargarOrden:any, setTipo:any}) => {
         
 
     console.log("el tipo de orden es: "+props.tipo )
@@ -467,7 +469,7 @@ const CardVistaVariasOrdenes= (props:{setTicket:any, rubro:any, posicion:any,tip
 
     if(nuevoStatus){
       return (
-        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setTicket(props.ticket)}}>
+        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setTicket(props.ticket); props.setTipo(props.tipo)}}>
 
         <div id="iconoDerecha">            
           <IonIcon icon={alert} id="iconoNuevaStatus" ></IonIcon>
@@ -491,7 +493,7 @@ const CardVistaVariasOrdenes= (props:{setTicket:any, rubro:any, posicion:any,tip
       )    
     }else{
       return (
-        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setTicket(props.ticket)}}>
+        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setTicket(props.ticket); props.setTipo(props.tipo)}}>
 
           <IonGrid>
             <IonRow  id="row-busqueda">

@@ -2,7 +2,7 @@ import { arrowBack, chatbox, close, eye, location } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import { isConstructorDeclaration, isSetAccessorDeclaration, visitParameterList } from "typescript";
 
-import '../ModalGeneral/Modal.css';
+import '../../ModalGeneral/Modal.css';
 
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCheckbox, IonCol, IonContent, IonDatetime, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonLoading, IonRow, IonSegment, IonSegmentButton, IonTitle } from "@ionic/react";
@@ -1742,11 +1742,6 @@ const VerDatosCliente = (props:{dondeEstoy:string, ticket:any, tipo:any,latitud:
 
   
 }
-
-
-
-
-
 
 
 export const Imagenes = (props:{picture1:any,picture2:any})=>{

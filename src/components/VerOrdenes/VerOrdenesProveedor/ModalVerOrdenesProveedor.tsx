@@ -2,7 +2,7 @@ import { arrowBack, chatbox, close, eye, location } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
 import { isConstructorDeclaration, isSetAccessorDeclaration, visitParameterList } from "typescript";
 
-import '../ModalGeneral/Modal.css';
+import '../../ModalGeneral/Modal.css';
 
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import Https from "../../../utilidades/HttpsURL";
@@ -836,7 +836,7 @@ const OrdenEnSitio  = (props:{datos:any, setDatos:any, setVolver:any, estado:any
   }
 
 
-  const OrdenRealizada = (props:{datos:any, setDatos:any, setVolver:any, estado:any, setEstado:any, 
+const OrdenRealizada = (props:{datos:any, setDatos:any, setVolver:any, estado:any, setEstado:any, 
     setVista:any, rechazarOrden:any})  =>{
 
       const calificacion = useRef ("0")
