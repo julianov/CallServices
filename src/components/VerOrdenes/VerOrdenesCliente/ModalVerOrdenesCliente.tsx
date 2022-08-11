@@ -157,27 +157,27 @@ const verUbicacion = ( latitud:any, longitud:any) =>{
   if(vista=="PRIMERO"){
     desdeDondeEstoy.current="PRIMERO"
     return (
-      <Primero datos={orden} setVolver={props.setVolver} estado={estado} setEstado={setEstado} setVista={setVista} rechazarOrden={cancelarOrden} emailCliente={props.emailCliente} />
+      <Primero datos={orden} setVolver={props.setVolver} estado={estado} setEstado={setEstado} setVista={setVista} emailCliente={props.emailCliente} />
     )
   }else if (vista=="ACEPTADA") {
     desdeDondeEstoy.current="ACEPTADA"
     return (
-      <OrdenAceptada setVista={setVista} datos={orden} setDatos={setOrden} setEstado={setEstado} setVolver={props.setVolver} estado={estado} rechazarOrden={cancelarOrden} emailCliente={props.emailCliente} />
+      <OrdenAceptada setVista={setVista} datos={orden} setDatos={setOrden} setEstado={setEstado} setVolver={props.setVolver} estado={estado} emailCliente={props.emailCliente}  />
     )
   }else if(vista=="EN VIAJE"){
     desdeDondeEstoy.current="EN VIAJE"
     return(
-    <OrdenEnViaje datos={orden} setDatos={setOrden} estado={estado} setVista={setVista} setEstado={setEstado} setVolver={props.setVolver} rechazarOrden={cancelarOrden}  />
+    <OrdenEnViaje datos={orden} setDatos={setOrden} estado={estado} setVista={setVista} setEstado={setEstado} setVolver={props.setVolver}/>
     )
   }else if (vista=="EN SITIO"){
       desdeDondeEstoy.current="EN SITIO"
     return(
-      <OrdenEnSitio datos={orden} setDatos={setOrden} estado={estado} setVista={setVista} setEstado={setEstado} setVolver={props.setVolver} rechazarOrden={cancelarOrden}  />
+      <OrdenEnSitio datos={orden} setDatos={setOrden} estado={estado} setVista={setVista} setEstado={setEstado} setVolver={props.setVolver} />
     )
   }else if (vista=="REALIZADA"){
       desdeDondeEstoy.current="REALIZADA"
     return(
-      <OrdenRealizada datos={orden} setDatos={setOrden} estado={estado} setVista={setVista} setEstado={setEstado} setVolver={props.setVolver} rechazarOrden={cancelarOrden}  />
+      <OrdenRealizada datos={orden} setDatos={setOrden} estado={estado} setVista={setVista} setEstado={setEstado} setVolver={props.setVolver} />
     )
   }else if (vista=="chat"){
     return(
@@ -207,7 +207,7 @@ const verUbicacion = ( latitud:any, longitud:any) =>{
   }else if (vista=="CANCELAR"){
 
       return(
-        <OrdenCancelar desdeDondeEstoy={desdeDondeEstoy.current} datos={orden} setVista={setVista} cancelarOrden={cancelarOrden}  />
+        <OrdenCancelar desdeDondeEstoy={desdeDondeEstoy.current} datos={orden} setVista={setVista} setEstado={setEstado} setVolver={props.setVolver} />
 
       )
       
@@ -220,7 +220,7 @@ const verUbicacion = ( latitud:any, longitud:any) =>{
 }
 
 const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any, 
-  setVista:any, rechazarOrden:any, emailCliente:any})  =>{
+  setVista:any, emailCliente:any})  =>{
  
    const [showAlertOrdenAceptada, setShowAlertOrdenAceptada] = useState(false)
    const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
@@ -333,7 +333,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
 
 
  const OrdenAceptada = (props:{datos:any, setDatos:any, setVolver:any, estado:any, setEstado:any, 
-  setVista:any, rechazarOrden:any, emailCliente:any})  =>{
+  setVista:any, emailCliente:any})  =>{
 
     const [showAlertOrdenAceptada, setShowAlertOrdenAceptada] = useState(false)
     const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
@@ -458,7 +458,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
 
 
   const OrdenEnViaje = (props:{datos:any, setDatos:any, setVolver:any, estado:any, setEstado:any, 
-    setVista:any, rechazarOrden:any})  =>{
+    setVista:any, })  =>{
 
 
     const [showAlertOrdenAceptada, setShowAlertOrdenAceptada] = useState(false)
@@ -581,7 +581,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
   }
 
   const OrdenEnSitio  = (props:{datos:any, setDatos:any, setVolver:any, estado:any, setEstado:any, 
-    setVista:any, rechazarOrden:any})  =>{
+    setVista:any})  =>{
   
       const [showAlertOrdenAceptada, setShowAlertOrdenAceptada] = useState(false)
       const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
@@ -599,7 +599,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
                 <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
                 <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
                 <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
-              </div>
+               </div>
               <IonGrid>
                 <IonRow>
                   <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
@@ -682,7 +682,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
     }
 
  const OrdenRealizada = (props:{datos:any, setDatos:any, setVolver:any, estado:any, setEstado:any, 
-      setVista:any, rechazarOrden:any})  =>{
+      setVista:any})  =>{
   
         const calificacion = useRef ("0")
         const reseña = useRef ("")
@@ -754,7 +754,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
                       cssClass='my-custom-class'
                       header={'CALIFICACIÓN'}
                       subHeader={''}
-                      message={'Debe ingresra una calificación para el cliente'}
+                      message={'Debe ingresar una calificación para el cliente'}
                       buttons={['OK']} />
                 <IonAlert
                       isOpen={showAlertConexion}
@@ -770,26 +770,34 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
   
       }
   
- const OrdenCancelar = (props:{desdeDondeEstoy:any, datos:any, setVista:any, cancelarOrden:any})  =>{
+ const OrdenCancelar = (props:{desdeDondeEstoy:any, datos:any, setVista:any, setEstado:any, setVolver:any})  =>{
  
      const motivo = useRef("") 
+
+     const [showAlertMotivoRechazo, setShowAlertMotivoRechazo] = useState(false)
+
      
      const cancelarOrden = ()=> {
 
-      axios.get(url+"orden/ordenEmergencia/rechazarOrdenCliente/"+orden!.ticket+"/"+motivo.current, {timeout: 7000})
+      if(motivo.current==""){
+        setShowAlertMotivoRechazo(true)
+      }else{
+
+      axios.get(url+"orden/ordenEmergencia/rechazarOrdenCliente/"+props.datos.ticket+"/"+motivo.current, {timeout: 7000})
       .then((resp: { data: any; }) => {
         if(resp.data!="bad"){
-          setEstado("ORDEN RECHAZADA")
-          setVista("cancelarOrden")
+          props.setEstado("ORDEN RECHAZADA")
+          props.setVista("cancelarOrden")
 
           createStore("ordenesActivas")
-          removeDB(orden.ticket.toString())
+          removeDB(props.datos.ticket.toString())
 
           props.setVolver(false)
           window.location.reload()
 
         }
        })
+    }
   }
      
      return (
@@ -798,7 +806,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
             <div id="ionContentModalOrdenes">
       
             <div id="modalProveedor-flechaVolver">
-                <IonIcon icon={arrowBack} onClick={() => props.setVista(desdeDondeEstoy.current)} slot="start" id="flecha-volver">  </IonIcon>
+                <IonIcon icon={arrowBack} onClick={() => props.setVista(props.desdeDondeEstoy.current)} slot="start" id="flecha-volver">  </IonIcon>
             </div>
               
               <IonCard id="ionCardModalCentro">
@@ -813,24 +821,17 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
                 </IonItem>
             </IonCard>
       
-           <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => cancelar()}>CANCELAR</IonButton>
+           <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => cancelarOrden()}>CANCELAR</IonButton>
          
                 <IonAlert
-                      isOpen={showAlertCalificacion}
-                      onDidDismiss={() => setShowAlertCalificacion(false)}
+                      isOpen={showAlertMotivoRechazo}
+                      onDidDismiss={() => setShowAlertMotivoRechazo(false)}
                       cssClass='my-custom-class'
                       header={'CALIFICACIÓN'}
                       subHeader={''}
-                      message={'Debe ingresra una calificación para el cliente'}
+                      message={'Debe ingresra un motivo de rechazo'}
                       buttons={['OK']} />
-                <IonAlert
-                      isOpen={showAlertConexion}
-                      onDidDismiss={() => setShowAlertConexion(false)}
-                      cssClass='my-custom-class'
-                      header={'INCONVENIENTE CON EL SERVIDOR'}
-                      subHeader={''}
-                      message={'Ingrese la calificación luego'}
-                      buttons={['OK']} />
+             
            </div>
             </IonContent>
         )
