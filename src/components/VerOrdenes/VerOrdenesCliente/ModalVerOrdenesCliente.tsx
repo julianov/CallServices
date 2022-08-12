@@ -821,13 +821,13 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
                 </IonItem>
             </IonCard>
       
-           <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => cancelarOrden()}>CANCELAR</IonButton>
+           <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => cancelarOrden()}>CANCELAR ORDEN</IonButton>
          
                 <IonAlert
                       isOpen={showAlertMotivoRechazo}
                       onDidDismiss={() => setShowAlertMotivoRechazo(false)}
                       cssClass='my-custom-class'
-                      header={'CALIFICACIÓN'}
+                      header={'MOTIVO'}
                       subHeader={''}
                       message={'Debe ingresra un motivo de rechazo'}
                       buttons={['OK']} />

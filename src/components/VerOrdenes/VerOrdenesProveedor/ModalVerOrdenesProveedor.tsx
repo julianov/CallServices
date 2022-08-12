@@ -293,7 +293,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
          <IonCard id="ionCard-explorerContainer-Proveedor">
            <img id="img-orden" src={props.datos.imagen_cliente}></img>
            <div id="divSentencias">
-             <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
+             <p style={{fontSize:"1em", color:"black"}}>{props.datos.tipo.toUpperCase()} </p>
              <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
              <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
            </div>
@@ -447,7 +447,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
           <IonCard id="ionCard-explorerContainer-Proveedor">
             <img id="img-orden" src={props.datos.imagen_cliente}></img>
             <div id="divSentencias">
-              <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
+              <p style={{fontSize:"1em", color:"black"}}>{props.datos.tipo.toUpperCase()}</p>
               <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
               <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
             </div>
@@ -588,7 +588,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
           <IonCard id="ionCard-explorerContainer-Proveedor">
             <img id="img-orden" src={props.datos.imagen_cliente}></img>
             <div id="divSentencias">
-              <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
+              <p style={{fontSize:"1em", color:"black"}}>{props.datos.tipo.toUpperCase()}</p>
               <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
               <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
             </div>
@@ -727,7 +727,7 @@ const OrdenEnSitio  = (props:{datos:any, setDatos:any, setVolver:any, estado:any
           <IonCard id="ionCard-explorerContainer-Proveedor">
             <img id="img-orden" src={props.datos.imagen_cliente}></img>
             <div id="divSentencias">
-              <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
+              <p style={{fontSize:"1em", color:"black"}}>{props.datos.tipo.toUpperCase()}</p>
               <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
               <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
             </div>
