@@ -172,10 +172,7 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenes> , setVerOrden:any,setTic
         </IonSlides>
     </div>
     </IonCard>
-
   )
-
-      
 }
 
 
@@ -364,11 +361,11 @@ const CardVistaVariasOrdenesEmergencia =  (props:{posicion:any,rubro:string, tip
             setMensaje("SOLICITUD CON EMERGENCIA")
           }else if(props.status=="ACE"){
             setEstado("PROVEEDOR SELECCIONADO")
+            setMensaje("VIAJE A LA LOCACIÓN DEL CLIENTE")
           }else if(props.status=="EVI"){
-            setEstado("PROVEEDOR EN VIAJE A SU SITIO")
-            setMensaje("ESPERE AL PROVEEDOR EN SU LOCACIÓN")
+            setEstado("EN VIAJE A SITIO DE CLIENTE")
           }else if(props.status=="ENS"){
-            setEstado("PROVEEDOR EN SITIO")
+            setEstado("EN SITIO")
             
           }    
         
@@ -379,7 +376,7 @@ const CardVistaVariasOrdenesEmergencia =  (props:{posicion:any,rubro:string, tip
                 setNuevoStatus(true)
               }
               else if(res!=props.status){
-                if(props.status!="PEI"&&props.status!="PRE"&&props.status!="EVI"&&props.status!="ENS"){
+                if(props.status!="EVI"&&props.status!="ENS"){
                   setNuevoStatus(true)
                 }else{
                   setNuevoStatus(false)
@@ -389,11 +386,7 @@ const CardVistaVariasOrdenesEmergencia =  (props:{posicion:any,rubro:string, tip
                 setNuevoStatus(true)
               }
           })
-      
-        if (props.nuevasOrdenes){
-          console.log("PROPS NUEVAS ORDENES: "+props.nuevasOrdenes)
-        }
-      
+            
         }, [props.status, props.nuevasOrdenes]);
 
         useEffect(() => {

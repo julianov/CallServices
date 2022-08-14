@@ -219,7 +219,7 @@ export const PedirOrdenEmergencia = (props:{setVolver:any}) => {
     }else if(vista=="sin proveedores en la zona"){
         return(
             <div style={{background:"#f3f2ef",display:"flex", flexDirection:"column", width:"100%", height:"100%", textAlign:"center", justifyContent:"center", alignItems:"center"}}> 
-                <img style={{width:"64px", height:"64px"}} src={"./public/assets/icon/simboloAlerta.png"}></img>
+                <img style={{width:"64px", height:"64px"}} src={"./assets/icon/simboloAlerta.png"}></img>
                 <h1>NO HAY PROVEEDORES EN LA ZONA
                 QUE REALICEN ORDENES DE EMERGENCIA
                 PARA ESTE RUBRO</h1>

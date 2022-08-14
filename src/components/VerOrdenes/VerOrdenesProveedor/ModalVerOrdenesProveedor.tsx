@@ -40,7 +40,7 @@ const verUbicacion = (latitud:any, longitud:any) =>{
 
 const ModalVerOrdenesProveedor = (props:{notifications:any,setNotifications:any, datosCompletos:any, setDatosCompletos:any,emailProveedor:any,setVolver:any,setNuevasOrdenes:any, nuevasOrdenes:any, ticket:any, tipo:any})  =>{
 
-  if (props.tipo=="Orden de emergencia"){
+  if (props.tipo=="Orden de emergencia" || props.tipo=="ORDEN DE EMERGENCIA"){
     return(
          < ModalVerOrdenesProveedorEmergencia notifications={props.notifications} setNotifications={props.setNotifications} 
       datosCompletos={props.datosCompletos} setDatosCompletos={props.setDatosCompletos} 

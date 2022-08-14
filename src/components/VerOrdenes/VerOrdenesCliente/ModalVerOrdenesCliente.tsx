@@ -15,7 +15,7 @@ import { TomarFotografia } from "../../../pages/PedirOrdenes/PedirOrden";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import { Calificacion, Imagenes } from "../VerOrdenesProveedor/VerOrdenesProveedorOrdenesGenerales";
-import ModalVerOrdenesClienteGenerales from "./VerOrdenesClienteGenerales";
+import ModalVerOrdenesClienteGenerales, { VerDatosProveedor } from "./VerOrdenesClienteGenerales";
 import { ordenes } from "../../../pages/Home/HomeProveedor";
 
 const url=Https
@@ -211,6 +211,11 @@ const verUbicacion = ( latitud:any, longitud:any) =>{
 
       )
       
+  } else if (vista=="datosProveedor"){
+    return (
+    < VerDatosProveedor ticket={orden.ticket} tipo={orden.tipo} latitud={orden.location_lat} longitud={orden.location_long} setVista={setVista} rubro={orden.rubro} desdeDondeEstoy={desdeDondeEstoy} />
+    )
+
   }else{
     return (
       <></>
@@ -236,30 +241,11 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
          <IonCard id="ionCard-explorerContainer-Proveedor">
            <h1>EN BUSCA DE PROVEEDOR</h1>
            <div id="divSentencias">
-             <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
+            <p style={{fontSize:"1em", color:"black"}}>RUBRO: {props.datos.rubro.toUpperCase()}</p>
+             <p style={{fontSize:"1em", color:"black"}}>{props.datos.tipo.toUpperCase()}</p>
              <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
              <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
            </div>
-           <IonGrid>
-             <IonRow>
-               <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
-                 <IonRow id="ionrow-homecliente">
-                 <IonIcon icon={eye} /> </IonRow>
-                 <IonRow id="ionrow-homecliente"><small>VER DATOS CLIENTE</small></IonRow>
-               </IonCol>
- 
-               <IonCol id="ioncol-homecliente"  onClick={() =>verUbicacion(props.datos.latitud, props.datos.longitud) }   >
-                 <IonRow id="ionrow-homecliente">
-                 <IonIcon icon={location} /> </IonRow>
-                 <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
-               </IonCol>
-               <IonCol id="ioncol-homecliente" onClick={() => setShowAlertChat(true)}>
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={chatbox} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
-                </IonCol>
-             </IonRow>
-           </IonGrid>
          </IonCard>
  
          <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -349,28 +335,24 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
           <IonCard id="ionCard-explorerContainer-Proveedor">
             <img id="img-orden" src={props.datos.imagen_cliente}></img>
             <div id="divSentencias">
-              <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
+              <p style={{fontSize:"1em", color:"black"}}>RUBRO: {props.datos.rubro.toUpperCase()}</p>
+              <p style={{fontSize:"1em", color:"black"}}>{props.datos.tipo.toUpperCase()}</p>
               <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
               <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
             </div>
             <IonGrid>
               <IonRow>
-                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosProveedor")}>
                   <IonRow id="ionrow-homecliente">
                   <IonIcon icon={eye} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER DATOS CLIENTE</small></IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER DATOS DE PROVEEDOR</small></IonRow>
                 </IonCol>
   
-                <IonCol id="ioncol-homecliente"  onClick={() => verUbicacion(props.datos.latitud, props.datos.longitud) }   >
-                  <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={location} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
-                </IonCol>
   
                 <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
                   <IonRow id="ionrow-homecliente">
                   <IonIcon icon={chatbox} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
+                  <IonRow id="ionrow-homecliente"><small>CHAT CON PROVEEDOR</small></IonRow>
                 </IonCol>
 
               </IonRow>
@@ -474,28 +456,29 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
             <h1>EL PROVEEDOR SE ENCUENTRA EN CAMINO</h1>
             <img id="img-orden" src={props.datos.imagen_cliente}></img>
             <div id="divSentencias">
-              <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
+              <p style={{fontSize:"1em", color:"black"}}>RUBRO: {props.datos.rubro.toUpperCase()}</p>
+              <p style={{fontSize:"1em", color:"black"}}>{props.datos.tipo.toUpperCase()}</p>
               <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
               <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
             </div>
             <IonGrid>
               <IonRow>
-                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosProveedor")}>
                   <IonRow id="ionrow-homecliente">
                   <IonIcon icon={eye} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER DATOS CLIENTE</small></IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER DATOS DE PROVEEDOR</small></IonRow>
                 </IonCol>
   
                 <IonCol id="ioncol-homecliente"  onClick={() => verUbicacion(props.datos.latitud, props.datos.longitud) }   >
                   <IonRow id="ionrow-homecliente">
                   <IonIcon icon={location} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
+                  <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DE PROVEEDOR</small></IonRow>
                 </IonCol>
   
                 <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
                   <IonRow id="ionrow-homecliente">
                   <IonIcon icon={chatbox} /> </IonRow>
-                  <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
+                  <IonRow id="ionrow-homecliente"><small>CHAT CON PROVEEDOR</small></IonRow>
                 </IonCol>
 
               </IonRow>
@@ -596,28 +579,29 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
               <h1>EL PROVEEDOR SE ENCUENTRA EN SITIO</h1>
               <img id="img-orden" src={props.datos.imagen_cliente}></img>
               <div id="divSentencias">
-                <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
+                <p style={{fontSize:"1em", color:"black"}}>RUBRO: {props.datos.rubro.toUpperCase()}</p>
+                <p style={{fontSize:"1em", color:"black"}}>{props.datos.tipo.toUpperCase()}</p>
                 <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
                 <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
                </div>
               <IonGrid>
                 <IonRow>
-                  <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosClientes")}>
+                  <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosProveedor")}>
                     <IonRow id="ionrow-homecliente">
                     <IonIcon icon={eye} /> </IonRow>
-                    <IonRow id="ionrow-homecliente"><small>VER DATOS CLIENTE</small></IonRow>
+                    <IonRow id="ionrow-homecliente"><small>VER DATOS DE PROVEEDOR</small></IonRow>
                   </IonCol>
     
                   <IonCol id="ioncol-homecliente"  onClick={() => verUbicacion(props.datos.latitud, props.datos.longitud) }   >
                     <IonRow id="ionrow-homecliente">
                     <IonIcon icon={location} /> </IonRow>
-                    <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
+                    <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DE PROVEEDOR</small></IonRow>
                   </IonCol>
     
                   <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
                     <IonRow id="ionrow-homecliente">
                     <IonIcon icon={chatbox} /> </IonRow>
-                    <IonRow id="ionrow-homecliente"><small>CHAT CON CLIENTE</small></IonRow>
+                    <IonRow id="ionrow-homecliente"><small>CHAT CON PROVEEDOR</small></IonRow>
                   </IonCol>
   
                 </IonRow>

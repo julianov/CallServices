@@ -163,7 +163,7 @@ const verUbicacion = ( latitud:any, longitud:any) =>{
 
         desdeDondeEstoy.current="primero"
         return (
-          < Primero datos={orden!} setVista={setVista} estado={estado} setEstado={setEstado}
+          <Primero datos={orden!} setVista={setVista} estado={estado} setEstado={setEstado}
           setVolver={props.setVolver} cancelarOrden={cancelarOrden} />
         );
           
@@ -215,9 +215,8 @@ const verUbicacion = ( latitud:any, longitud:any) =>{
         )
 
       } else if (vista=="datosProveedor"){
-
         return (
-        < VerDatosProveedor ticket={orden.ticket} tipo={orden.tipo} latitud={orden.location_lat} longitud={orden.location_long} setVista={setVista}  />
+        < VerDatosProveedor ticket={orden.ticket} tipo={orden.tipo} latitud={orden.location_lat} longitud={orden.location_long} setVista={setVista} rubro={orden.rubro} desdeDondeEstoy={desdeDondeEstoy} />
         )
 
       }else if (vista=="chat") {
@@ -1124,7 +1123,7 @@ const Finalizada = ( props:{datos:any, setVolver:any, setVista:any, setEstado:an
 
 }
 
-const VerDatosProveedor = (props:{ticket:any, tipo:any,latitud:any, longitud:any,setVista:any})  =>{
+export const VerDatosProveedor = (props:{ticket:any, tipo:any,latitud:any, longitud:any,setVista:any, rubro:any, desdeDondeEstoy:any})  =>{
 
   const [datosCliente, setDatosCliente] = useState <datos_proveedor>({
     nombre:"",
@@ -1134,7 +1133,7 @@ const VerDatosProveedor = (props:{ticket:any, tipo:any,latitud:any, longitud:any
   })
   
   useEffect(() => { 
-  axios.get(url+"orden/datoproveedor/"+props.ticket+"/"+props.tipo).then((resp: { data: any; }) => {
+  axios.get(url+"orden/datoproveedor/"+props.ticket+"/"+props.tipo+"/"+props.rubro                                ).then((resp: { data: any; }) => {
 
     if (resp.data!="bad"){
       setDatosCliente(resp.data)
@@ -1148,7 +1147,7 @@ const [showAlertUbicacion,setShowAlertUbicacion] =useState(false)
     <IonContent>
       <div id="ionContentModalOrdenes">
       <div id="modalProveedor-flechaVolver">
-        <IonIcon icon={arrowBack} onClick={() => props.setVista("primero")} slot="start" id="flecha-volver">  </IonIcon>
+        <IonIcon icon={arrowBack} onClick={() => props.setVista(props.desdeDondeEstoy.current)} slot="start" id="flecha-volver">  </IonIcon>
       </div>
       <IonCard id="ionCard-explorerContainer-Proveedor">
         <img id="img-orden" src={datosCliente.imagen}></img>

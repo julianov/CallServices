@@ -344,6 +344,7 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , setTicket:any, 
   //if (props.proveedores!=[]){
 
     if (props.hayOrdenes){
+
       return (
         <>
         <IonCard style={{display:"flex", flexDirection:"column", color:"white", width:"90%", height:"auto", justifyContent:"center", alignItems:"center" }}>
@@ -353,6 +354,19 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , setTicket:any, 
         <IonSlides pager={true} >
           {props.misOrdenes.map((a) => {
             i = i + 1;
+            if (a.tipo=="Orden de emergencia"){
+              return (
+              
+                <IonSlide>
+                  <CardVistaVariasOrdenesEmergencia key={i} setTicket={props.setTicket} posicion={i} rubro={a.rubro} tipo={a.tipo} status={a.status} fecha_creacion={a.fecha_creacion} ticket={a.ticket}
+                    dia={a.dia} hora={a.hora} titulo={a.titulo} descripcion={a.descripcion} imagen={a.imagen_proveedor} setVerOrden={props.setVerOrden} 
+                    presupuesto={a.presupuesto} masInfo={a.pedido_mas_información} masInfoEnviada={a.respuesta_cliente_pedido_mas_información} recargarOrden={props.recargarOrden} setTipo={props.setTipo}></CardVistaVariasOrdenesEmergencia>
+                </IonSlide>
+                            
+              );
+            }else{
+
+            
             return (
               
               <IonSlide>
@@ -362,6 +376,7 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , setTicket:any, 
               </IonSlide>
                           
             );
+          }
           })}
         </IonSlides>
 
@@ -381,7 +396,7 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , setTicket:any, 
       
 }
 
-const CardVistaVariasOrdenes= (props:{setTicket:any, rubro:any, posicion:any,tipo:string,status:string,fecha_creacion:string,ticket: string,
+const CardVistaVariasOrdenes = (props:{setTicket:any, rubro:any, posicion:any,tipo:string,status:string,fecha_creacion:string,ticket: string,
   dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, presupuesto:any, masInfo:any, masInfoEnviada:string, recargarOrden:any, setTipo:any}) => {
         
 
@@ -402,7 +417,6 @@ const CardVistaVariasOrdenes= (props:{setTicket:any, rubro:any, posicion:any,tip
 
     useEffect(() => {
 
-      console.log("para la imagen el rubro es: "+props.rubro)
       setImagen(retornarIconoCategoria(props.rubro)) 
      
  }, [props.ticket]); 
@@ -516,6 +530,106 @@ const CardVistaVariasOrdenes= (props:{setTicket:any, rubro:any, posicion:any,tip
       
 }
 
+const CardVistaVariasOrdenesEmergencia  = (props:{setTicket:any, rubro:any, posicion:any,tipo:string,status:string,fecha_creacion:string,ticket: string,
+  dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, presupuesto:any, masInfo:any, masInfoEnviada:string, recargarOrden:any, setTipo:any}) => {
+
+    const [estado,setEstado]=useState("Enviada")
+    const [nuevoStatus,setNuevoStatus]=useState(false)
+    const [mensaje1, setMensaje] = useState("")
+
+    const [imagen, setImagen] = useState("")
+
+    useEffect(() => {
+
+      setImagen(retornarIconoCategoria(props.rubro)) 
+     
+ }, [props.ticket]); 
+
+    useEffect(() => {
+
+      if (props.status=="ENV"){
+        setEstado("PEDIDO DE TRABAJO")
+        setMensaje("SOLICITUD CON EMERGENCIA")
+      }else if(props.status=="ACE"){
+        setEstado("PROVEEDOR SELECCIONADO")
+      }else if(props.status=="EVI"){
+        setEstado("PROVEEDOR EN VIAJE A SU SITIO")
+        setMensaje("ESPERE AL PROVEEDOR EN SU LOCACIÓN")
+      }else if(props.status=="ENS"){
+        setEstado("PROVEEDOR EN SITIO")
+        
+      } 
+      
+      
+      getDB(props.ticket+"cliente").then(res => {
+        if(res!=undefined || res!=null){
+          if(res!=props.status && props.status!="ENV"){
+            setNuevoStatus(true)
+          }  
+          }else{
+            setNuevoStatus(false)
+          }
+      })
+      
+
+  
+    }, [props.status, props.recargarOrden]);
+
+    useEffect(() => {
+      setImagen(retornarIconoCategoria(props.rubro)) 
+    }, []); 
+
+
+    if(nuevoStatus){
+      return (
+        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setTicket(props.ticket); props.setTipo(props.tipo)}}>
+
+        <div id="iconoDerecha">            
+          <IonIcon icon={alert} id="iconoNuevaStatus" ></IonIcon>
+        </div > 
+          <IonGrid>
+            <IonRow id="row-busqueda">
+              <IonCol id="col-explorerContainerCliente">
+                <img id="imgOrden" src={imagen}></img>
+              </IonCol>
+            </IonRow>
+            <IonRow  id="row-busqueda">
+              <IonCol   id="col-explorerContainerCliente">
+                <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>{estado}</h2>
+                <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>{mensaje1}</h2>
+                <h2 style={{margin:"0px 0px 20px 0px", color:"black", fontSize:"0.75em"}}>TICKET: {props.ticket}</h2>  
+              </IonCol>
+            </IonRow>
+            
+          </IonGrid>
+        </div>
+      )    
+    }else{
+      return (
+        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center",alignItems:"center"}} onClick={()=> {props.setVerOrden(true); props.setTicket(props.ticket); props.setTipo(props.tipo)}}>
+
+          <IonGrid>
+            <IonRow  id="row-busqueda">
+              <IonCol   id="col-explorerContainerCliente">
+                <img id="imgOrden" src={imagen}></img>
+              </IonCol>
+            </IonRow>
+            <IonRow  id="row-busqueda">
+              <IonCol   id="col-explorerContainerCliente">
+                <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>{estado}</h2>
+                <h2 style={{margin:"0px 0px 5px 0px", color:"black", fontSize:"0.75em"}}>{mensaje1}</h2>
+                <h2 style={{margin:"0px 0px 20px 0px", color:"black", fontSize:"0.75em"}}>TICKET: {props.ticket}</h2>  
+              </IonCol>
+            </IonRow>
+            
+          </IonGrid>
+        </div>
+      )    
+    }
+
+
+  }
+  
 
 const Tabs= (props:{setShowModal:any,setTipoDeVistaEnModal:any }) => {
   return(
