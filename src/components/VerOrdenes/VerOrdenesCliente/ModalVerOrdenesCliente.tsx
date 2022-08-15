@@ -709,9 +709,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
       
         return (
           <IonContent>
-      
             <div id="ionContentModalOrdenes">
-      
             <div id="modalProveedor-flechaVolver">
                 <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
             </div>

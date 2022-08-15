@@ -14,6 +14,8 @@ import { ordenesCliente } from "../../../pages/Home/HomeCliente";
 import { ordenes } from "../../../pages/Home/HomeProveedor";
 import ModalVerOrdenesProveedorGenerales, { Calificacion, Imagenes } from "./VerOrdenesProveedorOrdenesGenerales";
 import { AnyMxRecord } from "dns";
+import { VerDatosProveedor } from "../VerOrdenesCliente/VerOrdenesClienteGenerales";
+import { retornarIconoCategoria } from "../../../utilidades/retornarIconoCategoria";
 
 
 
@@ -245,7 +247,13 @@ const ModalVerOrdenesProveedorEmergencia = (props:{notifications:any,setNotifica
           />
         </>
       )
-    }else{
+    }else if (vista=="orden tomada"){
+
+      return(
+        <OrdenTomada datos={orden} setVolver={props.setVolver}   />
+
+      )
+    } else{
       return (
         <></>
       )
@@ -269,13 +277,16 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
        axios.get(url+"orden/ordenEmergencia/proveedorAcepta/"+props.proveedorEmail+"/"+props.datos.ticket, {timeout: 7000})
        .then((resp: { data: any; }) => {
  
-         if(resp.data!="bad"){
+         if(resp.data=="ok"){
 
            props.setEstado("ORDEN EN PROGRESO")
            setShowAlertOrdenAceptada(true)
            props.datos.status="ACE"
            props.setVista("ACEPTADA")
 
+         }else if(resp.data=="taken"){
+
+          props.setVista("orden tomada")
          }
      
  
@@ -924,5 +935,38 @@ const OrdenRealizada = (props:{datos:any, setDatos:any, setVolver:any, estado:an
       )
 
     }
+
+
+const OrdenTomada = (props:{datos:any, setVolver:any}) =>{
+
+  const volver = ()=>{
+    props.setVolver(false)
+    window.location.reload()
+  }
+
+  return (
+    <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%"}}> 
+        <div style={{width:"100%", height:"auto"}}>
+        <div style={{display:"flex", alignItems:"right", justifyContent:"right",width:"100%",height:"auto"}}>
+              <IonIcon icon={close} onClick={() => volver()} slot="right" id="flecha-cerrar">  </IonIcon>
+          </div>
+            
+            <div style={{display:"flex", flexDirection:"column", alignItems:"center", textAlign:"center", width:"100%", height:"auto"}}>
+                <h1>ORDEN DE EMERGENCIA</h1>
+                <p style={{fontSize:"1.2em",color:"black"}}>{props.datos.rubro}</p>
+                <img style={{width:"64px", height:"64px"}} src={retornarIconoCategoria(props.datos.rubro)}></img>
+
+            </div>
+        </div>
+        <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center",textAlign:"center", width:"100%", height:"100%"}}>
+        <h1>LA ORDEN YA HA SIDO TOMADA POR OTRO PROVEEDOR</h1>
+        <h3>TICKET DE ORDEN: {props.datos.ticket} </h3>
+        
+        </div>
+      
+    </div>
+)
+
+}
 
 export default ModalVerOrdenesProveedor
