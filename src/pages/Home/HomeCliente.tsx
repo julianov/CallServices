@@ -119,6 +119,9 @@ const HomeCliente = (props:{setIsReg:any,
   const [ticket_para_ver_orden, setTicket] = useState(0)
   const [verOrden, setVerOrden] = useState( false );
 
+  const [categoriaAVer, setCategoriaAVer] = useState("")
+
+
   useEffect(() => {
 
     if(proveedoresEnZona.length > 0){
@@ -337,6 +340,7 @@ const HomeCliente = (props:{setIsReg:any,
                 setIsReg={props.setIsReg}
                 email={user!.email}
                 tipoVista={tipoDeVistaEnModal}
+                categoriaAVer={categoriaAVer}
                 fotoPersonal={user!.foto}
                 nombre={user!.nombre}
                 apellido={user!.apellido}
@@ -351,12 +355,12 @@ const HomeCliente = (props:{setIsReg:any,
             </IonModal>
           
             <ExploreContainerCliente 
-              notifications={notifications} 
+              notifications={notifications}
               setNotifications={setNotifications}
-              setShowCargandoProveedores={setShowCargandoProveedores} 
+              setShowCargandoProveedores={setShowCargandoProveedores}
 
               ordenes={misOrdenes}
-              setOrdenes={setMisOrdenes }
+              setOrdenes={setMisOrdenes}
 
               ticket={ticket_para_ver_orden}
               setTicket={setTicket}
@@ -365,15 +369,16 @@ const HomeCliente = (props:{setIsReg:any,
 
               proveedores={proveedoresEnZona}
               emailCliente={user!.email}
-              url={url} 
+              url={url}
               buscar={buscar}
               busqueda_categorias={categorias}
               busquedaDatosProveedores={proveedorBuscadoHook}
               setShowModal={setShowModal}
-              setTipoDeVistaEnModal={setTipoDeVistaEnModal } 
+              setTipoDeVistaEnModal={setTipoDeVistaEnModal}
               nuevasOrdenes={nuevasOrdenes}
-              setNuevasOrdenes={setNuevasOrdenes}
-              />
+              setNuevasOrdenes={setNuevasOrdenes} 
+              
+              setCategoriaAVer={setCategoriaAVer}              />
 
             <IonAlert 
               isOpen={showAlertUbicación} 

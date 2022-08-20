@@ -37,7 +37,7 @@ const getLocation = async () => {
 const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any ,ordenes:any,  setOrdenes:any, proveedores: Array<datosGeneralesVariosProveedores>, url:string, setShowCargandoProveedores:any, 
   setShowModal:any, setTipoDeVistaEnModal:any, emailCliente:String,
   buscar:any, busqueda_categorias:any, busquedaDatosProveedores:Array<proveedorBuscado>, nuevasOrdenes:any, setNuevasOrdenes:any,
-  ticket:any, setTicket:any, verOrden:any, setVerOrden:any}) => {
+  ticket:any, setTicket:any, verOrden:any, setVerOrden:any, setCategoriaAVer:any}) => {
 
   const [recargarOrden, setRecargarOrden] = useState(false)
   
@@ -138,7 +138,7 @@ const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any
             <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={props.ordenes} setTicket={props.setTicket} setVerOrden={props.setVerOrden} recargarOrden={props.verOrden} setTipo={setTipo}></MisOrdenes>
             <IonItemDivider />
 
-            <CategoriasUtiles setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal}/>
+            <CategoriasUtiles setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal} setCategoriaAVer={props.setCategoriaAVer} />
 
             <h1 style={{fontWeight:"600", fontSize:"1.5em", marginTop:"5px"}}>PROVEEDORES DE SERVICIOS</h1>    
             <h1 style={{fontWeight:"600", fontSize:"1.5em", marginTop:"0px"}}>EN LA ZONA</h1>          
@@ -680,7 +680,7 @@ const VerTodas = (props:{cantidad:number}) =>{
   }
 }
 
-const CategoriasUtiles = (props:{setShowModal:any,setTipoDeVistaEnModal:any }) =>{
+const CategoriasUtiles = (props:{setShowModal:any,setTipoDeVistaEnModal:any, setCategoriaAVer:any }) =>{
 
 
   return (
@@ -692,29 +692,29 @@ const CategoriasUtiles = (props:{setShowModal:any,setTipoDeVistaEnModal:any }) =
       <IonItemDivider />
       <IonGrid>
         <IonRow>
-          <IonCol style={{display:"flex", flexDirection:"column"}}>
-            <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("CERRAJERÍA")}></img>
+          <IonCol style={{display:"flex", flexDirection:"column"}} onClick={() => {  props.setShowModal({ isOpen: true});  props.setCategoriaAVer("CERRAJERÍA"); props.setTipoDeVistaEnModal("categoríaEspecial")}} >
+            <img style={{width:"32px", height:"32px"}} src={ retornarIconoCategoria("CERRAJERÍA")}></img>
             <p style={{fontWeight:"bold"}}>CERRAJERÍA</p>
           </IonCol>
-          <IonCol style={{display:"flex", flexDirection:"column"}}>
-            <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("ELECTRICIDAD")}></img>
+          <IonCol style={{display:"flex", flexDirection:"column"}} onClick={() => {  props.setShowModal({ isOpen: true});  props.setCategoriaAVer("ELECTRICIDAD"); props.setTipoDeVistaEnModal("categoríaEspecial")}}>
+            <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("ELECTRICIDAD")}></img>                
             <p style={{fontWeight:"bold"}}>ELECTRICIDAD</p>
           </IonCol> 
-          <IonCol style={{display:"flex", flexDirection:"column"}}>
+          <IonCol style={{display:"flex", flexDirection:"column"}} onClick={() => {  props.setShowModal({ isOpen: true});  props.setCategoriaAVer("FLETE"); props.setTipoDeVistaEnModal("categoríaEspecial")}}>
             <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("FLETE")}></img>
             <p style={{fontWeight:"bold"}}>FLETE</p>
           </IonCol>   
         </IonRow>
         <IonRow>
-          <IonCol style={{display:"flex", flexDirection:"column"}}>
+          <IonCol style={{display:"flex", flexDirection:"column"}} onClick={() => {  props.setShowModal({ isOpen: true});  props.setCategoriaAVer("GASISTA"); props.setTipoDeVistaEnModal("categoríaEspecial")}}>
             <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("GASISTA")}></img>
             <p style={{fontWeight:"bold"}}>GASISTA</p>
           </IonCol>
-          <IonCol style={{display:"flex", flexDirection:"column"}}>
+          <IonCol style={{display:"flex", flexDirection:"column"}} onClick={() => {  props.setShowModal({ isOpen: true});  props.setCategoriaAVer("MECÁNICA"); props.setTipoDeVistaEnModal("categoríaEspecial")}}>
             <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("MECÁNICA")}></img>
             <p style={{fontWeight:"bold"}}>MECÁNICA</p>
           </IonCol> 
-          <IonCol style={{display:"flex", flexDirection:"column"}}>
+          <IonCol style={{display:"flex", flexDirection:"column"}} onClick={() => {  props.setShowModal({ isOpen: true});  props.setCategoriaAVer("REFRIGERACIÓN"); props.setTipoDeVistaEnModal("categoríaEspecial")}}>
             <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria("REFRIGERACIÓN")}></img>
             <p style={{fontWeight:"bold"}}>REFRIGERACIÓN</p>
           </IonCol>   

@@ -40,9 +40,9 @@ const getLocation = async () => {
 
 const ModalCliente: React.FC<{setIsReg:any, onClose: any; tipoVista: string; 
   email:any; completarInfoPersonal:boolean, fotoPersonal:any
-  nombre:any, apellido:any, calificacion:any, setFoto:any, setNombre:any,setApellido:any, ordenes:any}> 
+  nombre:any, apellido:any, calificacion:any, setFoto:any, setNombre:any,setApellido:any, ordenes:any, categoriaAVer:any}> 
   = ({setIsReg, onClose, tipoVista, email, calificacion, completarInfoPersonal, fotoPersonal,
-    nombre, apellido, setFoto, setNombre,setApellido,ordenes }) => {
+    nombre, apellido, setFoto, setNombre,setApellido,ordenes, categoriaAVer }) => {
                    
   
     
@@ -76,14 +76,22 @@ const ModalCliente: React.FC<{setIsReg:any, onClose: any; tipoVista: string;
       return (
         <>
           <IonContent>
-            <Categorias ordenes={ordenes} emailCliente={email} onClose={onClose} ></Categorias>
-            </IonContent>
+            <Categorias ordenes={ordenes} emailCliente={email} onClose={onClose} categoria={""} ></Categorias>
+          </IonContent>
       </>
       );
+    }else if(tipoVista=="categoríaEspecial" && categoriaAVer!=""){
+
+      return( 
+        <>
+        <IonContent>
+          <Categorias ordenes={ordenes} emailCliente={email} onClose={onClose} categoria={categoriaAVer} ></Categorias>
+        </IonContent>
+    </>
+      )
+
     }
     else{
-
-
       return (
         <VerOrdenesCliente clienteEmail={email} tipo={"cliente"} setCerrar={onClose} ></VerOrdenesCliente>
       );
@@ -606,7 +614,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
   }
 
 
-  const Categorias = (props: {ordenes:any, emailCliente:string, onClose:any}) => {
+  const Categorias = (props: {ordenes:any, emailCliente:string, onClose:any, categoria:any}) => {
 
     const arreglo_categorias=["CARPINTERÍA","CERRAJERÍA","CONSTRUCCIÓN","CONTADURÍA","ELECTRICIDAD","ELECTRÓNICA","ESTÉTICA","FLETE","FUMIGACIÓN","GASISTA","HERRERÍA","INFORMÁTICA","JARDINERÍA","MECÁNICA","MODA","PASEADOR DE MASCOTAS","PINTOR","PLOMERÍA","REFRIGERACIÓN","REMOLQUES - GRÚAS","TELEFONÍA CELULAR","TEXTIL"]
     var i=0
@@ -614,6 +622,16 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
     const[ categoriaABuscar, setCategoriaABuscar] = useState("")
 
     const [showLoading, setShowLoading]=useState(false)
+
+    useEffect(() => {
+
+      if (props.categoria!=""){
+        setCategoriaABuscar(props.categoria)
+      }
+
+
+    }, []);
+
 
 
     if (categoriaABuscar==""){
@@ -646,7 +664,8 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
     }else{
       
       return (
-        <>
+        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", justifyContent:"center", background:"#f3f2ef"}}>
+
         
         <div id="headerModalFlechas">
             <IonIcon icon={arrowBack} onClick={() => setCategoriaABuscar("")} id="flecha-volver">  </IonIcon>
@@ -663,7 +682,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
               />
         </div>
         
-        </>
+        </div>
         )
     }
     
@@ -682,6 +701,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
     useEffect(() => {
       const axios = require('axios');
       props.setShowLoading(true)
+      console.log("LO QUE BUSCA ES: "+props.rubro)
       axios.get(url+"search/categoria/"+props.rubro).then((resp: { data: any; }) => {
 
         if (resp.data!="bad"){
@@ -737,20 +757,20 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
           })    
         }
        
-
-
     }, [proveedorEncontrado]);
 
     if ( arregloRubroBuscado.length > 0 ){
       if(proveedorEncontrado==""){
         var i=0
         return (
-          <div id="contenedorCentral-busqueda">
+          <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", justifyContent:"center", background:"#f3f2ef"}}>
               <IonTitle id="titulo-busqueda">RESULTADO DE BUSQUEDA</IonTitle>
-              <IonCard>
+              <IonItemDivider />
+             
               {arregloRubroBuscado.map((a) => {
                   i=i+1
                   return (
+                    <IonCard>
                     <IonItem key={i} id="item-busqueda" onClick={() => BuscarProveedor(a.email+"/"+a.item)}>
                     <IonGrid>
                         <IonRow id="row-busqueda"><IonTitle id="titulo-busqueda">{a.nombre.toUpperCase()+" "+a.apellido.toUpperCase()}</IonTitle></IonRow>
@@ -761,9 +781,10 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
   
                     </IonGrid>
                 </IonItem>
+                </IonCard>
                   );
               })}
-              </IonCard>
+              
               
   
               </div>
@@ -771,8 +792,6 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
       }else{
         return(
           <>
-              
-
               <div id="contenedorCentral-busqueda">
                   <CardProveedor ordenes={props.ordenes} data={caracteres} imagenes={imagenes} emailCliente={props.emailCliente} proveedorEmail={proveedorEncontrado.split("/")[0]} ></CardProveedor>
               </div>

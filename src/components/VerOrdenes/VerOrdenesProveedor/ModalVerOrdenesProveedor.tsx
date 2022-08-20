@@ -251,7 +251,6 @@ const ModalVerOrdenesProveedorEmergencia = (props:{notifications:any,setNotifica
 
       return(
         <OrdenTomada datos={orden} setVolver={props.setVolver}   />
-
       )
     } else{
       return (
