@@ -133,7 +133,7 @@ const HomeCliente = (props:{setIsReg:any,
 
 //General useEffect
   useEffect(() => {
-
+    
     setShowCargandoProveedores(true)
 
     getDB("proveedores").then(res => {
@@ -152,7 +152,6 @@ const HomeCliente = (props:{setIsReg:any,
         setShowAlertUbicación(true)
       }
 
-      
       axios.get(url+"home/cliente/"+value).then((resp: { data: any; }) => {
 
         if (resp.data!="bad"){
@@ -174,23 +173,13 @@ const HomeCliente = (props:{setIsReg:any,
         }
       });  
     });
-
-
   }, []);
 
   useEffect(() => {
-
     if (misOrdenes.length !=0 || misOrdenes!=undefined || misOrdenes!=[]){
-
       for (let i=0; i<misOrdenes.length; i++){
-
-
         getDB(misOrdenes[i].ticket!+"cliente").then(res => {
-          
-          console.log("el res es: "+res)
           if(res!=undefined || res!=null){
-           console.log("ESTATUS GUARDADO: "+res)
-           console.log("ESTATUS ORDEN: "+misOrdenes[i].status)
             if(res!=misOrdenes[i].status){
               if(misOrdenes[i].status!="ENV" && misOrdenes[i].status!="RES"&&misOrdenes[i].status!="ACE"){
                 setNuevasOrdenes([...nuevasOrdenes , (misOrdenes[i].ticket+"%%%"+misOrdenes[i].status)])
@@ -204,6 +193,7 @@ const HomeCliente = (props:{setIsReg:any,
     }
   
 }, [misOrdenes]);
+
 
   useEffect(() => {
     if(user!.email!="")
@@ -377,8 +367,8 @@ const HomeCliente = (props:{setIsReg:any,
               setTipoDeVistaEnModal={setTipoDeVistaEnModal}
               nuevasOrdenes={nuevasOrdenes}
               setNuevasOrdenes={setNuevasOrdenes} 
-              
-              setCategoriaAVer={setCategoriaAVer}              />
+              setCategoriaAVer={setCategoriaAVer}              
+              />
 
             <IonAlert 
               isOpen={showAlertUbicación} 

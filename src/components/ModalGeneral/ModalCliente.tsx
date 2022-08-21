@@ -283,7 +283,6 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
     //  aca tengo que buscar los nombres en lo guardado che sino pedirlo al servidor
       props.setNombre("Debe ingresar nombre")
       props.setApellido("Debe ingresar apellido")
-      console.log("a ver que figura en completar información personal: "+props.completarInfoPersonal)
     }
   },[])
   
@@ -331,8 +330,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
     );
     }else{
 
-    
-
+  
   if (props.datosPersonales){
     return (
       <>
@@ -414,17 +412,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
     
     const [alertCambioFoto, setShowAlertCambioFoto] = useState(false)
 
-    const [imagen, setImagen] = useState (props.foto)
-
-
-    useEffect(() => {
-      if (props.foto==""|| props.foto==null || props.foto==undefined){
-        setImagen ("./assets/icon/nuevoUsuario.png") 
-      }else{
-        setImagen(props.foto)
-      }
-    }, [props.foto]);
-
+ 
     const cambiarElemento = (tipo:string) => {
       if(tipo=="foto"){
           setCambiar("foto")
@@ -487,72 +475,50 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
            <div id="modalProveedor-flechaVolver">
               <IonIcon icon={arrowBack} onClick={() => props.setDatosPersonales(false)} slot="start" id="flecha-volver">  </IonIcon>
               <IonIcon icon={close} onClick={() => props.onClose(null)} slot="end" id="flecha-cerrar">  </IonIcon>
-            </div>
-            
-                      
+            </div>     
             <div style={{display:"flex", flexDirection:"column", textAlign:"center" ,justifyContent:"center", alignItems:"center", width:"100%",height:"100%"}}>
-
-                <IonItem lines="none" id="itemFoto"  onClick={()=> cambiarElemento("foto") }>
-                  <img  src={imagen} id="foto-usuario-grande"/>
-                </IonItem>
-           
-            <IonItem id="item-modal-datos" onClick={()=> cambiarElemento("nombre") } >
-            <strong >NOMBRE: {props.nombre} </strong>
-            </IonItem>
-            
-            <IonItem id="item-modal-datos" onClick={()=> cambiarElemento("apellido") }>
-            <strong >APELLIDO: {props.apellido} </strong>
-            </IonItem>
-
-                <strong style={{marginTop:"25px"}} >CALIFICACIÓN COMO USUARIO:  </strong>
-            
-                <Estrellas  calificacion={calificacion.current}   ></Estrellas> 
-              
-
+              <IonItem lines="none" id="itemFoto"  onClick={()=> cambiarElemento("foto") }>
+                <img  src={props.foto} id="foto-usuario-grande"/>
+              </IonItem>
+              <IonItem lines="none" id="item-modal-datos" onClick={()=> cambiarElemento("nombre") } >
+                <strong >NOMBRE: {props.nombre} </strong>
+              </IonItem>
+              <IonItem lines="none" id="item-modal-datos" onClick={()=> cambiarElemento("apellido") }>
+                <strong >APELLIDO: {props.apellido} </strong>
+              </IonItem>
+              <strong style={{marginTop:"25px", marginBottom:"10px"}} >CALIFICACIÓN COMO USUARIO:</strong>
+              <Estrellas  calificacion={calificacion.current}   ></Estrellas> 
             </div>
-            
             <div style={{display:"flex", height:"auto", width:"100%", justifyContent:"center", alignItems:"center"}}> 
-            <h2 style={{marginTop:"25px", fontSize:"1em"}}>PRESIONE UN ELEMENTO PARA MODIFICAR</h2>
+              <h2 style={{marginTop:"25px", fontSize:"1em"}}>PRESIONE UN ELEMENTO PARA MODIFICAR</h2>
             </div>
-              <IonAlert
-                isOpen={alertCambioFoto}
-                onDidDismiss={() => setShowAlertCambioFoto(false)}
-                cssClass='my-custom-class'
-                header={'Cambio de foto personal'}
-                subHeader={''}
-                message={'Verá reflejado el cambio al cerrar y abrir sesión'}
-                buttons={['OK']}
-                />
-          
+            <IonAlert
+              isOpen={alertCambioFoto}
+              onDidDismiss={() => setShowAlertCambioFoto(false)}
+              cssClass='my-custom-class'
+              header={'Cambio de foto personal'}
+              subHeader={''}
+              message={'Verá reflejado el cambio al cerrar y abrir sesión'}
+              buttons={['OK']}
+            />
         </div>
-    
         );
-      }
-      else if(cambiar=="foto"){
-
+      }else if(cambiar=="foto"){
         return (
           <>
-        <div id="modalProveedor-flechaVolver">
-            <IonIcon icon={arrowBack} onClick={() => setCambiar("nada")} slot="start" id="flecha-volver">  </IonIcon>
+            <div id="modalProveedor-flechaVolver">
+              <IonIcon icon={arrowBack} onClick={() => setCambiar("nada")} slot="start" id="flecha-volver">  </IonIcon>
             </div>
             <div className="header">
-            <IonTitle>Ingrese Nueva foto personal</IonTitle>
+              <IonTitle>Ingrese Nueva foto personal</IonTitle>
             </div>
-            
-         
             <div id="contenedor-central">
-
-            <TomarFotografia imagen={fotoAEnviar} setFilepath={setFoto} />
-
-            <IonButton shape="round" onClick={()=> enviar("foto") } >Cambiar</IonButton>
-
+              <TomarFotografia imagen={fotoAEnviar} setFilepath={setFoto} />
+              <IonButton shape="round" onClick={()=> enviar("foto") } >Cambiar</IonButton>
             </div>
-        </>
-    
+          </>
         );
-
-      }
-      else if(cambiar=="nombre"){
+      }else if(cambiar=="nombre"){
 
         return (
           <>

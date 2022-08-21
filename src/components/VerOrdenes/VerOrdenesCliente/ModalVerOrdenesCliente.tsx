@@ -98,7 +98,7 @@ const verUbicacion = ( latitud:any, longitud:any) =>{
         setVista("PRIMERO")
       }
       else if(orden.status=="ACE"){
-        setEstado("ORDEN ACEPTADA")
+        setEstado("ORDEN ACEPTADA POR PROVEEDOR")
         setVista("ACEPTADA")
 
       }else if(orden.status=="EVI"){
@@ -329,14 +329,17 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
       <IonContent>
         <div id="ionContentModalOrdenes">
           <div id="modalProveedor-flechaVolver">
-              <h1>PROVEEDOR SELECCIONADO:</h1>
               <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
           </div>
+
           <IonCard id="ionCard-explorerContainer-Proveedor">
-            <img id="img-orden" src={props.datos.imagen_cliente}></img>
+          <img src={"./assets/icon/sirena.png"} style={{width:"50px", height:"50px"}} />
             <div id="divSentencias">
-              <p style={{fontSize:"1em", color:"black"}}>RUBRO: {props.datos.rubro.toUpperCase()}</p>
               <p style={{fontSize:"1em", color:"black"}}>{props.datos.tipo.toUpperCase()}</p>
+              <h1>PROVEEDOR SELECCIONADO</h1>
+
+              <IonItemDivider />
+              <p style={{fontSize:"1em", color:"black"}}>RUBRO: {props.datos.rubro.toUpperCase()}</p>
               <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
               <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
             </div>
@@ -453,11 +456,13 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
               <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
           </div>
           <IonCard id="ionCard-explorerContainer-Proveedor">
-            <h1>EL PROVEEDOR SE ENCUENTRA EN CAMINO</h1>
-            <img id="img-orden" src={props.datos.imagen_cliente}></img>
+          <img src={"./assets/icon/sirena.png"} style={{width:"50px", height:"50px"}} />
             <div id="divSentencias">
-              <p style={{fontSize:"1em", color:"black"}}>RUBRO: {props.datos.rubro.toUpperCase()}</p>
               <p style={{fontSize:"1em", color:"black"}}>{props.datos.tipo.toUpperCase()}</p>
+              <h1>PROVEEDOR SE ENCUENTRA EN CAMINO</h1>
+
+              <IonItemDivider />
+              <p style={{fontSize:"1em", color:"black"}}>RUBRO: {props.datos.rubro.toUpperCase()}</p>
               <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
               <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
             </div>
@@ -576,14 +581,16 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
                 <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
             </div>
             <IonCard id="ionCard-explorerContainer-Proveedor">
-              <h1>EL PROVEEDOR SE ENCUENTRA EN SITIO</h1>
-              <img id="img-orden" src={props.datos.imagen_cliente}></img>
-              <div id="divSentencias">
-                <p style={{fontSize:"1em", color:"black"}}>RUBRO: {props.datos.rubro.toUpperCase()}</p>
-                <p style={{fontSize:"1em", color:"black"}}>{props.datos.tipo.toUpperCase()}</p>
-                <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
-                <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
-               </div>
+            <img src={"./assets/icon/sirena.png"} style={{width:"50px", height:"50px"}} />
+            <div id="divSentencias">
+              <p style={{fontSize:"1em", color:"black"}}>{props.datos.tipo.toUpperCase()}</p>
+              <h1>PROVEEDOR EN SITIO</h1>
+
+              <IonItemDivider />
+              <p style={{fontSize:"1em", color:"black"}}>RUBRO: {props.datos.rubro.toUpperCase()}</p>
+              <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
+              <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
+            </div>
               <IonGrid>
                 <IonRow>
                   <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosProveedor")}>

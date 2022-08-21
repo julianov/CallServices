@@ -429,7 +429,7 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
   const [pedirDatos, setPedirDatos]=useState(0)
 
 
-  const [imagen, setImagen] = useState (props.foto)
+ /* const [imagen, setImagen] = useState (props.foto)
 
   useEffect(() => {
     if (props.foto==""|| props.foto==null || props.foto==undefined){
@@ -437,7 +437,7 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
     }else{
       setImagen(props.foto)
     }
-  }, [props.foto]);
+  }, [props.foto]);*/
 
   const cambiarElemento = (tipo:string) => {
     if(props.tipoProveedor=="2"){
@@ -561,23 +561,21 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
             <IonIcon icon={arrowBack} onClick={() => props.setDatosPersonales(false)} slot="start" id="flecha-volver">  </IonIcon>
             <IonIcon icon={close} onClick={() => props.onClose(null)} slot="end" id="flecha-cerrar">  </IonIcon>
             </div>
-          
-           
-          
+
             <div style={{display:"flex", flexDirection:"column", textAlign:"center" ,justifyContent:"center", alignItems:"center", width:"100%",height:"100%"}}>
 
-            <IonItem lines="none" id="itemFoto" onClick={()=> cambiarElemento("foto") }>
-            <img  src={imagen} id="foto-usuario-grande"/>
-            </IonItem>
-            
-            <IonItem id="item-modal-datos" onClick={()=> cambiarElemento("nombre") } >
-            <strong >NOMBRE: {nombre.current} </strong>
-            </IonItem>
-            <IonItem id="item-modal-datos" onClick={()=> cambiarElemento("apellido") }>
-            <strong >APELLIDO: {apellido.current} </strong>
-            </IonItem>
-            <Estrellas  calificacion={props.calificacion}   ></Estrellas>      
-            
+              <IonItem lines="none" id="itemFoto" onClick={()=> cambiarElemento("foto") }>
+                <img  src={props.foto} id="foto-usuario-grande"/>
+              </IonItem>
+              <IonItem lines="none" id="item-modal-datos" onClick={()=> cambiarElemento("nombre") } >
+                <strong >NOMBRE: {nombre.current} </strong>
+              </IonItem>
+              <IonItem lines="none" id="item-modal-datos" onClick={()=> cambiarElemento("apellido") }>
+                <strong >APELLIDO: {apellido.current} </strong>
+              </IonItem>
+                <strong style={{marginTop:"25px", marginBottom:"10px"}} >CALIFICACIÓN COMO PROVEEDOR: </strong>
+              <Estrellas  calificacion={props.calificacion}   ></Estrellas>      
+              
             </div>
 
             <div style={{display:"flex",height:"auto", width:"100%", justifyContent:"center", alignItems:"center"}}> 
@@ -678,7 +676,7 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
             <div style={{display:"flex", flexDirection:"column", textAlign:"center" ,justifyContent:"center", alignItems:"center", width:"100%",height:"100%"}}>
 
             <IonItem lines="none" id="itemFoto" onClick={()=> cambiarElemento("foto") }>
-            <img  src={imagen} id="foto-usuario-grande"/>
+            <img  src={props.foto} id="foto-usuario-grande"/>
             </IonItem>
             
             <IonItem id="item-modal-datos" onClick={()=> cambiarElemento("nombre") } >
