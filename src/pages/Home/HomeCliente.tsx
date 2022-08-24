@@ -122,6 +122,7 @@ const HomeCliente = (props:{setIsReg:any,
   const [categoriaAVer, setCategoriaAVer] = useState("")
 
 
+  //Carga proveedores en zona desde base de datos
   useEffect(() => {
 
     if(proveedoresEnZona.length > 0){
@@ -139,8 +140,9 @@ const HomeCliente = (props:{setIsReg:any,
     getDB("proveedores").then(res => {
       if( res!= null ){
         if (res.length > 0){
-        setShowCargandoProveedores(false)   
-        setProveedoresEnZona(res)}
+          setShowCargandoProveedores(false)   
+          setProveedoresEnZona(res)
+        }
       }
      
     })
@@ -231,7 +233,6 @@ const HomeCliente = (props:{setIsReg:any,
   }, [user!.email]);
 
   useEffect(() => {
-
     if(user!.email!="" && popoverState){
       axios.get(url+"chatsinleer/"+user!.email).then((resp: { data: any; }) => {
         if (resp.data!="bad"){
