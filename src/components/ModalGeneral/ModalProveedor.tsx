@@ -428,17 +428,6 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
   
   const [pedirDatos, setPedirDatos]=useState(0)
 
-
- /* const [imagen, setImagen] = useState (props.foto)
-
-  useEffect(() => {
-    if (props.foto==""|| props.foto==null || props.foto==undefined){
-      setImagen ("./assets/icon/nuevoUsuario.png") 
-    }else{
-      setImagen(props.foto)
-    }
-  }, [props.foto]);*/
-
   const cambiarElemento = (tipo:string) => {
     if(props.tipoProveedor=="2"){
       if(tipo=="foto"){
@@ -473,11 +462,14 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
       formDataToUpload.append("apellido", apellido.current);
     //  formDataToUpload.append("calificacion", calificacion);
 
-      var block = fotoAEnviar!.split(";");
-      var contentType = block[0].split(":")[1];
-      var realData = block[1].split(",")[1];
-      var blob = b64toBlob(realData, contentType,1);
-      formDataToUpload.append("image", blob);
+      if (fotoAEnviar!=null){
+        var block = fotoAEnviar!.split(";");
+        var contentType = block[0].split(":")[1];
+        var realData = block[1].split(",")[1];
+        var blob = b64toBlob(realData, contentType,1);
+        formDataToUpload.append("image", blob);
+      }
+      
 
       const axios = require('axios');
       axios({
@@ -535,6 +527,8 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
              props.setUser!((state:usuario) => ({ ...state, nombre: nombre.current }))
              props.setUser!((state:usuario) => ({ ...state, apellido: apellido.current }))
              props.setUser!((state:usuario) => ({ ...state, foto: fotoAEnviar }))
+             window.location.reload();
+
           }
       }).catch((error: any) =>{
           setCambiar("nada")

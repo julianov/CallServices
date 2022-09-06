@@ -89,6 +89,8 @@ const verUbicacion = ( latitud:any, longitud:any) =>{
     
     useEffect(() => {
         
+      console.log("ESTE MENSAJE INDICA QUE SE GUARDO EN LA BASE DE DATOS"+orden.status)
+
       if(orden.ticket!=""){
           setDB(orden.ticket+"cliente", orden.status)
           props.setNuevasOrdenes(props.nuevasOrdenes.filter((item:string) => item !== orden.ticket));

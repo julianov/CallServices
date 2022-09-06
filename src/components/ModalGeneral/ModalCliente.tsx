@@ -1,6 +1,6 @@
 import { arrowBack, person, close,receipt, help, chatbubble, camera, trash, trendingUpOutline } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
-import { getItem, removeItem, setItem } from "../../utilidades/Storage";
+import { removeItem, setItem } from "../../utilidades/Storage";
 
 import './Modal.css';
 import { usePhotoGallery } from "../../hooks/usePhotoGallery";
@@ -11,15 +11,15 @@ import Estrellas from "../Estrellas/Estrellas";
 import Https from "../../utilidades/HttpsURL";
 import VerOrdenesCliente from "../../pages/VerOrdenes";
 
-import { isPropertySignature } from "typescript";
 import CardProveedor from "../../utilidades/CardProveedor";
 import { categoriaBuscada } from "../ResultadoBusqueda/ResultadoBusqueda";
 import { IonActionSheet, IonAlert, IonButton, IonCard, IonCol, IonContent, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonItemDivider, IonLabel, IonList, IonLoading, IonRow, IonTitle, IonToolbar } from "@ionic/react";
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import { PedirOrdenEmergencia } from "../../pages/PedirOrdenes/PedirOrdenEmergencia";
 import { retornarIconoCategoria } from "../../utilidades/retornarIconoCategoria";
-import { menuController } from '@ionic/core/components';
-import { clearDB } from "../../utilidades/dataBase";
+import { useUserContext } from "../../Contexts/UserContext";
+import { usuario } from "../../Interfaces/interfaces";
+
 
 const url=Https
 
@@ -229,8 +229,8 @@ const ModalCliente: React.FC<{setIsReg:any, onClose: any; tipoVista: string;
 const DatosUsuario = (props:{setIsReg:any,email:string, completarInfoPersonal:any, fotoPersonal:any, onClose:any 
   nombre:any, apellido:any, calificacion:any, setFoto:any, setNombre:any, setApellido:any}) =>{
 
-  const [done,setDone]=useState(false)
-  const [agrandarImagen,setAgrandarImagen]=useState(false)
+ // const [done,setDone]=useState(false)
+  //const [agrandarImagen,setAgrandarImagen]=useState(false)
   const [datosPersonales,seDatosPersonales]=useState(false)
  
 
@@ -269,6 +269,9 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
   const [showAlertDatosPersonales, setShowAlertDatosPersonales]=useState(false)
 
   const [imagen, setImagen] = useState (props.foto)
+
+  const  {user,setUser}  = useUserContext()
+
 
   useEffect(() => {
     if (props.foto==""|| props.foto==null || props.foto==undefined){
@@ -339,7 +342,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
           <MostrarDatosPersonales setShowAlertDatosPersonales={setShowAlertDatosPersonales} setDatosPersonales={props.setDatosPersonales} onClose={props.onClose} 
           email={props.email} foto={props.foto} 
           nombre={props.nombre} apellido={props.apellido} calificacion={props.calificacion} setFoto={props.setFoto} 
-          setNombre={props.setNombre} setApellido={props.setApellido}></MostrarDatosPersonales>
+          setNombre={props.setNombre} setApellido={props.setApellido} setUser={setUser}></MostrarDatosPersonales>
         </div>
 
         <IonLoading  isOpen={showAlertDatosPersonales}   onDidDismiss={() => setShowAlertDatosPersonales(false)}
@@ -396,7 +399,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
 
 
   const MostrarDatosPersonales = (props:{ setDatosPersonales:any, setShowAlertDatosPersonales:any, onClose:any, 
-    email:any, foto:any,nombre:any, apellido:any, calificacion:any, setFoto:any, setNombre:any, setApellido:any}) => {
+    email:any, foto:any,nombre:any, apellido:any, calificacion:any, setFoto:any, setNombre:any, setApellido:any, setUser:any}) => {
 
     const nombre = useRef(props.nombre)
     const apellido = useRef(props.apellido)
@@ -433,12 +436,16 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
         formDataToUpload.append("apellido", apellido.current);
         formDataToUpload.append("calificacion", calificacion.current);
 
-        var block = fotoAEnviar!.split(";");
+        
+        
+        if (fotoAEnviar!=null){
+          var block = fotoAEnviar!.split(";");
         var contentType = block[0].split(":")[1];
         var realData = block[1].split(",")[1];
         var blob = b64toBlob(realData, contentType,1);
         formDataToUpload.append("image", blob);
-        
+        }
+
         const axios = require('axios');
         axios({
             url:url+"cambiarInfoPersonal",
@@ -448,18 +455,18 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
         }).then(function(res: any){
            if(res.data=="ok"){
                //return(<Redirect to="/home" />);
-               if (cambiar=="foto"){
+               /*if (cambiar=="foto"){
                 setShowAlertCambioFoto(true)
-               }
+               }*/
                
                setItem("nombre", nombre.current)
                setItem("apellido", apellido.current) 
                setItem("fotoPersonal",fotoAEnviar)
               
-               props.setNombre(nombre.current)
-               props.setFoto(fotoAEnviar)
-               props.setApellido(apellido.current)
-               setCambiar("nada")
+               props.setUser!((state:usuario) => ({ ...state, nombre: nombre.current }))
+               props.setUser!((state:usuario) => ({ ...state, apellido: apellido.current }))
+               props.setUser!((state:usuario) => ({ ...state, foto: fotoAEnviar }))
+
             }
         }).catch((error: any) =>{
             

@@ -13,6 +13,7 @@ import { getDB, setDB } from '../../utilidades/dataBase';
 import ModalCliente from '../../components/ModalGeneral/ModalCliente';
 import ExploreContainerCliente from '../../components/ExplorerContainer/ExploreContainerCliente';
 import Chat from '../../components/Chat/Chat';
+import { present } from '@ionic/core/dist/types/utils/overlays';
 
 
 const url=Https
@@ -125,11 +126,20 @@ const HomeCliente = (props:{setIsReg:any,
   //Carga proveedores en zona desde base de datos
   useEffect(() => {
 
-    if(proveedoresEnZona.length > 0){
+    if(proveedoresEnZona.length > 0 ){
       setDB("proveedores", (proveedoresEnZona))
     }
 
   }, [proveedoresEnZona]);
+
+
+  useEffect(() => {
+
+    if(misOrdenes.length > 0  ){
+      setDB("ordenes", (misOrdenes))
+    }
+
+  }, [misOrdenes]);
 
 
 //General useEffect
@@ -144,9 +154,17 @@ const HomeCliente = (props:{setIsReg:any,
           setProveedoresEnZona(res)
         }
       }
-     
     })
-        
+
+    getDB("ordenes").then(res => {
+      if( res!= null ){
+        if (res.length > 0){
+          setMisOrdenes(res)
+        }
+      }
+    })
+      
+    
     const ubicacion = getLocation();
     ubicacion.then((value)=>{
       if (value==0){
@@ -198,34 +216,38 @@ const HomeCliente = (props:{setIsReg:any,
 
 
   useEffect(() => {
-    if(user!.email!="")
-    {axios.get(url+"orden/misordenes/"+"cliente/"+user!.email).then((resp: { data: any; }) => {
-      if (resp.data!="bad"){
 
-        setMisOrdenes(    
-            resp.data.map((d: { rubro:any; tipo: any; status: any; fecha_creacion: any; ticket: any; dia: any; time: any; titulo: any; descripcion: any; email_proveedor: any; presupuesto: any; imagen_proveedor: any; lacation_lat: any; location_long: any; picture1: any; picture2: any; pedidoMasInformacion: any; respuesta_cliente_pedido_mas_información: any; picture1_mas_información: any; picutre2_mas_información: any; }) => ({
-              rubro:d.rubro, 
-              tipo:d.tipo,
-              status:d.status,
-              fecha_creacion:d.fecha_creacion,
-              ticket:d.ticket,
-              dia:d.dia,
-              hora:d.time,
-              titulo:d.titulo,
-              descripcion:d.descripcion,
-              email_proveedor:d.email_proveedor,
-              presupuesto:d.presupuesto,
-              imagen_proveedor:d.imagen_proveedor,
-              location_lat:d.lacation_lat,
-              location_long:d.location_long,
-              picture1:d.picture1,
-              picture2:d.picture2,
-              pedido_mas_información:d.pedidoMasInformacion,
-              respuesta_cliente_pedido_mas_información:d.respuesta_cliente_pedido_mas_información,
-              picture1_mas_información:d.picture1_mas_información,
-              picture2_mas_información:d.picutre2_mas_información
-            })))      
-      }
+    if(user!.email!="")
+    {
+      axios.get(url+"orden/misordenes/"+"cliente/"+user!.email).then((resp: { data: any; }) => {
+        if (resp.data!="bad"){
+
+          setMisOrdenes(    
+              resp.data.map((d: { rubro:any; tipo: any; status: any; fecha_creacion: any; ticket: any; dia: any; time: any; titulo: any; descripcion: any; email_proveedor: any; presupuesto: any; imagen_proveedor: any; lacation_lat: any; location_long: any; picture1: any; picture2: any; pedidoMasInformacion: any; respuesta_cliente_pedido_mas_información: any; picture1_mas_información: any; picutre2_mas_información: any; }) => ({
+                rubro:d.rubro, 
+                tipo:d.tipo,
+                status:d.status,
+                fecha_creacion:d.fecha_creacion,
+                ticket:d.ticket,
+                dia:d.dia,
+                hora:d.time,
+                titulo:d.titulo,
+                descripcion:d.descripcion,
+                email_proveedor:d.email_proveedor,
+                presupuesto:d.presupuesto,
+                imagen_proveedor:d.imagen_proveedor,
+                location_lat:d.lacation_lat,
+                location_long:d.location_long,
+                picture1:d.picture1,
+                picture2:d.picture2,
+                pedido_mas_información:d.pedidoMasInformacion,
+                respuesta_cliente_pedido_mas_información:d.respuesta_cliente_pedido_mas_información,
+                picture1_mas_información:d.picture1_mas_información,
+                picture2_mas_información:d.picutre2_mas_información
+              })))      
+        }else{
+          
+        }
     });
 
  }
