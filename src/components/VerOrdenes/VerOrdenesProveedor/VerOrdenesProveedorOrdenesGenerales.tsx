@@ -267,7 +267,6 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
 
   const [showAlertOrdenAceptada, setShowAlertOrdenAceptada] = useState(false)
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
-  const [showAlertUbicacion,setShowAlertUbicacion]=useState(false)
   
   const aceptarOrden = ()=> {
 
@@ -309,7 +308,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
                 <IonRow id="ionrow-homecliente"><small>VER DATOS CLIENTE</small></IonRow>
               </IonCol>
 
-              <IonCol id="ioncol-homecliente"  onClick={() =>setShowAlertUbicacion(true) }   >
+              <IonCol id="ioncol-homecliente"  onClick={() =>verUbicacion(props.datos.latitud, props.datos.longitud) }   >
                 <IonRow id="ionrow-homecliente">
                 <IonIcon icon={location} /> </IonRow>
                 <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN CLIENTE</small></IonRow>
@@ -392,16 +391,6 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
               ]} 
         />
 
-        <IonAlert
-          isOpen={showAlertUbicacion}
-          onDidDismiss={() => setShowAlertUbicacion(false)}
-          cssClass='my-custom-class'
-          header={'UBICACIÓN DEL CLIENTE'}
-          subHeader={''}
-          mode='ios'
-          message={'La orden debe ser aceptada para ver la ubicación del cliente'}
-          buttons={['OK']}
-        />
       </div>
     </IonContent>
   )
@@ -1680,6 +1669,8 @@ const VerDatosCliente = (props:{dondeEstoy:string, ticket:any, tipo:any,latitud:
   })
   
   useEffect(() => { 
+
+    console.log("los datos son: "+props.ticket+"   "+props.tipo)
   axios.get(url+"orden/datocliente/"+props.ticket+"/"+props.tipo).then((resp: { data: any; }) => {
 
     if (resp.data!="bad"){
@@ -1689,12 +1680,12 @@ const VerDatosCliente = (props:{dondeEstoy:string, ticket:any, tipo:any,latitud:
 }, []);
 
 
-  if (props.dondeEstoy=="primero"){
+  if (props.dondeEstoy=="PRIMERO"){
     return (
       <IonContent>
         <div id="ionContentModalOrdenes">
         <div id="modalProveedor-flechaVolver">
-          <IonIcon icon={arrowBack} onClick={() => props.setVista("primero")} slot="start" id="flecha-volver">  </IonIcon>
+          <IonIcon icon={arrowBack} onClick={() => props.setVista("PRIMERO")} slot="start" id="flecha-volver">  </IonIcon>
         </div>
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <img id="img-orden" src={datosCliente.imagen}></img>
@@ -1713,7 +1704,7 @@ const VerDatosCliente = (props:{dondeEstoy:string, ticket:any, tipo:any,latitud:
       <IonContent>
         <div id="ionContentModalOrdenes">
         <div id="modalProveedor-flechaVolver">
-          <IonIcon icon={arrowBack} onClick={() => props.setVista("primero")} slot="start" id="flecha-volver">  </IonIcon>
+          <IonIcon icon={arrowBack} onClick={() => props.setVista(props.dondeEstoy)} slot="start" id="flecha-volver">  </IonIcon>
         </div>
         <IonCard id="ionCard-explorerContainer-Proveedor">
           <img id="img-orden" src={datosCliente.imagen}></img>
