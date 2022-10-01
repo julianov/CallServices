@@ -5,11 +5,11 @@ import { isConstructorDeclaration, isSetAccessorDeclaration, visitParameterList 
 import '../../ModalGeneral/Modal.css';
 
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
-import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCheckbox, IonCol, IonContent, IonDatetime, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonLoading, IonRow, IonSegment, IonSegmentButton, IonTitle } from "@ionic/react";
+import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCheckbox, IonCol, IonContent, IonDatetime, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonLoading, IonRow, IonSegment, IonSegmentButton, IonTextarea, IonTitle } from "@ionic/react";
 import { Redirect } from "react-router";
 import Https from "../../../utilidades/HttpsURL";
 import { ordenes } from "../../../pages/Home/HomeProveedor";
-import { getDB, setDB } from "../../../utilidades/dataBase";
+import { getDB, removeDB, setDB } from "../../../utilidades/dataBase";
 import Chat from "../../Chat/Chat";
 
 
@@ -164,17 +164,8 @@ const ModalVerOrdenesProveedorGenerales = (props:{notifications:any,setNotificat
 
       const rechazarOrden = ()=> {
 
-          axios.get(url+"orden/cambiarestado/"+orden.ticket+"/"+orden.tipo+"/"+"REX", {timeout: 7000})
-          .then((resp: { data: any; }) => {
-
-            if(resp.data!="bad"){
-              setEstado("ORDEN RECHAZADA")
-              setVista("ir a home")
-              window.location.reload();
-
-            }
-    
-           })
+        setVista("cancelarOrden"); 
+        
       }
    
   if(vista=="PRIMERO"){
@@ -250,6 +241,11 @@ const ModalVerOrdenesProveedorGenerales = (props:{notifications:any,setNotificat
               ]} 
         />
       </>
+    )
+  }else if (vista=="cancelarOrden"){
+    return (
+      <RechazarOrden datos={orden} setVolver={props.setVolver} setVista={setVista} estado={estado} setEstado={setEstado} />
+
     )
   }
   else{
@@ -369,7 +365,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
               cssClass='my-custom-class'
               header={'¿DESEA RECHAZAR LA ORDEN?'}
               subHeader={''}
-              message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+              message={''}
               buttons={[
                 {
                   text: 'SI',
@@ -739,7 +735,7 @@ const EnEsperaInfo = (props: {datos:any, setDatos:any, estado:any, setVista:any,
           cssClass='my-custom-class'
           header={'¿DESEA RECHAZAR LA ORDEN?'}
           subHeader={''}
-          message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+          message={''}
           buttons={[
             {
               text: 'SI',
@@ -916,7 +912,7 @@ const NuevaInfo = (props: {datos:any, setDatos:any, estado:any, setVista:any,set
             cssClass='my-custom-class'
             header={'¿DESEA RECHAZAR LA ORDEN?'}
             subHeader={''}
-            message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+            message={''}
             buttons={[
                   {
                     text: 'SI',
@@ -1054,7 +1050,7 @@ const Presupuestada = (props:{datos:any, setDatos:any, estado:any, setVolver:any
               cssClass='my-custom-class'
               header={'¿DESEA RECHAZAR LA ORDEN?'}
               subHeader={''}
-              message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+              message={''}
               buttons={[
                 {
                   text: 'SI',
@@ -1224,7 +1220,7 @@ const OrdenAceptada = (props:{datos:any, setDatos:any, setVolver:any, setVista:a
           header={'¿DESEA RECHAZAR LA ORDEN?'}
           subHeader={''}
           mode='ios'
-          message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+          message={''}
           buttons={[
             {
               text: 'SI',
@@ -1393,7 +1389,7 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
             cssClass='my-custom-class'
             header={'¿DESEA RECHAZAR LA ORDEN?'}
             subHeader={''}
-            message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+            message={''}
             buttons={[
               {
                 text: 'SI',
@@ -1547,7 +1543,7 @@ const EnSitio  = (props:{datos:any, setVolver:any, setVista:any, estado:any, set
             cssClass='my-custom-class'
             header={'¿DESEA RECHAZAR LA ORDEN?'}
             subHeader={''}
-            message={'Agregar una indicación de por qué es mala rechazar ordenes'}
+            message={''}
             buttons={[
               {
                 text: 'SI',
@@ -2000,6 +1996,94 @@ const SeleccionarFecha = ( props:{hora:any, dia:any, horaactual:any, diaactual:a
  
 
 
+}
+
+
+const RechazarOrden = (props:{datos:any, setVolver:any, setVista:any, estado:any, setEstado:any})=>{
+
+
+  const motivoRechazo= useRef("")
+  const [showAlertOrdenMotivo, setShowAlertOrdenMotivo]=useState(false)
+
+  const enviarRechazo = () =>{
+
+    if (motivoRechazo.current==""){
+      setShowAlertOrdenMotivo(true)
+
+    }else{
+      axios.get(url+"orden/cancelar/"+props.datos.ticket+"/"+props.datos.tipo+"/"+"REX/"+motivoRechazo.current, {timeout: 7000})
+      .then((resp: { data: any; }) => {
+
+        if(resp.data!="bad"){
+          removeDB(props.datos.ticket+"proveedor").then(()=>{
+            
+              props.setEstado("ORDEN RECHAZADA")
+              window.location.reload();
+            
+          
+          })
+        }
+
+       })
+    }
+
+  }
+
+  return (
+
+    <IonContent>
+
+    <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh",background:"#f3f2ef" }}>
+
+      <div style={{ display:"flex",flexDirection:"column", width:"100%",  height:"auto", alignItems:"center", justifyContent:"center"}}>
+        <div id="modalProveedor-flechaVolver">
+          <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+        </div>
+        <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
+          <h1>RECHAZAR ORDEN</h1>
+        </div>
+      </div>                            
+
+    <div style={{display:"flex",flexDirection:"column", alignItems:"center", justifyContent:"center" ,width:"100%",  height:"100%"}}>
+      <IonCard style={{display:"flex",flexDirection:"column",width:"90%", height:"auto"}}>
+        <h1 style={{fontSize:"1em", color:"black", alignSelf:"left"}}>MOTIVO DE RECHAZO DE ORDEN</h1>
+
+          <IonItem style={{width:"100%",margin:"25px 0px 25px 0px"}}>
+            <IonLabel position="floating">INGRESE MOTIVO DEL RECHAZO </IonLabel>
+            <IonTextarea cols={25} autoGrow={true} onIonInput={(e: any) => motivoRechazo.current = (e.target.value)}></IonTextarea>
+          </IonItem>
+        </IonCard>
+    </div>
+    <div style={{ display:"flex",flexDirection:"column", alignItems:"center", justifyContent:"center" ,width:"100%",  height:"auto"}}>
+      <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => enviarRechazo()} >RECHAZAR ORDEN</IonButton>  
+    </div>
+
+    </div>
+
+
+  <IonAlert
+            isOpen={showAlertOrdenMotivo}
+            onDidDismiss={() => setShowAlertOrdenMotivo(false)}
+            cssClass='my-custom-class'
+            header={'MOTIVO'}
+            subHeader={''}
+            mode='ios'
+            message={"Debe ingresar un motivo para rechazar la orden"}
+            buttons={[
+              {
+                text: 'OK',
+                role: 'cancel',
+                cssClass: 'secondary',
+                handler: blah => {
+                  setShowAlertOrdenMotivo(false);
+                }
+              }
+            ]} 
+      />
+
+  </IonContent>
+
+  )
 }
 
 

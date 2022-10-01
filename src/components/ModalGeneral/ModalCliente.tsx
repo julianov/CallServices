@@ -19,7 +19,7 @@ import { PedirOrdenEmergencia } from "../../pages/PedirOrdenes/PedirOrdenEmergen
 import { retornarIconoCategoria } from "../../utilidades/retornarIconoCategoria";
 import { useUserContext } from "../../Contexts/UserContext";
 import { usuario } from "../../Interfaces/interfaces";
-import { removeDB } from "../../utilidades/dataBase";
+import { clearDB, removeDB } from "../../utilidades/dataBase";
 
 
 const url=Https
@@ -246,12 +246,28 @@ const DatosUsuario = (props:{setIsReg:any,email:string, completarInfoPersonal:an
     removeItem("nombre")
     removeItem("apellido")
     removeItem("calificacion")
-    removeDB("ordenes")
-    localStorage.clear()
-  
-    props.setIsReg(false)
-    window.location.reload();
+    removeDB("ordenes").then(()=>
+     { 
 
+      /*removeDB("UltimosProveedores").then(()=>{
+        removeDB("UltimosProveedores").then(()=>{
+          removeDB("proveedores").then(()=>{
+            props.setIsReg(false)
+            window.location.reload();
+          })          
+        })
+      })*/
+
+      clearDB().then(()=>{
+        props.setIsReg(false)
+            window.location.reload();
+      }
+
+      )
+      
+  }
+    )
+   
   }
 
         return(

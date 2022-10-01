@@ -245,12 +245,14 @@ const DatosUsuario = (props:{setIsReg:any, completarInfoPersonal:any, onClose:an
     removeItem("apellido")
     removeItem("calificacion")
   
-    localStorage.clear()
+    clearDB().then(()=>{
+      props.setIsReg(false)
 
-    props.setIsReg(false)
+      window.location.href="/"
+      window.location.reload(); 
+    })
 
-    window.location.href="/"
-    window.location.reload();    
+      
   }
     return(
       <DatosPersonales setIsReg={props.setIsReg} completarInfoPersonal={props.completarInfoPersonal} closeSesion={closeSesion} datosPersonales={datosPersonales} setDatosPersonales={seDatosPersonales} onClose={props.onClose}></DatosPersonales>

@@ -159,6 +159,7 @@ const HomeCliente = (props:{setIsReg:any,
     getDB("ordenes").then(res => {
       if( res!= null ){
         if (res.length > 0){
+          console.log(res)
           setMisOrdenes(res)
         }
       }

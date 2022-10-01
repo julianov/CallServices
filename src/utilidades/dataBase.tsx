@@ -10,6 +10,7 @@ export const createStore = (name:string) => {
         driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage]
     });
 
+    console.log("nombre: "+name)
     storage.create();
 }
 
@@ -20,7 +21,6 @@ export const setDB = (key: string, val: any) => {
 }
 
 export const getDB = async (key: string) => {
-
     const val = await storage.get(key);
     return val;
 }

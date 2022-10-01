@@ -7,14 +7,15 @@ import '../../ModalGeneral/Modal.css';
 
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import axios from "axios";
-import { createStore, removeDB, setDB } from "../../../utilidades/dataBase";
+import { clearDB, createStore, removeDB, setDB } from "../../../utilidades/dataBase";
 import Chat from "../../Chat/Chat";
-import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonRow, IonTitle } from "@ionic/react";
+import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonRow, IonTextarea, IonTitle } from "@ionic/react";
 import { ordenesCliente } from "../../../pages/Home/HomeCliente";
 import { TomarFotografia } from "../../../pages/PedirOrdenes/PedirOrden";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import { Calificacion } from "../VerOrdenesProveedor/VerOrdenesProveedorOrdenesGenerales";
+import { removeItem } from "../../../utilidades/Storage";
 
 const url=Https
 
@@ -143,21 +144,7 @@ const verUbicacion = ( latitud:any, longitud:any) =>{
       }, [props.datosCompletos]) 
 
       const cancelarOrden = ()=> {
-
-          axios.get(url+"orden/cambiarestado/"+orden!.ticket+"/"+orden!.tipo+"/"+"CAN", {timeout: 7000})
-          .then((resp: { data: any; }) => {
-            if(resp.data!="bad"){
-              setEstado("ORDEN RECHAZADA")
-              setVista("cancelarOrden")
-
-              createStore("ordenesActivas")
-              removeDB(orden.ticket.toString())
-
-              props.setVolver(false)
-              window.location.reload()
-
-            }
-           })
+        setVista("cancelarOrden")
       }
    
       if(vista=="primero"){
@@ -230,11 +217,12 @@ const verUbicacion = ( latitud:any, longitud:any) =>{
           </IonContent>
         )
         
-      }else if (vista=="cancelarOrden") {
-        
-        return(<></>
+      }else if (vista=="cancelarOrden"){
+        return (
+          <RechazarOrden datos={orden} setVolver={props.setVolver} setVista={setVista} estado={estado} setEstado={setEstado} />
+    
         )
-          
+                
       }else{
 
         return (
@@ -1458,6 +1446,93 @@ const FechaProgramadaPorProveedor = ( props:{hora:any, dia:any, setVista:any}) =
 
 }
 
+const RechazarOrden = (props:{datos:any, setVolver:any, setVista:any, estado:any, setEstado:any})=>{
 
+
+  const motivoRechazo= useRef("")
+  const [showAlertOrdenMotivo, setShowAlertOrdenMotivo]=useState(false)
+
+  const enviarRechazo = () =>{
+
+    if (motivoRechazo.current==""){
+      setShowAlertOrdenMotivo(true)
+    }else{
+      axios.get(url+"orden/cancelar/"+props.datos.ticket+"/"+props.datos.tipo+"/"+"CAN/"+motivoRechazo.current, {timeout: 7000})
+      .then((resp: { data: any; }) => {
+        console.log("SE BORRO" +resp.data)
+
+        if(resp.data!="bad"){
+          
+          removeDB(props.datos.ticket+"cliente").then( ()=>{
+            removeDB("ordenes").then( ()=>{
+              props.setEstado("ORDEN RECHAZADA")
+              props.setVista("cancelarOrden")
+              props.setVolver(false)
+              window.location.reload()
+            })
+          })
+          
+        }
+       })
+    }
+
+  }
+
+  return (
+
+    <IonContent>
+
+      <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh",background:"#f3f2ef" }}>
+
+        <div style={{ display:"flex",flexDirection:"column", width:"100%",  height:"auto", alignItems:"center", justifyContent:"center"}}>
+          <div id="modalProveedor-flechaVolver">
+            <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+          </div>
+          <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
+            <h1>RECHAZAR ORDEN</h1>
+          </div>
+        </div>                            
+
+      <div style={{display:"flex",flexDirection:"column", alignItems:"center", justifyContent:"center" ,width:"100%",  height:"100%"}}>
+        <IonCard style={{display:"flex",flexDirection:"column",width:"90%", height:"auto"}}>
+          <h1 style={{fontSize:"1em", color:"black", alignSelf:"left"}}>MOTIVO DE RECHAZO DE ORDEN</h1>
+
+            <IonItem style={{width:"100%",margin:"25px 0px 25px 0px"}}>
+              <IonLabel position="floating">INGRESE MOTIVO DEL RECHAZO </IonLabel>
+              <IonTextarea cols={25} autoGrow={true} onIonInput={(e: any) => motivoRechazo.current = (e.target.value)}></IonTextarea>
+            </IonItem>
+          </IonCard>
+      </div>
+      <div style={{ display:"flex",flexDirection:"column", alignItems:"center", justifyContent:"center" ,width:"100%",  height:"auto"}}>
+        <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => enviarRechazo()} >RECHAZAR ORDEN</IonButton>  
+      </div>
+
+      </div>
+
+
+    <IonAlert
+              isOpen={showAlertOrdenMotivo}
+              onDidDismiss={() => setShowAlertOrdenMotivo(false)}
+              cssClass='my-custom-class'
+              header={'MOTIVO'}
+              subHeader={''}
+              mode='ios'
+              message={"Debe ingresar un motivo para rechazar la orden"}
+              buttons={[
+                {
+                  text: 'OK',
+                  role: 'cancel',
+                  cssClass: 'secondary',
+                  handler: blah => {
+                    setShowAlertOrdenMotivo(false);
+                  }
+                }
+              ]} 
+        />
+
+    </IonContent>
+
+  )
+}
 
 export default ModalVerOrdenesClienteGenerales;

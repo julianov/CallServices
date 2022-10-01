@@ -44,28 +44,6 @@ import { RubroContext1, RubroContext2 } from './Contexts/RubroContext';
 
 import { setupIonicReact } from '@ionic/react';
 
-/*
-Device's var:
-  isRegistered - este devuelve el email.
-  BolleanReg - este devuelve true o false
-  clientType
-
-  personalInfoCompleted
-  BooleanPersonalInfo
-  fotoPersonal imagen
-  nombre
-  apellido
-  descripcion
-  
-  rubroLoaded
-  rubro1
-  rubro2
-  infoRubro1
-  infoRubro2
-
-  primevaCargaProveedores
-  proveedores
-*/
 
 setupIonicReact({
   mode: 'md'

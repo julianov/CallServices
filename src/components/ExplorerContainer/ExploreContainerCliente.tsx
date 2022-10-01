@@ -547,7 +547,6 @@ const CardVistaVariasOrdenesEmergencia  = (props:{setTicket:any, rubro:any, posi
 
     useEffect(() => {
 
-      console.log("EL ESTATUS ES: //// "+props.status)
 
       if (props.status=="ENV"){
         setEstado("PEDIDO DE TRABAJO")
