@@ -1,6 +1,5 @@
 import { arrowBack, camera, chatbox, close, eye, location, logoWindows } from "ionicons/icons";
 import React, { useEffect, useRef, useState } from "react";
-import { isConstructorDeclaration, isPropertyDeclaration, isSetAccessorDeclaration } from "typescript";
 
 import Https from "../../../utilidades/HttpsURL";
 import '../../ModalGeneral/Modal.css';
@@ -9,7 +8,7 @@ import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import axios from "axios";
 import { clearDB, createStore, removeDB, setDB } from "../../../utilidades/dataBase";
 import Chat from "../../Chat/Chat";
-import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonRow, IonTextarea, IonTitle } from "@ionic/react";
+import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonLoading, IonRow, IonTextarea, IonTitle } from "@ionic/react";
 import { ordenesCliente } from "../../../pages/Home/HomeCliente";
 import { TomarFotografia } from "../../../pages/PedirOrdenes/PedirOrden";
 import { Redirect } from "react-router";
@@ -1121,11 +1120,15 @@ export const VerDatosProveedor = (props:{ticket:any, tipo:any,latitud:any, longi
     calificacion: 0
   })
   
+  const [showLoading, setShowLoading] = useState(false)
   useEffect(() => { 
-  axios.get(url+"orden/datoproveedor/"+props.ticket+"/"+props.tipo+"/"+props.rubro                                ).then((resp: { data: any; }) => {
+    setShowLoading(true)
+
+    axios.get(url+"orden/datoproveedor/"+props.ticket+"/"+props.tipo+"/"+props.rubro                                ).then((resp: { data: any; }) => {
 
     if (resp.data!="bad"){
       setDatosCliente(resp.data)
+      setShowLoading(false)
     }
   }) 
 }, []);
@@ -1174,6 +1177,16 @@ const [showAlertUbicacion,setShowAlertUbicacion] =useState(false)
               message={'El proveedor debe estar en camino para ver su ubicación'}
               buttons={['OK']}
               />
+
+    <IonLoading
+        isOpen={showLoading}
+        onDidDismiss={() => setShowLoading(false)}
+        duration={5000}
+        spinner={'circles'}
+        mode={'ios'}
+        message={'Cargando datos...'}
+
+      />
   </div>
   </IonContent>
        

@@ -135,7 +135,7 @@ const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any
           <div id="container-principal-ExplorerContainer-Cliente">  
             <Tabs setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal} ></Tabs>
             <IonItemDivider />
-            <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={props.ordenes} setTicket={props.setTicket} setVerOrden={props.setVerOrden} recargarOrden={props.verOrden} setTipo={setTipo}></MisOrdenes>
+            <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={props.ordenes} setTicket={props.setTicket} setVerOrden={props.setVerOrden} recargarOrden={props.verOrden} setTipo={setTipo} setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal}></MisOrdenes>
             <IonItemDivider />
 
             <CategoriasUtiles setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal} setCategoriaAVer={props.setCategoriaAVer} />
@@ -338,7 +338,7 @@ const CardVistaVariosProveedores= (props:{item:any, personalImg:any ,distancia: 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , setTicket:any, hayOrdenes:any, setVerOrden:any, recargarOrden:any, setTipo:any }) => {
+const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , setTicket:any, hayOrdenes:any, setVerOrden:any, recargarOrden:any, setTipo:any, setShowModal:any, setTipoDeVistaEnModal:any }) => {
 
   var i=0
   //if (props.proveedores!=[]){
@@ -381,7 +381,7 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , setTicket:any, 
         </IonSlides>
 
         </div>
-        <VerTodas cantidad={props.misOrdenes.length} />
+        <VerTodas cantidad={props.misOrdenes.length} setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal} />
 
         </IonCard>
       </>
@@ -399,8 +399,6 @@ const MisOrdenes = (props:{ misOrdenes: Array <ordenesCliente> , setTicket:any, 
 const CardVistaVariasOrdenes = (props:{setTicket:any, rubro:any, posicion:any,tipo:string,status:string,fecha_creacion:string,ticket: string,
   dia: string,hora:string,titulo:string,descripcion:string, imagen:string, setVerOrden:any, presupuesto:any, masInfo:any, masInfoEnviada:string, recargarOrden:any, setTipo:any}) => {
         
-
-    console.log("el tipo de orden es: "+props.tipo )
 
     const [estado,setEstado]=useState("Enviada")
 
@@ -673,9 +671,9 @@ const Tabs= (props:{setShowModal:any,setTipoDeVistaEnModal:any }) => {
 }
 
 
-const VerTodas = (props:{cantidad:number}) =>{
+const VerTodas = (props:{cantidad:number, setShowModal:any, setTipoDeVistaEnModal:any}) =>{
   if(props.cantidad>1){
-    return(<p>VER TODAS</p> )
+    return(<p onClick={() => {  props.setShowModal({ isOpen: true});  props.setTipoDeVistaEnModal("programar")}}>VER TODAS</p> )
   }else{
     return(<></>)
   }

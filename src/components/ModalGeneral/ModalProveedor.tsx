@@ -430,6 +430,8 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
   
   const [pedirDatos, setPedirDatos]=useState(0)
 
+  const[ showAlertDatosPersonales, setShowAlertDatosPersonales] = useState(false)
+
   const cambiarElemento = (tipo:string) => {
     if(props.tipoProveedor=="2"){
       if(tipo=="foto"){
@@ -457,11 +459,20 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
   const enviar = (tipo:string) => {
 
     if(props.tipoProveedor=="2"){
+      
       var formDataToUpload = new FormData();
       formDataToUpload.append("tipo", "2")
       formDataToUpload.append("email", props.email)
-      formDataToUpload.append("nombre", nombre.current)
-      formDataToUpload.append("apellido", apellido.current);
+      
+      if(nombre.current!=null&&nombre.current!=""){
+        formDataToUpload.append("nombre", nombre.current)
+
+      }
+
+      if(apellido.current!=null&&apellido.current!=""){
+        formDataToUpload.append("apellido", apellido.current);
+
+      }
     //  formDataToUpload.append("calificacion", calificacion);
 
       if (fotoAEnviar!=null){
@@ -483,7 +494,6 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
          if(res.data=="ok"){
              //return(<Redirect to="/home" />);
              
-             setCambiar("nada")
              setItem("nombre", nombre.current)
              setItem("apellido", apellido.current)
              setItem("fotoPersonal",fotoAEnviar)
@@ -491,9 +501,13 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
              props.setUser!((state:usuario) => ({ ...state, nombre: nombre.current }))
              props.setUser!((state:usuario) => ({ ...state, apellido: apellido.current }))
              props.setUser!((state:usuario) => ({ ...state, foto: fotoAEnviar }))
+             setShowAlertDatosPersonales(false)
+             setCambiar("nada")
+
           }
       }).catch((error: any) =>{
           setCambiar("nada")
+          setShowAlertDatosPersonales(false)
           //Network error comes in
       });  
       
@@ -502,9 +516,16 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
 
       var formDataToUpload = new FormData();
       formDataToUpload.append("tipo", "3")
-      formDataToUpload.append("email", props.email)
-      formDataToUpload.append("nombre", nombre.current)
-      formDataToUpload.append("descripcion", descripcion.current);
+      if(props.email!=null&&props.email!=""){
+        formDataToUpload.append("email", props.email)
+      }
+      if(nombre.current!=null&&nombre.current!=""){
+        formDataToUpload.append("nombre", nombre.current)
+      }
+      if(descripcion.current!=null&&descripcion.current!=""){
+        formDataToUpload.append("descripcion", descripcion.current);
+
+      }
      // formDataToUpload.append("calificacion", calificacion);
 
       var block = fotoAEnviar!.split(";");
@@ -529,11 +550,13 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
              props.setUser!((state:usuario) => ({ ...state, nombre: nombre.current }))
              props.setUser!((state:usuario) => ({ ...state, apellido: apellido.current }))
              props.setUser!((state:usuario) => ({ ...state, foto: fotoAEnviar }))
-             window.location.reload();
+             setShowAlertDatosPersonales(false)
+             setCambiar("nada")
 
           }
       }).catch((error: any) =>{
           setCambiar("nada")
+          setShowAlertDatosPersonales(false)
           //Network error comes in
       });  
 
@@ -596,8 +619,14 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
 
             <TomarFotografia imagen={fotoAEnviar} setFilepath={setFoto} />
 
-            <IonButton shape="round" onClick={()=> enviar("foto") } >Cambiar</IonButton>
+            <IonButton shape="round" onClick={()=> {setShowAlertDatosPersonales(true);enviar("foto")} } >Cambiar</IonButton>
             </div>
+
+            <IonLoading  isOpen={showAlertDatosPersonales}   onDidDismiss={() => setShowAlertDatosPersonales(false)}
+                    cssClass='my-custom-class'
+                    message={'Modificando foto...'}
+                    duration={10000}
+                  />
         </>
     
         );
@@ -620,9 +649,15 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
               <IonLabel position="floating">Nombre</IonLabel>
               <IonInput onIonInput={(e: any) => nombre.current=(e.target.value)}></IonInput>
             </IonItem>
-            <IonButton shape="round" onClick={()=> enviar("nombre") } >Cambiar</IonButton>
+            <IonButton shape="round" onClick={()=> {setShowAlertDatosPersonales(true);enviar("nombre")} } >Cambiar</IonButton>
 
             </div>
+
+            <IonLoading  isOpen={showAlertDatosPersonales}   onDidDismiss={() => setShowAlertDatosPersonales(false)}
+                    cssClass='my-custom-class'
+                    message={'Modificando nombre...'}
+                    duration={10000}
+                  />
         </>
     
         );
@@ -643,9 +678,15 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
               <IonLabel position="floating">Apellido</IonLabel>
               <IonInput onIonInput={(e: any) => apellido.current=(e.target.value)}></IonInput>
             </IonItem>
-            <IonButton shape="round" onClick={()=> enviar("apellido") } >Cambiar</IonButton>
+            <IonButton shape="round" onClick={()=> {setShowAlertDatosPersonales(true);enviar("apellido")} } >Cambiar</IonButton>
 
             </div>
+
+            <IonLoading  isOpen={showAlertDatosPersonales}   onDidDismiss={() => setShowAlertDatosPersonales(false)}
+                    cssClass='my-custom-class'
+                    message={'Modificando apellido...'}
+                    duration={10000}
+                  />
         </>
     
         );
@@ -707,8 +748,14 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
 
             <TomarFotografia imagen={fotoAEnviar} setFilepath={setFoto} />
 
-            <IonButton shape="round" onClick={()=> enviar("foto") } >Cambiar</IonButton>
+            <IonButton shape="round" onClick={()=> {setShowAlertDatosPersonales(true);enviar("foto")} } >Cambiar</IonButton>
             </div>
+
+            <IonLoading  isOpen={showAlertDatosPersonales}   onDidDismiss={() => setShowAlertDatosPersonales(false)}
+                    cssClass='my-custom-class'
+                    message={'Modificando foto...'}
+                    duration={10000}
+                  />
         </>
         );
 
@@ -729,9 +776,15 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
               <IonLabel position="floating">Nombre</IonLabel>
               <IonInput onIonInput={(e: any) => nombre.current=(e.target.value)}></IonInput>
             </IonItem>
-            <IonButton shape="round" onClick={()=> enviar("nombre") } >Cambiar</IonButton>
+            <IonButton shape="round" onClick={()=> {setShowAlertDatosPersonales(true);enviar("nombre")} } >Cambiar</IonButton>
 
             </div>
+
+            <IonLoading  isOpen={showAlertDatosPersonales}   onDidDismiss={() => setShowAlertDatosPersonales(false)}
+                    cssClass='my-custom-class'
+                    message={'Modificando nombre...'}
+                    duration={10000}
+                  />
         </>
         );
       }else{
@@ -750,8 +803,14 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
               <IonLabel position="floating">Descripción de empresa</IonLabel>
               <IonInput onIonInput={(e: any) => descripcion.current=(e.target.value)}></IonInput>
             </IonItem>
-            <IonButton shape="round" onClick={()=> enviar("descripción") } >Cambiar</IonButton>
+            <IonButton shape="round" onClick={()=> {setShowAlertDatosPersonales(true);enviar("descripción")}} >Cambiar</IonButton>
             </div>
+
+            <IonLoading  isOpen={showAlertDatosPersonales}   onDidDismiss={() => setShowAlertDatosPersonales(false)}
+                    cssClass='my-custom-class'
+                    message={'modificando descripción...'}
+                    duration={10000}
+                  />
         </>
         );
     }

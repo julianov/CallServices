@@ -1663,14 +1663,16 @@ const VerDatosCliente = (props:{dondeEstoy:string, ticket:any, tipo:any,latitud:
     imagen:"",
     calificacion: 0
   })
-  
-  useEffect(() => { 
+  const [showLoading, setShowLoading] = useState(false)
 
-    console.log("los datos son: "+props.ticket+"   "+props.tipo)
+  useEffect(() => { 
+    setShowLoading(true)
+
   axios.get(url+"orden/datocliente/"+props.ticket+"/"+props.tipo).then((resp: { data: any; }) => {
 
     if (resp.data!="bad"){
       setDatosCliente(resp.data)
+      setShowLoading(false)
     }
   }) 
 }, []);
@@ -1692,6 +1694,14 @@ const VerDatosCliente = (props:{dondeEstoy:string, ticket:any, tipo:any,latitud:
           </div>  
     </IonCard>
     </div>
+    <IonLoading
+        isOpen={showLoading}
+        onDidDismiss={() => setShowLoading(false)}
+        duration={5000}
+        spinner={'circles'}
+        mode={'ios'}
+        message={'Cargando datos...'}
+      />
     </IonContent>
          
   );
@@ -1722,6 +1732,14 @@ const VerDatosCliente = (props:{dondeEstoy:string, ticket:any, tipo:any,latitud:
   
     </IonCard>
     </div>
+    <IonLoading
+        isOpen={showLoading}
+        onDidDismiss={() => setShowLoading(false)}
+        duration={5000}
+        spinner={'circles'}
+        mode={'ios'}
+        message={'Cargando datos...'}
+      />
     </IonContent>
          
   );
