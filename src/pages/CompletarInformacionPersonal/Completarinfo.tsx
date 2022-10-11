@@ -16,19 +16,6 @@ import { useUserContext } from '../../Contexts/UserContext';
 import { usuario } from '../../Interfaces/interfaces';
 
 
-/*
-CompletarInformacion
-| 
-|->  CompletarInformacionPersonal
-*/
-
-/*
-Compressorjs
-npm install compressorjs
-*/
-
-//const url='http://127.0.0.1:8000/completarinfo/';
-//const url="https://callservicesvps.online:443/completarinfo/"
 
 const url= Https+"completarinfo/"
 
@@ -203,9 +190,6 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                         setUser!((state:usuario) => ({ ...state, calificacion: 0}))
                         setUser!((state:usuario) => ({ ...state, tipoCliente: props.tipoCliente}))
 
-                        console.log("LA FOTO A ENVIAR ES: "+ filepath2   )
-                        console.log("LA FOTO A ENVIAR 2 ES: "+ fotoAguardar.current   )
-
                         setListo(true);
                         props.setNombre(nombre)
                         props.setApellido(apellido)
@@ -266,9 +250,6 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                         setUser!((state:usuario) => ({ ...state, apellido:apellido }))
                         setUser!((state:usuario) => ({ ...state, calificacion: 0}))
                         setUser!((state:usuario) => ({ ...state, tipoCliente: props.tipoCliente}))
-
-                        console.log("LA FOTO A ENVIAR ES: "+ filepath2   )
-                        console.log("LA FOTO A ENVIAR 2 ES: "+ fotoAguardar.current   )
                         
                         props.setNombre(nombre)
                         props.setApellido(apellido)

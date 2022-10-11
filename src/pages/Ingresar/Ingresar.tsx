@@ -13,14 +13,6 @@ import { useUserContext } from '../../Contexts/UserContext';
 import { IonAlert, IonButton, IonButtons, IonChip, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonListHeader, IonLoading, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonSearchbar, IonTitle, IonToolbar } from '@ionic/react';
 import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext';
 
-  //const url='http://127.0.0.1:8000/login/';
-  //const url="https://callservicesvps.online:443/login/"
-
-  //const url2='http://127.0.0.1:8000/';
-  //const url2="https://callservicesvps.online:443/"
-
-  //const url3='http://127.0.0.1:8000/completarinfo/';
-  //const url3="https://callservicesvps.online:443/completarinfo/"
 
   const url=Https+"login/"
   const url2=Https
@@ -89,6 +81,7 @@ import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext'
                   onDidDismiss={() => setShowAlertServerConnection(false)}
                   cssClass='my-custom-class'
                   header={'Respuesta del servidor'}
+                  mode="ios"
                   subHeader={''}
                   message={'No ha sido posible comunicarse con el servidor. Intente más tarde'}
                   buttons={['OK']}
@@ -99,6 +92,7 @@ import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext'
                   cssClass='my-custom-class'
                   header={'Complete los campos'}
                   subHeader={''}
+                  mode="ios"
                   message={'Completar campos usuario y contraseña'}
                   buttons={['OK']}
                   />
@@ -108,6 +102,7 @@ import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext'
                   cssClass='my-custom-class'
                   header={'Cambio de contraseña'}
                   subHeader={''}
+                  mode="ios"
                   message={'La contraseña ha sido modificada correctamente'}
                   buttons={['OK']}
                   />
@@ -115,8 +110,9 @@ import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext'
                   isOpen={showAlertContraseñaNoIguales}
                   onDidDismiss={() => setShowAlertContraseñaNoIguales(false)}
                   cssClass='my-custom-class'
-                  header={'Contraseñas no iguales'}
+                  header={'Contraseñas diferentes'}
                   subHeader={''}
+                  mode="ios"
                   message={'Discrepancia entre contraseñas ingresadas'}
                   buttons={['OK']}
                   />
@@ -126,6 +122,7 @@ import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext'
                   cssClass='my-custom-class'
                   header={'No hay usuario registrado con ese e-mail'}
                   subHeader={''}
+                  mode="ios"
                   message={'Corrobore e ingrese e-mail correcto'}
                   buttons={['OK']}
                   />
@@ -135,6 +132,7 @@ import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext'
                   cssClass='my-custom-class'
                   header={'Código ingresado incorrecto'}
                   subHeader={''}
+                  mode="ios"
                   message={'Ingrese el código que ha recibido en el e-mail'}
                   buttons={['OK']}
                   />                
@@ -193,7 +191,7 @@ import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext'
   const PedirPersonalInfo = ( tipoDeCliente:any)=>{
 
     //tipoDeCliente.current nos da undefined 
-    axios.get(url2+"askpersonalinfo/"+tipoDeCliente.current+"/"+email.current, {timeout: 7000})
+    axios.get(url2+"askpersonalinfo/"+tipoDeCliente.current+"/"+email.current, {timeout: 10000})
     .then((resp: { data: any; }) => {
 
       if(resp.data!="no ha cargado información personal"){
@@ -326,7 +324,7 @@ import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext'
   
         props.setShowLoading(true)
   
-        axios.get(url+"ingresar/"+email.current+"/"+password.current, {timeout: 7000})
+        axios.get(url+"ingresar/"+email.current+"/"+password.current, {timeout: 10000})
         .then((res: { data: any; }) => {
          // setIngresar(false);
           const resquest = res.data;

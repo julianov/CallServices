@@ -124,6 +124,7 @@ const HomeCliente = (props:{setIsReg:any,
 
 
   //Carga proveedores en zona desde base de datos
+
   useEffect(() => {
 
     if(proveedoresEnZona.length > 0 ){

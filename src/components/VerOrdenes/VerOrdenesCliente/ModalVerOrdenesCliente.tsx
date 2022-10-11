@@ -27,10 +27,12 @@ interface datos_proveedor {
     calificacion: number
   }
 
+
 const verUbicacion = ( latitud:any, longitud:any) =>{
 
+
     const link="https://www.google.com/maps/search/?api=1&query="+latitud+"%2C"+longitud
-    const win= window.open(   link, '_blank')?.focus();
+    const win= window.open(link, 'Locación')?.focus();
 
   }
 
@@ -478,7 +480,7 @@ const Primero = (props:{datos:any, setVolver:any, estado:any, setEstado:any,
   
                 <IonCol id="ioncol-homecliente"  onClick={() => verUbicacion(props.datos.latitud, props.datos.longitud) }   >
                   <IonRow id="ionrow-homecliente">
-                  <IonIcon icon={location} /> </IonRow>
+                  <IonIcon icon={location} /></IonRow>
                   <IonRow id="ionrow-homecliente"><small>VER UBICACIÓN DE PROVEEDOR</small></IonRow>
                 </IonCol>
   

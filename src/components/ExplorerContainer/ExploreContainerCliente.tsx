@@ -44,8 +44,6 @@ const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any
   const [verEmail, setVerEmail]=useState("")
   const[item, setItem]=useState("")
 
-  //const [arregloOrdenesCliente, setArregloOrdenesCliente] =  useState <ordenesCliente []> ( [])
-
   const [hayOrdenes, setHayOrdenes]=useState(false)
   
   const [locacion, setLocacion] = useState("")
@@ -90,7 +88,6 @@ const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any
       axios.get(props.url+"home/cliente/pedirdatos/"+verEmail+"/"+item+"/"+"caracteres"+"/"+locacion).then((resp: { data: any; }) => {
         if (resp.data!="bad"){
           
-          console.log("A VER CHE QUE VIENE: "+resp.data.items)
          setDatosDeOrdenes( 
             {
               clienteEmail:props.emailCliente,
@@ -134,11 +131,12 @@ const ExploreContainerCliente  = (props:{notifications:any, setNotifications:any
           <>
           <div id="container-principal-ExplorerContainer-Cliente">  
             <Tabs setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal} ></Tabs>
-            <IonItemDivider />
+            
             <MisOrdenes hayOrdenes={hayOrdenes} misOrdenes={props.ordenes} setTicket={props.setTicket} setVerOrden={props.setVerOrden} recargarOrden={props.verOrden} setTipo={setTipo} setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal}></MisOrdenes>
-            <IonItemDivider />
 
             <CategoriasUtiles setShowModal={props.setShowModal} setTipoDeVistaEnModal={props.setTipoDeVistaEnModal} setCategoriaAVer={props.setCategoriaAVer} />
+
+            <IonItemDivider />
 
             <h1 style={{fontWeight:"600", fontSize:"1.5em", marginTop:"5px"}}>PROVEEDORES DE SERVICIOS</h1>    
             <h1 style={{fontWeight:"600", fontSize:"1.5em", marginTop:"0px"}}>EN LA ZONA</h1>          
