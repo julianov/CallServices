@@ -797,7 +797,7 @@ const getLocation = async () => {
    
    
      const [item, setItem]= useState("")
-     const radius = useRef("")
+     const radius = useRef("80")
      const description = useRef("")
      const calificacion= useRef(0)
  
@@ -968,7 +968,7 @@ const getLocation = async () => {
  
          <IonCard id="ionCardOrden">
             <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto",alignItems:"center", textAlign:"center", marginTop:"25px"}}>
-            <h1>DATOS DE LOCACIÓN</h1>
+            <h1 style={{fontSize:"1.5em", color:"black"}}>DATOS DE LOCACIÓN</h1>
             </div>            
             <IonItemDivider />
              <IonItem className="item">País: {pais.current}</IonItem>
@@ -980,7 +980,7 @@ const getLocation = async () => {
  
          <IonCard id="ionCardOrden">
             <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto",alignItems:"center", textAlign:"center", marginTop:"25px"}}>
-            <h1>DATOS DE JORNADA LABORAL</h1>
+            <h1 style={{fontSize:"1.5em", color:"black"}}>DATOS DE JORNADA LABORAL</h1>
             </div>    
              <IonItem className="item">Días de trabajo: {days_of_works.current}</IonItem>
              <IonItem className="item">Horario de inicio: {hour_init.current}</IonItem>
@@ -989,7 +989,7 @@ const getLocation = async () => {
  
          <IonCard id="ionCardOrden">
             <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto",alignItems:"center", textAlign:"center", marginTop:"25px"}}>
-            <h1>CERTIFICADO</h1>
+            <h1 style={{fontSize:"1.5em", color:"black"}}>CERTIFICADO</h1>
             </div> 
  
              <div id="imagenesCompletarRubro">
@@ -1000,7 +1000,7 @@ const getLocation = async () => {
  
          <IonCard id="ionCardOrden">
             <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto",alignItems:"center", textAlign:"center", marginTop:"25px"}}>
-            <h1>IMÁGENES DE REFERENCIA DEL TRABAJO</h1>
+            <h1 style={{fontSize:"1.5em", color:"black"}}>IMÁGENES DE REFERENCIA DEL TRABAJO</h1>
             </div> 
              
              <div id="imagenesCompletarRubro">
@@ -1129,7 +1129,7 @@ const getLocation = async () => {
          <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", background:"#f3f2ef"}}>
              
              <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto",alignItems:"center", textAlign:"center", marginTop:"25px"}}>
-                <h1>DATOS PRINCIPALES</h1>
+                <h1 style={{fontSize:"1.5em", color:"black"}}>DATOS PRINCIPALES</h1>
              </div>
              <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"auto"}}>
                  
@@ -1140,16 +1140,13 @@ const getLocation = async () => {
             </IonCard>
  
             <IonCard id="ionCardOrden">
-                <IonTitle>DATOS DE JORNADA LABORAL</IonTitle>
+                <h1 style={{fontSize:"1.5em", color:"black"}}>DATOS DE JORNADA LABORAL</h1>
                 <strong style={{margin:"15px 0px 15px 0px"}}>SELECIONE LOS DIAS DE TRABAJO</strong>
-                <IonItemDivider />
                     <DiasdeTrabajo dias={props.dias}></DiasdeTrabajo>
-            </IonCard>             
+           
+                    <IonItemDivider style={{marginTop:"35px"}} />
 
-            <IonCard id="ionCardOrden">
-                <IonTitle>DATOS DE JORNADA LABORAL</IonTitle>
                 <strong style={{margin:"15px 0px 15px 0px"}}>SELECIONE EL HORARIO DE TRABAJO</strong>
-                <IonItemDivider />
                 <IonItem>
                     <IonLabel id="label">HORA DE INICIO DE TRABAJO DIARIO</IonLabel>
                     <IonDatetime locale="es-ES" presentation="time" value={props.horaInicio.current} onIonChange={e => props.horaInicio.current = (e.detail.value!)}></IonDatetime>
@@ -1309,8 +1306,8 @@ const getLocation = async () => {
             
                  
         <IonCard id="ionCardOrden">
-        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto",alignItems:"center", textAlign:"center", marginTop:"25px"}}>
-           <h1>DESCRIBA SU TRABAJO</h1>
+        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto",alignItems:"center", textAlign:"center"}}>
+           <h1 style={{fontSize:"1.5em", color:"black"}} >DESCRIBA SU TRABAJO</h1>
         </div>
         <p style={{fontSize:"1em", marginTop:"15px", color:"black"}}>Una buena descripción de su trabajo sirve como una guía de referencia para los futuros clientes</p>
 
@@ -1366,7 +1363,7 @@ const getLocation = async () => {
             <h1>DATOS GENERALES</h1>
 
             <IonCard id="ionCardOrden">
-                <IonTitle style={{margin:"15px 0px 10px 0px"}}>DATOS DE DOMICILIO</IonTitle>
+                <h1 style={{fontSize:"1.5em", color:"black"}}>DATOS DE DOMICILIO</h1>
                  <IonItemDivider />
 
                  <IonItem id="item-rubro-domicilio">
@@ -1397,7 +1394,7 @@ const getLocation = async () => {
              </IonCard>
  
              <IonCard id="ionCardOrden">
-                 <IonTitle style={{margin:"15px 0px 10px 0px"}}>VISITA A CLIENTES</IonTitle>
+                 <h1 style={{fontSize:"1.5em", color:"black"}}>VISITA A CLIENTES</h1>
                  <IonItemDivider />
 
                  <div>
@@ -1675,7 +1672,7 @@ const getLocation = async () => {
                     
                             <IonCard style={{margin:"15px, 0px 15px 0px",display:"flex", flexDirection:"column", justifyContent:"center", with:"100%", height:"100%"}}>
                             <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto",alignItems:"center", textAlign:"center", marginTop:"25px"}}>
-                                <h1>INGRESE IMÁGENES DE SU TRABAJO</h1>
+                                <h1 style={{fontSize:"1.5em", color:"black"}}>INGRESE IMÁGENES DE SU TRABAJO</h1>
                             </div>
                                                     
                             <p style={{fontSize:"0.9em"}}>Dichas fotos serán mostradas a sus clientes</p>

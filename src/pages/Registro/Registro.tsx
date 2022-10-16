@@ -10,6 +10,7 @@ import { useMemo } from 'react';
 import Https from '../../utilidades/HttpsURL';
 import { setItem } from '../../utilidades/Storage';
 import { IonAlert, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonListHeader, IonLoading, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonSearchbar, IonTitle, IonToolbar } from '@ionic/react';
+import axios from 'axios';
 
 
 const url=Https+"registro/"
@@ -92,7 +93,7 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
   const password2 = useRef("")
 
   const codigo = useRef(0)
-  const codigo_agregado= useRef(1)
+  const codigo_agregado= useRef("")
 
   const tipoUsuario=useRef("");
 
@@ -129,20 +130,9 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
           props.setShowAlertUsuarioRegistrado(true);
           props.setShowAlertEmailSending(false)
         }else{
-            /*Se guarda que el usuario se registró*/
-            setItem("isRegistered", email.current).then( () => {
-              setItem("personalInfoCompleted", false).then( () =>{
-                setItem("clientType", tipoUsuario.current).then(() => {
-                 // setCodigo(resquest)
-                 codigo.current=resquest
-                  console.log(resquest)
-                  setCount("validacion email") 
-                  props.setShowAlertEmailSending(false)
-                }
+          setCount("validacion email") 
+          props.setShowAlertEmailSending(false)
 
-                )
-              })
-            })
         }
       }).catch((err: any) => {
         // what now?
@@ -156,12 +146,46 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
 
   const completarRegistro =()=>{
 
-    if(codigo.current==codigo_agregado.current){
-      props.setEmail(email.current)
-      setCount("registro completo");
-    }else{
-      setCount("validacion erronea");
-    }
+
+    var formDataToUpload = new FormData();
+    formDataToUpload.append("codigo",codigo_agregado.current )
+    formDataToUpload.append("email",email.current )
+
+    axios({
+      url:url+"verificacion/email",
+      method:'POST',
+      headers: {"content-type": "multipart/form-data"},
+      data:formDataToUpload
+      }).then((res: { data: any; }) => {
+      const resquest = res.data;
+      console.log(resquest)
+      if(resquest==="email confirmed"){
+
+        setItem("isRegistered", email.current).then( () => {
+          setItem("personalInfoCompleted", false).then( () =>{
+            setItem("clientType", tipoUsuario.current).then(() => {
+              setCount("registro completo");
+            }
+
+            )
+          })
+        })
+
+      
+        
+      }else{
+    
+        setCount("validacion erronea");
+
+      }
+    }).catch((err: any) => {
+      // what now?
+      props.setShowAlertServerConnection(true)
+      props.setShowAlertEmailSending(false)
+
+  })
+
+ 
   }
 
   if (tipo=="registro inicio"){
