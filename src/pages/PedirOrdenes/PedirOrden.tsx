@@ -285,8 +285,9 @@ const OrdenSimple = (props:{ordenes:any,data:any, clienteEmail:any , setVolver:a
                 <div style={{ justifyContent:"center",alignItems:"center", textAlign:"center" ,display:"flex", flexDirection:"column", width:"100%", height:"100%"}}>
                     <IonCard id="ionCardOrden">
                     <h1 style={{fontSize:"1.2em", color:"black", fontWeight:"bold"}}>IMÁGENES DE REFERENCIA</h1>
+                    <p style={{fontSize:"0.9em", color:"black"}}>¿Desea agregar imágenes para que el proveedor tenga referencia del trabajo a realizar?</p>
+
                         <IonItemDivider />
-                            <p style={{fontSize:"1em", color:"black"}}>¿Desea agregar imágenes para que el proveedor tenga referencia del trabajo a realizar?</p>
 
                             <IonGrid>
                                 <IonRow>

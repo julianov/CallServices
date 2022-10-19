@@ -506,6 +506,7 @@ width: 95%;
 #divSentencias{
   margin-top: 15px;
   margin-bottom: 15px;
+  padding-bottom: 30px;
 }
 #pChico{
   font-size: small;
