@@ -2,15 +2,15 @@ import { render } from '@testing-library/react';
 import React, { Component, useEffect, useState } from 'react';
 import './Registro.css';
 import { arrowBack, push} from 'ionicons/icons';
-import { BrowserRouter, Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import {  Link, Redirect } from 'react-router-dom';
 
 import { useRef } from 'react';
-import { type } from 'os';
-import { useMemo } from 'react';
 import Https from '../../utilidades/HttpsURL';
 import { setItem } from '../../utilidades/Storage';
-import { IonAlert, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonListHeader, IonLoading, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonSearchbar, IonTitle, IonToolbar } from '@ionic/react';
+import { IonAlert, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonListHeader, IonLoading, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonSearchbar, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
 import axios from 'axios';
+import { useUserContext } from '../../Contexts/UserContext';
+import { usuario } from '../../Interfaces/interfaces';
 
 
 const url=Https+"registro/"
@@ -24,6 +24,7 @@ const Registro = (props:{setIsReg:any, setCliente:any, setTipoCliente:any ,setEm
   const [showAlertServerConnection, setShowAlertServerConnection] = useState(false);
   const [showAlertEmailSending,setShowAlertEmailSending]=useState(false)
 
+  
   return (
     <IonPage>
       
@@ -92,9 +93,6 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
   const password = useRef("")
   const password2 = useRef("")
 
-  const codigo = useRef(0)
-  const codigo_agregado= useRef("")
-
   const tipoUsuario=useRef("");
 
   const [alertCuentaUsuario,setShowAlertCuentaUsuario]=useState(false)
@@ -102,6 +100,26 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
   
   const [alertCuentaProveedor,setShowAlertCuentaProveedor]=useState(false)
   const mensajeCuentaProveedor="Al registrarse con una cuenta de proveedor podrá ofrecer sus servicios seleccionando rubros en los cuales domina los conocimientos requeridos para llevar a cabo los trabajos mediante certificaciones que los acrediten"
+
+  const  {user,setUser}  = useUserContext()
+
+  const router = useIonRouter();
+
+  const simpleNavigate = () => {
+		
+		router.push("/confirmarEmail", "forward", "push");
+    window.location.reload();
+	}
+
+  useEffect(() => {
+      if(user!.email!=""){
+        setCount("validacion email") 
+          props.setShowAlertEmailSending(false)
+        
+      }
+
+  }, [user!.email]);
+
 
   const enviarRegistro = () =>{
 
@@ -125,14 +143,27 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
         headers: {"content-type": "multipart/form-data"},
         data:formDataToUpload
         }).then((res: { data: any; }) => {
+
         const resquest = res.data;
+
         if(resquest==="User alredy taken"){
+          
           props.setShowAlertUsuarioRegistrado(true);
           props.setShowAlertEmailSending(false)
-        }else{
-          setCount("validacion email") 
-          props.setShowAlertEmailSending(false)
 
+        }else{
+
+          setItem("clientType",  tipoUsuario.current).then( () =>{
+
+          setUser!((state:usuario) => ({ ...state, tipoCliente: tipoUsuario.current}))
+          })
+          setItem("isRegistered", email.current ).then( () =>{
+
+            setUser!((state:usuario) => ({ ...state, email: email.current }))
+
+          })
+       
+          simpleNavigate()
         }
       }).catch((err: any) => {
         // what now?
@@ -142,50 +173,6 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
     })
     }
     
-  }
-
-  const completarRegistro =()=>{
-
-
-    var formDataToUpload = new FormData();
-    formDataToUpload.append("codigo",codigo_agregado.current )
-    formDataToUpload.append("email",email.current )
-
-    axios({
-      url:url+"verificacion/email",
-      method:'POST',
-      headers: {"content-type": "multipart/form-data"},
-      data:formDataToUpload
-      }).then((res: { data: any; }) => {
-      const resquest = res.data;
-      console.log(resquest)
-      if(resquest==="email confirmed"){
-
-        setItem("isRegistered", email.current).then( () => {
-          setItem("personalInfoCompleted", false).then( () =>{
-            setItem("clientType", tipoUsuario.current).then(() => {
-              setCount("registro completo");
-            }
-
-            )
-          })
-        })
-
-      
-        
-      }else{
-    
-        setCount("validacion erronea");
-
-      }
-    }).catch((err: any) => {
-      // what now?
-      props.setShowAlertServerConnection(true)
-      props.setShowAlertEmailSending(false)
-
-  })
-
- 
   }
 
   if (tipo=="registro inicio"){
@@ -426,95 +413,22 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
         </div >
       </div ></>        
       );
-  }
+  }else{
 
-  if(tipo=="validacion email"){
-    /*
-    Corroboración de email
-    */
     return (
 
-
-      <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100vh"}}>
-        
-      <div  style={{ display:"flex", flexDirection:"column", width:"100%", height:"100px"}}>
-        <div  style={{ display:"flex", flexDirection:"column", width:"100%", height:"auto", textAlign:"center"}}>
-            <h2 style={{fontSize:"1.2em", color:"black", marginTop:"35px"}}>VALIDACIÓN VÍA EMAIL</h2>
-            < h2 style={{fontSize:"1.2em", color:"black"}}>SE HA ENVIADO AL E-MAIL CÓDIGO PARA VALIDACIÓN</h2 >
-          </div>
-      </div>
-
-      <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100%"}}>
-      <IonItem id="item-registro-validacion">
-          <IonLabel position="floating">Código de validación</IonLabel>
-          <IonInput mode='ios' value="" onIonInput={(e: any) => codigo_agregado.current = (e.target.value)}></IonInput>
-        </IonItem>
-      </div>
-      <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100px"}}>
-      <IonButton shape="round" onClick={completarRegistro} style={{margin:"0px 0px 30px 0px", width:"90%"}}>CONTINUAR</IonButton>
-
-      </div >
-    </div >
-
-
+      <> 
+    <div style={{ display: "flex", flexDirection: "column", justifyContent:"center", textAlign:"center", alignItems:"center", width: "100%", height: "100vh" }}>
+    <p style={{fontSize:"1em", color:"black"}}>USUARIO REGISTRADO</p>
     
-     
-    );
+    </div>
+          
+    </>
+    )
   }
-  if(tipo=="registro completo"){
-    
-    props.setCliente(tipoUsuario.current=="1"?true:false)
-    
-    props.setTipoCliente(tipoUsuario.current)
-    props.setEmail(email.current)
 
-    return(
-    <><Redirect push={true} to="/Completarinfo"  />
-        <IonAlert
-        mode='ios'
-          isOpen={alertCuentaProveedor}
-          onDidDismiss={() => setShowAlertCuentaProveedor(false)}
-          cssClass='my-custom-class'
-          header={'REGISTRO DE CREDENCIALES FINALIZADO'}
-          message={"Debe completar la información personal de usuario"}
-          buttons={[
-            {
-              text: 'CONTINUAR',
-              handler: () => {
-                //props.setCliente(tipoUsuario=="1"?true:false)
-                props.setTipoCliente(tipoUsuario.current) 
 
-              }
-            }
-          ]} /></>
-    );
   
-  }
-  else{
-    return (
-     
-      <div id="contenedorPrincipalRegistro">
-      <header id="headerRegistro">
-        <IonTitle id="register-title">VALIDACIÓN VÍA EMAIL</IonTitle>
-        <IonTitle id="register-title2">SE HA ENVIADO AL E-MAIL CÓDIGO PARA VALIDACIÓN</IonTitle> 
-        <IonTitle id="register-title2">Código erroneo, Vuelva a verificar!</IonTitle> 
-      </header>
-
-      <div id="contenedorCentralRegistro">
-        <IonItem id="item-registro-validacion">
-          <IonLabel position="floating">Código de validación</IonLabel>
-          <IonInput mode='ios' value="" onIonInput={(e: any) => codigo_agregado.current = (e.target.value)}></IonInput>
-        </IonItem>
-      </div>
-
-      <footer id="footerRegistro">
-      <Boton name="Continuar" onClick={completarRegistro}></Boton>
-      </footer>
-    </div> 
-     
-
-    );
-  }
 }
 
 

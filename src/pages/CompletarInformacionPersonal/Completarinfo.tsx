@@ -11,7 +11,7 @@ import CompletarRubros from '../CompletarRubros/CompletarRubros';
 import { Photo, usePhotoGallery } from '../../hooks/usePhotoGallery';
 import { b64toBlob } from '../../utilidades/b64toBlob';
 import { setItem } from '../../utilidades/Storage';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonFabButton, IonIcon, IonGrid, IonRow, IonCol, IonImg, IonActionSheet, IonInput, IonItem, IonLabel, IonButton, IonItemDivider, IonRange, IonAlert, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonList, IonSelect, IonSelectOption, IonDatetime, IonLoading, IonTextarea, IonCheckbox } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonFabButton, IonIcon, IonGrid, IonRow, IonCol, IonImg, IonActionSheet, IonInput, IonItem, IonLabel, IonButton, IonItemDivider, IonRange, IonAlert, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonList, IonSelect, IonSelectOption, IonDatetime, IonLoading, IonTextarea, IonCheckbox, useIonRouter } from '@ionic/react';
 import { useUserContext } from '../../Contexts/UserContext';
 import { usuario } from '../../Interfaces/interfaces';
 
@@ -22,6 +22,10 @@ const url= Https+"completarinfo/"
 const Completarinfo = (props:{setIsReg:any,email:any, tipoCliente:any,setNombre:any,setApellido:any, setFoto:any, 
 rubro1:any, rubro2:any, setRubro1:any, setRubro2:any}) => {
 
+    const  {user,setUser}  = useUserContext()
+
+ 
+          
   return (
     <IonPage>
      
@@ -29,7 +33,7 @@ rubro1:any, rubro2:any, setRubro1:any, setRubro2:any}) => {
 
       <div id="ionContentCompletarInfo">
 
-        <CompletarInformacion setIsReg={props.setIsReg} tipoCliente={props.tipoCliente} 
+        <CompletarInformacion setIsReg={props.setIsReg} tipoCliente={user!.tipoCliente} 
         email={props.email}
         setNombre={props.setNombre} setApellido={props.setApellido} setFoto={props.setFoto} 
         rubro1={props.rubro1} rubro2={props.rubro2} setRubro1={props.setRubro1} setRubro2={props.setRubro2} ></CompletarInformacion>
@@ -137,15 +141,17 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
     }
 
     
+    const router = useIonRouter();
 
     if(listo){
         props.setIsReg(true) 
-        //props.setCliente(props.clientType=="1"?true:false)
-        return (
+        router.push("/", "forward", "push");
+        window.location.reload();
+       /* return (
             <>
             <Redirect push={true} to="/" />
             </> 
-                )
+                )*/
     }
 
     if(done){
@@ -184,11 +190,11 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                         setItem("fotoPersonal",fotoAguardar.current)
                         setItem("calificacion",0)
 
-                        setUser!((state:usuario) => ({ ...state, foto:fotoAguardar.current }))
-                        setUser!((state:usuario) => ({ ...state, nombre: nombre }))
-                        setUser!((state:usuario) => ({ ...state, apellido:apellido }))
-                        setUser!((state:usuario) => ({ ...state, calificacion: 0}))
-                        setUser!((state:usuario) => ({ ...state, tipoCliente: props.tipoCliente}))
+                        setUser!( (previous) => ({...previous, foto:fotoAguardar.current }))
+                        setUser!( (previous) => ({...previous, nombre: nombre}))
+                        setUser!( (previous) => ({...previous, apellido:apellido}))
+                        setUser!( (previous) => ({...previous, calificacion: 0}))
+                        setUser!( (previous) => ({...previous, tipoCliente: props.tipoCliente}))
 
                         setListo(true);
                         props.setNombre(nombre)
@@ -245,11 +251,11 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                         setItem("fotoPersonal",fotoAguardar.current)
                         setItem("calificacion",0)
 
-                        setUser!((state:usuario) => ({ ...state, foto:fotoAguardar.current }))
-                        setUser!((state:usuario) => ({ ...state, nombre: nombre }))
-                        setUser!((state:usuario) => ({ ...state, apellido:apellido }))
-                        setUser!((state:usuario) => ({ ...state, calificacion: 0}))
-                        setUser!((state:usuario) => ({ ...state, tipoCliente: props.tipoCliente}))
+                        setUser!( (previous) => ({...previous, foto:fotoAguardar.current }))
+                        setUser!( (previous) => ({...previous, nombre: nombre}))
+                        setUser!( (previous) => ({...previous, apellido:apellido}))
+                        setUser!( (previous) => ({...previous, calificacion: 0}))
+                        setUser!( (previous) => ({...previous, tipoCliente: props.tipoCliente}))
                         
                         props.setNombre(nombre)
                         props.setApellido(apellido)
@@ -307,11 +313,11 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                         setItem("fotoPersonal",fotoAguardar.current)
                         setItem("calificacion",0)
 
-                        setUser!((state:usuario) => ({ ...state, foto:fotoAguardar.current }))
-                        setUser!((state:usuario) => ({ ...state, nombre: nombre }))
-                        setUser!((state:usuario) => ({ ...state, apellido:descripcion }))
-                        setUser!((state:usuario) => ({ ...state, calificacion: 0}))
-                        setUser!((state:usuario) => ({ ...state, tipoCliente: props.tipoCliente}))
+                        setUser!( (previous) => ({...previous, foto:fotoAguardar.current }))
+                        setUser!( (previous) => ({...previous, nombre: nombre}))
+                        setUser!( (previous) => ({...previous, apellido:descripcion}))
+                        setUser!( (previous) => ({...previous, calificacion: 0}))
+                        setUser!( (previous) => ({...previous, tipoCliente: props.tipoCliente}))
 
                         props.setNombre(nombre)
                         props.setApellido(apellido)
@@ -546,7 +552,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
         
     }
     else{
-        return (<div className="contenedor_central" />
+        return (<div className="contenedor_central">asdf</div> 
         );
 
     }

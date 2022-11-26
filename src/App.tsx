@@ -43,6 +43,7 @@ import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { RubroContext1, RubroContext2 } from './Contexts/RubroContext';
 
 import { setupIonicReact } from '@ionic/react';
+import ValidarEmail from './pages/Registro/ValidarEmail';
 
 
 setupIonicReact({
@@ -152,8 +153,6 @@ const App: React.FC = () => {
             setFoto(res2)
             setUser((previous) => ({...previous, foto: res2}))
           }
-          
-
           
         })
         getItem("nombre").then(res2 => {
@@ -276,6 +275,8 @@ return(
                                         :<Inicio /> } />
 
     <Route path="/tab2" component={Tab2} exact={true} />
+    <Route path="/confirmarEmail" component={ValidarEmail} exact={true} />
+
 
   </IonRouterOutlet>
   </IonSplitPane>
