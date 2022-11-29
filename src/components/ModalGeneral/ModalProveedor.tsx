@@ -905,7 +905,8 @@ const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:
 
   if (agregarOtroRubro){
 
-    return(<CompletarRubros  email={props.email}  clientType={props.tipoProveedor} setIsReg={props.setIsReg} />);
+    return(<CompletarRubros
+        email={props.email}  clientType={props.tipoProveedor} setIsReg={props.setIsReg} />);
 
   }else{
     if (verRubro==""){

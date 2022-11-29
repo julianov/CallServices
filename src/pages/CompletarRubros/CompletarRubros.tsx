@@ -27,19 +27,30 @@ CompletarItems
     |->SetITem
 */
 
-//const url='http://127.0.0.1:8000/completarinfo/';
-//const url="https://callservicesvps.online:443/completarinfo/"
-
 const url=Https+"completarinfo/"
 
-/*
-if (vista==0) 
-	//Acá iría la pantalla principal, de que si tiene rubros cargados o si no tiene
-if(vista==1)
-	//se debe mostrar el cardView con el rubro selecionado
-if(vista==2) 
-	//Se muestra la priemr pantalla de agregar rubro
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let posicion: string | number;
 
@@ -614,7 +625,9 @@ const getLocation = async () => {
            
                  <div style={{display:"flex", flexDirection:"column", width:"95%", height:"auto", justifyContent:"center", alignItems:"center"}}>
                      <div className="caja">
-                         <strong>NO POSEE RUBROS CARGADOS</strong>
+                     <img src={"./assets/icon/simboloAlerta.png"} style={{width:"32px", height:"32px"}} />  
+
+                         <strong style={{margin:"15px 0 0 0 "}} >NO POSEE RUBROS CARGADOS</strong>
                          <p style={{fontSize:"0.9em"}}>Cargue un Rubro para poder recibir pedidos de clientes</p>
                      </div>
                  </div>
@@ -957,7 +970,7 @@ const getLocation = async () => {
          
             <IonIcon onClick={()=> props.volver() } icon={arrowBack}  id="flecha-volver-completar-rubro">  </IonIcon>
         
-     <IonCard id="ionCardOrden">
+     <IonCard id="ionCardCompletarRubros">
              <IonCardHeader>
                  <IonCardTitle>{item}</IonCardTitle>
                  <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(item)}></img>
@@ -966,10 +979,13 @@ const getLocation = async () => {
              <IonCardContent>{description.current}</IonCardContent>
          </IonCard>
  
-         <IonCard id="ionCardOrden">
-            <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto",alignItems:"center", textAlign:"center", marginTop:"25px"}}>
-            <h1 style={{fontSize:"1.5em", color:"black"}}>DATOS DE LOCACIÓN</h1>
-            </div>            
+         <IonCard id="ionCardCompletarRubros">
+
+            <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >DATOS DE LOCACIÓN CARGADOS</h2>    
+                <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+            </div>
+            
             <IonItemDivider />
              <IonItem className="item">País: {pais.current}</IonItem>
              <IonItem className="item">Provincia/Departamento/Estado: {provincia.current}</IonItem>
@@ -978,19 +994,22 @@ const getLocation = async () => {
  
          </IonCard>
  
-         <IonCard id="ionCardOrden">
-            <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto",alignItems:"center", textAlign:"center", marginTop:"25px"}}>
-            <h1 style={{fontSize:"1.5em", color:"black"}}>DATOS DE JORNADA LABORAL</h1>
-            </div>    
+         <IonCard id="ionCardCompletarRubros">
+             <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >DATOS DE JORNADA LABORAL CARGADOS</h2>    
+                <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+            </div>
+
              <IonItem className="item">Días de trabajo: {days_of_works.current}</IonItem>
              <IonItem className="item">Horario de inicio: {hour_init.current}</IonItem>
              <IonItem className="item">Horario de finalización: {hour_end.current}</IonItem>
          </IonCard>
  
-         <IonCard id="ionCardOrden">
-            <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto",alignItems:"center", textAlign:"center", marginTop:"25px"}}>
-            <h1 style={{fontSize:"1.5em", color:"black"}}>CERTIFICADO</h1>
-            </div> 
+         <IonCard id="ionCardCompletarRubros">
+            <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >CERTIFICADO CARGADO</h2>    
+                <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+            </div>
  
              <div id="imagenesCompletarRubro">
  
@@ -998,10 +1017,11 @@ const getLocation = async () => {
              </div>
          </IonCard>
  
-         <IonCard id="ionCardOrden">
-            <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto",alignItems:"center", textAlign:"center", marginTop:"25px"}}>
-            <h1 style={{fontSize:"1.5em", color:"black"}}>IMÁGENES DE REFERENCIA DEL TRABAJO</h1>
-            </div> 
+         <IonCard id="ionCardCompletarRubros">
+            <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >IMÁGENES DE REFERENCIA CARGADAS</h2>    
+                <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+            </div>
              
              <div id="imagenesCompletarRubro">
              
@@ -1133,14 +1153,21 @@ const getLocation = async () => {
              </div>
              <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"auto"}}>
                  
-             <IonCard id="ionCardOrden">
+             <IonCard id="ionCardCompletarRubros">
+                <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                    <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >CLASE DE RUBRO</h2>    
+                    <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+                </div>
                 <IonItem onClick={() => setSeleccionDeRubro("listaDeRubros")}>
                     <IonLabel id="label">{rubroSeleccionado} </IonLabel>
                 </IonItem>
             </IonCard>
  
-            <IonCard id="ionCardOrden">
-                <h1 style={{fontSize:"1.5em", color:"black"}}>DATOS DE JORNADA LABORAL</h1>
+            <IonCard id="ionCardCompletarRubros">
+                <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                    <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >DATOS DE JORNADA LABORAL</h2>    
+                    <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+                </div>
                 <strong style={{margin:"15px 0px 15px 0px"}}>SELECIONE LOS DIAS DE TRABAJO</strong>
                     <DiasdeTrabajo dias={props.dias}></DiasdeTrabajo>
            
@@ -1305,13 +1332,15 @@ const getLocation = async () => {
         <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100%"}}>
             
                  
-        <IonCard id="ionCardOrden">
-        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto",alignItems:"center", textAlign:"center"}}>
-           <h1 style={{fontSize:"1.5em", color:"black"}} >DESCRIBA SU TRABAJO</h1>
-        </div>
-        <p style={{fontSize:"1em", marginTop:"15px", color:"black"}}>Una buena descripción de su trabajo sirve como una guía de referencia para los futuros clientes</p>
-
-        <IonItemDivider />
+        <IonCard id="ionCardCompletarRubros">
+            <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >DESCRIBA SU TRABAJO</h2>    
+                <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+            </div>
+            <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px 0 20px 0"}}>
+                <p style={{fontSize:"1em", marginTop:"15px", color:"black"}}>Una buena descripción de su trabajo sirve como una guía de referencia para los futuros clientes</p>
+            </div>
+        
                      <IonItem id="item-completarRubro-descripcion">
                          <IonTextarea id="textArea" autoGrow={true} maxlength={450} placeholder="Ingrese descripción de su trabajo" onIonInput={(e: any) => props.descripcion.current=(e.target.value)}></IonTextarea>
                      </IonItem>
@@ -1362,9 +1391,11 @@ const getLocation = async () => {
             
             <h1>DATOS GENERALES</h1>
 
-            <IonCard id="ionCardOrden">
-                <h1 style={{fontSize:"1.5em", color:"black"}}>DATOS DE DOMICILIO</h1>
-                 <IonItemDivider />
+            <IonCard id="ionCardCompletarRubros">
+            <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >DATOS DE DOMICILIO</h2>    
+                <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+            </div>
 
                  <IonItem id="item-rubro-domicilio">
                      <IonLabel position="floating">País</IonLabel>
@@ -1393,13 +1424,16 @@ const getLocation = async () => {
                     
              </IonCard>
  
-             <IonCard id="ionCardOrden">
-                 <h1 style={{fontSize:"1.5em", color:"black"}}>VISITA A CLIENTES</h1>
-                 <IonItemDivider />
+             <IonCard id="ionCardCompletarRubros">
+             <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >VISITA A CLIENTES</h2>    
+                <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+            </div>
 
-                 <div>
-                     <p>Ingrese si va a la locación de clientes</p>
-                     <p>En caso de que no se desplace a locación de clientes no seleccione la casilla de verificación y presion siguiente</p>
+                <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px 15px 30px 0"}}>
+
+                     <p style={{fontSize:"1em", marginTop:"15px", marginLeft:"15px", marginBottom:"35px", color:"black"}}>Ingrese si va a la locación de clientes.
+                     En caso de que no se desplace a locación de clientes no seleccione la casilla de verificación y presion siguiente</p>
                  </div>
                  <IonItem>
                      <IonGrid>
@@ -1624,10 +1658,16 @@ const getLocation = async () => {
             </div> 
 
             <IonCard style={{margin:"15px, 0px 15px 0px",display:"flex", flexDirection:"column", justifyContent:"center", with:"100%", height:"100%"}}>
+            <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >CERTIFICACIÓN</h2>    
+                <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+            </div>   
+            <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", margin:"5px 0 35px 15px"}}>
+                <p style={{fontSize:"1em", color:"black"}}>Foto o captura de certificación o título habilitante para el trabajo.
+                Certificación de curso o título muestra a los clientes sus conocimientos en la materia
+                </p>
+            </div>
                    
-                    <p style={{fontSize:"0.9em"}}>Foto o captura de certificación o título habilitante para el trabajo</p>
-                    <p style={{fontSize:"0.9em"}}>Certificación de curso o título muestra a los clientes sus conocimientos en la materia</p>
-                    <IonItemDivider />
 
                     <TomarFotografia imagen={props.certificacionMostrar} setFilepath={props.certificacion} ></TomarFotografia>
                 </IonCard>
@@ -1671,14 +1711,18 @@ const getLocation = async () => {
                         
                     
                             <IonCard style={{margin:"15px, 0px 15px 0px",display:"flex", flexDirection:"column", justifyContent:"center", with:"100%", height:"100%"}}>
-                            <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto",alignItems:"center", textAlign:"center", marginTop:"25px"}}>
-                                <h1 style={{fontSize:"1.5em", color:"black"}}>INGRESE IMÁGENES DE SU TRABAJO</h1>
-                            </div>
-                                                    
-                            <p style={{fontSize:"0.9em"}}>Dichas fotos serán mostradas a sus clientes</p>
-                            <p style={{fontSize:"0.9em"}}>Ingrese fotos o capturas que destaquen lo que hace</p>
-                            <IonItemDivider />
                            
+                            <div style={{display:"flex", flexDirection:"column", textAlign:"left",alignItems:"left", justifyContent:"left",width:"100%", height:"auto", marginLeft:"15px"}}>
+                                <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >INGRESE IMÁGENES DE SU TRABAJO</h2>    
+                                <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+                            </div>
+                            <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", margin:"10px 0 35px 15px"}}>
+                                <p style={{fontSize:"1em", color:"black"}}>Dichas fotos serán mostradas a sus clientes.
+                                Ingrese fotos o capturas que destaquen lo que hace
+                                </p>
+                            </div>
+                             
+                                                       
                                              <TomarFotografia imagen={props.foto1Mostrar} setFilepath={props.foto1} />
                                    
                                          <TomarFotografia imagen={props.foto2Mostrar} setFilepath={props.foto2} />
@@ -1703,11 +1747,14 @@ const getLocation = async () => {
      if (props.rubro=="PLOMERIA" || props.rubro=="GASISTA" || props.rubro=="CERRAJERÍA" || props.rubro=="ELECTRICIDAD" || props.rubro=="FLETE" || props.rubro=="MECANICA" || props.rubro=="REMOLQUES - GRÚAS" ){
          return( 
              
-            <IonCard id="ionCardOrden">     
+            <IonCard id="ionCardCompletarRubros">     
+
+                <div style={{display:"flex", flexDirection:"row",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
                 <img src={"./assets/icon/sirena.png"} style={{width:"32px", height:"32px"}} />
 
-             <IonTitle style={{margin:"15px 0px 10px 0px"}}>ÓRDENES DE EMERGENCIA</IonTitle>
-                 <IonItemDivider />
+                <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 20px"}} >ÓRDENES DE EMERGENCIA</h2>    
+                <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+            </div>
              <div>
                  <p>Aceptar órdenes de emergencia implica tener la disponibilidad para asistir a los domicilios de los clientes cuando lo requieran</p>
                  <p>Deberá atender las ordenes de emergencia de manera prioritaria</p>

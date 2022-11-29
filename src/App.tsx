@@ -201,8 +201,7 @@ const App: React.FC = () => {
           
 
           if(res5!=null){
-            console.log("sera por esto?"+JSON.parse(res5).rubro)
-          console.log("sera por esto?"+res5)
+           
             setItemRubro2({
               rubro:JSON.parse(res5).rubro,
               radius:JSON.parse(res5).radius,

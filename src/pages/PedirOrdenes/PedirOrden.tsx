@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { arrowBack, camera, close, location, logoWindows, trash } from 'ionicons/icons';
 import { isSetAccessorDeclaration } from 'typescript';
 import { allowedNodeEnvironmentFlags } from 'process';
-import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent, IonDatetime, IonCheckbox, IonLoading, IonTitle, IonSegment, IonSegmentButton, IonItemDivider } from '@ionic/react';
+import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent, IonDatetime, IonCheckbox, IonLoading, IonTitle, IonSegment, IonSegmentButton, IonItemDivider, useIonRouter } from '@ionic/react';
 import { Link, useHistory } from 'react-router-dom';
 import Https from '../../utilidades/HttpsURL';
 import { setDB } from '../../utilidades/dataBase';
@@ -61,15 +61,16 @@ const OrdenSimple = (props:{ordenes:any,data:any, clienteEmail:any , setVolver:a
     const [showAlertYaHayOrden,setShowAlertYaHayOrden]=useState(false)
     
     const ticket = useRef()
-    let history = useHistory();
 
     const[yaTieneRubro, setYaTieneRubro] = useState(false)
+
+    const router = useIonRouter();
 
 
     const irAHome = () => {
 
-        history.push("/home");
-        window.location.reload();
+        router.push("/home", "forward", "push");
+        window.location.reload()
 
     }
 
@@ -102,9 +103,6 @@ const OrdenSimple = (props:{ordenes:any,data:any, clienteEmail:any , setVolver:a
         }
     }
 
-    const reload =() => {
-        window.location.reload();
-    }
 
     const enviar =() => {
 
@@ -148,8 +146,6 @@ const OrdenSimple = (props:{ordenes:any,data:any, clienteEmail:any , setVolver:a
                     headers: {"content-type": "multipart/form-data"},
                     data:formDataToUpload
                 }).then(function(res: any){
-
-                    console.log("veamos que llegó: "+res.data)
     
                     setShowLoading(false)
 
@@ -171,8 +167,7 @@ const OrdenSimple = (props:{ordenes:any,data:any, clienteEmail:any , setVolver:a
                 
                 }).catch((error: any) =>{
                     setShowLoading(false)
-      //              setVista(0)
-                    //Network error comes in
+   
                 });
         }
         
@@ -499,7 +494,7 @@ const OrdenSimple = (props:{ordenes:any,data:any, clienteEmail:any , setVolver:a
                 </div>
 
             <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto"}}>
-            <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => reload()}>IR A HOME</IonButton>
+            <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => irAHome()}>IR A HOME</IonButton>
             </div>
           </div> 
           </IonContent>

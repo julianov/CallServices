@@ -1,3 +1,12 @@
+#ionCardCompletarRubros{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 95%;
+    padding-bottom: 30px;
+}
 
 #item{
     width: 100%;
