@@ -7,7 +7,7 @@ import {  Link, Redirect } from 'react-router-dom';
 import { useRef } from 'react';
 import Https from '../../utilidades/HttpsURL';
 import { setItem } from '../../utilidades/Storage';
-import { IonAlert, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonListHeader, IonLoading, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonSearchbar, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
+import { IonAlert, IonButton, IonButtons, IonCard, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonList, IonListHeader, IonLoading, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonSearchbar, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
 import axios from 'axios';
 import { useUserContext } from '../../Contexts/UserContext';
 import { usuario } from '../../Interfaces/interfaces';
@@ -270,30 +270,33 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
           <a onClick={()=>setCount("registro inicio")} id="flechaIngresar">
             <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro">  </IonIcon>
           </a>
-          <div  style={{ margin:"30px 0px 0px 0px", display:"flex", flexDirection:"column", textAlign:"center" , width:"100%", height:"auto"}}>
-
-          <h2 style={{fontSize:"1.5em", color:"black"}}>COMPLETE SUS DATOS</h2>
-          </div>
-
+         
         </div>
 
         <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100%"}}>
-          <IonItem id="item-registro">
-              <IonLabel position="floating">E-mail</IonLabel>
-              <IonInput autocomplete="email" type="email" onIonInput={(e: any) => email.current = e.target.value}></IonInput>
-          </IonItem>
-          <IonItem id="item-registro">
-                <IonLabel position="floating">Contraseña</IonLabel>
-                <IonInput type="password" onIonInput={(e: any) => password.current = (e.target.value)}></IonInput>
+          <IonCard style={{display:"flex",flexDirection:"column",width:"90%", height:"auto", paddingBottom:"20px"}}>
+            <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+              <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >COMPLETE SUS DATOS </h2>    
+              <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+            </div>
+            <IonItem style={{width:"80%", align:"left", marginBottom:"15px"}} >
+                <IonLabel position="floating">E-mail</IonLabel>
+                <IonInput autocomplete="email" type="email" onIonInput={(e: any) => email.current = e.target.value}></IonInput>
             </IonItem>
-          <IonItem id="item-registro">
-                <IonLabel position="floating">Repita la Contraseña</IonLabel>
-                <IonInput type="password" id="contraseña2" onIonInput={(e: any) => password2.current = (e.target.value)}></IonInput>
-            </IonItem>
+            <IonItem style={{width:"80%", align:"left",marginBottom:"15px"}}>
+                  <IonLabel position="floating">Contraseña</IonLabel>
+                  <IonInput type="password" onIonInput={(e: any) => password.current = (e.target.value)}></IonInput>
+              </IonItem>
+            <IonItem style={{width:"80%", align:"left",marginBottom:"15px"}}>
+                  <IonLabel position="floating">Repita la Contraseña</IonLabel>
+                  <IonInput type="password" id="contraseña2" onIonInput={(e: any) => password2.current = (e.target.value)}></IonInput>
+              </IonItem>
+
+            </IonCard>
+
         </div>
         <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100px"}}>
-        <IonButton shape="round" onClick={enviarRegistro} style={{margin:"0px 0px 30px 0px", width:"90%"}}>CONTINUAR</IonButton>
-
+          <IonButton shape="round" onClick={enviarRegistro} style={{margin:"0px 0px 30px 0px", width:"90%"}}>CONTINUAR</IonButton>
         </div >
       </div >
 
@@ -344,26 +347,29 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
           <a onClick={()=>setCount("registro inicio")} id="flechaIngresar">
             <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro">  </IonIcon>
           </a>
-          <div  style={{ margin:"30px 0px 0px 0px", display:"flex", flexDirection:"column", textAlign:"center" , width:"100%", height:"auto"}}>
-
-          <h2 style={{fontSize:"1.5em", color:"black"}}>COMPLETE SUS DATOS</h2>
-          </div>
-
+        
         </div>
 
         <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100%"}}>
-          <IonItem id="item-registro">
-              <IonLabel position="floating">E-mail</IonLabel>
-              <IonInput autocomplete="email" type="email" onIonInput={(e: any) => email.current = e.target.value}></IonInput>
-          </IonItem>
-          <IonItem id="item-registro">
-                <IonLabel position="floating">Contraseña</IonLabel>
-                <IonInput type="password" onIonInput={(e: any) => password.current = (e.target.value)}></IonInput>
-            </IonItem>
-          <IonItem id="item-registro">
-                <IonLabel position="floating">Repita la Contraseña</IonLabel>
-                <IonInput type="password" id="contraseña2" onIonInput={(e: any) => password2.current = (e.target.value)}></IonInput>
-            </IonItem>
+          <IonCard style={{display:"flex",flexDirection:"column",width:"90%", height:"auto", paddingBottom:"20px"}}>
+              <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >COMPLETE SUS DATOS </h2>    
+                <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+              </div>
+              <IonItem style={{width:"80%", align:"left", marginBottom:"15px"}} >
+                  <IonLabel position="floating">E-mail</IonLabel>
+                  <IonInput autocomplete="email" type="email" onIonInput={(e: any) => email.current = e.target.value}></IonInput>
+              </IonItem>
+              <IonItem style={{width:"80%", align:"left",marginBottom:"15px"}}>
+                    <IonLabel position="floating">Contraseña</IonLabel>
+                    <IonInput type="password" onIonInput={(e: any) => password.current = (e.target.value)}></IonInput>
+                </IonItem>
+              <IonItem style={{width:"80%", align:"left",marginBottom:"15px"}}>
+                    <IonLabel position="floating">Repita la Contraseña</IonLabel>
+                    <IonInput type="password" id="contraseña2" onIonInput={(e: any) => password2.current = (e.target.value)}></IonInput>
+              </IonItem>
+
+          </IonCard>
         </div>
         <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100px"}}>
         <IonButton shape="round" onClick={enviarRegistro} style={{margin:"0px 0px 30px 0px", width:"90%"}}>CONTINUAR</IonButton>
@@ -386,26 +392,29 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
           <a onClick={()=>setCount("registro inicio")} id="flechaIngresar">
             <IonIcon icon={arrowBack}  slot="icon-only" id="flecha-volver-registro">  </IonIcon>
           </a>
-          <div  style={{ margin:"30px 0px 0px 0px", display:"flex", flexDirection:"column", textAlign:"center" , width:"100%", height:"auto"}}>
-
-          <h2 style={{fontSize:"1.5em", color:"black"}}>COMPLETE SUS DATOS</h2>
-          </div>
-
+          
         </div>
 
         <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100%"}}>
-          <IonItem id="item-registro">
-              <IonLabel position="floating">E-mail</IonLabel>
-              <IonInput autocomplete="email" type="email" onIonInput={(e: any) => email.current = e.target.value}></IonInput>
-          </IonItem>
-          <IonItem id="item-registro">
-                <IonLabel position="floating">Contraseña</IonLabel>
-                <IonInput type="password" onIonInput={(e: any) => password.current = (e.target.value)}></IonInput>
-            </IonItem>
-          <IonItem id="item-registro">
-                <IonLabel position="floating">Repita la Contraseña</IonLabel>
-                <IonInput type="password" id="contraseña2" onIonInput={(e: any) => password2.current = (e.target.value)}></IonInput>
-            </IonItem>
+        <IonCard style={{display:"flex",flexDirection:"column",width:"90%", height:"auto", paddingBottom:"20px"}}>
+              <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >COMPLETE SUS DATOS </h2>    
+                <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+              </div>
+              <IonItem style={{width:"80%", align:"left", marginBottom:"15px"}} >
+                  <IonLabel position="floating">E-mail</IonLabel>
+                  <IonInput autocomplete="email" type="email" onIonInput={(e: any) => email.current = e.target.value}></IonInput>
+              </IonItem>
+              <IonItem style={{width:"80%", align:"left",marginBottom:"15px"}}>
+                    <IonLabel position="floating">Contraseña</IonLabel>
+                    <IonInput type="password" onIonInput={(e: any) => password.current = (e.target.value)}></IonInput>
+                </IonItem>
+              <IonItem style={{width:"80%", align:"left",marginBottom:"15px"}}>
+                    <IonLabel position="floating">Repita la Contraseña</IonLabel>
+                    <IonInput type="password" id="contraseña2" onIonInput={(e: any) => password2.current = (e.target.value)}></IonInput>
+              </IonItem>
+
+          </IonCard>
         </div>
         <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"100px"}}>
         <IonButton shape="round" onClick={enviarRegistro} style={{margin:"0px 0px 30px 0px", width:"90%"}}>CONTINUAR</IonButton>

@@ -13,6 +13,7 @@ import Https from "../../utilidades/HttpsURL";
 import Estrellas from "../Estrellas/Estrellas";
 import CardProveedor from "../../utilidades/CardProveedor";
 import { IonActionSheet, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonDatetime, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonPage, IonRange, IonRow, IonSelect, IonSelectOption, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
+import { useUserContext } from "../../Contexts/UserContext";
 
 
 //var arreglo_resultado_busqueda=new Array()
@@ -52,7 +53,6 @@ export interface categoriaBuscada{
 
 const ResultadoBusqueda =  (props:{ordenes:any, arreglo_ultimos:any, emailCliente:any, arreglo_categorias:any, busquedaDatosProveedores:any})=> {
 
-    //var ultimos=props.arreglo_ultimos
 
     const [ultimos, setUltimos] =  useState <categoriaBuscada []> ( props.arreglo_ultimos)
 
@@ -62,12 +62,6 @@ const ResultadoBusqueda =  (props:{ordenes:any, arreglo_ultimos:any, emailClient
         ultimos.length=4 //solamente muestro las últimas 4 busquedas recientes
     }
 
-
-   /* useEffect(() => {   
-        console.log("los ultimos son: "+JSON.stringify(props.arreglo_ultimos))
-
-    }, [ultimos])*/
-
     const [showLoading, setShowLoading]=useState(false)
 
     const deDondeProviene=useRef("nada")
@@ -75,6 +69,9 @@ const ResultadoBusqueda =  (props:{ordenes:any, arreglo_ultimos:any, emailClient
     const [caracteres,setCaracteres]=useState()
     const [imagenes,setImagenes]=useState()
     const email=useRef("")
+
+    const  {user,setUser}  = useUserContext()
+
 
     const [lista, setLista] = useState("nada")
 
@@ -111,7 +108,7 @@ const ResultadoBusqueda =  (props:{ordenes:any, arreglo_ultimos:any, emailClient
         setShowLoading(true)
         const axios = require('axios');
         const ubicacion = getLocation();
-
+        console.log("veamos el valor: "+valor)
         ubicacion.then((value)=>{
             axios.get(url2+"home/cliente/pedirdatos/"+valor+"/"+"caracteres"+"/"+value, {timeout: 5000}).then((resp: { data: any; }) => {
                 
@@ -196,7 +193,7 @@ const ResultadoBusqueda =  (props:{ordenes:any, arreglo_ultimos:any, emailClient
                 </div> 
 
                 <div id="contenedorCentral-busqueda">
-                    <CardProveedor ordenes={props.ordenes} data={caracteres} imagenes={imagenes} emailCliente={email.current} proveedorEmail={email.current} ></CardProveedor>
+                    <CardProveedor ordenes={props.ordenes} data={caracteres} imagenes={imagenes} emailCliente={user!.email} proveedorEmail={email.current} ></CardProveedor>
                 </div>
             </>
         )
@@ -218,7 +215,7 @@ const ResultadoBusqueda =  (props:{ordenes:any, arreglo_ultimos:any, emailClient
                         i=i+1
                         
                             return (
-                                <IonItem key={i} id="item-busqueda" onClick={() => BuscarProveedor(a.item+"/"+a.email)}>
+                                <IonItem key={i} id="item-busqueda" onClick={() => BuscarProveedor(a.email+"/"+a.item)}>
                                 <IonGrid>
                                     <IonRow id="row-busqueda">
                                         <IonCol size="auto" id="col-img"><img id="imagen-busqueda" src= {a.imagen}></img></IonCol>

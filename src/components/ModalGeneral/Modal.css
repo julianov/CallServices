@@ -492,6 +492,8 @@ width: 95%;
   display: flex;
   justify-content: center;
   margin-bottom: 25px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 #centro{

@@ -1,4 +1,4 @@
-import { IonAlert, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonListHeader, IonLoading, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonSearchbar, IonTitle, IonToolbar, useIonRouter, useIonViewDidEnter } from '@ionic/react';
+import { IonAlert, IonButton, IonButtons, IonCard, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonList, IonListHeader, IonLoading, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonSearchbar, IonTitle, IonToolbar, useIonRouter, useIonViewDidEnter } from '@ionic/react';
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { useUserContext } from '../../Contexts/UserContext';
@@ -100,20 +100,25 @@ const ValidarEmail = (props:{setIsReg:any, setCliente:any, setTipoCliente:any ,s
     return (
 
 
-        <><div style={{ display: "flex", flexDirection: "column", width: "100%", height: "100vh" }}>
+        <><div style={{ display: "flex", flexDirection: "column", width: "100%", height: "100vh",background: "#f3f2ef" }}>
 
             <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "100px" }}>
-                <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "auto", textAlign: "center" }}>
-                    <h2 style={{ fontSize: "1.2em", color: "black", marginTop: "35px" }}>VALIDACIÓN VÍA EMAIL</h2>
-                    <h2 style={{ fontSize: "1.2em", color: "black" }}>SE HA ENVIADO AL E-MAIL CÓDIGO PARA VALIDACIÓN</h2>
-                </div>
+               
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: "100%", height: "100%" }}>
-                <IonItem id="item-registro-validacion">
+              <IonCard style={{display:"flex",flexDirection:"column",width:"90%", height:"auto", paddingBottom:"20px"}}>
+                <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                  <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >VALIDACIÓN VÍA EMAIL</h2>    
+                  <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+                </div>
+                <h2 style={{ fontSize: "1.2em", color: "black" }}>SE HA ENVIADO AL E-MAIL CÓDIGO PARA VALIDACIÓN</h2>
+
+                <IonItem style={{width:"80%", margin:"15px 0px 15px 0px"}} >
                     <IonLabel position="floating">Código de validación</IonLabel>
                     <IonInput mode='ios' value="" onIonInput={(e: any) => codigo_agregado.current = (e.target.value)}></IonInput>
                 </IonItem>
+              </IonCard>
             </div>
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: "100%", height: "100px" }}>
                 <IonButton shape="round" onClick={completarRegistro} style={{ margin: "0px 0px 30px 0px", width: "90%" }}>CONTINUAR</IonButton>
@@ -145,18 +150,26 @@ const ValidarEmail = (props:{setIsReg:any, setCliente:any, setTipoCliente:any ,s
   else{
     return (
      
-      <div id="contenedorPrincipalRegistro">
+  <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "100vh",background: "#f3f2ef" }}>
       <header id="headerRegistro">
-        <IonTitle id="register-title">VALIDACIÓN VÍA EMAIL</IonTitle>
-        <IonTitle id="register-title2">SE HA ENVIADO AL E-MAIL CÓDIGO PARA VALIDACIÓN</IonTitle> 
-        <IonTitle id="register-title2">Código erroneo, Vuelva a verificar!</IonTitle> 
       </header>
 
       <div id="contenedorCentralRegistro">
-        <IonItem id="item-registro-validacion">
-          <IonLabel position="floating">Código de validación</IonLabel>
-          <IonInput mode='ios' value="" onIonInput={(e: any) => codigo_agregado.current = (e.target.value)}></IonInput>
-        </IonItem>
+        <IonCard style={{display:"flex",flexDirection:"column",width:"90%", height:"auto", paddingBottom:"20px"}}>
+                <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                  <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >VALIDACIÓN VÍA EMAIL</h2>    
+                  <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+                </div>
+                <div style={{display:"flex", flexDirection:"column",textAlign:"center",alignItems:"center", margin:"10px 0px 10px 0px"}}>
+                  <h2 style={{ fontSize: "1.2em", color: "black", margin:"0px 10px 0px 10px" }}>SE HA ENVIADO AL E-MAIL CÓDIGO PARA VALIDACIÓN</h2>
+                  <h2 style={{ fontSize: "0.9em", color: "black", margin:"10px 10px 0px 10px" }}>Código erroneo, Vuelva a verificar!</h2> 
+
+                </div>
+                <IonItem style={{width:"80%", margin:"15px 0px 15px 0px"}} >
+                    <IonLabel position="floating">Código de validación</IonLabel>
+                    <IonInput mode='ios' value="" onIonInput={(e: any) => codigo_agregado.current = (e.target.value)}></IonInput>
+                </IonItem>
+              </IonCard>
       </div>
 
       <footer id="footerRegistro">

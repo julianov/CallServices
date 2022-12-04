@@ -114,6 +114,7 @@ const verUbicacion = ( latitud:any, longitud:any) =>{
         for (let i=0; i < props.datosCompletos.length ; i++){
 
           if(props.datosCompletos[i].ticket==props.ticket){
+
             setOrden(
               {
                 rubro:props.datosCompletos[i].rubro,
@@ -286,8 +287,7 @@ const Primero = ( props:{datos:any, setVolver:any, setVista:any, setEstado:any, 
                     <div style={{display:"flex", flexDirection:"column", textAlign:"left", width:"100%", marginLeft:"25px"}} >
                         <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
                         <p style={{fontSize:"1em", color:"black"}}>TÍTULO: {props.datos.titulo}</p>
-                        <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-                        <p style={{fontSize:"1em", color:"black"}}>{props.datos.descripcion}</p>
+                        <p style={{fontSize:"1em", color:"black", margin:"0px 10px 15px 0px", lineHeight:"1.5em"}}>DESCRIPCIÓN DE LA SOLICITUD: {props.datos.descripcion} </p>        
                     </div>
                 </IonCard>
   
@@ -608,12 +608,15 @@ const RespuestaDeInfoEnviada  = (props:{datos:any, setVolver:any, setVista:any, 
                     <div style={{display:"flex", flexDirection:"column", textAlign:"left", width:"100%", marginLeft:"25px"}} >
                         <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
                         <p style={{fontSize:"1em", color:"black"}}>TÍTULO: {props.datos.titulo}</p>
-                        <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-                        <p style={{fontSize:"1em", color:"black"}}>{props.datos.descripcion}</p>
+                        <p style={{fontSize:"1em", color:"black", margin:"0px 10px 15px 0px", lineHeight:"1.5em"}}>DESCRIPCIÓN DE LA SOLICITUD: {props.datos.descripcion} </p>        
                     </div>
             </IonCard>
             
             <IonCard id="ionCard-explorerContainer-Proveedor">
+              <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+              <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >IMÁGENES DE REFERENCIA</h2>    
+              <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+              </div>
                 <Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
             </IonCard>
         
@@ -710,6 +713,7 @@ const OrdenPresupuestada = ( props:{datos:any, setVolver:any, setVista:any, setE
     });
 }
 
+
         return(
             <IonContent>
                 <div id="ionContentModalOrdenes">
@@ -746,6 +750,10 @@ const OrdenPresupuestada = ( props:{datos:any, setVolver:any, setVista:any, setE
                     </IonCard>
                     
                     <IonCard id="ionCard-explorerContainer-Proveedor">
+                      <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                      <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >IMÁGENES DE REFERENCIA</h2>    
+                      <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+                      </div>
                         <Imagenes picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
                     </IonCard>
                     
@@ -816,7 +824,6 @@ const EnEsperaDelProveedor = (props:{datos:any, setVolver:any, setVista:any, set
     props.setVolver(false)
     window.location.reload()
   }
-
       return (
         <IonContent>
               <div id="ionContentModalOrdenes">
@@ -861,12 +868,15 @@ const EnEsperaDelProveedor = (props:{datos:any, setVolver:any, setVista:any, set
                     <div style={{display:"flex", flexDirection:"column", textAlign:"left", width:"100%", marginLeft:"25px"}} >
                         <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
                         <p style={{fontSize:"1em", color:"black"}}>TÍTULO: {props.datos.titulo}</p>
-                        <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-                        <p style={{fontSize:"1em", color:"black"}}>{props.datos.descripcion}</p>
+                        <p style={{fontSize:"1em", color:"black", margin:"0px 10px 15px 0px", lineHeight:"1.5em"}}>DESCRIPCIÓN DE LA SOLICITUD: {props.datos.descripcion} </p>        
                     </div>
                   </IonCard>
     
                   <IonCard id="ionCard-explorerContainer-Proveedor">
+                    <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                      <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >IMÁGENES DE REFERENCIA</h2>    
+                      <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+                    </div>
                       <Imagenes picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
                   </IonCard>
 
@@ -974,8 +984,7 @@ const OrdenEnViaje = ( props:{datos:any, setVolver:any, setVista:any, setEstado:
                     <div style={{display:"flex", flexDirection:"column", textAlign:"left", width:"100%", marginLeft:"25px"}} >
                         <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
                         <p style={{fontSize:"1em", color:"black"}}>TÍTULO: {props.datos.titulo}</p>
-                        <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-                        <p style={{fontSize:"1em", color:"black"}}>{props.datos.descripcion}</p>
+                        <p style={{fontSize:"1em", color:"black", margin:"0px 10px 15px 0px", lineHeight:"1.5em"}}>DESCRIPCIÓN DE LA SOLICITUD: {props.datos.descripcion} </p>        
                     </div>
           </IonCard>
     
@@ -983,6 +992,10 @@ const OrdenEnViaje = ( props:{datos:any, setVolver:any, setVista:any, setEstado:
           <strong>IMÁGENES ADJUNTAS</strong>
         </div>
         <IonCard id="ionCard-explorerContainer-Proveedor">
+           <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+              <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >IMÁGENES DE REFERENCIA</h2>    
+              <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+              </div>
         < Imagenes2   picture1={props.datos.picture1} picture2={props.datos.picture2}   ></Imagenes2>
         </IonCard>
   
@@ -1366,8 +1379,7 @@ const Imagenes = (props:{picture1:any,picture2:any, ticket:any, tipo:any})=>{
 }
 
 const Imagenes2 = (props:{picture1:any,picture2:any})=>{
-  console.log("a ver las imágenes: "+props.picture1)
-  console.log("a ver las imágenes: "+props.picture2)
+
   if(props.picture1!="" && props.picture1!=undefined && props.picture2!="" && props.picture2!=undefined){
     return(
       <div id="CardProveedoresImg">
@@ -1449,9 +1461,11 @@ const Presupuesto = ( props:{presupuesto:any}) =>
     <>
      
       <IonCard id="ionCard-explorerContainer-Proveedor">
-          <h1 style={{ fontSize: "1em", color: "black" }}>PRESUPUESTO DEL PROVEEDOR:</h1>
+        <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+            <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >PRESUPUESTO DEL PROVEEDOR</h2>    
+            <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+        </div>
           <img style={{width:"32px", height:"32px"}} src={"./assets/icon/presupuesto.png"} />
-          <IonItemDivider />
           <h2 style={{ fontSize: "1em", color: "blue" }}>{props.presupuesto}</h2>
       </IonCard>
     </>
@@ -1461,12 +1475,18 @@ const Presupuesto = ( props:{presupuesto:any}) =>
 
 const FechaProgramadaPorProveedor = ( props:{hora:any, dia:any, setVista:any}) => {
 
+
   return (
 
     <IonCard id="ionCard-explorerContainer-Proveedor">
+
+      <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+        <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >FECHA Y HORA</h2>    
+        <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+      </div>
       <h1 style={{ fontSize: "1em", color: "black", marginTop: "20px" }}>FECHA Y HORA DE VISITA ESTIMATIVA:</h1>
-      <img style={{width:"32px", height:"32px"}} src={"./assets/icon/fecha.png"} />
-      <IonItemDivider />
+      <img style={{width:"32px", height:"32px", margin:"0px 0px 25px 0px"}} src={"./assets/icon/fecha.png"} />
+
       <h2 style={{ fontSize: "1em", color: "black" }}>DÍA DE VISITA PROPUESTA</h2>
       <h2 style={{ fontSize: "0.9em", color: "blue" }}>{props.dia}</h2>
       <h2 style={{ fontSize: "1em", color: "black" }}>HORA DE VISITA PROPUESTA</h2>
@@ -1492,7 +1512,6 @@ const RechazarOrden = (props:{datos:any, setVolver:any, setVista:any, estado:any
     }else{
       axios.get(url+"orden/cancelar/"+props.datos.ticket+"/"+props.datos.tipo+"/"+"CAN/"+motivoRechazo.current, {timeout: 7000})
       .then((resp: { data: any; }) => {
-        console.log("SE BORRO" +resp.data)
 
         if(resp.data!="bad"){
           

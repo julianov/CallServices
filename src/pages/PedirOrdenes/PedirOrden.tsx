@@ -110,6 +110,9 @@ const OrdenSimple = (props:{ordenes:any,data:any, clienteEmail:any , setVolver:a
 
             setShowLoading(true)
          
+            console.log("el email del proveedor: "+props.data.proveedorEmail)
+            console.log("el email del cliente: "+props.clienteEmail)
+
             var formDataToUpload = new FormData();
             formDataToUpload.append("clienteEmail", props.clienteEmail)
             formDataToUpload.append("tipoProveedor",props.data.tipo)
@@ -479,7 +482,7 @@ const OrdenSimple = (props:{ordenes:any,data:any, clienteEmail:any , setVolver:a
 
                 <IonCard id="ionCardOrden">
                     <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center", alignItems:"center"}}>
-                        <IonCardTitle style={{margin:"15px 0px 15px 0px"}}> NÚMERO DE TICKET: {ticket.current} </IonCardTitle>
+                        <IonCardTitle style={{margin:"25px 0px 15px 0px"}}> NÚMERO DE TICKET: {ticket.current} </IonCardTitle>
                         <IonCardTitle style={{margin:"0px 0px 0px 0px"}}>SOLICITUD ENVIADA </IonCardTitle>
                         <p id="p-estado">En espera de confirmación por parte del proveedor </p>
                         <img style={{width:"64px", height:"64px"}} src={"./assets/icon/servicio-en-espera.png"} />

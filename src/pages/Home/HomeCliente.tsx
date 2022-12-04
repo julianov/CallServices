@@ -216,6 +216,7 @@ const HomeCliente = (props:{setIsReg:any,
   
 }, [misOrdenes]);
 
+console.log("asdfasdfasdfasdfasdf: "+JSON.stringify(misOrdenes))
 
   useEffect(() => {
 
