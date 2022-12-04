@@ -278,19 +278,24 @@ const Primero = ( props:{datos:any, setVolver:any, setVista:any, setEstado:any, 
   
                 
                 <IonCard id="ionCard-explorerContainer-Proveedor">
-                  <div id="titulo">
-                      <IonTitle >DATOS DE ORDEN DE SERVICIO</IonTitle>  
-                  </div>
-                  <IonItemDivider />
-                    <div id="divSentencias">
+                <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                  <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >DATOS DE ORDEN DE SERVICIO</h2>    
+                  <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+                </div>
+                  
+                    <div style={{display:"flex", flexDirection:"column", textAlign:"left", width:"100%", marginLeft:"25px"}} >
                         <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
-                        <p style={{fontSize:"1em", color:"blue"}}>TÍTULO: {props.datos.titulo}</p>
+                        <p style={{fontSize:"1em", color:"black"}}>TÍTULO: {props.datos.titulo}</p>
                         <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-                        <p style={{fontSize:"1em", color:"blue"}}>{props.datos.descripcion}</p>
+                        <p style={{fontSize:"1em", color:"black"}}>{props.datos.descripcion}</p>
                     </div>
                 </IonCard>
   
                 <IonCard id="ionCard-explorerContainer-Proveedor">
+                <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                  <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >IMÁGENES DE REFERENCIA</h2>    
+                  <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+                </div>
                     <Imagenes picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
                 </IonCard>
                 
@@ -595,12 +600,17 @@ const RespuestaDeInfoEnviada  = (props:{datos:any, setVolver:any, setVista:any, 
             </IonCard>
             
             <IonCard id="ionCard-explorerContainer-Proveedor">
-                <div id="divSentencias">
-                    <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
-                    <p style={{fontSize:"1em", color:"black"}}>TÍTULO: {props.datos.titulo}</p>
-                    <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-                    <p style={{fontSize:"1em", color:"black"}}>{props.datos.descripcion}</p>
+            <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                  <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >DATOS DE ORDEN DE SERVICIO</h2>    
+                  <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
                 </div>
+                  
+                    <div style={{display:"flex", flexDirection:"column", textAlign:"left", width:"100%", marginLeft:"25px"}} >
+                        <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
+                        <p style={{fontSize:"1em", color:"black"}}>TÍTULO: {props.datos.titulo}</p>
+                        <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+                        <p style={{fontSize:"1em", color:"black"}}>{props.datos.descripcion}</p>
+                    </div>
             </IonCard>
             
             <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -843,12 +853,17 @@ const EnEsperaDelProveedor = (props:{datos:any, setVolver:any, setVista:any, set
                   </IonCard>
 
                   <IonCard id="ionCard-explorerContainer-Proveedor">
-                      <div id="divSentencias">
-                          <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
-                          <p style={{fontSize:"1em", color:"black"}}>TÍTULO: {props.datos.titulo}</p>
-                          <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-                          <p style={{fontSize:"1em", color:"black"}}>{props.datos.descripcion}</p>
-                      </div>
+                  <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                  <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >DATOS DE ORDEN DE SERVICIO</h2>    
+                  <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+                </div>
+                  
+                    <div style={{display:"flex", flexDirection:"column", textAlign:"left", width:"100%", marginLeft:"25px"}} >
+                        <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
+                        <p style={{fontSize:"1em", color:"black"}}>TÍTULO: {props.datos.titulo}</p>
+                        <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+                        <p style={{fontSize:"1em", color:"black"}}>{props.datos.descripcion}</p>
+                    </div>
                   </IonCard>
     
                   <IonCard id="ionCard-explorerContainer-Proveedor">
@@ -951,12 +966,17 @@ const OrdenEnViaje = ( props:{datos:any, setVolver:any, setVista:any, setEstado:
           </IonCard>
     
           <IonCard id="ionCard-explorerContainer-Proveedor">
-            <div id="divSentencias">
-              <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
-              <p style={{fontSize:"1em", color:"black"}}>TÍTULO: {props.datos.titulo}</p>
-              <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-              <p style={{fontSize:"1em", color:"black"}}>{props.datos.descripcion}</p>
-            </div>
+          <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                  <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >DATOS DE ORDEN DE SERVICIO</h2>    
+                  <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+                </div>
+                  
+                    <div style={{display:"flex", flexDirection:"column", textAlign:"left", width:"100%", marginLeft:"25px"}} >
+                        <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
+                        <p style={{fontSize:"1em", color:"black"}}>TÍTULO: {props.datos.titulo}</p>
+                        <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
+                        <p style={{fontSize:"1em", color:"black"}}>{props.datos.descripcion}</p>
+                    </div>
           </IonCard>
     
           <div id="titulo">
@@ -1501,14 +1521,15 @@ const RechazarOrden = (props:{datos:any, setVolver:any, setVista:any, estado:any
           <div id="modalProveedor-flechaVolver">
             <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
           </div>
-          <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
-            <h1>RECHAZAR ORDEN</h1>
-          </div>
+          
         </div>                            
 
       <div style={{display:"flex",flexDirection:"column", alignItems:"center", justifyContent:"center" ,width:"100%",  height:"100%"}}>
         <IonCard style={{display:"flex",flexDirection:"column",width:"90%", height:"auto"}}>
-          <h1 style={{fontSize:"1em", color:"black", alignSelf:"left"}}>MOTIVO DE RECHAZO DE ORDEN</h1>
+        <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+          <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >RECHAZAR ORDEN</h2>    
+          <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+        </div>
 
             <IonItem style={{width:"100%",margin:"25px 0px 25px 0px"}}>
               <IonLabel position="floating">INGRESE MOTIVO DEL RECHAZO </IonLabel>

@@ -107,7 +107,7 @@ const CardProveedor= (props:{ ordenes:any, data:any, imagenes:any, emailCliente:
 
   const [imagenesProveedoresArray, setImagenesProveedores] = useState <imagenesProveedor>(
     {
-      certificate:"",
+    certificate:"",
     picture1:"",
     picture2:"",
     picture3:""
@@ -185,7 +185,7 @@ const CardProveedor= (props:{ ordenes:any, data:any, imagenes:any, emailCliente:
     useEffect(() => {   
 
       if (datosProveedoresArray.nombre!="nombre" && datosProveedoresArray.last_name!="apellido" && datosProveedoresArray.picture!="" && datosProveedoresArray.qualification!=undefined && datosProveedoresArray.items!=""){
-        console.log("tiene que haberse ejecutado getDB")
+        
         getDB("UltimosProveedores").then(res => {
            if(res!=null){
              if(res.length<5){
@@ -283,10 +283,12 @@ const CardProveedor= (props:{ ordenes:any, data:any, imagenes:any, emailCliente:
           </IonCard>
          
           <IonCard id="ionCard-CardProveedor">
-            <div style={{display:"flex", flexDirection:"column", textAlign:"center"}}>
-            <h1 style={{fontSize:"1em",fontWeight:"bold", color:"black"}}>LOCACIÓN DEL PROVEEDOR</h1>
-              </div>
-              <IonItemDivider></IonItemDivider>
+            <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+              <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >LOCACIÓN DEL PROVEEDOR</h2>    
+              <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+            </div>
+
+
               <div style={{display:"flex", textAlign:"center"}}>
               <IonItem lines="none"> {datosProveedoresArray.locacion} </IonItem>
               </div>
@@ -301,10 +303,11 @@ const CardProveedor= (props:{ ordenes:any, data:any, imagenes:any, emailCliente:
 
             
             <IonCard id="ionCard-CardProveedor">
-              <div style={{display:"flex", flexDirection:"column", textAlign:"center"}}>
-              <h1 style={{fontSize:"1em",fontWeight:"bold", color:"black"}}>DATOS DE JORNADA LABORAL</h1>
-              </div>
-              <IonItemDivider></IonItemDivider>
+            <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+              <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >DATOS DE JORNADA LABORAL</h2>    
+              <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+            </div>
+             
                 <div id="CardProveedorContainer">
                   <IonItem lines="none"> DIAS LABORALES: {datosProveedoresArray.days_of_works}  </IonItem>
                   <IonItem lines="none"> HORA DE INICIO DE LA JORNADA: {datosProveedoresArray.hour_init}  </IonItem>
@@ -314,18 +317,21 @@ const CardProveedor= (props:{ ordenes:any, data:any, imagenes:any, emailCliente:
 
            
             <IonCard id="ionCard-CardProveedor">
-              <div style={{display:"flex", flexDirection:"column", textAlign:"center"}}>
-              <h1 style={{fontSize:"1em",fontWeight:"bold", color:"black"}}>CERTIFICADO</h1>
+              <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >CERTIFICADO HABILITANTE</h2>    
+                <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
               </div>
-              <IonItemDivider></IonItemDivider>
+
                 <Certificado certificado={imagenesProveedoresArray.certificate}></Certificado>
             </IonCard>
            
             <IonCard id="ionCard-CardProveedor">
-            <div style={{display:"flex", flexDirection:"column", textAlign:"center"}}>
-            <h1 style={{fontSize:"1em",fontWeight:"bold", color:"black"}}> IMÁGENES DE REFERENCIA</h1>
+            <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+              <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >IMÁGENES DE REFERENCIA</h2>    
+              <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
             </div>
-            <IonItemDivider></IonItemDivider>
+
+           
                 <Imagenes picture1={imagenesProveedoresArray.picture1} picture2={imagenesProveedoresArray.picture2} picture3={imagenesProveedoresArray.picture3}></Imagenes>              
             </IonCard>
 

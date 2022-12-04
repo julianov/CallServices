@@ -91,7 +91,7 @@ const getLocation = async () => {
      //const [rubro, setRubro] = useState<string>("");
      const rubro=useRef<string>("")
  
-     const [radius, setRadius] = useState(1);
+     const [radius, setRadius] = useState(30);
     // const radius=useRef(0)
  
      const hace_orden_emergencia=useRef("no")
@@ -127,7 +127,7 @@ const getLocation = async () => {
  
      const [showLoading,setShowLoading]=useState(false)
  
-     const [reload,setReload] = useState(false)
+   //  const [reload,setReload] = useState(false)
  
  
  
@@ -135,7 +135,7 @@ const getLocation = async () => {
          if(vista==0){
              //setRubro("");
              rubro.current=""
-             setRadius (0);
+             setRadius (30);
              dias.current=""
              //setDias("");
              horaInicio.current= '06:00'
@@ -779,7 +779,7 @@ const getLocation = async () => {
        
                      <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"auto", justifyContent:"center", alignItems:"center", marginBottom:"32px"}}>
                      
-                        <IonButton shape="round" id="boton-inicialBR" onClick={()=> setTermino(true) } >FINALIZAR</IonButton>
+                        <IonButton shape="round" id="boton-inicialBR" onClick={()=> setTermino(true) } >FINALIZAR CARGA DE RUBROS</IonButton>
                      
                      </div>
            </div> 
@@ -1338,7 +1338,7 @@ const getLocation = async () => {
                 <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
             </div>
             <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px 0 20px 0"}}>
-                <p style={{fontSize:"1em", marginTop:"15px", color:"black"}}>Una buena descripción de su trabajo sirve como una guía de referencia para los futuros clientes</p>
+                <p style={{fontSize:"1em", marginTop:"15px", marginLeft:"15px", color:"black"}}>Una buena descripción de su trabajo sirve como una guía de referencia para los futuros clientes</p>
             </div>
         
                      <IonItem id="item-completarRubro-descripcion">
@@ -1387,9 +1387,9 @@ const getLocation = async () => {
  
      return(
             
-        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", justifyContent:"center", background:"#f3f2ef"}}>
+        <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", justifyContent:"center", textAlign:"center", background:"#f3f2ef"}}>
             
-            <h1>DATOS GENERALES</h1>
+            <h1>DATOS GENERALES DEL RUBRO</h1>
 
             <IonCard id="ionCardCompletarRubros">
             <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
@@ -1654,7 +1654,7 @@ const getLocation = async () => {
         <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", justifyContent:"center", background:"#f3f2ef"}}>
              
              <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto",alignItems:"center", textAlign:"center", marginTop:"25px"}}>
-                <h1 >CERTIFICACIÓN DE SU TRABAJO</h1>
+                <h1 >TITULACIÓN O CERTIFICACIÓN DE SU TRABAJO</h1>
             </div> 
 
             <IonCard style={{margin:"15px, 0px 15px 0px",display:"flex", flexDirection:"column", justifyContent:"center", with:"100%", height:"100%"}}>
@@ -1664,11 +1664,10 @@ const getLocation = async () => {
             </div>   
             <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", margin:"5px 0 35px 15px"}}>
                 <p style={{fontSize:"1em", color:"black"}}>Foto o captura de certificación o título habilitante para el trabajo.
-                Certificación de curso o título muestra a los clientes sus conocimientos en la materia
+                Demuestre a sus clientes los conocimientos en la materia.
                 </p>
             </div>
                    
-
                     <TomarFotografia imagen={props.certificacionMostrar} setFilepath={props.certificacion} ></TomarFotografia>
                 </IonCard>
 
@@ -1716,9 +1715,9 @@ const getLocation = async () => {
                                 <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >INGRESE IMÁGENES DE SU TRABAJO</h2>    
                                 <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
                             </div>
-                            <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", margin:"10px 0 35px 15px"}}>
-                                <p style={{fontSize:"1em", color:"black"}}>Dichas fotos serán mostradas a sus clientes.
-                                Ingrese fotos o capturas que destaquen lo que hace
+                            <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", margin:"1px 0 35px 15px"}}>
+                                <p style={{fontSize:"1em", color:"black"}}>Dichas imágenes o fotos serán mostradas a sus clientes.
+                                Ingrese fotos o capturas que destaquen su trabajo.
                                 </p>
                             </div>
                              
