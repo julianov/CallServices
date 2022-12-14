@@ -409,7 +409,11 @@ const Presupuestar = (props: {setVista:any, datos:any, setDatos:any ,setEstado:a
   const hora = useRef ("")
   const [showLoading, setShowLoading] =useState(false)
  
+
   const enviarPresupuesto = ()=>{
+
+    console.log("el dia es: "+dia.current)
+    console.log("la hora es: "+hora.current)
 
     if (precio.current!="0"){
       setShowLoading(true)
@@ -711,12 +715,15 @@ const EnEsperaInfo = (props: {datos:any, setDatos:any, estado:any, setVista:any,
         <IonItemDivider/>
         
 
-        <div style={{display:"flex", flexDirection:"column", textAlign:"center", width:"100%", height:"auto"}}>
-          <h1 style={{fontSize:"1.2em"}}>PRESUPUESTO</h1>
-        </div>
         <IonCard id="ionCard-explorerContainer-Proveedor">
-          <h2 style={{fontSize:"1.1em"}}>Se ha pedido más información al cliente.</h2>
-          <h2 style={{fontSize:"1.1em"}}>Si no desea esperar su respuesta puede enviar presupuesto estimativo.</h2>
+        <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+          <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >PRESUPUESTO</h2>    
+          <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+        </div>
+
+
+          <h2 style={{fontSize:"1.1em", margin:"0px 5px 0px 5px"}}>Se ha pedido más información al cliente.</h2>
+          <h2 style={{fontSize:"1.1em", margin:"5px 5px 0px 5px"}}>Si no desea esperar su respuesta puede enviar presupuesto estimativo.</h2>
           <h1 style={{fontSize:"1.2em", color:"black"}}>PRESUPUESTAR:</h1>
           <IonItem style={{width:"80%",margin:"0px 0px 20px 0px"}}>
             <IonLabel position="floating">INGRESE PRECIO ESTIMATIVO </IonLabel>
@@ -785,7 +792,10 @@ const NuevaInfo = (props: {datos:any, setDatos:any, estado:any, setVista:any,set
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false) 
   const [showAlertIngresarPresupuesto,setShowAlertIngresarPresupuesto]= useState(false) 
 
+  console.log("estoy en nueva info")
+
   const enviarPresupuesto = ()=>{
+    console.log("este presupuesto se ejecuta")
     if (precio.current!="0" ){
       setShowLoading(true)
       var formDataToUpload = new FormData();
@@ -1901,6 +1911,11 @@ const InfoIntercambiada = (props:{pedido_mas_información:any, respuesta_cliente
   if (props.pedido_mas_información!=""&&props.pedido_mas_información!=undefined){
     return (
       <><IonCard id="ionCard-explorerContainer-Proveedor">
+        <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+          <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >INFORMACIÓN INTERCAMBIADA</h2>    
+          <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+        </div>
+
           <p style={{ fontSize: "1em", color: "black", marginTop: "20px" }}>INFORMACIÓN SOLICITADA AL CLIENTE:</p>
           <p style={{ fontSize: "1em", color: "blue" }}>{props.pedido_mas_información}</p>
           <IonItemDivider />
@@ -1947,6 +1962,8 @@ const Presupuesto = ( props:{presupuesto:any}) =>
 const SeleccionarFecha = ( props:{hora:any, dia:any, horaactual:any, diaactual:any, orden:any, setOrden:any}) => {
 
   const [fechas, setFecha]=useState <string> ("")
+
+  console.log("fechas "+fechas)
 
   useEffect(() => {
 

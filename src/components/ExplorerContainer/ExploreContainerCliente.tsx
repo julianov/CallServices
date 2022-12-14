@@ -466,10 +466,15 @@ const CardVistaVariasOrdenes = (props:{setTicket:any, rubro:any, posicion:any,ti
     getDB(ticketeck.current.toString( )+"cliente").then(res => {
       if(res!=undefined || res!=null){
         if(res!=props.status){
-          setNuevoStatus(true)
+          if(props.status!="ENV" && props.status!="RES" && props.status!="ACE"){
+            setNuevoStatus(true)
+          }
+
         }  
         }else{
-          setNuevoStatus(false)
+          if(props.status!="ENV" && props.status!="RES" && props.status!="ACE"){
+            setNuevoStatus(true)
+          }
         }
     })
     
@@ -559,12 +564,13 @@ const CardVistaVariasOrdenesEmergencia  = (props:{setTicket:any, rubro:any, posi
       
       
       getDB(props.ticket+"cliente").then(res => {
+        console.log("A VER QUE VINO: "+ res)
         if(res!=undefined || res!=null){
           if(res!=props.status && props.status!="ENV"){
             setNuevoStatus(true)
           }  
           }else{
-            setNuevoStatus(false)
+            setNuevoStatus(true)
           }
       })
       
@@ -575,6 +581,8 @@ const CardVistaVariasOrdenesEmergencia  = (props:{setTicket:any, rubro:any, posi
     useEffect(() => {
       setImagen(retornarIconoCategoria(props.rubro)) 
     }, []); 
+
+    console.log("nuevo status: "+nuevoStatus)
 
 
     if(nuevoStatus){

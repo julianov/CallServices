@@ -8,7 +8,7 @@ import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import axios from "axios";
 import { clearDB, createStore, removeDB, setDB } from "../../../utilidades/dataBase";
 import Chat from "../../Chat/Chat";
-import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonLoading, IonRow, IonTextarea, IonTitle } from "@ionic/react";
+import { IonAlert, IonButton, IonCard, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonItem, IonItemDivider, IonLabel, IonLoading, IonRow, IonTextarea, IonTitle, useIonRouter } from "@ionic/react";
 import { ordenesCliente } from "../../../pages/Home/HomeCliente";
 import { TomarFotografia } from "../../../pages/PedirOrdenes/PedirOrden";
 import { Redirect } from "react-router";
@@ -385,7 +385,7 @@ const ProveedorPideMasInfo = ( props:{setOrden:any, datos:any, setVolver:any, se
             location_long:props.datos.location_long,
             picture1:props.datos.picture1,
             picture2:props.datos.picture2,
-            pedido_mas_información:props.datos.pedidoMasInformacion,
+            pedido_mas_información:props.datos.pedido_mas_información,
             respuesta_cliente_pedido_mas_información:respuesta_informacion.current,
             picture1_mas_información:foto1Mostrar.current,
             picture2_mas_información:foto2Mostrar.current
@@ -428,57 +428,63 @@ const ProveedorPideMasInfo = ( props:{setOrden:any, datos:any, setVolver:any, se
             </div>
             
             <IonCard id="ionCard-explorerContainer-Proveedor">
-                <div id="divSentencias">
-                    <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
-                    <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
-                    <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
-                </div>
-                <IonGrid>
-                    <IonRow>
-                        <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosProveedor")}>
-                            <IonRow id="ionrow-homecliente">
-                            <IonIcon icon={eye} /> </IonRow>
-                            <IonRow id="ionrow-homecliente"><small>VER DATOS PROVEEDOR</small></IonRow>
-                        </IonCol>
-                        <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
-                          <IonRow id="ionrow-homecliente">
-                          <IonIcon icon={chatbox} /> </IonRow>
-                          <IonRow id="ionrow-homecliente"><small>CHAT PROVEEDOR</small></IonRow>
-                        </IonCol>
-                    </IonRow>
-                </IonGrid> 
-            </IonCard>
-            
-            <div id="titulo">
-                <h1>SOLICITUD DE MÁS INFORMACIÓN </h1>
-            </div>
-            
-            <IonCard id="ionCard-explorerContainer-Proveedor">
-                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
-                    <h2 style={{fontWeight:"100", fontSize:"1em"}}>EL PROVEEDOR DE SERVICIO LE HA ENVIADO EL SIGUIENTE COMENTARIO</h2> 
-                </div>
-                <IonItemDivider style={{margin:"0px"}}></IonItemDivider>
-                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
-                    <p style={{fontWeight:"600", fontSize:"1.2em", marginBottom:"25px"}}>{props.datos.pedido_mas_información}</p> 
-                </div>
-            </IonCard>
-            
-            <IonItemDivider></IonItemDivider>
+
+<img id="img-orden" src={props.datos.imagen_proveedor}></img>
+
+  <div id="divSentencias">
+    <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo.toUpperCase()}</p>
+    <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
+    <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
+  </div>
+
+  <IonGrid>
+    <IonRow>
+
+    <IonCol id="ioncol-homecliente" onClick={() => props.setVista("datosProveedor")}>
+          <IonRow id="ionrow-homecliente">
+          <IonIcon icon={eye} /> </IonRow>
+          <IonRow id="ionrow-homecliente"><small>VER DATOS PROVEEDOR</small></IonRow>
+        </IonCol>
+
+      <IonCol id="ioncol-homecliente" onClick={() => props.setVista("chat")}>
+          <IonRow id="ionrow-homecliente">
+          <IonIcon icon={chatbox} /> </IonRow>
+          <IonRow id="ionrow-homecliente"><small>CHAT PROVEEDOR</small></IonRow>
+        </IonCol>
+
+    </IonRow>
+  </IonGrid>
+</IonCard>
             
             <IonCard id="ionCard-explorerContainer-Proveedor">
-                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
-                    <h2 style={{fontWeight:"100", fontSize:"1em"}}>INGRESE SU RESPUESTA</h2> 
-                </div>
-                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
+              <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >SOLICITUD DE INFORMACIÓN</h2>    
+                <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+              </div>
+              <div style={{display:"flex", flexDirection:"column", textAlign:"left", width:"100%", marginLeft:"25px"}} >
+
+              <p style={{fontSize:"1em", color:"black"}}>EL PROVEEDOR DE SERVICIO LE HA ENVIADO EL SIGUIENTE COMENTARIO</p>
+              <p style={{fontSize:"1em", color:"blue", textAlign:"left", marginBottom:"25px"}}>{props.datos.pedido_mas_información}</p>
+              </div>
+               
+            </IonCard>
+            
+            
+            <IonCard id="ionCard-explorerContainer-Proveedor">
+              <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+                <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >RESPUESTA</h2>    
+                <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+              </div>
+                
+                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"100%", height:"auto", marginTop:"10px"}}>
                     <IonItem style={{width:"90%",margin:"0px 0px 20px 0px"}}>
-                      <IonLabel position="floating">Respuesta</IonLabel>
+                      <IonLabel position="floating">INGRESE SU RESPUESTA</IonLabel>
                       <IonInput onIonInput={(e: any) => respuesta_informacion.current = (e.target.value)}></IonInput>
                     </IonItem>
                 </div>
-                <IonItemDivider/>
-                <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
-                    <h2 style={{fontWeight:"100", fontSize:"1em"}}>¿DESEA AGREGAR FOTOS?</h2> 
-                </div>
+
+                <p style={{fontSize:"1em", color:"black", marginTop:"20px"}}>¿DESEA AGREGAR FOTOS?</p>
+
                 <IonGrid>
                     <IonRow>
                         <IonCol>
@@ -560,9 +566,13 @@ const RespuestaDeInfoEnviada  = (props:{datos:any, setVolver:any, setVista:any, 
   
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
   
+  const router = useIonRouter();
+
   const volver = () => {
-    props.setVolver(false)
-    window.location.reload()
+
+    
+    router.push("/", "forward", "push");
+    window.location.reload();
     }
 
   return (
@@ -622,17 +632,21 @@ const RespuestaDeInfoEnviada  = (props:{datos:any, setVolver:any, setVista:any, 
         
             <IonItemDivider style={{margin:"35px 0px 0px 0px"}}></IonItemDivider>
 
-            <div id="titulo">
-                <strong>PEDIDO DE MÁS INFORMACIÓN</strong>
-            </div>
+            
         
             <IonCard id="ionCard-explorerContainer-Proveedor">
+
+            <div style={{display:"flex", flexDirection:"column",textAlign:"left",alignItems:"left",width:"100%", height:"auto", paddingLeft:"15px"}}>
+              <h2 style={{textAlign:"left", fontSize:"1em", color:"black", margin:"15px 0 10px 0"}} >SOLICITUD DE MÁS INFORMACIÓN</h2>    
+              <IonItemDivider style={{margin:"0px 0 10px 0"}}/>
+            </div>
+
                 <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
                     <h2 style={{fontWeight:"100", fontSize:"1em"}}>PREGUNTA PROVEEDOR:</h2>
                 </div>
                 <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
                     <p style={{fontWeight:"600", fontSize:"1.2em", marginBottom:"15px"}}>{props.datos.pedido_mas_información}</p>
-                </div>
+                </div>                                                                    
                 <IonItemDivider style={{margin:"35px 0px 0px 0px"}}></IonItemDivider>
                 <div style={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center", width:"90%", height:"auto"}}>
                     <h2 style={{fontWeight:"100", fontSize:"1em"}}>RESPUESTA SUMINISTRADA AL PROVEEDOR:</h2>
@@ -1422,6 +1436,9 @@ const InfoIntercambiada = (props:{pedido_mas_información:any, respuesta_cliente
       respuesta=props.respuesta_cliente_pedido_mas_información
     }
   }, []);
+
+
+  console.log("esto es lo que pidio proveedor: "+props.pedido_mas_información)
 
   if (props.pedido_mas_información!=""){
     return (

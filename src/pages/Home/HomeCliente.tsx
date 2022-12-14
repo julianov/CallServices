@@ -201,22 +201,22 @@ const HomeCliente = (props:{setIsReg:any,
     if (misOrdenes.length !=0 || misOrdenes!=undefined || misOrdenes!=[]){
       for (let i=0; i<misOrdenes.length; i++){
         getDB(misOrdenes[i].ticket!+"cliente").then(res => {
-          if(res!=undefined || res!=null){
+          console.log("este es el estatus: "+misOrdenes[i].status)
+          console.log("esto es lo que vino: "+res)
             if(res!=misOrdenes[i].status){
-              if(misOrdenes[i].status!="ENV" && misOrdenes[i].status!="RES"&&misOrdenes[i].status!="ACE"){
+              if(misOrdenes[i].status!="ENV" && misOrdenes[i].status!="RES" && misOrdenes[i].status!="ACE"){
                 setNuevasOrdenes([...nuevasOrdenes , (misOrdenes[i].ticket+"%%%"+misOrdenes[i].status)])
               }
               }else{
                 
               }
-            }else{}
+            
           })
       }
     }
   
 }, [misOrdenes]);
 
-console.log("asdfasdfasdfasdfasdf: "+JSON.stringify(misOrdenes))
 
   useEffect(() => {
 
