@@ -409,6 +409,7 @@ const Presupuestar = (props: {setVista:any, datos:any, setDatos:any ,setEstado:a
   const hora = useRef ("")
   const [showLoading, setShowLoading] =useState(false)
  
+  const [showAlertCambiarFecha, setShowAlertCambiarFecha] =useState(false)
 
   const enviarPresupuesto = ()=>{
 
@@ -528,8 +529,16 @@ const Presupuestar = (props: {setVista:any, datos:any, setDatos:any ,setEstado:a
           </IonCard>
         </div>
 
-        <SeleccionarFecha hora={hora} dia={dia} horaactual={props.datos.hora} 
-        diaactual={props.datos.dia} orden={props.datos} setOrden={props.setDatos} />
+        <SeleccionarFecha hora={hora} dia={dia} horaactual={props.datos.hora}
+          diaactual={props.datos.dia} orden={props.datos} setOrden={props.setDatos} setShowAlertCambiarFecha={setShowAlertCambiarFecha} />
+
+          <IonAlert
+          mode='ios'
+            isOpen={showAlertCambiarFecha} onDidDismiss={() => setShowAlertCambiarFecha(false)} cssClass='my-custom-class'
+            header={'Fecha y hora modificada'}
+            subHeader={''}
+            message={'El cliente es notificado del cambio'}
+            buttons={['OK']}/>  
 
         <IonLoading
           cssClass='my-custom-class'
@@ -613,6 +622,7 @@ const EnEsperaInfo = (props: {datos:any, setDatos:any, estado:any, setVista:any,
   const [showLoading, setShowLoading] =useState(false)
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false) 
   const [showAlertIngresarPresupuesto,setShowAlertIngresarPresupuesto]= useState(false) 
+  const [showAlertCambiarFecha, setShowAlertCambiarFecha] =useState(false)
 
   const enviarPresupuesto = ()=>{
     if (precio.current!="0" ){
@@ -731,8 +741,16 @@ const EnEsperaInfo = (props: {datos:any, setDatos:any, estado:any, setVista:any,
           </IonItem>
         </IonCard>
 
-        <SeleccionarFecha hora={hora} dia={dia} horaactual={props.datos.hora} 
-        diaactual={props.datos.dia} orden={props.datos} setOrden={props.setDatos} />
+        <SeleccionarFecha hora={hora} dia={dia} horaactual={props.datos.hora}
+        diaactual={props.datos.dia} orden={props.datos} setOrden={props.setDatos} setShowAlertCambiarFecha={setShowAlertCambiarFecha} />
+
+<IonAlert
+          mode='ios'
+            isOpen={showAlertCambiarFecha} onDidDismiss={() => setShowAlertCambiarFecha(false)} cssClass='my-custom-class'
+            header={'Fecha y hora modificada'}
+            subHeader={''}
+            message={'El cliente será notificado del cambio'}
+            buttons={['OK']}/>  
     
         <IonLoading
           cssClass='my-custom-class'
@@ -791,6 +809,7 @@ const NuevaInfo = (props: {datos:any, setDatos:any, estado:any, setVista:any,set
   const [showLoading, setShowLoading] =useState(false)
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false) 
   const [showAlertIngresarPresupuesto,setShowAlertIngresarPresupuesto]= useState(false) 
+  const [showAlertCambiarFecha, setShowAlertCambiarFecha] =useState(false)
 
   console.log("estoy en nueva info")
 
@@ -801,6 +820,8 @@ const NuevaInfo = (props: {datos:any, setDatos:any, estado:any, setVista:any,set
       var formDataToUpload = new FormData();
       formDataToUpload.append("precio", precio.current)
       formDataToUpload.append("ticket", props.datos.ticket)
+      formDataToUpload.append("hora", hora.current)
+      formDataToUpload.append("dia", dia.current)
       formDataToUpload.append("estado", "PRE")
       formDataToUpload.append("tipoOrden","Orden general" )
 
@@ -915,8 +936,16 @@ const NuevaInfo = (props: {datos:any, setDatos:any, estado:any, setVista:any,set
             </div>
           </IonCard>
 
-          <SeleccionarFecha hora={hora} dia={dia} horaactual={props.datos.hora} 
-        diaactual={props.datos.dia} orden={props.datos} setOrden={props.setDatos} />
+          <SeleccionarFecha hora={hora} dia={dia} horaactual={props.datos.hora}
+          diaactual={props.datos.dia} orden={props.datos} setOrden={props.setDatos} setShowAlertCambiarFecha={setShowAlertCambiarFecha} />
+
+<IonAlert
+          mode='ios'
+            isOpen={showAlertCambiarFecha} onDidDismiss={() => setShowAlertCambiarFecha(false)} cssClass='my-custom-class'
+            header={'Fecha y hora modificada'}
+            subHeader={''}
+            message={'El cliente será notificado del cambio'}
+            buttons={['OK']}/>  
       
           <IonLoading
             cssClass='my-custom-class'
@@ -991,6 +1020,7 @@ const NuevaInfo = (props: {datos:any, setDatos:any, estado:any, setVista:any,set
 const Presupuestada = (props:{datos:any, setDatos:any, estado:any, setVolver:any, setVista:any, rechazarOrden:any})=> {
 
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false) 
+  const [showAlertCambiarFecha, setShowAlertCambiarFecha] =useState(false)
 
   const dia = useRef("")
   const hora = useRef("")
@@ -1072,8 +1102,16 @@ const Presupuestada = (props:{datos:any, setDatos:any, estado:any, setVolver:any
     
           <Presupuesto presupuesto={props.datos.presupuesto_inicial} />
 
-          <SeleccionarFecha hora={hora} dia={dia} horaactual={props.datos.hora} 
-            diaactual={props.datos.dia} orden={props.datos} setOrden={props.setDatos} />
+          <SeleccionarFecha hora={hora} dia={dia} horaactual={props.datos.hora}
+          diaactual={props.datos.dia} orden={props.datos} setOrden={props.setDatos} setShowAlertCambiarFecha={setShowAlertCambiarFecha} />
+
+<IonAlert
+          mode='ios'
+            isOpen={showAlertCambiarFecha} onDidDismiss={() => setShowAlertCambiarFecha(false)} cssClass='my-custom-class'
+            header={'Fecha y hora modificada'}
+            subHeader={''}
+            message={'El cliente será notificado del cambio'}
+            buttons={['OK']}/>  
 
           <IonButton shape="round" color="danger"  id="botonContratar" onClick={() => setShowAlertRechazarOrden(true)} >RECHAZAR ORDEN</IonButton>
   
@@ -1114,6 +1152,7 @@ const OrdenAceptada = (props:{datos:any, setDatos:any, setVolver:any, setVista:a
 
   const [showAlertRechazarOrden, setShowAlertRechazarOrden]= useState(false)
   const [showAlertEnViaje,setShowAlertEnViaje]= useState(false)
+  const [showAlertCambiarFecha, setShowAlertCambiarFecha] =useState(false)
 
   const hora = useRef ("")
   const dia = useRef ("")
@@ -1212,8 +1251,16 @@ const OrdenAceptada = (props:{datos:any, setDatos:any, setVolver:any, setVista:a
 
           <Presupuesto presupuesto={props.datos.presupuesto_inicial} />       
 
-          <SeleccionarFecha hora={hora} dia={dia} horaactual={props.datos.hora} 
-        diaactual={props.datos.dia} orden={props.datos} setOrden={props.setDatos} />
+          <SeleccionarFecha hora={hora} dia={dia} horaactual={props.datos.hora}
+          diaactual={props.datos.dia} orden={props.datos} setOrden={props.setDatos} setShowAlertCambiarFecha={setShowAlertCambiarFecha} />
+
+<IonAlert
+          mode='ios'
+            isOpen={showAlertCambiarFecha} onDidDismiss={() => setShowAlertCambiarFecha(false)} cssClass='my-custom-class'
+            header={'Fecha y hora modificada'}
+            subHeader={''}
+            message={'El cliente será notificado del cambio'}
+            buttons={['OK']}/>  
 
         <div id="botonCentral">
           <div id="botonCentralIzquierda">
@@ -1959,10 +2006,9 @@ const Presupuesto = ( props:{presupuesto:any}) =>
 }
 
 
-const SeleccionarFecha = ( props:{hora:any, dia:any, horaactual:any, diaactual:any, orden:any, setOrden:any}) => {
+const SeleccionarFecha = ( props:{hora:any, dia:any, horaactual:any, diaactual:any, orden:any, setOrden:any, setShowAlertCambiarFecha:any}) => {
 
   const [fechas, setFecha]=useState <string> ("")
-
   console.log("fechas "+fechas)
 
   useEffect(() => {
@@ -2013,6 +2059,7 @@ const SeleccionarFecha = ( props:{hora:any, dia:any, horaactual:any, diaactual:a
           picture2_mas_información:props.orden.picture2_mas_información,
         }
       )
+      props.setShowAlertCambiarFecha(true)
     }
     
 
@@ -2062,6 +2109,8 @@ const SeleccionarFecha = ( props:{hora:any, dia:any, horaactual:any, diaactual:a
             <IonButton shape="round" style={{width:"50%", marginTop:"15px", marginBottom:"32px"}} onClick={() => enviar()}>CAMBIAR</IonButton>
           </div>
         </IonCard>
+         
+
       </div>
       );
   }
