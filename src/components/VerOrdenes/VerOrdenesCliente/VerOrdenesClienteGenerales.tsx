@@ -1117,7 +1117,8 @@ const Finalizada = ( props:{datos:any, setVolver:any, setVista:any, setEstado:an
             <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
         </div>
 
-      
+        <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"100%", justifyContent:"center",alignItems:"center" }}>
+
         <IonCard id="ionCardModalCentro">
           <h2 style={{ fontSize: "1.2em", color: "black" }}>TRABAJO REALIZADO</h2>
           <h2 style={{ fontSize: "1em", color: "blue" }}>COMPLETE LOS SIGUIENTES CAMPOS</h2>
@@ -1134,7 +1135,8 @@ const Finalizada = ( props:{datos:any, setVolver:any, setVista:any, setEstado:an
           </IonItem>
 
         </IonCard>
-    
+        </div>
+
      <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviar()} >ENVIAR CALIFICACIÓN</IonButton>
    
           <IonAlert

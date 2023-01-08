@@ -28,11 +28,6 @@ const Resenas = (props:{email_a_ver_reseñas:any,  tipo:any, setVolver:any}) => 
    axios.get(url+"resena/"+props.email_a_ver_reseñas+"/0/"+props.tipo).then((resp: { data: any; }) => {
       if (resp.data!="bad"){
         
-      /*  resenas= []
-            for (let i=0; i<resp.data.length;i++){               
-                resenas.push({calificación:resp.data[i].calificación,resena:resp.data[i].resena})
-                
-              }*/
 
         setReseñas(resp.data.map((d: { calificación: any; resena: any; }) => ({
           calificación:d.calificación,

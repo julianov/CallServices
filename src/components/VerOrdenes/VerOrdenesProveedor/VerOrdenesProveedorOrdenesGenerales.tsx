@@ -1361,14 +1361,19 @@ const EnViaje = (props:{datos:any, setVolver:any, setVista:any, estado:any, setE
      })
   }
 
-  
+  const volver = () => {
+    props.setVolver(false)
+    window.location.reload()
+  }
 
     return (
       <IonContent>
         <div id="ionContentModalOrdenes">
         <div id="modalProveedor-flechaVolver">
             <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
-        </div>
+       
+            <IonIcon icon={close} onClick={() => volver()} slot="right" id="flecha-cerrar">  </IonIcon>
+          </div>
 
         <div id="contenedorcentro">
           <IonTitle>ACTUALMENTE EN VIAJE AL SITIO DEL CLIENTE</IonTitle>
@@ -1710,7 +1715,8 @@ const Finalizar  = (props:{datos:any, setVolver:any, setVista:any, estado:any, s
       <div id="modalProveedor-flechaVolver">
           <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
       </div>
-        
+      <div style={{display:"flex",flexDirection:"column", width:"100%",  height:"100%", justifyContent:"center",alignItems:"center" }}>
+
         <IonCard id="ionCardModalCentro">
           <h2 style={{ fontSize: "1.2em", color: "black" }}>TRABAJO REALIZADO</h2>
           <h2 style={{ fontSize: "1em", color: "blue" }}>COMPLETE LOS SIGUIENTES CAMPOS</h2>
@@ -1724,7 +1730,7 @@ const Finalizar  = (props:{datos:any, setVolver:any, setVista:any, estado:any, s
             <IonInput onIonInput={(e: any) => reseña.current=(e.target.value)}></IonInput>
           </IonItem>
       </IonCard>
-
+      </div>
      <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviar()} >ENVIAR</IonButton>
    
           <IonAlert

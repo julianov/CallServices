@@ -278,7 +278,7 @@ const Card = (props:{ rubro: string, status:string, fecha:string, ticket:string,
     }else if(props.status=="PEI"){
       setEstado("ORDEN CON SOLCITUD DE MÁS INFORMACIÓN")
 
-    }else if(props.status="RES"){
+    }else if(props.status=="RES"){
       setEstado("INFORMACIÓN ADICIONAL ENVIADA")
 
     }else if(props.status=="PRE"){
@@ -303,9 +303,11 @@ const Card = (props:{ rubro: string, status:string, fecha:string, ticket:string,
       setEstado("CANCELADA")
       
     }else{
+      setEstado("CANCELADA")
 
     }
   }, [])
+
   return(
       <IonCard id="ionCardOrden" onClick={ () => props.setTicket(props.ticket) }>
       <div id="contenedorCamposCentro">
