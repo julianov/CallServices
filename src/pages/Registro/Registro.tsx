@@ -121,60 +121,62 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
   }, [user!.email]);
 
 
-  const enviarRegistro = () =>{
-
-    if (password.current!=password2.current){
-      props.setShowAlertPassworNoIgual(true)
-    }else if(password.current.length<=8){
-      props.setShowAlertPasswordWeak(true)
-    }else{
-      props.setShowAlertEmailSending(true)
-
-      const axios = require('axios');
-
-      var formDataToUpload = new FormData();
-      formDataToUpload.append("tipo",tipoUsuario.current )
-      formDataToUpload.append("email",email.current)
-      formDataToUpload.append("password",password.current )
-
-      axios({
-        url:url,
-        method:'POST',
-        headers: {"content-type": "multipart/form-data"},
-        data:formDataToUpload
-        }).then((res: { data: any; }) => {
-
+  const enviarRegistro = async () => {
+    if (password.current !== password2.current) {
+      props.setShowAlertPassworNoIgual(true);
+    } else if (password.current.length <= 8) {
+      props.setShowAlertPasswordWeak(true);
+    } else {
+      props.setShowAlertEmailSending(true);
+      try {
+        const res = await enviarRegistroAPI();
         const resquest = res.data;
-
-        if(resquest==="User alredy taken"){
-          
+        if (resquest === "User alredy taken") {
           props.setShowAlertUsuarioRegistrado(true);
-          props.setShowAlertEmailSending(false)
-
-        }else{
-
-          setItem("clientType",  tipoUsuario.current).then( () =>{
-
-          setUser!((state:usuario) => ({ ...state, tipoCliente: tipoUsuario.current}))
-          })
-          setItem("isRegistered", email.current ).then( () =>{
-
-            setUser!((state:usuario) => ({ ...state, email: email.current }))
-
-          })
-       
-          simpleNavigate()
+        } else {
+          await handleClientType();
+          await handleEmail();
+          simpleNavigate();
         }
-      }).catch((err: any) => {
-        // what now?
-        props.setShowAlertServerConnection(true)
-        props.setShowAlertEmailSending(false)
-
-    })
+      } catch (error) {
+        handleAPIError();
+      }
     }
-    
-  }
-
+  };
+  
+  const enviarRegistroAPI = async () => {
+    const axios = require("axios");
+    const formDataToUpload = new FormData();
+    formDataToUpload.append("tipo", tipoUsuario.current);
+    formDataToUpload.append("email", email.current);
+    formDataToUpload.append("password", password.current);
+    const res = await axios({
+      url: url,
+      method: "POST",
+      headers: { "content-type": "multipart/form-data" },
+      data: formDataToUpload,
+    });
+    return res;
+  };
+  
+  const handleClientType = async () => {
+    await setItem("clientType", tipoUsuario.current);
+    setUser!((state: usuario) => ({ ...state, tipoCliente: tipoUsuario.current }));
+  };
+  
+  const handleEmail = async () => {
+    await setItem("isRegistered", email.current);
+    setUser!((state: usuario) => ({ ...state, email: email.current }));
+  };
+  
+  const handleAPIError = () => {
+    props.setShowAlertServerConnection(true);
+  };
+  
+  const handleAlertClose = () => {
+    props.setShowAlertEmailSending(false);
+  };
+  
   if (tipo=="registro inicio"){
     return (
       <>

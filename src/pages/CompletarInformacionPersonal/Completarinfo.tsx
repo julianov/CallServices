@@ -23,9 +23,7 @@ const Completarinfo = (props:{setIsReg:any,email:any, tipoCliente:any,setNombre:
 rubro1:any, rubro2:any, setRubro1:any, setRubro2:any}) => {
 
     const  {user,setUser}  = useUserContext()
-
- 
-          
+   console.log ("USER ASDF: "+JSON.stringify(user))
   return (
     <IonPage>
      
@@ -51,16 +49,6 @@ const CompletarInformacion =  (props:{setIsReg:any,tipoCliente:any,
     
     const [provedores,setProveedores]=useState(0)
 
-  /*  const [clientType,setClientType]=useState(0);
-    const [email,setEmail]=useState<String>();
-*/
-    //const [email,setEmail]=useState<String>();
-    
-    //const [renderizar, setRenderizar]=useState(false)
-
-   // const { deletePhoto, photos, takePhoto } = usePhotoGallery();
-
-   // const[path,setPath]=useState<String>()
 
     if(provedores==0){
             return(
@@ -147,11 +135,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
         props.setIsReg(true) 
         router.push("/", "forward", "push");
         window.location.reload();
-       /* return (
-            <>
-            <Redirect push={true} to="/" />
-            </> 
-                )*/
+
     }
 
     if(done){
@@ -161,7 +145,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
 
     const enviarInformacion =async ()=>{
 
-        if(props.tipoCliente=="1"){
+        if(props.tipoCliente!="3"){
 
              if(props.email!="-" && props.email!=null && nombre!=null && apellido!=null && imagen_a_enviar.current!=null){
                  
@@ -199,7 +183,10 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                         setListo(true);
                         props.setNombre(nombre)
                         props.setApellido(apellido)
-                      //  props.setFoto(filepath2)
+                        if (props.tipoCliente=="2"){
+                            props.setTipoProveedor(1)
+
+                        }
 
                     }else{
                         setItem("personalInfoCompleted", false);
@@ -222,68 +209,8 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
 
             }
              
-         }
-         else if(props.tipoCliente=="2"){
-
-             if(props.email!="-" && props.email!=null && nombre!=null && apellido!=null && imagen_a_enviar.current!=null){
-                 setShowLoading(true)
-                                  
-                 var formDataToUpload = new FormData();
-                 formDataToUpload.append("tipo", String(props.clientType))
-                 formDataToUpload.append("email", props.email);
-                 formDataToUpload.append("nombre", nombre);
-                 formDataToUpload.append("apellido", apellido);
-                 formDataToUpload.append("image", imagen_a_enviar.current!);
-                // formDataToUpload.append("descripcion", descripcion);
-
-                 const axios = require('axios');
-                 axios({
-                     url:url+"completar",
-                     method:'POST',
-                     headers: {"content-type": "multipart/form-data"},
-                     data:formDataToUpload
-                 }).then(function(res: any){
-                    setShowLoading(false) 
-                    if(res.data=="todo ok"){
-                        setItem("personalInfoCompleted", true);
-                        setItem("nombre", nombre)
-                        setItem("apellido", apellido)
-                        setItem("fotoPersonal",fotoAguardar.current)
-                        setItem("calificacion",0)
-
-                        setUser!( (previous) => ({...previous, foto:fotoAguardar.current }))
-                        setUser!( (previous) => ({...previous, nombre: nombre}))
-                        setUser!( (previous) => ({...previous, apellido:apellido}))
-                        setUser!( (previous) => ({...previous, calificacion: 0}))
-                        setUser!( (previous) => ({...previous, tipoCliente: props.tipoCliente}))
-                        
-                        props.setNombre(nombre)
-                        props.setApellido(apellido)
-                        props.setTipoProveedor(1)
-
-                    }else{
-                        setItem("personalInfoCompleted", false);
-                    }
-                 }).catch((error: any) =>{
-                     setItem("personalInfoCompleted", false);
-                     //Network error comes in
-                 });       
-             }else{
-                if(nombre==null){
-                    setShowAlertNombre(true)
-                }
-                else if(apellido==null){      
-                    setShowAlertApellido(true)
-                }
-                else if(filepath2==null || filepath2==undefined || filepath2==""){
-                    setShowAlertFoto(true)
-                } 
-
-                 
-                }            
-         }
- 
-         if(props.tipoCliente=="3"){
+         } 
+         else{
              if(props.email!="-" && props.email!=null && nombre!=null && descripcion!=null && imagen_a_enviar.current!=null){
                  setShowLoading(true)
                  
@@ -344,7 +271,9 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
          }  
      }
 
-    if(props.tipoCliente=="1"){
+     console.log("tipo cliente: "+props.tipoCliente)
+
+    if(props.tipoCliente =="1" || props.tipoCliente =="2"){
 
         return (
                 <><IonLoading
@@ -415,74 +344,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
             </>
         );
     }
-    else if(props.tipoCliente=="2"){
-        return (
-            
-                 <><IonAlert
-                mode='ios'
-                isOpen={showAlertNombre}
-                onDidDismiss={() => setShowAlertNombre(false)}
-                cssClass='my-custom-class'
-                header={'Complete el campo Nombre'}
-                subHeader={''}
-                message={'Ingrese su nombre personal'}
-                buttons={['OK']} />
-                <IonAlert
-                    mode='ios'
-                    isOpen={showAlertApellido}
-                    onDidDismiss={() => setShowAlertApellido(false)}
-                    cssClass='my-custom-class'
-                    header={'Complete el campo Apellido'}
-                    subHeader={''}
-                    message={'Ingrese su apellido personal'}
-                    buttons={['OK']} />
-                <IonAlert
-                    mode='ios'
-                    isOpen={showAlertFoto}
-                    onDidDismiss={() => setShowAlertFoto(false)}
-                    cssClass='my-custom-class'
-                    header={'Debe agregar foto'}
-                    subHeader={''}
-                    message={'Agregue foto personal para continuar'}
-                    buttons={['OK']} />
-                
-                <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", background:"#f3f2ef"}}>
-
-                    <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", textAlign:"center", justifyContent:"center", alignItems:"center"}}>
-                 
-                    <h1 style={{fontSize:"1.2em", color:"black", marginTop:"25px"}}>INFORMACIÓN PERSONAL</h1>
-                    <img src={"./assets/icon/completarpersonalinfo.png"} style={{width:"64px", height:"64px"}} />  
-                    </div>
-                <div style={{display:"flex", flexDirection:"column", width:"100%", height:"100%", justifyContent:"center", alignItems:"center"}}>
-                <IonItemDivider />
-                  
-                                <IonItem id="item-completarInfo">
-                                    <IonLabel position="floating">Nombre  </IonLabel>
-                                    <IonInput autocomplete="name" onIonInput={(e: any) => setNombre(e.target.value)}></IonInput>
-                                </IonItem>
-                         
-                                <IonItem id="item-completarInfo">
-                                    <IonLabel position="floating">Apellido</IonLabel>
-                                    <IonInput autocomplete="family-name" onIonInput={(e: any) => setApellido(e.target.value)}></IonInput>
-                                </IonItem>
-                          
-                                <TomarFotografia setFilepath={imagen_a_enviar} fotoAguardar={fotoAguardar} setFoto={props.setFoto}></TomarFotografia>
-                          
-                                {photos.map((photo, index) => (
-                                    <IonCol size="6" key={index}>
-                                        <IonImg onClick={() => onClickPhotoData(photo)} src={photo.webviewPath} />
-                                    </IonCol>
-                                ))}
-                          
-                                <IonButton shape="round" style={{width:"90%", margin:"25px 0px 25px 0px"}} onClick={() => enviarInformacion()}>CONTINUAR</IonButton>   
-                </div>
-            </div>
-               
-            </>
-        );
-        
-    }
-    else if (props.tipoCliente=="3"){
+    else{
 
         return (
                 
@@ -551,133 +413,83 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
         );
         
     }
-    else{
-        return (<div className="contenedor_central">asdf</div> 
-        );
-
-    }
   }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  
 const TomarFotografia = (props: {setFilepath:any, fotoAguardar:any, setFoto:any}) => {
-
-
     const { deletePhoto, photos, takePhoto } = usePhotoGallery();
     const [photoToDelete, setPhotoToDelete] = useState(false);
-    const [presioneParaBorrar,setPresioneParaBorrar]=useState("")
-    
-    const [fotoTomada, setFotoTomada]=useState(false)
-
-    const imagen = useRef<string>()
-
-    const onClickPhotoData=()=>{
-        //props.setFilepath(photo.webviewPath)
-        setPhotoToDelete(true)
-    }
-
+    const imagen = useRef<string>();
+  
+    const onClickPhotoData = () => {
+      setPhotoToDelete(true);
+    };
+  
     useEffect(() => {
-
-            if (imagen.current!="" && imagen.current!=undefined && imagen.current!=null){
-                setFotoTomada(true)
-            }
-            
+      if (imagen.current) {
+        setPhotoToDelete(true);
+      }
     }, []);
-    
-    const tomarFoto =()=>{
-        takePhoto().then(async res => {
-            if(res!=null){
-               // props.setImagen(res[0].webviewPath!)
-                const base64Data = await base64FromPath(res[0].webviewPath!);
-                //props.imagen.current=res[0].webviewPath!
-                imagen.current= base64Data
-                props.setFoto(base64Data)
-
-                //aca está la foto en formato raw string
-                props.fotoAguardar.current=base64Data
-
-                var block = base64Data!.split(";");
-                var contentType = block[0].split(":")[1];
-                var realData = block[1].split(",")[1];
-                var blob = b64toBlob(realData, contentType,1);
-                props.setFilepath.current=( blob!)
-
-                
-                setFotoTomada(true)
-                setPresioneParaBorrar("Presione la imagen para eliminarla")            
-            }
-        })
-    }
-    
-    if(fotoTomada){
-        return(
-            <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", marginTop:"30px"}}>
-                    <IonImg id="foto" onClick={() => onClickPhotoData()} src={imagen.current} />
-                    
-                    <p style={{marginTop:"15px"}}> {presioneParaBorrar} </p>
-                   
-    
-                <IonActionSheet
-                    isOpen={photoToDelete}
-                    buttons={[{
-                        text: 'Eliminar',
-                        role: 'destructive',
-                        icon: trash,
-                        handler: () => {
-                            if (photoToDelete) {
-                                props.setFilepath.current=(null)
-                                imagen.current=""
-                                props.setFoto("")
-                                setFotoTomada(false)
-                                setPresioneParaBorrar("")
-
-                            }
-                        }
-                    }, {
-                        text: 'Cancelar',
-                        icon: close,
-                        role: 'cancel'
-                    }]}
-                    onDidDismiss={() => setPhotoToDelete(false)} 
-                    />
-                </div>
-        );
-    }else{
-        return(
-            <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", marginTop:"30px", textAlign:"center", justifyContent:"center", alignItems:"center"}}>
-
-                        <strong style={{marginBottom:"25px"}}>Seleccionar foto de galería o tomar fotografia</strong>
-                 
-                        <IonFabButton onClick={() => tomarFoto()}>
-                            <IonIcon icon={camera}></IonIcon>
-                        </IonFabButton>
-               
-                        <p style={{marginTop:"15px"}}> {presioneParaBorrar} </p>
-            
-                <IonActionSheet
-                    isOpen={photoToDelete}
-                    buttons={[{
-                        text: 'Eliminar',
-                        role: 'destructive',
-                        icon: trash,
-                        handler: () => {
-                            if (photoToDelete) {
-                                props.setFilepath(null)
-                            }
-                        }
-                    }, {
-                        text: 'Cancelar',
-                        icon: close,
-                        role: 'cancel'
-                    }]}
-                    onDidDismiss={() => setPhotoToDelete(false)} 
-                    />
-                </div>
-        );
-    }
-    
-}  
+  
+    const tomarFoto = () => {
+      takePhoto().then(async (res) => {
+        if (res != null) {
+          const base64Data = await base64FromPath(res[0].webviewPath!);
+          imagen.current = base64Data;
+          props.setFoto(base64Data);
+          props.fotoAguardar.current = base64Data;
+          const block = base64Data.split(";");
+          const contentType = block[0].split(":")[1];
+          const realData = block[1].split(",")[1];
+          const blob = b64toBlob(realData, contentType, 1);
+          props.setFilepath(blob!);
+        }
+      });
+    };
+  
+    return (
+      <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "auto", marginTop: "30px" }}>
+        {imagen.current ? (
+          <>
+            <IonImg id="foto" onClick={onClickPhotoData} src={imagen.current} />
+            <p style={{ marginTop: "15px" }}>Presione la imagen para eliminarla</p>
+            <IonActionSheet
+              isOpen={photoToDelete}
+              buttons={[
+                {
+                  text: "Eliminar",
+                  role: "destructive",
+                  icon: trash,
+                  handler: () => {
+                    props.setFilepath(null);
+                    imagen.current = "";
+                    props.setFoto("");
+                    setPhotoToDelete(false);
+                  },
+                },
+                {
+                  text: "Cancelar",
+                  icon: close,
+                  role: "cancel",
+                },
+              ]}
+              onDidDismiss={() => setPhotoToDelete(false)}
+            />
+          </>
+        ) : (
+          <>
+            <strong style={{ marginBottom: "25px" }}>Seleccionar foto de galería o tomar fotografia</strong>
+            <IonFabButton onClick={tomarFoto}>
+              <IonIcon icon={camera}></IonIcon>
+            </IonFabButton>
+            <p style={{ marginTop: "15px" }}>No se ha tomado ninguna foto</p>
+          </>
+        )}
+      </div>
+    );
+  };
 
 
 export default Completarinfo;

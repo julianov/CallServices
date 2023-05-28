@@ -18,6 +18,7 @@ import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonAlert, IonButt
 import { itemRubro } from "../../Interfaces/interfaces";
 import { useRubroContext1, useRubroContext2 } from "../../Contexts/RubroContext";
 import { retornarIconoCategoria } from "../../utilidades/retornarIconoCategoria";
+import { useUserContext } from "../../Contexts/UserContext";
 
 /*
 CompletarItems
@@ -117,9 +118,7 @@ const getLocation = async () => {
      const [showLoading,setShowLoading]=useState(false)
  
      const [reload,setReload] = useState(false)
- 
- 
- 
+  
      useEffect(() => {
          if(vista==0){
              //setRubro("");
@@ -184,24 +183,15 @@ const getLocation = async () => {
              formDataToUpload.append("hour_end", horaFin.current);
              arreglo.push(horaFin.current)
  
-             if(certificacion.current!=null || certificacion.current!=undefined){
-                 formDataToUpload.append("certificate", certificacion.current);
-                 arreglo.push(certificacionMostrar.current)
-             }
- 
-             if(foto1.current!=null || foto1.current!=undefined){
-                 formDataToUpload.append("picture1",  foto1.current);
-                 arreglo.push(foto1Mostrar.current)
-             }
- 
-             if(foto2.current!=null || foto2.current!=undefined){
-                 formDataToUpload.append("picture2", foto2.current);
-                 arreglo.push(foto2Mostrar.current)
-             }
- 
-             if(foto3.current!=null || foto3.current!=undefined){
-                 formDataToUpload.append("picture3", foto3.current);
-                 arreglo.push(foto3Mostrar.current)
+             
+             const files = [certificacion, foto1, foto2, foto3];
+             const fileKeys = ["certificate", "picture1", "picture2", "picture3"];
+             for (let i = 0; i < files.length; i++) {
+               const file = files[i].current;
+               if (file != null && file != undefined) {
+                 formDataToUpload.append(fileKeys[i], file);
+                 arreglo.push(fileKeys[i]);
+               }
              }
  
              formDataToUpload.append("pais", pais.current);
@@ -340,8 +330,6 @@ const getLocation = async () => {
  
                  }
                  //recarga la vista ejecutando el useEffect
- 
- 
                  if(res=="ha cargado la cantidad maxima de items"){
                      setVista(0)
                  }

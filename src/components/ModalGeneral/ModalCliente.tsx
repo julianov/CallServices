@@ -59,10 +59,6 @@ const ModalCliente: React.FC<{setIsReg:any, onClose: any; tipoVista: string;
         );
       
     }
-
-    ////////////////////////////////////////////////////////////////////
-    //////////////////// Fin de tipo de vista = 0 //////////////////////
-    /////////////////// Modal de Cliente ///////////////////////////////
     
     if(tipoVista=="emergencias"){
       return (
@@ -249,15 +245,6 @@ const DatosUsuario = (props:{setIsReg:any,email:string, completarInfoPersonal:an
     removeDB("ordenes").then(()=>
      { 
 
-      /*removeDB("UltimosProveedores").then(()=>{
-        removeDB("UltimosProveedores").then(()=>{
-          removeDB("proveedores").then(()=>{
-            props.setIsReg(false)
-            window.location.reload();
-          })          
-        })
-      })*/
-
       clearDB().then(()=>{
         props.setIsReg(false)
             window.location.reload();
@@ -291,13 +278,13 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
   const  {user,setUser}  = useUserContext()
 
 
-  useEffect(() => {
-    if (props.foto==""|| props.foto==null || props.foto==undefined){
-      setImagen ("./assets/icon/nuevoUsuario.png") 
-    }else{
-      setImagen(props.foto)
-    }
-  }, [props.foto]);
+    useEffect(() => {
+      if (props.foto==""|| props.foto==null || props.foto==undefined){
+        setImagen ("./assets/icon/nuevoUsuario.png") 
+      }else{
+        setImagen(props.foto)
+      }
+    }, [props.foto]);
 
   useEffect(() => {
     if (props.nombre==null || props.apellido==null){

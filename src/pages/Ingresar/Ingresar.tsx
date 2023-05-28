@@ -9,8 +9,8 @@ import { Redirect, Route } from 'react-router';
 import { forceUpdate } from 'ionicons/dist/types/stencil-public-runtime';
 import Https from '../../utilidades/HttpsURL';
 import { itemRubro, usuario } from '../../Interfaces/interfaces';
-import { useUserContext } from '../../Contexts/UserContext';
-import { IonAlert, IonButton, IonButtons, IonChip, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonListHeader, IonLoading, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonSearchbar, IonTitle, IonToolbar } from '@ionic/react';
+import { UserContext, useUserContext } from '../../Contexts/UserContext';
+import { IonAlert, IonButton, IonButtons, IonChip, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonListHeader, IonLoading, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonSearchbar, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
 import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext';
 
 
@@ -163,6 +163,8 @@ import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext'
 
     const {rubrosItem1,setItemRubro1} = useRubroContext1 () 
     const {rubrosItem2,setItemRubro2} = useRubroContext2 ()
+
+    const router = useIonRouter();
 
     if(home){
       props.setIsReg(true)
@@ -319,98 +321,94 @@ import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext'
   ///////////////////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////
 
-    const ingresar = () => {
-      if((email.current!= null && email.current!= undefined && email.current!="")&& (password.current!=null && password.current!= undefined )){
+  const ingresar = async () => {
+    if (
+      email.current != null &&
+      email.current != undefined &&
+      email.current !== "" &&
+      password.current != null &&
+      password.current != undefined
+    ) {
+      props.setShowLoading(true);
   
-        props.setShowLoading(true)
+      try {
+        const res = await axios.get(
+          url + "ingresar/" + email.current + "/" + password.current,
+          { timeout: 10000 }
+        );
+        const resquest = res.data;
+        console.log(resquest);
   
-        axios.get(url+"ingresar/"+email.current+"/"+password.current, {timeout: 10000})
-        .then((res: { data: any; }) => {
-         // setIngresar(false);
-          const resquest = res.data;
-          
-          if(resquest=="usuario y contraseña no válidos"){
-            props.setShowLoading(false)
-            props.setShowAlertUsuarioContraseñaIncorrectos(true)
-          //  setIngresar(false)
+        if (resquest === "user or password incorrect") {
+          props.setShowLoading(false);
+          props.setShowAlertUsuarioContraseñaIncorrectos(true);
+        } else if (resquest[0].personalDataCompleted === "false") {
+          if (setUser) {
+            setUser((state) => ({
+              ...state,
+              email: email.current,
+              tipoCliente: resquest[0].clientType,
+            }));
           }
-          else if(resquest[0].picture ==""){
-
-            setItem("isRegistered", resquest[0].user).then(() =>{
-                setItem("clientType", resquest[0].clientType).then(() =>{
-                  tipoDeCliente.current=resquest[0].clientType
-                  setItem("personalInfoCompleted",false).then(() =>{
-                    props.setShowLoading(false)
-                    props.setFoto(person)
-                    props.setTipoCliente(resquest[0].clientType)
-                    tipoDeCliente.current=resquest[0].clientType
-                    setUser!((state:usuario) => ({ ...state, foto: person}))
-                    setUser!((state:usuario) => ({ ...state, tipoCliente: resquest[0].clientType}))
-
-                    //Pedir Rubros
-                    if (resquest[0].clientType!="1"){
-                      PedirRubros( email, tipoDeCliente)
-                    }//Fin pedir Rubros
-                    else{
-                      props.setCalificacion(resquest[0].calificacion)
-                    }
-
-                    props.setNombre("")
-                    props.setApellido("")
-                    props.setCalificacion(0)
-                    setUser!((state:usuario) => ({ ...state, nombre: "" }))
-                    setUser!((state:usuario) => ({ ...state, apellido: "" }))
-                    setUser!((state:usuario) => ({ ...state, calificacion: 0}))
-
-
-                    setHome(true)
-                  })
-                })
-              
-            });
-            
   
-          }
-          else{
-            setItem("isRegistered", email.current).then(() =>{
-             
-              setItem("fotoPersonal", resquest[0].picture).then(() =>{
-                setItem("clientType", resquest[0].clientType).then(() =>{
-                  tipoDeCliente.current=(resquest[0].clientType)
-                  setItem("personalInfoCompleted",true).then(() =>{
-                    props.setShowLoading(false)
-                    
-                    props.setTipoCliente(tipoDeCliente.current)
-                    props.setFoto(resquest[0].picture)
-                    setUser!((state:usuario) => ({ ...state, foto:resquest[0].picture }))
-                    setUser!((state:usuario) => ({ ...state, tipoCliente: resquest[0].clientType}))
-
-                    PedirPersonalInfo(tipoDeCliente)
-                    if (tipoDeCliente.current!="1"){
-                      PedirRubros( email, tipoDeCliente)
-                    }
-
-                    setHome(true)
-
-
-                  })
-                })
-              })
-            });
-          }
-        }).catch((err: any) => {
-          // what now?
-         props.setShowLoading(false)
-          props.setShowAlertServerConnection(true)
-          console.log("error: "+err)
-         // setIngresar(false)
-      })
-      }else{
-      //  setIngresar(false)
-        props.setShowAlertCompletarInfo(true)
-      }  
+          router.push("/Completarinfo", "forward", "push");
+          window.location.reload();
+        } else if (resquest[0].picture === "") {
+          await setItem("isRegistered", resquest[0].user);
+          await setItem("clientType", resquest[0].clientType);
+          tipoDeCliente.current = resquest[0].clientType;
+          await setItem("personalInfoCompleted", false);
   
+          props.setShowLoading(false);
+          props.setFoto(person);
+          props.setTipoCliente(resquest[0].clientType);
+          tipoDeCliente.current = resquest[0].clientType;
+          setUser!((state: usuario) => ({ ...state, foto: person }));
+          setUser!((state: usuario) => ({ ...state, tipoCliente: resquest[0].clientType }));
+  
+          if (resquest[0].clientType !== "1") {
+            await PedirRubros(email, tipoDeCliente);
+          } else {
+            props.setCalificacion(resquest[0].calificacion);
+          }
+  
+          props.setNombre("");
+          props.setApellido("");
+          props.setCalificacion(0);
+          setUser!((state: usuario) => ({ ...state, nombre: "" }));
+          setUser!((state: usuario) => ({ ...state, apellido: "" }));
+          setUser!((state: usuario) => ({ ...state, calificacion: 0 }));
+  
+          setHome(true);
+        } else {
+          await setItem("isRegistered", email.current);
+          await setItem("fotoPersonal", resquest[0].picture);
+          await setItem("clientType", resquest[0].clientType);
+          tipoDeCliente.current = resquest[0].clientType;
+          await setItem("personalInfoCompleted", true);
+  
+          props.setShowLoading(false);
+          props.setTipoCliente(tipoDeCliente.current);
+          props.setFoto(resquest[0].picture);
+          setUser!((state: usuario) => ({ ...state, foto: resquest[0].picture }));
+          setUser!((state: usuario) => ({ ...state, tipoCliente: resquest[0].clientType }));
+  
+          await PedirPersonalInfo(tipoDeCliente);
+          if (tipoDeCliente.current !== "1") {
+            await PedirRubros(email, tipoDeCliente);
+          }
+  
+          setHome(true);
+        }
+      } catch (err) {
+        props.setShowLoading(false);
+        props.setShowAlertServerConnection(true);
+        console.log("error: " + err);
+      }
+    } else {
+      props.setShowAlertCompletarInfo(true);
     }
+  };
     
       if(restaurar==0){
         return (

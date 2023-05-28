@@ -34,7 +34,7 @@ import Inicio from './pages/Inicio/Inicio';
 import CompletarRubros from './pages/CompletarRubros/CompletarRubros';
 import { createStore } from './utilidades/dataBase';
 import { itemRubro, usuario, UsuarioType, } from './Interfaces/interfaces';
-import {  UserContext, UserProvider } from './Contexts/UserContext';
+import {  UserContext, UserProvider, useUserContext } from './Contexts/UserContext';
 import HomeCliente from './pages/Home/HomeCliente';
 import HomeProveedor from './pages/Home/HomeProveedor';
 import Completarinfo from './pages/CompletarInformacionPersonal/Completarinfo';
@@ -84,7 +84,7 @@ const App: React.FC = () => {
         calificacion:0,
         tipoCliente:"",
  })
- 
+
 
  const [rubrosItem1,setItemRubro1] = useState <itemRubro>({
       rubro:"",
@@ -125,112 +125,92 @@ const App: React.FC = () => {
     picture3:"",
  })
 
-  useEffect(() => {
+ useEffect(() => {
+  const loadUserData = async () => {
+    await createStore("dbDispositivo");
 
-    createStore("dbDispositivo")
+    const res1 = await getItem("isRegistered");
+    if (res1 != null) {
+      setIsReg(true);
+      setEmail(res1);
 
-    getItem("isRegistered").then(res => {
-      if (res!=null){
-        setIsReg(true);
-        setEmail(res)
-        setUser( (previous) => ({...previous, email: res}))
+      const res2 = await getItem("clientType");
+      setTipoCliente(res2);
 
-        
-        getItem("clientType").then(res => {
-          setTipoCliente(res)
-         
-          setUser((previous) => ({...previous, tipoCliente: res}))
-
-          if (res=="1"){
-            setCliente(true)
-          }else{
-            setCliente(false)
-          }
-          
-        })
-        getItem("fotoPersonal").then(res2 => {
-          if(res2!=""||res2!=undefined|| res2!=" "){
-            setFoto(res2)
-            setUser((previous) => ({...previous, foto: res2}))
-          }
-          
-        })
-        getItem("nombre").then(res2 => {
-          setNombre(res2)
-          setUser((previous) => ({...previous, nombre: res2}))
-
-        })
-        getItem("apellido").then(res2 => {
-          setApellido(res2)
-          setUser((previous) => ({...previous, apellido: res2}))
-
-        })
-        getItem("calificacion").then(res2 => {
-          setCalificacion(res2)
-          setUser((previous) => ({...previous, calificacion: res2}))
-
-        })
-        getItem("infoRubro1").then(res4 => {
-          setRubro1((res4))
-
-          if(res4!=null){
-            setItemRubro1({
-              rubro:JSON.parse(res4).rubro,
-              radius:JSON.parse(res4).radius,
-              description:JSON.parse(res4).description,
-              hace_orden_emergencia:JSON.parse(res4).hace_orden_emergencia,
-              calificacion:JSON.parse(res4).calificacion,
-              pais:JSON.parse(res4).pais,
-              provincia:JSON.parse(res4).provincia,
-              ciudad:JSON.parse(res4).ciudad,
-              calle:JSON.parse(res4).calle,
-              numeracion:JSON.parse(res4).numeracion,
-              days_of_works:JSON.parse(res4).days_of_works,
-              hour_init:JSON.parse(res4).hour_init,
-              hour_end:JSON.parse(res4).hour_end,
-              certificate:JSON.parse(res4).certificate,
-              picture1:JSON.parse(res4).picture1,
-              picture2:JSON.parse(res4).picture2,
-              picture3:JSON.parse(res4).picture3,
-              })
-          }
-          
-        })
-        getItem("infoRubro2").then(res5 => {
-          setRubro2(res5)
-          
-
-          if(res5!=null){
-            console.log("sera por esto?"+JSON.parse(res5).rubro)
-          console.log("sera por esto?"+res5)
-            setItemRubro2({
-              rubro:JSON.parse(res5).rubro,
-              radius:JSON.parse(res5).radius,
-              description:JSON.parse(res5).description,
-              hace_orden_emergencia:JSON.parse(res5).hace_orden_emergencia,
-              calificacion:JSON.parse(res5).calificacion,
-              pais:JSON.parse(res5).pais,
-              provincia:JSON.parse(res5).provincia,
-              ciudad:JSON.parse(res5).ciudad,
-              calle:JSON.parse(res5).calle,
-              numeracion:JSON.parse(res5).numeracion,
-              days_of_works:JSON.parse(res5).days_of_works,
-              hour_init:JSON.parse(res5).hour_init,
-              hour_end:JSON.parse(res5).hour_end,
-              certificate:JSON.parse(res5).certificate,
-              picture1:JSON.parse(res5).picture1,
-              picture2:JSON.parse(res5).picture2,
-              picture3:JSON.parse(res5).picture3,
-              })
-          }
-          
-        })
-
+      const res3 = await getItem("fotoPersonal");
+      if (res3 !== "" && res3 !== undefined && res3 !== " ") {
+        setFoto(res3);
       }
-      else{
-        setIsReg(false);
+
+      const res4 = await getItem("nombre");
+      setNombre(res4);
+
+      const res5 = await getItem("apellido");
+      setApellido(res5);
+
+      const res6 = await getItem("calificacion");
+      setCalificacion(res6);
+
+      const res7 = await getItem("infoRubro1");
+      if (res7 != null) {
+        setRubro1(res7);
+        setItemRubro1({
+          rubro: JSON.parse(res7).rubro,
+          radius: JSON.parse(res7).radius,
+          description: JSON.parse(res7).description,
+          hace_orden_emergencia: JSON.parse(res7).hace_orden_emergencia,
+          calificacion: JSON.parse(res7).calificacion,
+          pais: JSON.parse(res7).pais,
+          provincia: JSON.parse(res7).provincia,
+          ciudad: JSON.parse(res7).ciudad,
+          calle: JSON.parse(res7).calle,
+          numeracion: JSON.parse(res7).numeracion,
+          days_of_works: JSON.parse(res7).days_of_works,
+          hour_init: JSON.parse(res7).hour_init,
+          hour_end: JSON.parse(res7).hour_end,
+          certificate: JSON.parse(res7).certificate,
+          picture1: JSON.parse(res7).picture1,
+          picture2: JSON.parse(res7).picture2,
+          picture3: JSON.parse(res7).picture3,
+        });
       }
-    });
+
+      const res8 = await getItem("infoRubro2");
+      if (res8 != null) {
+        setRubro2(res8);
+        setItemRubro2({
+          rubro: JSON.parse(res8).rubro,
+          radius: JSON.parse(res8).radius,
+          description: JSON.parse(res8).description,
+          hace_orden_emergencia: JSON.parse(res8).hace_orden_emergencia,
+          calificacion: JSON.parse(res8).calificacion,
+          pais: JSON.parse(res8).pais,
+          provincia: JSON.parse(res8).provincia,
+          ciudad: JSON.parse(res8).ciudad,
+          calle: JSON.parse(res8).calle,
+          numeracion: JSON.parse(res8).numeracion,
+          days_of_works: JSON.parse(res8).days_of_works,
+          hour_init: JSON.parse(res8).hour_init,
+          hour_end: JSON.parse(res8).hour_end,
+          certificate: JSON.parse(res8).certificate,
+          picture1: JSON.parse(res8).picture1,
+          picture2: JSON.parse(res8).picture2,
+          picture3: JSON.parse(res8).picture3,
+        });
+      }
+
+      if (res2 == "1") {
+        setCliente(true);
+      } else {
+        setCliente(false);
+      }
+    } else {
+      setIsReg(false);
+    }
+  };
+
+  loadUserData();
+
 }, []);
 
 

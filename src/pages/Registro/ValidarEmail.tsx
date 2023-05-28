@@ -36,18 +36,21 @@ const ValidarEmail = (props:{setIsReg:any, setCliente:any, setTipoCliente:any ,s
 
     useEffect(() => {
 
-        
+        console.log("el user email es: "+user!.email)
+        console.log("el user client type es: "+user!.tipoCliente)
+
         if(user!.email==""){
             getItem("isRegistered").then(res =>{
                 setEmail(res)
-    
+                console.log("el email en el guardado: : "+res)
+
             })
         }else{
             setEmail(user!.email)
         }
        
         
-        setTipoCliente(user!.tipoCliente)
+       // setTipoCliente(user!.tipoCliente)
 }, []);
 
 
@@ -70,12 +73,9 @@ const ValidarEmail = (props:{setIsReg:any, setCliente:any, setTipoCliente:any ,s
 
         setItem("isRegistered", email).then( () => {
           setItem("personalInfoCompleted", false).then( () =>{
-            setItem("clientType", user!.tipoCliente).then(() => {
               setCount("registro completo");
               simpleNavigate()
-            }
-
-            )
+           
           })
         })
 

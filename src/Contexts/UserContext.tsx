@@ -1,40 +1,27 @@
-import React, { useContext, useState } from "react";
-import { createContext } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { usuario, UsuarioType } from "../Interfaces/interfaces";
 
-
-
-export const  UserContext = createContext <Partial<UsuarioType>>({});
+export const UserContext = createContext<Partial<UsuarioType>>({});
 
 export const useUserContext = () => useContext(UserContext);
 
-
-
-interface props {
-    children: JSX.Element | JSX.Element[]
+interface Props {
+  children: JSX.Element | JSX.Element[];
 }
 
+export const UserProvider = ({ children }: Props) => {
+  const [user, setUser] = useState<usuario>({
+    email: "",
+    nombre: "",
+    apellido: "",
+    foto: "",
+    calificacion: 0,
+    tipoCliente: "",
+  });
 
-export const UserProvider  = ({ children }: props ) => {
-
-    const [user,setUser] = useState <usuario> ({
-        email:"",
-        nombre:"",
-        apellido:"",
-        foto:"",
-        calificacion:0,
-        tipoCliente:"",
-    })
-    
-     const  UserContext = createContext ({user,setUser});
-
-     return (
-        <UserContext.Provider  value={ {user,setUser} } >
-        { children }
-        </UserContext.Provider   >
-
-     )
-
-}
-
-
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
