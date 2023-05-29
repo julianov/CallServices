@@ -8,12 +8,12 @@ import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 
 import { chatbox, chatbubble, notifications,notificationsOff } from 'ionicons/icons';
 import Https from '../../utilidades/HttpsURL';
-import { useUserContext } from '../../Contexts/UserContext';
 import { getDB, setDB } from '../../utilidades/dataBase';
 import ModalCliente from '../../components/ModalGeneral/ModalCliente';
 import ExploreContainerCliente from '../../components/ExplorerContainer/ExploreContainerCliente';
 import Chat from '../../components/Chat/Chat';
 import { present } from '@ionic/core/dist/types/utils/overlays';
+import { UserContext } from '../../Contexts/UserContext';
 
 
 const url=Https
@@ -86,7 +86,7 @@ export interface newMessage{
 const HomeCliente = (props:{setIsReg:any,  
  setFoto:any, setNombre:any, setApellido:any, }) => {
 
-  const  {user,setUser}  = useUserContext()
+  const  {user,setUser}  = useContext(UserContext)
   
   const axios = require('axios');
 
@@ -198,7 +198,7 @@ const HomeCliente = (props:{setIsReg:any,
   }, []);
 
   useEffect(() => {
-    if (misOrdenes.length !=0 || misOrdenes!=undefined || misOrdenes!=[]){
+    if (misOrdenes.length !=0 || misOrdenes!=undefined ){
       for (let i=0; i<misOrdenes.length; i++){
         getDB(misOrdenes[i].ticket!+"cliente").then(res => {
           if(res!=undefined || res!=null){
@@ -482,7 +482,7 @@ export const IonCardNotificaciones = (props:{setShowPopover:any, de:string, tick
 
 const NuevasOrdenesAviso = (props: {nuevasOrdenes:string [], setVerOrden:any, setTicket:any})=>{
 
-  if (props.nuevasOrdenes!=[]){
+  if (props.nuevasOrdenes.length !== 0){
     return(
       <div id="elementos">
         {(props.nuevasOrdenes || []).map((a) => {

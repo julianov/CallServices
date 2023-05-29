@@ -1,9 +1,9 @@
 import { IonAlert, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonListHeader, IonLoading, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonSearchbar, IonTitle, IonToolbar, useIonRouter, useIonViewDidEnter } from '@ionic/react';
 import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
-import { useUserContext } from '../../Contexts/UserContext';
+import { useContext, useEffect, useRef, useState } from 'react';
 import Https from '../../utilidades/HttpsURL';
 import { getItem, setItem } from '../../utilidades/Storage';
+import { UserContext } from '../../Contexts/UserContext';
 
 const url=Https+"registro/"
 
@@ -11,7 +11,7 @@ const url=Https+"registro/"
 const ValidarEmail = (props:{setIsReg:any, setCliente:any, setTipoCliente:any ,setEmail:any }) => {
 
 
-    const  {user,setUser}  = useUserContext()
+    const  {user,setUser}  = useContext(UserContext)
 
     const [email, setEmail] = useState("") 
     const [tipoCliente, setTipoCliente ] = useState("")
@@ -29,7 +29,7 @@ const ValidarEmail = (props:{setIsReg:any, setCliente:any, setTipoCliente:any ,s
   const simpleNavigate = () => {
 		
 		router.push("/Completarinfo", "forward", "push");
-    window.location.reload();
+   // window.location.reload();
     
 	}
 

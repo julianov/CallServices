@@ -34,7 +34,7 @@ import Inicio from './pages/Inicio/Inicio';
 import CompletarRubros from './pages/CompletarRubros/CompletarRubros';
 import { createStore } from './utilidades/dataBase';
 import { itemRubro, usuario, UsuarioType, } from './Interfaces/interfaces';
-import {  UserContext, UserProvider, useUserContext } from './Contexts/UserContext';
+import {  UserContext } from './Contexts/UserContext';
 import HomeCliente from './pages/Home/HomeCliente';
 import HomeProveedor from './pages/Home/HomeProveedor';
 import Completarinfo from './pages/CompletarInformacionPersonal/Completarinfo';

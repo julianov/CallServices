@@ -14,11 +14,10 @@ import { Photo, usePhotoGallery } from "../../hooks/usePhotoGallery";
 
 import "./CompletarRubros.css";
 
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonDatetime, IonGrid, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonSelect, IonSelectOption, IonIcon, IonFabButton, IonImg, IonActionSheet, IonRange, IonTextarea, IonItemSliding, IonSegment, IonSegmentButton, IonItemDivider, IonPopover } from "@ionic/react";
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonDatetime, IonGrid, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonSelect, IonSelectOption, IonIcon, IonFabButton, IonImg, IonActionSheet, IonRange, IonTextarea, IonItemSliding, IonSegment, IonSegmentButton, IonItemDivider, IonPopover, useIonRouter } from "@ionic/react";
 import { itemRubro } from "../../Interfaces/interfaces";
 import { useRubroContext1, useRubroContext2 } from "../../Contexts/RubroContext";
 import { retornarIconoCategoria } from "../../utilidades/retornarIconoCategoria";
-import { useUserContext } from "../../Contexts/UserContext";
 
 /*
 CompletarItems
@@ -718,6 +717,8 @@ const getLocation = async () => {
      const {rubrosItem1,setItemRubro1} = useRubroContext1 () 
      const {rubrosItem2,setItemRubro2} = useRubroContext2 ()  
 
+     const router = useIonRouter();
+     
      var cantidad=0;
      if(rubrosItem1?.rubro!=""){
          cantidad++
@@ -729,12 +730,15 @@ const getLocation = async () => {
      if (termino){
         
          props.setIsReg(true) 
-         window.location.reload();
+        // window.location.reload();
+
+        router.push("/home", "forward", "push");
+
  
-         return (
+         /*return (
              <><Redirect push={true} to="/home" />
              </> 
-             )
+             )*/
  
      }
      
@@ -1491,98 +1495,64 @@ const getLocation = async () => {
              }
          })
      }
-     
      if(fotoTomada){
-         return(
-             <><IonGrid>
-                 <IonRow>
-                     <IonCol>
-                         <strong>Seleccionar foto de galería o tomar fotografia</strong>
-                     </IonCol>
-                 </IonRow>
-             
-                 <IonRow>
-                     <IonCol>
-                      <IonImg id="foto" onClick={() => onClickPhotoData()} src={props.imagen.current} />
-                     </IonCol>
-                 </IonRow>
-     
-                 <IonRow>
-                     <IonCol>
-                         <p> {presioneParaBorrar} </p>
-                     </IonCol>
-                 </IonRow>
-             </IonGrid>
-     
-                 <IonActionSheet
-                     isOpen={photoToDelete}
-                     buttons={[{
-                         text: 'Eliminar',
-                         role: 'destructive',
-                         icon: trash,
-                         handler: () => {
-                             if (photoToDelete) {
-                                 props.setFilepath.current=(null)
-                                 props.imagen.current=""
-                                 setFotoTomada(false)
-                                 setPresioneParaBorrar("")
- 
-                             }
-                         }
-                     }, {
-                         text: 'Cancelar',
-                         icon: close,
-                         role: 'cancel'
-                     }]}
-                     onDidDismiss={() => setPhotoToDelete(false)} 
-                     />
-                 </>
-         );
-     }else{
-         return(
-             <>
-             <IonGrid>
-                 <IonRow>
-                     <IonCol>
-                         <strong>Seleccionar foto de galería o tomar fotografia</strong>
-                     </IonCol>
-                 </IonRow>
-                 <IonRow>
-                     <IonCol>
-                         <IonFabButton onClick={() => tomarFoto()}>
-                             <IonIcon icon={camera}></IonIcon>
-                         </IonFabButton>
-                     </IonCol>
-                 </IonRow>
-     
-                 <IonRow>
-                     <IonCol>
-                         <p> {presioneParaBorrar} </p>
-                     </IonCol>
-                 </IonRow>
-             </IonGrid>
-     
-                 <IonActionSheet
-                     isOpen={photoToDelete}
-                     buttons={[{
-                         text: 'Eliminar',
-                         role: 'destructive',
-                         icon: trash,
-                         handler: () => {
-                             if (photoToDelete) {
-                                 props.setFilepath(null)
-                             }
-                         }
-                     }, {
-                         text: 'Cancelar',
-                         icon: close,
-                         role: 'cancel'
-                     }]}
-                     onDidDismiss={() => setPhotoToDelete(false)} 
-                     />
-                 </>
-         );
-     }
+        return(
+          <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "auto", marginTop: "30px", justifyContent:"center", alignItems:"center", textAlign:"center" }}>
+              <strong>Seleccionar foto de galería o tomar fotografia</strong>
+              <IonImg id="foto" onClick={() => onClickPhotoData()} src={props.imagen.current} />
+              <p> {presioneParaBorrar} </p>
+              <IonActionSheet
+                isOpen={photoToDelete}
+                buttons={[{
+                text: 'Eliminar',
+                role: 'destructive',
+                icon: trash,
+                handler: () => {
+                  if (photoToDelete) {
+                    props.setFilepath.current=(null)
+                    props.imagen.current=""
+                    setFotoTomada(false)
+                    setPresioneParaBorrar("")
+                  }
+                }
+                }, {
+                text: 'Cancelar',
+                icon: close,
+                role: 'cancel'
+                }]}
+                onDidDismiss={() => setPhotoToDelete(false)} 
+              />
+            </div>
+        );
+    }else{
+        return(
+          <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "auto", marginTop: "30px", justifyContent:"center", alignItems:"center", textAlign:"center" }}>
+            <strong>Seleccionar foto de galería o tomar fotografia</strong>      
+            <IonFabButton onClick={() => tomarFoto()}>
+              <IonIcon icon={camera}></IonIcon>
+            </IonFabButton>
+            <p> {presioneParaBorrar} </p>
+            <IonActionSheet
+                    isOpen={photoToDelete}
+                    buttons={[{
+                        text: 'Eliminar',
+                        role: 'destructive',
+                        icon: trash,
+                        handler: () => {
+                            if (photoToDelete) {
+                                props.setFilepath(null)
+                            }
+                        }
+                    }, {
+                        text: 'Cancelar',
+                        icon: close,
+                        role: 'cancel'
+                    }]}
+                    onDidDismiss={() => setPhotoToDelete(false)} 
+                    />
+          </div>
+        );
+    }
      
  }  
  

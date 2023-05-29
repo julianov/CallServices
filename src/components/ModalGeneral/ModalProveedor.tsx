@@ -14,24 +14,16 @@ import { b64toBlob } from "../../utilidades/b64toBlob";
 import Estrellas from "../Estrellas/Estrellas";
 import CompletarRubros from "../../pages/CompletarRubros/CompletarRubros";
 import { useRubroContext1, useRubroContext2 } from "../../Contexts/RubroContext";
-import { useUserContext } from "../../Contexts/UserContext";
 import { itemRubro, usuario } from "../../Interfaces/interfaces";
-import { IonActionSheet, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonDatetime, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRange, IonRow, IonSelect, IonSelectOption, IonTextarea, IonTitle, IonToolbar } from "@ionic/react";
+import { IonActionSheet, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonDatetime, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRange, IonRow, IonSelect, IonSelectOption, IonTextarea, IonTitle, IonToolbar, useIonRouter } from "@ionic/react";
 import { retornarIconoCategoria } from "../../utilidades/retornarIconoCategoria";
 import { clearDB } from "../../utilidades/dataBase";
+import { UserContext } from "../../Contexts/UserContext";
 
-//const url='http://127.0.0.1:8000/';
-//const url="https://callservicesvps.online:443/"
 
 const url= Https
 
-//const url2='http://127.0.0.1:8000/completarinfo/';
-//const url2="https://callservicesvps.online:443/completarinfo/"
-
 const url2 = Https+"completarinfo/"
-
-
-
 
 const ModalProveedor: React.FC<{setIsReg:any,  onClose: any; tipoVista:any; completarInfoPersonal:boolean, 
 }> = ({setIsReg, onClose, tipoVista, completarInfoPersonal,
@@ -229,6 +221,7 @@ const DatosUsuario = (props:{setIsReg:any, completarInfoPersonal:any, onClose:an
 
   const [agrandarImagen,setAgrandarImagen]=useState(false)
   const [datosPersonales,seDatosPersonales]=useState(false)
+  const router = useIonRouter();
 
   const closeSesion = () =>{
 
@@ -247,9 +240,10 @@ const DatosUsuario = (props:{setIsReg:any, completarInfoPersonal:any, onClose:an
   
     clearDB().then(()=>{
       props.setIsReg(false)
+      router.push("/", "forward", "push");
 
-      window.location.href="/"
-      window.location.reload(); 
+     /* window.location.href="/"
+      window.location.reload(); */
     })
 
       
@@ -266,7 +260,7 @@ const DatosPersonales =(props:{setIsReg:any, completarInfoPersonal:any; closeSes
   const [showAlertDatosPersonales, setShowAlertDatosPersonales]=useState(false)
   const [rubros,setRubros]=useState(false) //igual a true para mostrar rubros
 
-  const  {user,setUser}  = useUserContext()
+  const  {user,setUser}  = useContext(UserContext)
 
   const [imagen, setImagen] = useState ("")
 
@@ -1836,3 +1830,7 @@ const BotonDia=  (props:{dia:any, setDia:any})=> {
   )
 }
 export default ModalProveedor;
+
+function useContext(UserContext: any): { user: any; setUser: any; } {
+  throw new Error("Function not implemented.");
+}

@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component, useContext, useEffect, useState } from 'react';
 import './Registro.css';
 import { arrowBack, push} from 'ionicons/icons';
 import {  Link, Redirect } from 'react-router-dom';
@@ -9,8 +9,8 @@ import Https from '../../utilidades/HttpsURL';
 import { setItem } from '../../utilidades/Storage';
 import { IonAlert, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonListHeader, IonLoading, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonSearchbar, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
 import axios from 'axios';
-import { useUserContext } from '../../Contexts/UserContext';
 import { usuario } from '../../Interfaces/interfaces';
+import { UserContext } from '../../Contexts/UserContext';
 
 
 const url=Https+"registro/"
@@ -101,14 +101,14 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
   const [alertCuentaProveedor,setShowAlertCuentaProveedor]=useState(false)
   const mensajeCuentaProveedor="Al registrarse con una cuenta de proveedor podrá ofrecer sus servicios seleccionando rubros en los cuales domina los conocimientos requeridos para llevar a cabo los trabajos mediante certificaciones que los acrediten"
 
-  const  {user,setUser}  = useUserContext()
+  const  {user,setUser}  = useContext(UserContext)
 
   const router = useIonRouter();
 
   const simpleNavigate = () => {
 		
 		router.push("/confirmarEmail", "forward", "push");
-    window.location.reload();
+  //  window.location.reload();
 	}
 
   useEffect(() => {

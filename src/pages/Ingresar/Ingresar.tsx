@@ -9,7 +9,7 @@ import { Redirect, Route } from 'react-router';
 import { forceUpdate } from 'ionicons/dist/types/stencil-public-runtime';
 import Https from '../../utilidades/HttpsURL';
 import { itemRubro, usuario } from '../../Interfaces/interfaces';
-import { UserContext, useUserContext } from '../../Contexts/UserContext';
+import { UserContext } from '../../Contexts/UserContext';
 import { IonAlert, IonButton, IonButtons, IonChip, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonListHeader, IonLoading, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonSearchbar, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
 import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext';
 
@@ -159,7 +159,7 @@ import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext'
     const email=useRef("")
     const tipoDeCliente=useRef("")
 
-    const  {user,setUser}  = useUserContext()
+    const  {user,setUser}  = useContext(UserContext)
 
     const {rubrosItem1,setItemRubro1} = useRubroContext1 () 
     const {rubrosItem2,setItemRubro2} = useRubroContext2 ()
@@ -352,7 +352,7 @@ import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext'
           }
   
           router.push("/Completarinfo", "forward", "push");
-          window.location.reload();
+         // window.location.reload();
         } else if (resquest[0].picture === "") {
           await setItem("isRegistered", resquest[0].user);
           await setItem("clientType", resquest[0].clientType);

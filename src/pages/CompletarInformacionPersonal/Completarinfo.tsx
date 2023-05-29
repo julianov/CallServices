@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { camera, trash, close, pin, closeCircle, text } from 'ionicons/icons';
 
 import './Completarinfo.css';
@@ -12,8 +12,8 @@ import { Photo, usePhotoGallery } from '../../hooks/usePhotoGallery';
 import { b64toBlob } from '../../utilidades/b64toBlob';
 import { setItem } from '../../utilidades/Storage';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonFabButton, IonIcon, IonGrid, IonRow, IonCol, IonImg, IonActionSheet, IonInput, IonItem, IonLabel, IonButton, IonItemDivider, IonRange, IonAlert, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonList, IonSelect, IonSelectOption, IonDatetime, IonLoading, IonTextarea, IonCheckbox, useIonRouter } from '@ionic/react';
-import { useUserContext } from '../../Contexts/UserContext';
 import { usuario } from '../../Interfaces/interfaces';
+import { UserContext } from '../../Contexts/UserContext';
 
 
 
@@ -22,7 +22,7 @@ const url= Https+"completarinfo/"
 const Completarinfo = (props:{setIsReg:any,email:any, tipoCliente:any,setNombre:any,setApellido:any, setFoto:any, 
 rubro1:any, rubro2:any, setRubro1:any, setRubro2:any}) => {
 
-    const  {user,setUser}  = useUserContext()
+    const  {user,setUser}  = useContext(UserContext)
    console.log ("USER ASDF: "+JSON.stringify(user))
   return (
     <IonPage>
@@ -94,10 +94,13 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
 
     const [done,setDone]=useState(false)
 
-    const  {user,setUser}  = useUserContext()
+    const  {user,setUser}  = useContext(UserContext)
 
     useEffect(() => {
 
+      ACA HAY QUE VER QUE PASA SI user!.email ES NULL Y user!.tipoCliente SON NULL ENTONCES HAGARRAR LO QUE VIENE DE SETITEM 
+      POR LO TANTO EN SETITEM TIENE QUE APLICARSE CUANDO VIENE DEL LOGIN Y NO SOLO EN USERCONTEXT 
+      TENER PRESENTE QUE EN formDataToUpload.append("email", user!.email); DEBE IR ESE NUEVO EMAIL <VALIDADO></VALIDADO>
 
     }, []);
 
@@ -133,8 +136,9 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
 
     if(listo){
         props.setIsReg(true) 
+        console.log("llego aqui")
         router.push("/", "forward", "push");
-        window.location.reload();
+     //   window.location.reload();
 
     }
 
@@ -152,8 +156,9 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                 setShowLoading(true);
                  
                  var formDataToUpload = new FormData();
+                 console.log("datos: "+user!.email+" - "+nombre+" - "+apellido)
                  formDataToUpload.append("tipo", String(props.clientType))
-                 formDataToUpload.append("email", props.email);
+                 formDataToUpload.append("email", user!.email);
                  formDataToUpload.append("nombre", nombre);
                  formDataToUpload.append("apellido", apellido);
                  formDataToUpload.append("image", imagen_a_enviar.current!);
@@ -165,6 +170,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                      headers: {"content-type": "multipart/form-data"},
                      data:formDataToUpload
                  }).then(function(res: any){
+                    console.log("esto devolvio: "+res.data)
                     setShowLoading(false);
                     if(res.data=="todo ok"){
                         
@@ -190,6 +196,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
 
                     }else{
                         setItem("personalInfoCompleted", false);
+                        ACA HAY QUE TENER PRESENTE EN VOLVER A LOGIN PORQUE ESTA MAL EL USER
 
                     }
                  }).catch((error: any) =>{
@@ -216,7 +223,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                  
                  var formDataToUpload = new FormData();
                  formDataToUpload.append("tipo", String(props.clientType))
-                 formDataToUpload.append("email", props.email);
+                 formDataToUpload.append("email", user!.email);
                  formDataToUpload.append("nombre", nombre);
                  formDataToUpload.append("descripcion", descripcion);
                  formDataToUpload.append("image", imagen_a_enviar.current!);
@@ -330,7 +337,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                                     <IonInput autocomplete="family-name" onIonInput={(e: any) => setApellido(e.target.value)}></IonInput>
                                 </IonItem>
                           
-                                <TomarFotografia setFilepath={imagen_a_enviar} fotoAguardar={fotoAguardar} setFoto={props.setFoto} ></TomarFotografia>
+                                <TomarFotografia setFilepath={imagen_a_enviar} imagen={fotoAguardar} setFoto={props.setFoto} ></TomarFotografia>
                           
                                 {photos.map((photo, index) => (
                                     <IonCol size="6" key={index}>
@@ -396,7 +403,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
                             <IonInput autocomplete="family-name" onIonInput={(e: any) => setDescripcion(e.target.value)}></IonInput>
                         </IonItem>
                 
-                        <TomarFotografia setFilepath={imagen_a_enviar} fotoAguardar={fotoAguardar} setFoto={props.setFoto} ></TomarFotografia>
+                        <TomarFotografia setFilepath={imagen_a_enviar} imagen={fotoAguardar} setFoto={props.setFoto} ></TomarFotografia>
 
                         {photos.map((photo, index) => (
                             <IonCol size="6" key={index}>
@@ -418,78 +425,109 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoCliente:any, ti
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  
-const TomarFotografia = (props: {setFilepath:any, fotoAguardar:any, setFoto:any}) => {
+
+  const TomarFotografia = (props: {setFilepath:any, imagen:any, setFoto:any}) => {
+ 
+ 
     const { deletePhoto, photos, takePhoto } = usePhotoGallery();
     const [photoToDelete, setPhotoToDelete] = useState(false);
-    const imagen = useRef<string>();
-  
-    const onClickPhotoData = () => {
-      setPhotoToDelete(true);
-    };
-  
+    const [presioneParaBorrar,setPresioneParaBorrar]=useState("")
+    
+    const [fotoTomada, setFotoTomada]=useState(false)
+
+    const onClickPhotoData=()=>{
+        //props.setFilepath(photo.webviewPath)
+        setPhotoToDelete(true)
+    }
+
     useEffect(() => {
-      if (imagen.current) {
-        setPhotoToDelete(true);
-      }
+
+            if (props.imagen.current!="" && props.imagen.current!=undefined && props.imagen.current!=null){
+                setFotoTomada(true)
+            }
+            
     }, []);
-  
-    const tomarFoto = () => {
-      takePhoto().then(async (res) => {
-        if (res != null) {
-          const base64Data = await base64FromPath(res[0].webviewPath!);
-          imagen.current = base64Data;
-          props.setFoto(base64Data);
-          props.fotoAguardar.current = base64Data;
-          const block = base64Data.split(";");
-          const contentType = block[0].split(":")[1];
-          const realData = block[1].split(",")[1];
-          const blob = b64toBlob(realData, contentType, 1);
-          props.setFilepath(blob!);
-        }
-      });
-    };
-  
-    return (
-      <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "auto", marginTop: "30px" }}>
-        {imagen.current ? (
-          <>
-            <IonImg id="foto" onClick={onClickPhotoData} src={imagen.current} />
-            <p style={{ marginTop: "15px" }}>Presione la imagen para eliminarla</p>
-            <IonActionSheet
-              isOpen={photoToDelete}
-              buttons={[
-                {
-                  text: "Eliminar",
-                  role: "destructive",
-                  icon: trash,
-                  handler: () => {
-                    props.setFilepath(null);
-                    imagen.current = "";
-                    props.setFoto("");
-                    setPhotoToDelete(false);
-                  },
-                },
-                {
-                  text: "Cancelar",
-                  icon: close,
-                  role: "cancel",
-                },
-              ]}
-              onDidDismiss={() => setPhotoToDelete(false)}
-            />
-          </>
-        ) : (
-          <>
-            <strong style={{ marginBottom: "25px" }}>Seleccionar foto de galería o tomar fotografia</strong>
-            <IonFabButton onClick={tomarFoto}>
+    
+    const tomarFoto =()=>{
+        takePhoto().then(async res => {
+            if(res!=null){
+               // props.setImagen(res[0].webviewPath!)
+                const base64Data = await base64FromPath(res[0].webviewPath!);
+                //props.imagen.current=res[0].webviewPath!
+                props.imagen.current= base64Data
+                props.setFoto(base64Data);
+                var block = base64Data!.split(";");
+                var contentType = block[0].split(":")[1];
+                var realData = block[1].split(",")[1];
+                var blob = b64toBlob(realData, contentType,1);
+                props.setFilepath.current=( blob!)
+
+                
+                setFotoTomada(true)
+                setPresioneParaBorrar("Presione la imagen para eliminarla")            
+            }
+        })
+    }
+    
+    if(fotoTomada){
+        return(
+          <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "auto", marginTop: "30px", justifyContent:"center", alignItems:"center", textAlign:"center" }}>
+              <strong>Seleccionar foto de galería o tomar fotografia</strong>
+              <IonImg id="foto" onClick={() => onClickPhotoData()} src={props.imagen.current} />
+              <p> {presioneParaBorrar} </p>
+              <IonActionSheet
+                isOpen={photoToDelete}
+                buttons={[{
+                text: 'Eliminar',
+                role: 'destructive',
+                icon: trash,
+                handler: () => {
+                  if (photoToDelete) {
+                    props.setFilepath.current=(null)
+                    props.imagen.current=""
+                    setFotoTomada(false)
+                    setPresioneParaBorrar("")
+                  }
+                }
+                }, {
+                text: 'Cancelar',
+                icon: close,
+                role: 'cancel'
+                }]}
+                onDidDismiss={() => setPhotoToDelete(false)} 
+              />
+            </div>
+        );
+    }else{
+        return(
+          <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "auto", marginTop: "30px", justifyContent:"center", alignItems:"center", textAlign:"center" }}>
+            <strong>Seleccionar foto de galería o tomar fotografia</strong>      
+            <IonFabButton onClick={() => tomarFoto()}>
               <IonIcon icon={camera}></IonIcon>
             </IonFabButton>
-            <p style={{ marginTop: "15px" }}>No se ha tomado ninguna foto</p>
-          </>
-        )}
-      </div>
-    );
-  };
-
+            <p> {presioneParaBorrar} </p>
+            <IonActionSheet
+                    isOpen={photoToDelete}
+                    buttons={[{
+                        text: 'Eliminar',
+                        role: 'destructive',
+                        icon: trash,
+                        handler: () => {
+                            if (photoToDelete) {
+                                props.setFilepath(null)
+                            }
+                        }
+                    }, {
+                        text: 'Cancelar',
+                        icon: close,
+                        role: 'cancel'
+                    }]}
+                    onDidDismiss={() => setPhotoToDelete(false)} 
+                    />
+          </div>
+        );
+    }
+    
+}  
 
 export default Completarinfo;

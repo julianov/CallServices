@@ -13,13 +13,13 @@ import VerOrdenesCliente from "../../pages/VerOrdenes";
 
 import CardProveedor from "../../utilidades/CardProveedor";
 import { categoriaBuscada } from "../ResultadoBusqueda/ResultadoBusqueda";
-import { IonActionSheet, IonAlert, IonButton, IonCard, IonCol, IonContent, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonItemDivider, IonLabel, IonList, IonLoading, IonRow, IonTitle, IonToolbar } from "@ionic/react";
+import { IonActionSheet, IonAlert, IonButton, IonCard, IonCol, IonContent, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonItemDivider, IonLabel, IonList, IonLoading, IonRow, IonTitle, IonToolbar, useIonRouter } from "@ionic/react";
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 import { PedirOrdenEmergencia } from "../../pages/PedirOrdenes/PedirOrdenEmergencia";
 import { retornarIconoCategoria } from "../../utilidades/retornarIconoCategoria";
-import { useUserContext } from "../../Contexts/UserContext";
 import { usuario } from "../../Interfaces/interfaces";
 import { clearDB, removeDB } from "../../utilidades/dataBase";
+import { UserContext } from "../../Contexts/UserContext";
 
 
 const url=Https
@@ -247,7 +247,8 @@ const DatosUsuario = (props:{setIsReg:any,email:string, completarInfoPersonal:an
 
       clearDB().then(()=>{
         props.setIsReg(false)
-            window.location.reload();
+
+        window.location.reload();
       }
 
       )
@@ -275,7 +276,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
 
   const [imagen, setImagen] = useState (props.foto)
 
-  const  {user,setUser}  = useUserContext()
+  const  {user,setUser}  = useContext(UserContext)
 
 
     useEffect(() => {
@@ -798,3 +799,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
   }
   
   export default ModalCliente;
+function useContext(UserContext: any): { user: any; setUser: any; } {
+  throw new Error("Function not implemented.");
+}
+

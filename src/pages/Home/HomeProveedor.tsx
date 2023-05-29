@@ -165,7 +165,7 @@ const HomeProveedor = (props:{setIsReg:any, setNombre:any, setApellido:any, setF
 
 
   useEffect(() => {
-    if (misOrdenes.length !=0 || misOrdenes!=undefined || misOrdenes!=[]){
+    if (misOrdenes.length !=0 || misOrdenes!=undefined ){
 
       for (let i=0; i<misOrdenes.length; i++){
         console.log("asasdfasdfasdf-"+misOrdenes[i].ticket+"%%%"+misOrdenes[i].status)
@@ -303,7 +303,7 @@ const HomeProveedor = (props:{setIsReg:any, setNombre:any, setApellido:any, setF
 
 const NuevasOrdenesAviso = (props: {nuevasOrdenes:string [], setVerOrden:any, setTicket:any})=>{
 
-  if (props.nuevasOrdenes!=[]){
+  if (props.nuevasOrdenes.length !== 0){
     return(
       <div id="elementos">
         {(props.nuevasOrdenes || []).map((a) => {

@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { arrowBack, camera, close, location, logoWindows, trash } from 'ionicons/icons';
 import { isSetAccessorDeclaration } from 'typescript';
 import { allowedNodeEnvironmentFlags } from 'process';
-import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent, IonDatetime, IonCheckbox, IonLoading, IonTitle, IonSegment, IonSegmentButton, IonItemDivider } from '@ionic/react';
+import { IonCard, IonCardHeader, IonGrid, IonRow, IonCol, IonCardTitle, IonCardSubtitle, IonItem, IonButton, IonInput, IonLabel, IonImg, IonActionSheet, IonFabButton, IonIcon, IonAlert, IonContent, IonDatetime, IonCheckbox, IonLoading, IonTitle, IonSegment, IonSegmentButton, IonItemDivider, useIonRouter } from '@ionic/react';
 import { Link, useHistory } from 'react-router-dom';
 import Https from '../../utilidades/HttpsURL';
 import { setDB } from '../../utilidades/dataBase';
@@ -65,11 +65,15 @@ const OrdenSimple = (props:{ordenes:any,data:any, clienteEmail:any , setVolver:a
 
     const[yaTieneRubro, setYaTieneRubro] = useState(false)
 
+    const router = useIonRouter();
+
 
     const irAHome = () => {
 
+        router.push("/home", "forward", "push");
+/*
         history.push("/home");
-        window.location.reload();
+        window.location.reload();*/
 
     }
 

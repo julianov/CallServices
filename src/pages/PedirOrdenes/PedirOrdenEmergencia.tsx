@@ -1,10 +1,10 @@
 import { IonButton, IonIcon, IonInput, IonItem, IonLabel } from "@ionic/react"
 import { arrowBack, close } from "ionicons/icons"
-import { useEffect, useRef, useState } from "react"
-import { useUserContext } from "../../Contexts/UserContext"
+import { useContext, useEffect, useRef, useState } from "react"
 import Https from "../../utilidades/HttpsURL"
 import { retornarIconoCategoria } from "../../utilidades/retornarIconoCategoria"
 import { getLocation, TomarFotografia } from "./PedirOrden"
+import { UserContext } from "../../Contexts/UserContext"
 
 
 const url=Https+"orden/ordenEmergencia/"
@@ -26,7 +26,7 @@ export const PedirOrdenEmergencia = (props:{setVolver:any}) => {
     const latitudCliente = useRef("")
     const longitudCliente = useRef("")
 
-    const  {user,setUser}  = useUserContext()
+    const  {user,setUser}  = useContext(UserContext)
 
     const foto1Mostrar= useRef <String>()
     const foto2Mostrar= useRef <String>()

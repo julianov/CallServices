@@ -1,3 +1,4 @@
+/*
 import React, { createContext, useContext, useState } from "react";
 import { usuario, UsuarioType } from "../Interfaces/interfaces";
 
@@ -24,4 +25,10 @@ export const UserProvider = ({ children }: Props) => {
       {children}
     </UserContext.Provider>
   );
-};
+};*/
+
+import { createContext } from 'react';
+import { UsuarioType } from '../Interfaces/interfaces';
+
+export const UserContext = createContext<Partial<UsuarioType>>({});
+

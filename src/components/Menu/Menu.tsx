@@ -6,7 +6,6 @@
   import './Menu.css';
 import { getItem, removeItem, setItem } from '../../utilidades/Storage';
 import { isPropertySignature } from 'typescript';
-import { UserContext, useUserContext } from '../../Contexts/UserContext';
 import {
   IonCol,
     IonContent,
@@ -21,6 +20,7 @@ import {
     IonNote,
     IonRow,
   } from '@ionic/react';
+import { UserContext } from '../../Contexts/UserContext';
     
   interface AppPage {
     url: string;
@@ -79,8 +79,8 @@ import {
 
     //const user = useContext(UserContext)
 
-    const  {user,setUser}  = useUserContext()
-
+    const  {user,setUser}  = useContext(UserContext)
+    
     const [imagen, setImagen] = useState (user!.foto)
 
     useEffect(() => {
