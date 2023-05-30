@@ -40,7 +40,7 @@ const ValidarEmail = (props:{setIsReg:any, setCliente:any, setTipoCliente:any ,s
         console.log("el user client type es: "+user!.tipoCliente)
 
         if(user!.email==""){
-            getItem("isRegistered").then(res =>{
+            getItem("email").then(res =>{
                 setEmail(res)
                 console.log("el email en el guardado: : "+res)
 
@@ -71,7 +71,7 @@ const ValidarEmail = (props:{setIsReg:any, setCliente:any, setTipoCliente:any ,s
       console.log(resquest)
       if(resquest==="email confirmed"){
 
-        setItem("isRegistered", email).then( () => {
+        setItem("email", email).then( () => {
           setItem("personalInfoCompleted", false).then( () =>{
               setCount("registro completo");
               simpleNavigate()

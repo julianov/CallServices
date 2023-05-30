@@ -225,7 +225,7 @@ const DatosUsuario = (props:{setIsReg:any, completarInfoPersonal:any, onClose:an
 
   const closeSesion = () =>{
 
-    removeItem("isRegistered")
+    removeItem("email")
     removeItem("rubro1")
     removeItem("rubro2")
     removeItem("infoRubro1")
@@ -899,7 +899,7 @@ const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:
 
   if (agregarOtroRubro){
 
-    return(<CompletarRubros  email={props.email}  clientType={props.tipoProveedor} setIsReg={props.setIsReg} />);
+    return(<CompletarRubros  setIsReg={props.setIsReg} />);
 
   }else{
     if (verRubro==""){

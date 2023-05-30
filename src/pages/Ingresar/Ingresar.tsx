@@ -11,7 +11,7 @@ import Https from '../../utilidades/HttpsURL';
 import { itemRubro, usuario } from '../../Interfaces/interfaces';
 import { UserContext } from '../../Contexts/UserContext';
 import { IonAlert, IonButton, IonButtons, IonChip, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonListHeader, IonLoading, IonMenu, IonMenuButton, IonPage, IonRouterOutlet, IonRow, IonSearchbar, IonTitle, IonToolbar, useIonRouter } from '@ionic/react';
-import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext';
+import { RubroContext1, RubroContext2 } from '../../Contexts/RubroContext';
 
 
   const url=Https+"login/"
@@ -161,9 +161,9 @@ import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext'
 
     const  {user,setUser}  = useContext(UserContext)
 
-    const {rubrosItem1,setItemRubro1} = useRubroContext1 () 
-    const {rubrosItem2,setItemRubro2} = useRubroContext2 ()
-
+    const {rubrosItem1,setItemRubro1} = useContext (RubroContext1) 
+    const {rubrosItem2,setItemRubro2} = useContext (RubroContext2) 
+    
     const router = useIonRouter();
 
     if(home){
@@ -343,6 +343,7 @@ import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext'
           props.setShowLoading(false);
           props.setShowAlertUsuarioContraseñaIncorrectos(true);
         } else if (resquest[0].personalDataCompleted === "false") {
+
           if (setUser) {
             setUser((state) => ({
               ...state,
@@ -350,11 +351,13 @@ import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext'
               tipoCliente: resquest[0].clientType,
             }));
           }
+          await setItem("email", email.current)
+          await setItem("clientType", resquest[0].clientType)
   
           router.push("/Completarinfo", "forward", "push");
-         // window.location.reload();
+
         } else if (resquest[0].picture === "") {
-          await setItem("isRegistered", resquest[0].user);
+          await setItem("email", resquest[0].user);
           await setItem("clientType", resquest[0].clientType);
           tipoDeCliente.current = resquest[0].clientType;
           await setItem("personalInfoCompleted", false);
@@ -381,7 +384,7 @@ import { useRubroContext1, useRubroContext2 } from '../../Contexts/RubroContext'
   
           setHome(true);
         } else {
-          await setItem("isRegistered", email.current);
+          await setItem("email", email.current);
           await setItem("fotoPersonal", resquest[0].picture);
           await setItem("clientType", resquest[0].clientType);
           tipoDeCliente.current = resquest[0].clientType;

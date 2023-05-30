@@ -165,7 +165,7 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
   };
   
   const handleEmail = async () => {
-    await setItem("isRegistered", email.current);
+    await setItem("email", email.current);
     setUser!((state: usuario) => ({ ...state, email: email.current }));
   };
   

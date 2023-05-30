@@ -4,7 +4,7 @@ import { base64FromPath } from "@ionic/react-hooks/filesystem/utils";
 import { setServers } from "dns";
 import { arrowBack, camera, trash,close, volumeLowSharp, imageOutline, terminalOutline } from "ionicons/icons";
 import { debugPort } from "process";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Redirect } from "react-router";
 import { isNumber } from "util";
 import { b64toBlob } from "../../utilidades/b64toBlob";
@@ -16,30 +16,13 @@ import "./CompletarRubros.css";
 
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonDatetime, IonGrid, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRow, IonSelect, IonSelectOption, IonIcon, IonFabButton, IonImg, IonActionSheet, IonRange, IonTextarea, IonItemSliding, IonSegment, IonSegmentButton, IonItemDivider, IonPopover, useIonRouter } from "@ionic/react";
 import { itemRubro } from "../../Interfaces/interfaces";
-import { useRubroContext1, useRubroContext2 } from "../../Contexts/RubroContext";
+import { RubroContext1, RubroContext2 } from "../../Contexts/RubroContext";
 import { retornarIconoCategoria } from "../../utilidades/retornarIconoCategoria";
+import { UserContext } from "../../Contexts/UserContext";
 
-/*
-CompletarItems
-    |
-    |->Lista
-    |    |->CardView
-    |->SetITem
-*/
-
-//const url='http://127.0.0.1:8000/completarinfo/';
-//const url="https://callservicesvps.online:443/completarinfo/"
 
 const url=Https+"completarinfo/"
 
-/*
-if (vista==0) 
-	//Acá iría la pantalla principal, de que si tiene rubros cargados o si no tiene
-if(vista==1)
-	//se debe mostrar el cardView con el rubro selecionado
-if(vista==2) 
-	//Se muestra la priemr pantalla de agregar rubro
-*/
 
 let posicion: string | number;
 
@@ -58,15 +41,15 @@ const getLocation = async () => {
     }
   }
 
-  const CompletarRubros = (props:{setIsReg:any,email:any, clientType:any}) => {
+  const CompletarRubros = (props:{setIsReg:any}) => {
 
 
-    // const [ver,setVer]=useState("*")
- 
-   // const [arregloRubro, setArregloRubros] =  useState <rubro []> ( [])
-   const {rubrosItem1,setItemRubro1} = useRubroContext1 () 
-   const {rubrosItem2,setItemRubro2} = useRubroContext2 () 
-    
+   const {rubrosItem1,setItemRubro1} = useContext (RubroContext1) 
+   const {rubrosItem2,setItemRubro2} = useContext (RubroContext2) 
+   
+   const  {user,setUser}  = useContext(UserContext)
+   const emailRef = useRef("");
+   const clientTypeRef = useRef("");
  
      const [vista,setVista]=useState(0)
  
@@ -119,6 +102,20 @@ const getLocation = async () => {
      const [reload,setReload] = useState(false)
   
      useEffect(() => {
+        (async () => {
+          if (user === undefined || !user || user.email === "" || user.tipoCliente === "") {
+            const email = await getItem("email");
+            const clientType = await getItem("clientType");
+            emailRef.current = email;
+            clientTypeRef.current = clientType;
+          } else {
+            emailRef.current = user.email;
+            clientTypeRef.current = user.tipoCliente;
+          }
+        })();
+      }, []);
+
+     useEffect(() => {
          if(vista==0){
              //setRubro("");
              rubro.current=""
@@ -159,15 +156,14 @@ const getLocation = async () => {
              rubro_a_cargar=rubro.current
  
              var formDataToUpload = new FormData();
-             formDataToUpload.append("tipo", String(props.clientType))
-             formDataToUpload.append("email", props.email);
+             formDataToUpload.append("tipo", String(clientTypeRef.current))
+             formDataToUpload.append("email", emailRef.current);
  
              formDataToUpload.append("item", rubro.current);
              arreglo.push(rubro.current)
              formDataToUpload.append("radius", String(radius));
              arreglo.push(String(radius))
              formDataToUpload.append("posicion", posicion);
-             //arreglo.push(posicion)
  
              formDataToUpload.append("description", descripcion.current);
              arreglo.push(descripcion.current)
@@ -209,136 +205,62 @@ const getLocation = async () => {
  
              
              const axios = require('axios');
-             axios({
-                 url:url+"subirrubro",
-                 method:'POST',
-                 headers: {"content-type": "multipart/form-data"},
-                 data:formDataToUpload
-             }).then(function(res: any){
- 
-                 if(res.data=="rubro cargado"){
-                   
-                     getItem("rubro1").then(res2 => {
-                         console.log("ENTONCES VEAMOS QUE HAY EN RUBRO 1: "+res2)
-                         if (res2=="" || res2==null ){
- 
-                             // rubro radius posicion descripcion dias horainicio horafin certificacion foto1 foto2 foto3
- 
-                           setItem("rubro1", rubro_a_cargar).then(() =>{    
-                             setItem("infoRubro1", JSON.stringify( { 
-                                rubro:rubro.current,
-                                radius:String(radius),
-                                description:descripcion.current,
-                                calificacion:0,
-                                hace_orden_emergencia:hace_orden_emergencia.current,
-                                days_of_works:dias.current,
-                                hour_init:horaInicio.current,
-                                hour_end:horaFin.current,
-                                certificate:certificacionMostrar.current,
-                                picture1:foto1Mostrar.current,
-                                picture2:foto2Mostrar.current,
-                                picture3:foto3Mostrar.current,
-                                pais:pais.current,
-                                provincia:provincia.current,
-                                ciudad:ciudad.current,
-                                calle:domicilio_calle.current,
-                                numeracion:String(domicilio_numeración.current),
-                            })).then(() =>{ 
-                                setItemRubro1!(
-                                    { 
-                                    rubro:rubro.current,
-                                    radius:String(radius),
-                                    description:descripcion.current,
-                                    calificacion:0,
-                                    hace_orden_emergencia:hace_orden_emergencia.current,
-                                    days_of_works:dias.current,
-                                    hour_init:horaInicio.current,
-                                    hour_end:horaFin.current,
-                                    certificate:certificacionMostrar.current,
-                                    picture1:foto1Mostrar.current,
-                                    picture2:foto2Mostrar.current,
-                                    picture3:foto3Mostrar.current,
-                                    pais:pais.current,
-                                    provincia:provincia.current,
-                                    ciudad:ciudad.current,
-                                    calle:domicilio_calle.current,
-                                    numeracion:String(domicilio_numeración.current),
-                                })
-                             setShowLoading(false);
-                             setVista(0)
-                             arreglo = []
-                             //setReload(true)
-                             })
-                         })
-                         }
-                         else{
-                           setItem("rubro2", rubro_a_cargar).then(() =>{   
-                             setItem("infoRubro2", JSON.stringify( { 
-                                rubro:rubro.current,
-                                radius:String(radius),
-                                description:descripcion.current,
-                                calificacion:0,
-                                hace_orden_emergencia:hace_orden_emergencia.current,
-                                days_of_works:dias.current,
-                                hour_init:horaInicio.current,
-                                hour_end:horaFin.current,
-                                certificate:certificacionMostrar.current,
-                                picture1:foto1Mostrar.current,
-                                picture2:foto2Mostrar.current,
-                                picture3:foto3Mostrar.current,
-                                pais:pais.current,
-                                provincia:provincia.current,
-                                ciudad:ciudad.current,
-                                calle:domicilio_calle.current,
-                                numeracion:String(domicilio_numeración.current),
-                            })).then(() =>{
-                                setItemRubro2!(
-                                    { 
-                                    rubro:rubro.current,
-                                    radius:String(radius),
-                                    description:descripcion.current,
-                                    calificacion:0,
-                                    hace_orden_emergencia:hace_orden_emergencia.current,
-                                    days_of_works:dias.current,
-                                    hour_init:horaInicio.current,
-                                    hour_end:horaFin.current,
-                                    certificate:certificacionMostrar.current,
-                                    picture1:foto1Mostrar.current,
-                                    picture2:foto2Mostrar.current,
-                                    picture3:foto3Mostrar.current,
-                                    pais:pais.current,
-                                    provincia:provincia.current,
-                                    ciudad:ciudad.current,
-                                    calle:domicilio_calle.current,
-                                    numeracion:String(domicilio_numeración.current),
-                                })
-                             setShowLoading(false);
-                             setVista(0)
-                             arreglo = []
-                         })
-                         })
-                         }
-                       })
- 
-                     setItem("rubroLoaded", true).then(() =>{
-                         
-                        
-                     }
-                     );
-                 }else{
- 
-                 }
-                 //recarga la vista ejecutando el useEffect
-                 if(res=="ha cargado la cantidad maxima de items"){
-                     setVista(0)
-                 }
-                 else{
-                     setVista(0)
-                 }
-             }).catch((error: any) =>{
-                 setVista(0)
-                 //Network error comes in
-             });   
+             const submitForm = async () => {
+                try {
+                  const res = await axios.post(url + 'subirrubro', formDataToUpload, {
+                    headers: { 'content-type': 'multipart/form-data' },
+                  });
+              
+                  if (res.data === 'rubro cargado') {
+                    const res2 = await getItem('rubro1');
+                    console.log('ENTONCES VEAMOS QUE HAY EN RUBRO 1: ' + res2);
+              
+                    const rubroData = {
+                      rubro: rubro.current,
+                      radius: String(radius),
+                      description: descripcion.current,
+                      calificacion: 0,
+                      hace_orden_emergencia: hace_orden_emergencia.current,
+                      days_of_works: dias.current,
+                      hour_init: horaInicio.current,
+                      hour_end: horaFin.current,
+                      certificate: certificacionMostrar.current,
+                      picture1: foto1Mostrar.current,
+                      picture2: foto2Mostrar.current,
+                      picture3: foto3Mostrar.current,
+                      pais: pais.current,
+                      provincia: provincia.current,
+                      ciudad: ciudad.current,
+                      calle: domicilio_calle.current,
+                      numeracion: String(domicilio_numeración.current),
+                    };
+              
+                    if (res2 === '' || res2 === null) {
+                      await setItem('rubro1', rubro_a_cargar);
+                      await setItem('infoRubro1', JSON.stringify(rubroData));
+                      setItemRubro1!(rubroData);
+                    } else {
+                      await setItem('rubro2', rubro_a_cargar);
+                      await setItem('infoRubro2', JSON.stringify(rubroData));
+                      setItemRubro2!(rubroData);
+                    }
+              
+                    setShowLoading(false);
+                    setVista(0);
+                    arreglo = [];
+                  }
+              
+                  setItem('rubroLoaded', true);
+              
+                  // Recarga la vista ejecutando el useEffect
+                  setVista(0);
+                } catch (error) {
+                  setVista(0);
+                  // Error de red
+                }
+            }
+
+            await submitForm();
        }
  
      const volver= ()=>{
@@ -353,7 +275,7 @@ const getLocation = async () => {
              <IonPage>
             
                <IonContent fullscreen>
-                 <Vista1 setIsReg={props.setIsReg} setVista={setVista} volver={volver} email={props.email} clientType={props.clientType} setTituloRubros={setTituloRubros} tituloRubros={tituloRubros} setTituloAVer={setTituloAVer} ></Vista1>
+                 <Vista1 setIsReg={props.setIsReg} setVista={setVista} volver={volver} email={emailRef.current} clientType={clientTypeRef.current} setTituloRubros={setTituloRubros} tituloRubros={tituloRubros} setTituloAVer={setTituloAVer} ></Vista1>
                </IonContent>
              </IonPage>
            );
@@ -368,7 +290,7 @@ const getLocation = async () => {
                  <div id="CardItemCompletarRubro">
                  
  
-                 <CardItem volver={volver} setVista={setVista} clientType={props.clientType} email={props.email} ver={tituloAVer} />
+                 <CardItem volver={volver} setVista={setVista} clientType={clientTypeRef.current} email={emailRef.current} ver={tituloAVer} />
                  </div>
                </IonContent>
            );
@@ -543,8 +465,8 @@ const getLocation = async () => {
  
      const [error, setError] = useState(false)
  
-     const {rubrosItem1,setItemRubro1} = useRubroContext1 () 
-     const {rubrosItem2,setItemRubro2} = useRubroContext2 ()  
+     const {rubrosItem1,setItemRubro1} = useContext (RubroContext1) 
+     const {rubrosItem2,setItemRubro2} = useContext (RubroContext2)  
  
      useEffect(() =>{
          
@@ -652,8 +574,8 @@ const getLocation = async () => {
         props.setVista(1)
     }
 
-    const {rubrosItem1,setItemRubro1} = useRubroContext1 () 
-    const {rubrosItem2,setItemRubro2} = useRubroContext2 () 
+    const {rubrosItem1,setItemRubro1} = useContext (RubroContext1) 
+    const {rubrosItem2,setItemRubro2} = useContext (RubroContext2) 
 
     if ((rubrosItem1!.rubro!="" && rubrosItem1!.rubro!=undefined) && (rubrosItem2!.rubro!="" && rubrosItem2!.rubro!=undefined)){
         return (
@@ -714,8 +636,8 @@ const getLocation = async () => {
  
      const [termino,setTermino]=useState(false)
  
-     const {rubrosItem1,setItemRubro1} = useRubroContext1 () 
-     const {rubrosItem2,setItemRubro2} = useRubroContext2 ()  
+     const {rubrosItem1,setItemRubro1} = useContext (RubroContext1) 
+     const {rubrosItem2,setItemRubro2} = useContext (RubroContext2)  
 
      const router = useIonRouter();
      
@@ -784,8 +706,8 @@ const getLocation = async () => {
    //  const [showCargando, setShowCargando]=useState(true)
      const [showRubroEliminado, setShowRubroEliminado]=useState(false)
  
-     const {rubrosItem1,setItemRubro1} = useRubroContext1 () 
-   const {rubrosItem2,setItemRubro2} = useRubroContext2 ()
+     const {rubrosItem1,setItemRubro1} = useContext (RubroContext1) 
+     const {rubrosItem2,setItemRubro2} = useContext (RubroContext2) 
    
    
      const [item, setItem]= useState("")

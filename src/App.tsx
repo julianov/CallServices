@@ -129,7 +129,7 @@ const App: React.FC = () => {
   const loadUserData = async () => {
     await createStore("dbDispositivo");
 
-    const res1 = await getItem("isRegistered");
+    const res1 = await getItem("email");
     if (res1 != null) {
       setIsReg(true);
       setEmail(res1);
@@ -246,9 +246,9 @@ return(
     
     <Route path="/Favoritos" component={Favoritos} exact={true}></Route>
         
-    <Route path="/Completarinfo" render={() => <Completarinfo setIsReg={setIsReg} email={email} tipoCliente={tipoCliente} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} rubro1={rubro1} rubro2={rubro2} setRubro1={setRubro1} setRubro2={setRubro2} /> }  />
+    <Route path="/Completarinfo" render={() => <Completarinfo setIsReg={setIsReg} /> }  />
     
-    <Route path="/CompletarRubros" render={() => <CompletarRubros  email={email} clientType={tipoCliente} setIsReg={setIsReg}  />  }  />   
+    <Route path="/CompletarRubros" render={() => <CompletarRubros setIsReg={setIsReg}  />  }  />   
 
     <Route path="/inicio" render={() => isReg ?   ( cliente ?  <HomeCliente  setIsReg={setIsReg} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} /> 
                                                     :<HomeProveedor  setIsReg={setIsReg}  setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} /> ) 

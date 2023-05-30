@@ -233,7 +233,7 @@ const DatosUsuario = (props:{setIsReg:any,email:string, completarInfoPersonal:an
 
   const closeSesion = () =>{
   
-    removeItem("isRegistered")
+    removeItem("email")
     removeItem("clientType")
     removeItem("fotoPersonal")
     removeItem("personalInfoCompleted")

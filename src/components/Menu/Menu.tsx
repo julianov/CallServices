@@ -93,7 +93,7 @@ import { UserContext } from '../../Contexts/UserContext';
 
   const cerrarSesion = ()=>{
 
-    removeItem("isRegistered")
+    removeItem("email")
     removeItem("rubro1")
     removeItem("rubro2")
     removeItem("infoRubro1")
