@@ -83,8 +83,7 @@ export interface newMessage{
   ticket:string
 }
 
-const HomeCliente = (props:{setIsReg:any,  
- setFoto:any, setNombre:any, setApellido:any, }) => {
+const HomeCliente = (props:{setIsReg:any}) => {
 
   const  {user,setUser}  = useContext(UserContext)
   
@@ -353,16 +352,8 @@ const HomeCliente = (props:{setIsReg:any,
               <ModalCliente 
                 ordenes={misOrdenes}
                 setIsReg={props.setIsReg}
-                email={user!.email}
                 tipoVista={tipoDeVistaEnModal}
                 categoriaAVer={categoriaAVer}
-                fotoPersonal={user!.foto}
-                nombre={user!.nombre}
-                apellido={user!.apellido}
-                calificacion={user!.calificacion}
-                setFoto={props.setFoto}
-                setNombre={props.setNombre}
-                setApellido={props.setApellido}
                 completarInfoPersonal={completarInfoPersonal.current}
                 onClose={(value: React.SetStateAction<null>) => {
                 setShowModal({ isOpen: false });

@@ -13,12 +13,12 @@ import { getItem, removeItem, setItem } from "../../utilidades/Storage";
 import { b64toBlob } from "../../utilidades/b64toBlob";
 import Estrellas from "../Estrellas/Estrellas";
 import CompletarRubros from "../../pages/CompletarRubros/CompletarRubros";
-import { useRubroContext1, useRubroContext2 } from "../../Contexts/RubroContext";
 import { itemRubro, usuario } from "../../Interfaces/interfaces";
 import { IonActionSheet, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonDatetime, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRange, IonRow, IonSelect, IonSelectOption, IonTextarea, IonTitle, IonToolbar, useIonRouter } from "@ionic/react";
 import { retornarIconoCategoria } from "../../utilidades/retornarIconoCategoria";
 import { clearDB } from "../../utilidades/dataBase";
 import { UserContext } from "../../Contexts/UserContext";
+import { RubroContext1, RubroContext2 } from "../../Contexts/RubroContext";
 
 
 const url= Https
@@ -824,8 +824,8 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
 const Rubritos = (props:{setAgregarOtroRubro:any,verRubros:any}) =>{
 
 
-  const {rubrosItem1,setItemRubro1} = useRubroContext1 () 
-  const {rubrosItem2,setItemRubro2} = useRubroContext2 () 
+  const {rubrosItem1,setItemRubro1} = useContext (RubroContext1) 
+  const {rubrosItem2,setItemRubro2} = useContext (RubroContext2) 
 
 
   if ((rubrosItem1!.rubro!="" && rubrosItem1!.rubro!=undefined) && (rubrosItem2!.rubro!="" && rubrosItem2!.rubro!=undefined)){
@@ -890,8 +890,8 @@ const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:
 
  // const[showCargandoRubros, setShowCargandoRubros]= useState(false)
 
- const {rubrosItem1,setItemRubro1} = useRubroContext1 () 
- const {rubrosItem2,setItemRubro2} = useRubroContext2 ()
+ const {rubrosItem1,setItemRubro1} = useContext (RubroContext1) 
+     const {rubrosItem2,setItemRubro2} = useContext (RubroContext2) 
 
  console.log("rubro 1: "+rubrosItem1?.rubro)
  console.log("rubro 2: "+rubrosItem2?.rubro)
@@ -947,8 +947,8 @@ const CardItemVerRubro= (props:{ pedir:any , rubro:any, clientType:any, email:an
   const [showCargando, setShowCargando]=useState(true)
   const [showRubroEliminado, setShowRubroEliminado]=useState(false)
 
-  const {rubrosItem1,setItemRubro1} = useRubroContext1 () 
-  const {rubrosItem2,setItemRubro2} = useRubroContext2 ()
+    const {rubrosItem1,setItemRubro1} = useContext (RubroContext1) 
+    const {rubrosItem2,setItemRubro2} = useContext (RubroContext2) 
   
   
     const [item, setItem]= useState("")
@@ -1208,8 +1208,8 @@ const ModificarDatosRubro = (props:{clientType:any, email:any,rubro:any, setVolv
 
   //para volver props.setRubro("")
 
-  const {rubrosItem1,setItemRubro1} = useRubroContext1 () 
-  const {rubrosItem2,setItemRubro2} = useRubroContext2 ()
+  const {rubrosItem1,setItemRubro1} = useContext (RubroContext1) 
+  const {rubrosItem2,setItemRubro2} = useContext (RubroContext2) 
 
   const blobCertificado = useRef <Blob>()
   const blobFoto1 = useRef <Blob>()

@@ -1,5 +1,5 @@
 import { alert, arrowBack, arrowForwardCircle, chevronDown, closeCircle, pin } from 'ionicons/icons';
-import React, { Component, useRef, useState } from 'react';
+import React, { Component, useContext, useRef, useState } from 'react';
 import './ExploreContainer.css';
 
 import {Geoposition} from "@ionic-native/geolocation";
@@ -16,6 +16,7 @@ import ModalVerOrdenesProveedor from '../VerOrdenes/VerOrdenesProveedor/ModalVer
 import { IonButton, IonCard, IonCardHeader, IonCardSubtitle, IonCol, IonGrid, IonIcon, IonItemDivider, IonModal, IonRow, IonSlide, IonSlides, IonTitle } from '@ionic/react';
 import { retornarIconoCategoria } from '../../utilidades/retornarIconoCategoria';
 import { getDB, setDB } from '../../utilidades/dataBase';
+import { UserContext } from '../../Contexts/UserContext';
 
 const url=Https
 
@@ -44,6 +45,8 @@ const ExploreContainerProveedor  = (props:{
 
   const [tipo, setTipo] = useState("")
 
+  const  {user,setUser}  = useContext(UserContext)
+
 
   useEffect(() => {
     if(props.sinRubro){
@@ -58,8 +61,6 @@ const ExploreContainerProveedor  = (props:{
       setHayOrdenes(true)
     }
   }, [props.ordenes]);
-
-  console.log(props.ordenes)
 
 
   if(hayOrdenes){
@@ -104,7 +105,7 @@ const ExploreContainerProveedor  = (props:{
   }else{
     if(cargarRubro){
       return (
-        <CompletarRubros setIsReg={props.setIsReg} clientType= {props.tipodeCliente} email={props.emailProveedor} />
+        <CompletarRubros setIsReg={props.setIsReg} />
       )
     }else{
         return (

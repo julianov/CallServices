@@ -30,12 +30,6 @@ const getLocation = async () => {
   }
 }
 
-//const url='http://127.0.0.1:8000/search/';
-//const url="https://callservicesvps.online:443/search/"
-
-
-//const url2="http://127.0.0.1:8000/"
-//const url2="https://callservicesvps.online:443/"
 
 const url=Https+"search/"
 const url2=Https

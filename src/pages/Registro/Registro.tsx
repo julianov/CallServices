@@ -16,13 +16,14 @@ import { UserContext } from '../../Contexts/UserContext';
 const url=Https+"registro/"
 
 
-const Registro = (props:{setIsReg:any, setCliente:any, setTipoCliente:any ,setEmail:any }) => {
+const Registro = (props:{setIsReg:any, setCliente:any }) => {
 
   const [showAlertUsuarioRegistrado, setShowAlertUsuarioRegistrado] = useState(false);
   const [showAlertPassworNoIgual, setShowAlertPassworNoIgual] = useState(false);
   const [showAlertPasswordWeak,setShowAlertPasswordWeak]=useState(false)
   const [showAlertServerConnection, setShowAlertServerConnection] = useState(false);
   const [showAlertEmailSending,setShowAlertEmailSending]=useState(false)
+
 
   
   return (
@@ -31,7 +32,7 @@ const Registro = (props:{setIsReg:any, setCliente:any, setTipoCliente:any ,setEm
       <IonContent text-center >
         <div id="ionContentRegistro">
   
-          <RegistroNuevaCuenta setIsReg={props.setIsReg} setCliente={props.setCliente} setTipoCliente={props.setTipoCliente} setEmail={props.setEmail} setShowAlertUsuarioRegistrado={setShowAlertUsuarioRegistrado} setShowAlertPassworNoIgual={setShowAlertPassworNoIgual} setShowAlertPasswordWeak={setShowAlertPasswordWeak} setShowAlertServerConnection={setShowAlertServerConnection} setShowAlertEmailSending={setShowAlertEmailSending} ></RegistroNuevaCuenta>
+          <RegistroNuevaCuenta setIsReg={props.setIsReg} setCliente={props.setCliente} setShowAlertUsuarioRegistrado={setShowAlertUsuarioRegistrado} setShowAlertPassworNoIgual={setShowAlertPassworNoIgual} setShowAlertPasswordWeak={setShowAlertPasswordWeak} setShowAlertServerConnection={setShowAlertServerConnection} setShowAlertEmailSending={setShowAlertEmailSending} ></RegistroNuevaCuenta>
         
           <IonAlert mode='ios' isOpen={showAlertServerConnection} onDidDismiss={() => setShowAlertServerConnection(false)} cssClass='my-custom-class'
                   header={'Respuesta del servidor'}
@@ -83,7 +84,7 @@ const Boton = (props: { name: React.ReactNode, onClick: () => void}) =>
  </div>);
 
 
-const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente:any, setEmail:any, 
+const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, 
   setShowAlertUsuarioRegistrado: any; setShowAlertPassworNoIgual:any, setShowAlertPasswordWeak:any, 
   setShowAlertServerConnection:any, setShowAlertEmailSending:any}) => {
 
@@ -161,12 +162,14 @@ const RegistroNuevaCuenta= (props: {setIsReg:any, setCliente:any, setTipoCliente
   
   const handleClientType = async () => {
     await setItem("clientType", tipoUsuario.current);
-    setUser!((state: usuario) => ({ ...state, tipoCliente: tipoUsuario.current }));
+    setUser!( (previous) => ({...previous, tipoCliente: tipoUsuario.current}));
+
   };
   
   const handleEmail = async () => {
     await setItem("email", email.current);
-    setUser!((state: usuario) => ({ ...state, email: email.current }));
+    setUser!( (previous) => ({...previous, email: email.current}));
+
   };
   
   const handleAPIError = () => {

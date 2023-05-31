@@ -1,13 +1,14 @@
 
 import axios from 'axios';
 import { arrowBack } from 'ionicons/icons';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import Estrellas from '../components/Estrellas/Estrellas';
 import Https from '../utilidades/HttpsURL';
 import { IonCard, IonContent, IonIcon, IonTitle } from '@ionic/react';
 
 import './VerOrdenes.css';
 import { retornarIconoCategoria } from '../utilidades/retornarIconoCategoria';
+import { UserContext } from '../Contexts/UserContext';
 
 const url=Https
 
@@ -21,16 +22,18 @@ export interface informacionOrdenes{
   
   //let informacion = new Array<informacionOrdenes>();
 
-const VerOrdenesCliente = (props:{clienteEmail:any , tipo:string, setCerrar:any}) => {
+const VerOrdenesCliente = (props:{tipo:string, setCerrar:any}) => {
 
     //const [hayOrdenes, setHayOrdenes] = useState (false)
     const [ticket, setTicket] = useState ("")
 
     const [informacion, setInformacion] =  useState <informacionOrdenes []> ( [])
 
+    const  {user,setUser}  = useContext(UserContext)
+
     useEffect(() => {
 
-        axios.get(url+"orden/consultarOrdenes/"+props.tipo+"/"+props.clienteEmail).then((resp: { data: any; }) => {
+        axios.get(url+"orden/consultarOrdenes/"+props.tipo+"/"+user!.email).then((resp: { data: any; }) => {
             if (resp.data!="bad"){
                 
               /*  for (let i=0; i<resp.data.length;i++){               

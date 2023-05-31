@@ -226,20 +226,20 @@ return(
       <Menu setIsReg={setIsReg} />
   <IonRouterOutlet id="main">
 
-    <Route path="/" render={() => isReg ?   ( cliente ?  <HomeCliente setIsReg={setIsReg}  setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} /> 
-                                              :<HomeProveedor  setIsReg={setIsReg} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto}  /> ) 
+    <Route path="/" render={() => isReg ?   ( cliente ?  <HomeCliente setIsReg={setIsReg}  /> 
+                                              :<HomeProveedor  setIsReg={setIsReg} /> ) 
                                   :<Inicio  /> } />
     
-    <Route path="/home" render={() =>  isReg ? (cliente ?  <HomeCliente setIsReg={setIsReg} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} /> 
-                                                :<HomeProveedor  setIsReg={setIsReg}  setNombre={setNombre} setApellido={setApellido} setFoto={setFoto}  /> )
+    <Route path="/home" render={() =>  isReg ? (cliente ?  <HomeCliente setIsReg={setIsReg} /> 
+                                                :<HomeProveedor  setIsReg={setIsReg} /> )
                                        :<Inicio /> } ></Route>
     
-    <Route path="/registro" render={() => isReg ?   ( cliente ?  <HomeCliente setIsReg={setIsReg} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto}/> 
-                                                      :<HomeProveedor  setIsReg={setIsReg}  setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} /> ) 
-                                          :<Registro setIsReg={setIsReg} setCliente={setCliente} setTipoCliente={setTipoCliente} setEmail={setEmail } /> } />
+    <Route path="/registro" render={() => isReg ?   ( cliente ?  <HomeCliente setIsReg={setIsReg} /> 
+                                                      :<HomeProveedor  setIsReg={setIsReg}   /> ) 
+                                          :<Registro setIsReg={setIsReg} setCliente={setCliente} /> } />
 
-    <Route path="/ingresar" render={() => isReg ?   ( cliente ?  <HomeCliente  setIsReg={setIsReg} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto}/> 
-                                                      :<HomeProveedor  setIsReg={setIsReg} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} /> ) 
+    <Route path="/ingresar" render={() => isReg ?   ( cliente ?  <HomeCliente  setIsReg={setIsReg} /> 
+                                                      :<HomeProveedor  setIsReg={setIsReg} /> ) 
                                           :<Ingresar setIsReg={setIsReg} setCliente={setCliente} setEmail={setEmail} setFoto={setFoto} setTipoCliente={setTipoCliente} setNombre={setNombre} setApellido={setApellido} setCalificacion={setCalificacion} />} /> 
     
     <Route path="/MisServicios" render={() => <MisServicios ></MisServicios>}></Route>
@@ -250,8 +250,8 @@ return(
     
     <Route path="/CompletarRubros" render={() => <CompletarRubros setIsReg={setIsReg}  />  }  />   
 
-    <Route path="/inicio" render={() => isReg ?   ( cliente ?  <HomeCliente  setIsReg={setIsReg} setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} /> 
-                                                    :<HomeProveedor  setIsReg={setIsReg}  setNombre={setNombre} setApellido={setApellido} setFoto={setFoto} /> ) 
+    <Route path="/inicio" render={() => isReg ?   ( cliente ?  <HomeCliente  setIsReg={setIsReg} /> 
+                                                    :<HomeProveedor  setIsReg={setIsReg}  /> ) 
                                         :<Inicio /> } />
 
     <Route path="/tab2" component={Tab2} exact={true} />

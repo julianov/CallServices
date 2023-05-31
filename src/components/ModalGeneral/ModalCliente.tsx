@@ -1,5 +1,5 @@
 import { arrowBack, person, close,receipt, help, chatbubble, camera, trash, trendingUpOutline } from "ionicons/icons";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { removeItem, setItem } from "../../utilidades/Storage";
 
 import './Modal.css';
@@ -40,20 +40,15 @@ const getLocation = async () => {
 }
 
 const ModalCliente: React.FC<{setIsReg:any, onClose: any; tipoVista: string; 
-  email:any; completarInfoPersonal:boolean, fotoPersonal:any
-  nombre:any, apellido:any, calificacion:any, setFoto:any, setNombre:any,setApellido:any, ordenes:any, categoriaAVer:any}> 
-  = ({setIsReg, onClose, tipoVista, email, calificacion, completarInfoPersonal, fotoPersonal,
-    nombre, apellido, setFoto, setNombre,setApellido,ordenes, categoriaAVer }) => {
+   completarInfoPersonal:boolean, ordenes:any, categoriaAVer:any}> 
+  = ({setIsReg, onClose, tipoVista, completarInfoPersonal,ordenes, categoriaAVer }) => {
                    
   
     
     if(tipoVista=="datosUsuario"){
       return (
         <>
-          <DatosUsuario  setIsReg={setIsReg} email={email} completarInfoPersonal={completarInfoPersonal}
-          fotoPersonal={fotoPersonal} onClose={onClose} 
-          nombre={nombre} apellido={apellido} calificacion={calificacion} setFoto={setFoto} setNombre={setNombre} setApellido={setApellido} />
-
+          <DatosUsuario  setIsReg={setIsReg} completarInfoPersonal={completarInfoPersonal}  onClose={onClose}  />
          
         </>
         );
@@ -73,7 +68,7 @@ const ModalCliente: React.FC<{setIsReg:any, onClose: any; tipoVista: string;
       return (
         <>
           <IonContent>
-            <Categorias ordenes={ordenes} emailCliente={email} onClose={onClose} categoria={""} ></Categorias>
+            <Categorias ordenes={ordenes} onClose={onClose} categoria={""} ></Categorias>
           </IonContent>
       </>
       );
@@ -82,7 +77,7 @@ const ModalCliente: React.FC<{setIsReg:any, onClose: any; tipoVista: string;
       return( 
         <>
         <IonContent>
-          <Categorias ordenes={ordenes} emailCliente={email} onClose={onClose} categoria={categoriaAVer} ></Categorias>
+          <Categorias ordenes={ordenes} onClose={onClose} categoria={categoriaAVer} ></Categorias>
         </IonContent>
     </>
       )
@@ -90,7 +85,7 @@ const ModalCliente: React.FC<{setIsReg:any, onClose: any; tipoVista: string;
     }
     else{
       return (
-        <VerOrdenesCliente clienteEmail={email} tipo={"cliente"} setCerrar={onClose} ></VerOrdenesCliente>
+        <VerOrdenesCliente tipo={"cliente"} setCerrar={onClose} ></VerOrdenesCliente>
       );
     }
    
@@ -223,8 +218,7 @@ const ModalCliente: React.FC<{setIsReg:any, onClose: any; tipoVista: string;
     
 }  
 
-const DatosUsuario = (props:{setIsReg:any,email:string, completarInfoPersonal:any, fotoPersonal:any, onClose:any 
-  nombre:any, apellido:any, calificacion:any, setFoto:any, setNombre:any, setApellido:any}) =>{
+const DatosUsuario = (props:{setIsReg:any, completarInfoPersonal:any, onClose:any }) =>{
 
  // const [done,setDone]=useState(false)
   //const [agrandarImagen,setAgrandarImagen]=useState(false)
@@ -259,9 +253,7 @@ const DatosUsuario = (props:{setIsReg:any,email:string, completarInfoPersonal:an
   }
 
         return(
-          <DatosPersonales completarInfoPersonal={props.completarInfoPersonal} closeSesion={closeSesion} datosPersonales={datosPersonales} setDatosPersonales={seDatosPersonales} onClose={props.onClose} 
-          email={props.email} foto={props.fotoPersonal} 
-          nombre={props.nombre} apellido={props.apellido} calificacion={props.calificacion} setFoto={props.setFoto} setNombre={props.setNombre} setApellido={props.setApellido} ></DatosPersonales>
+          <DatosPersonales completarInfoPersonal={props.completarInfoPersonal} closeSesion={closeSesion} datosPersonales={datosPersonales} setDatosPersonales={seDatosPersonales} onClose={props.onClose}  ></DatosPersonales>
         )
   
 
@@ -269,32 +261,31 @@ const DatosUsuario = (props:{setIsReg:any,email:string, completarInfoPersonal:an
 }
 
 
-const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; datosPersonales:any; setDatosPersonales:any, onClose:any, 
-  email:any, foto:any, nombre:any, apellido:any, calificacion:any, setFoto:any, setNombre:any, setApellido:any}) => {
+const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; datosPersonales:any; setDatosPersonales:any, onClose:any}) => {
 
   const [showAlertDatosPersonales, setShowAlertDatosPersonales]=useState(false)
 
-  const [imagen, setImagen] = useState (props.foto)
 
   const  {user,setUser}  = useContext(UserContext)
+  const [imagen, setImagen] = useState (user!.foto)
 
 
     useEffect(() => {
-      if (props.foto==""|| props.foto==null || props.foto==undefined){
+      if (user!.foto==""|| user!.foto==null || user!.foto==undefined){
         setImagen ("./assets/icon/nuevoUsuario.png") 
       }else{
-        setImagen(props.foto)
+        setImagen(user!.foto)
       }
-    }, [props.foto]);
-
+    }, [user!.foto]);
+/*
   useEffect(() => {
-    if (props.nombre==null || props.apellido==null){
+    if (user.nombre==null || user.apellido==null){
     //  aca tengo que buscar los nombres en lo guardado che sino pedirlo al servidor
       props.setNombre("Debe ingresar nombre")
       props.setApellido("Debe ingresar apellido")
     }
   },[])
-  
+  */
 
   if(props.completarInfoPersonal){
     return(
@@ -345,10 +336,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
       <>
       <IonContent>
         <div id="contenedor-central-Modal">
-          <MostrarDatosPersonales setShowAlertDatosPersonales={setShowAlertDatosPersonales} setDatosPersonales={props.setDatosPersonales} onClose={props.onClose} 
-          email={props.email} foto={props.foto} 
-          nombre={props.nombre} apellido={props.apellido} calificacion={props.calificacion} setFoto={props.setFoto} 
-          setNombre={props.setNombre} setApellido={props.setApellido} setUser={setUser}></MostrarDatosPersonales>
+          <MostrarDatosPersonales setShowAlertDatosPersonales={setShowAlertDatosPersonales} setDatosPersonales={props.setDatosPersonales} onClose={props.onClose} ></MostrarDatosPersonales>
         </div>
 
         <IonLoading  isOpen={showAlertDatosPersonales}   onDidDismiss={() => setShowAlertDatosPersonales(false)}
@@ -404,14 +392,16 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
 }
 
 
-  const MostrarDatosPersonales = (props:{ setDatosPersonales:any, setShowAlertDatosPersonales:any, onClose:any, 
-    email:any, foto:any,nombre:any, apellido:any, calificacion:any, setFoto:any, setNombre:any, setApellido:any, setUser:any}) => {
+  const MostrarDatosPersonales = (props:{ setDatosPersonales:any, setShowAlertDatosPersonales:any, onClose:any}) => {
 
-    const nombre = useRef(props.nombre)
-    const apellido = useRef(props.apellido)
-    const calificacion = useRef(props.calificacion)  
+      const  {user,setUser}  = useContext(UserContext)
 
-    const [fotoAEnviar, setFoto]=useState<String>(props.foto)
+
+    const nombre = useRef(user!.nombre)
+    const apellido = useRef(user!.apellido)
+    const calificacion = useRef(user!.calificacion)  
+
+    const [fotoAEnviar, setFoto]=useState<String>(user!.foto)
     const [listoCarga, setListoCarga]=useState(false)
 
     const [cambiar,setCambiar] =useState("nada")
@@ -436,13 +426,13 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
 
         var formDataToUpload = new FormData();
         formDataToUpload.append("tipo", "1")
-        if (props.email!=null){
-          formDataToUpload.append("email", props.email)
+        if (user!.email!=null){
+          formDataToUpload.append("email", user!.email)
 
         }
         formDataToUpload.append("nombre", nombre.current)
         formDataToUpload.append("apellido", apellido.current);
-        formDataToUpload.append("calificacion", calificacion.current);
+        formDataToUpload.append("calificacion", String(user!.calificacion));
 
         
         if (fotoAEnviar!=null){
@@ -465,10 +455,11 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
                setItem("nombre", nombre.current)
                setItem("apellido", apellido.current) 
                setItem("fotoPersonal",fotoAEnviar)
-              
-               props.setUser!((state:usuario) => ({ ...state, nombre: nombre.current }))
-               props.setUser!((state:usuario) => ({ ...state, apellido: apellido.current }))
-               props.setUser!((state:usuario) => ({ ...state, foto: fotoAEnviar }))
+
+               setUser!((state:usuario) => ({ ...state, nombre: nombre.current }))
+               setUser!((state:usuario) => ({ ...state, apellido: apellido.current }))
+               setUser!((state:usuario) => ({ ...state, foto: realData }))
+
                setShowAlertDatosPersonales(false)
                setCambiar("nada")
 
@@ -490,13 +481,13 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
             </div>     
             <div style={{display:"flex", flexDirection:"column", textAlign:"center" ,justifyContent:"center", alignItems:"center", width:"100%",height:"100%"}}>
               <IonItem lines="none" id="itemFoto"  onClick={()=> cambiarElemento("foto") }>
-                <img  src={props.foto} id="foto-usuario-grande"/>
+                <img  src={user!.foto} id="foto-usuario-grande"/>
               </IonItem>
               <IonItem lines="none" id="item-modal-datos" onClick={()=> cambiarElemento("nombre") } >
-                <strong >NOMBRE: {props.nombre} </strong>
+                <strong >NOMBRE: {user!.nombre} </strong>
               </IonItem>
               <IonItem lines="none" id="item-modal-datos" onClick={()=> cambiarElemento("apellido") }>
-                <strong >APELLIDO: {props.apellido} </strong>
+                <strong >APELLIDO: {user!.apellido} </strong>
               </IonItem>
               <strong style={{marginTop:"25px", marginBottom:"10px"}} >CALIFICACIÓN COMO USUARIO:</strong>
               <Estrellas  calificacion={calificacion.current}   ></Estrellas> 
@@ -599,7 +590,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
   }
 
 
-  const Categorias = (props: {ordenes:any, emailCliente:string, onClose:any, categoria:any}) => {
+  const Categorias = (props: {ordenes:any, onClose:any, categoria:any}) => {
 
     const arreglo_categorias=["CARPINTERÍA","CERRAJERÍA","CONSTRUCCIÓN","CONTADURÍA","ELECTRICIDAD","ELECTRÓNICA","ESTÉTICA","FLETE","FUMIGACIÓN","GASISTA","HERRERÍA","INFORMÁTICA","JARDINERÍA","MECÁNICA","MODA","PASEADOR DE MASCOTAS","PINTOR","PLOMERÍA","REFRIGERACIÓN","REMOLQUES - GRÚAS","TELEFONÍA CELULAR","TEXTIL"]
     var i=0
@@ -657,7 +648,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
             <IonIcon icon={close} onClick={() => props.onClose(null)}  id="flecha-cerrar">  </IonIcon>
           </div>
           <div id="contenedorCentral-busqueda">
-          <Rubros ordenes={props.ordenes} rubro={categoriaABuscar} setRubro={setCategoriaABuscar} emailCliente={ props.emailCliente} setShowLoading={setShowLoading} ></Rubros>
+          <Rubros ordenes={props.ordenes} rubro={categoriaABuscar} setRubro={setCategoriaABuscar} setShowLoading={setShowLoading} ></Rubros>
           <IonLoading
                   cssClass='my-custom-class'
                   isOpen={showLoading}
@@ -674,13 +665,15 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
   }
 
   //con setRubro vuelvo atrás si es igual a ""
-  const Rubros = (props:{ordenes:any, rubro:string, setRubro:any, emailCliente:string,setShowLoading:any}) => {
+  const Rubros = (props:{ordenes:any, rubro:string, setRubro:any, setShowLoading:any}) => {
 
     const [arregloRubroBuscado, setArregloRubroBuscado] =  useState <categoriaBuscada []> ( [])
     const [proveedorEncontrado, BuscarProveedor] = useState("")
 
     const [caracteres,setCaracteres]=useState()
     const [imagenes,setImagenes]=useState()
+
+    const  {user,setUser}  = useContext(UserContext)
 
 
     useEffect(() => {
@@ -778,7 +771,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
         return(
           <>
               <div id="contenedorCentral-busqueda">
-                  <CardProveedor ordenes={props.ordenes} data={caracteres} imagenes={imagenes} emailCliente={props.emailCliente} proveedorEmail={proveedorEncontrado.split("/")[0]} ></CardProveedor>
+                  <CardProveedor ordenes={props.ordenes} data={caracteres} imagenes={imagenes} emailCliente={user!.email} proveedorEmail={proveedorEncontrado.split("/")[0]} ></CardProveedor>
               </div>
           </>
       )
@@ -799,7 +792,4 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
   }
   
   export default ModalCliente;
-function useContext(UserContext: any): { user: any; setUser: any; } {
-  throw new Error("Function not implemented.");
-}
 

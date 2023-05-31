@@ -58,7 +58,7 @@ export interface ordenes  {
     }
 
 
-const HomeProveedor = (props:{setIsReg:any, setNombre:any, setApellido:any, setFoto:any}) => {
+const HomeProveedor = (props:{setIsReg:any}) => {
 
   
   const [showAlertUbicación, setShowAlertUbicación] = useState(false)
