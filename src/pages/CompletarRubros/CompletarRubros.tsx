@@ -1,12 +1,9 @@
 
 import { Geolocation } from "@capacitor/core";
 import { base64FromPath } from "@ionic/react-hooks/filesystem/utils";
-import { setServers } from "dns";
 import { arrowBack, camera, trash,close, volumeLowSharp, imageOutline, terminalOutline } from "ionicons/icons";
 import { debugPort } from "process";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Redirect } from "react-router";
-import { isNumber } from "util";
 import { b64toBlob } from "../../utilidades/b64toBlob";
 import Https from "../../utilidades/HttpsURL";
 import { getItem, removeItem, setItem } from "../../utilidades/Storage";

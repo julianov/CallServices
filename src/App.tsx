@@ -136,20 +136,27 @@ const App: React.FC = () => {
 
       const res2 = await getItem("clientType");
       setTipoCliente(res2);
+      setUser!((state:usuario) => ({ ...state, tipoCliente: res2}))
 
       const res3 = await getItem("fotoPersonal");
       if (res3 !== "" && res3 !== undefined && res3 !== " ") {
         setFoto(res3);
+        setUser!((state:usuario) => ({ ...state, foto: res3 }))
+
       }
 
       const res4 = await getItem("nombre");
       setNombre(res4);
+      setUser!((state:usuario) => ({ ...state, nombre: res4 }))
+               
 
       const res5 = await getItem("apellido");
       setApellido(res5);
+      setUser!((state:usuario) => ({ ...state, apellido: res5}))
 
       const res6 = await getItem("calificacion");
       setCalificacion(res6);
+      setUser!((state:usuario) => ({ ...state, calificacion: res6}))
 
       const res7 = await getItem("infoRubro1");
       if (res7 != null) {
@@ -219,49 +226,48 @@ return(
     <RubroContext1.Provider  value={ {rubrosItem1,setItemRubro1} } >
     <RubroContext2.Provider  value={ {rubrosItem2,setItemRubro2} } >
 
+      <IonApp>
+      <IonReactRouter>
+      <IonSplitPane contentId="main" when="(min-width: 4096px)">
+            <Menu setIsReg={setIsReg} />
+        <IonRouterOutlet id="main">
 
-<IonApp>
-<IonReactRouter>
-<IonSplitPane contentId="main" when="(min-width: 4096px)">
-      <Menu setIsReg={setIsReg} />
-  <IonRouterOutlet id="main">
+          <Route path="/" render={() => isReg ?   ( cliente ?  <HomeCliente setIsReg={setIsReg}  /> 
+                                                    :<HomeProveedor  setIsReg={setIsReg} /> ) 
+                                        :<Inicio  /> } />
+          
+          <Route path="/home" render={() =>  isReg ? (cliente ?  <HomeCliente setIsReg={setIsReg} /> 
+                                                      :<HomeProveedor  setIsReg={setIsReg} /> )
+                                            :<Inicio /> } ></Route>
+          
+          <Route path="/registro" render={() => isReg ?   ( cliente ?  <HomeCliente setIsReg={setIsReg} /> 
+                                                            :<HomeProveedor  setIsReg={setIsReg}   /> ) 
+                                                :<Registro setIsReg={setIsReg} setCliente={setCliente} /> } />
 
-    <Route path="/" render={() => isReg ?   ( cliente ?  <HomeCliente setIsReg={setIsReg}  /> 
-                                              :<HomeProveedor  setIsReg={setIsReg} /> ) 
-                                  :<Inicio  /> } />
-    
-    <Route path="/home" render={() =>  isReg ? (cliente ?  <HomeCliente setIsReg={setIsReg} /> 
-                                                :<HomeProveedor  setIsReg={setIsReg} /> )
-                                       :<Inicio /> } ></Route>
-    
-    <Route path="/registro" render={() => isReg ?   ( cliente ?  <HomeCliente setIsReg={setIsReg} /> 
-                                                      :<HomeProveedor  setIsReg={setIsReg}   /> ) 
-                                          :<Registro setIsReg={setIsReg} setCliente={setCliente} /> } />
+          <Route path="/ingresar" render={() => isReg ?   ( cliente ?  <HomeCliente  setIsReg={setIsReg} /> 
+                                                            :<HomeProveedor  setIsReg={setIsReg} /> ) 
+                                                :<Ingresar setIsReg={setIsReg} setCliente={setCliente} setEmail={setEmail} setFoto={setFoto} setTipoCliente={setTipoCliente} setNombre={setNombre} setApellido={setApellido} setCalificacion={setCalificacion} />} /> 
+          
+          <Route path="/MisServicios" render={() => <MisServicios ></MisServicios>}></Route>
+          
+          <Route path="/Favoritos" component={Favoritos} exact={true}></Route>
+              
+          <Route path="/Completarinfo" render={() => <Completarinfo setIsReg={setIsReg} /> }  />
+          
+          <Route path="/CompletarRubros" render={() => <CompletarRubros setIsReg={setIsReg}  />  }  />   
 
-    <Route path="/ingresar" render={() => isReg ?   ( cliente ?  <HomeCliente  setIsReg={setIsReg} /> 
-                                                      :<HomeProveedor  setIsReg={setIsReg} /> ) 
-                                          :<Ingresar setIsReg={setIsReg} setCliente={setCliente} setEmail={setEmail} setFoto={setFoto} setTipoCliente={setTipoCliente} setNombre={setNombre} setApellido={setApellido} setCalificacion={setCalificacion} />} /> 
-    
-    <Route path="/MisServicios" render={() => <MisServicios ></MisServicios>}></Route>
-    
-    <Route path="/Favoritos" component={Favoritos} exact={true}></Route>
-        
-    <Route path="/Completarinfo" render={() => <Completarinfo setIsReg={setIsReg} /> }  />
-    
-    <Route path="/CompletarRubros" render={() => <CompletarRubros setIsReg={setIsReg}  />  }  />   
+          <Route path="/inicio" render={() => isReg ?   ( cliente ?  <HomeCliente  setIsReg={setIsReg} /> 
+                                                          :<HomeProveedor  setIsReg={setIsReg}  /> ) 
+                                              :<Inicio /> } />
 
-    <Route path="/inicio" render={() => isReg ?   ( cliente ?  <HomeCliente  setIsReg={setIsReg} /> 
-                                                    :<HomeProveedor  setIsReg={setIsReg}  /> ) 
-                                        :<Inicio /> } />
-
-    <Route path="/tab2" component={Tab2} exact={true} />
-    <Route path="/confirmarEmail" component={ValidarEmail} exact={true} />
+          <Route path="/tab2" component={Tab2} exact={true} />
+          <Route path="/confirmarEmail" component={ValidarEmail} exact={true} />
 
 
-  </IonRouterOutlet>
-  </IonSplitPane>
-</IonReactRouter>
-</IonApp>
+        </IonRouterOutlet>
+        </IonSplitPane>
+      </IonReactRouter>
+      </IonApp>
 </RubroContext2.Provider>
 </RubroContext1.Provider>
 </UserContext.Provider >

@@ -89,7 +89,7 @@ import { UserContext } from '../../Contexts/UserContext';
     }else{
       setImagen(user!.foto)
     }
-  });
+  }, [user]);
 
   const cerrarSesion = ()=>{
 
@@ -116,6 +116,7 @@ import { UserContext } from '../../Contexts/UserContext';
 
   }
 
+  console.log("ASDFASDFASDF: "+user!.email)
   
   if( user!.email==""|| user!.email==null){
     return (

@@ -15,6 +15,7 @@ import ModalProveedor from '../../components/ModalGeneral/ModalProveedor';
 import Chat from '../../components/Chat/Chat';
 import { IonAlert, IonAvatar, IonButton, IonButtons, IonCard, IonCardHeader, IonChip, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonImg, IonItem, IonItemDivider, IonItemOptions, IonItemSliding, IonLabel, IonList, IonLoading, IonMenuButton, IonModal, IonPage, IonPopover, IonRow, IonSearchbar, IonTitle, IonToolbar} from '@ionic/react';
 import { getDB } from '../../utilidades/dataBase';
+import { RubroContext1, RubroContext2 } from '../../Contexts/RubroContext';
 
 
 let posicion: string | number;
@@ -88,6 +89,9 @@ const HomeProveedor = (props:{setIsReg:any}) => {
 
   const [verOrden, setVerOrden] = useState( false );
   const [ticket_para_ver_orden, setTicket] = useState(0)
+
+  const {rubrosItem1,setItemRubro1} = useContext (RubroContext1) 
+  const {rubrosItem2,setItemRubro2} = useContext (RubroContext2) 
 
   getLocation()
 
@@ -238,9 +242,9 @@ const HomeProveedor = (props:{setIsReg:any}) => {
                 tipoVista={tipoDeVistaEnModal}
                 completarInfoPersonal={completarInfoPersonal}
                 onClose={(value: React.SetStateAction<null>) => {
-                setShowModal({ isOpen: false });
-                value ? setRetVal(value) : setRetVal(null);
-                }} />  
+                  setShowModal({ isOpen: false });
+                  value ? setRetVal(value) : setRetVal(null);
+                } } rubro1={rubrosItem1} rubro2={rubrosItem2} setRubro1={setItemRubro1} setRubro2={setItemRubro2} />  
             </IonModal>
 
             <ExploreContainerProveedor  

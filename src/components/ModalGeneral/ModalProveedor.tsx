@@ -1,22 +1,20 @@
 import { arrowBack, person, receipt, help, chatbubble, close, trash, camera, construct } from "ionicons/icons";
 import React, { useEffect, useState } from "react";
-import { Redirect } from "react-router";
 
 import './Modal.css';
-import axios from "axios";
 import { base64FromPath } from "@ionic/react-hooks/filesystem";
 import { useRef } from "react";
-import { convertTypeAcquisitionFromJson, isPropertySignature } from "typescript";
 import Https from "../../utilidades/HttpsURL";
 import { usePhotoGallery } from "../../hooks/usePhotoGallery";
 import { getItem, removeItem, setItem } from "../../utilidades/Storage";
 import { b64toBlob } from "../../utilidades/b64toBlob";
 import Estrellas from "../Estrellas/Estrellas";
 import CompletarRubros from "../../pages/CompletarRubros/CompletarRubros";
-import { itemRubro, usuario } from "../../Interfaces/interfaces";
+import { usuario } from "../../Interfaces/interfaces";
 import { IonActionSheet, IonAlert, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonDatetime, IonFabButton, IonGrid, IonHeader, IonIcon, IonImg, IonInput, IonItem, IonLabel, IonList, IonLoading, IonRange, IonRow, IonSelect, IonSelectOption, IonTextarea, IonTitle, IonToolbar, useIonRouter } from "@ionic/react";
 import { retornarIconoCategoria } from "../../utilidades/retornarIconoCategoria";
 import { clearDB } from "../../utilidades/dataBase";
+
 import { UserContext } from "../../Contexts/UserContext";
 import { RubroContext1, RubroContext2 } from "../../Contexts/RubroContext";
 
@@ -25,26 +23,22 @@ const url= Https
 
 const url2 = Https+"completarinfo/"
 
-const ModalProveedor: React.FC<{setIsReg:any,  onClose: any; tipoVista:any; completarInfoPersonal:boolean, 
-}> = ({setIsReg, onClose, tipoVista, completarInfoPersonal,
-}) => {
+const ModalProveedor = (props: {setIsReg: any, onClose: any, tipoVista: any, completarInfoPersonal: any, rubro1:any, rubro2:any, setRubro1:any, setRubro2:any}) => {
  
-
- if(tipoVista==="datosUsuario"){
+ if(props.tipoVista==="datosUsuario"){
   return (
     < >
-      <DatosUsuario setIsReg={setIsReg} completarInfoPersonal={completarInfoPersonal}  onClose={onClose}
-      
+      <DatosUsuario setIsReg={props.setIsReg} completarInfoPersonal={props.completarInfoPersonal} onClose={props.onClose} rubro1={props.rubro1} rubro2={props.rubro2} setRubro1={props.setRubro1} setRubro2={props.setRubro2}      
       />
     </>
     );
 }    
-if(tipoVista==="emergencias"){
+if(props.tipoVista==="emergencias"){
   return (
     <>
       <IonHeader>
         <IonToolbar>
-        <IonIcon icon={arrowBack} onClick={() => onClose(null)} slot="start" id="flecha-volver">  </IonIcon>
+        <IonIcon icon={arrowBack} onClick={() => props.onClose(null)} slot="start" id="flecha-volver">  </IonIcon>
 
         </IonToolbar>
       </IonHeader>
@@ -56,12 +50,12 @@ if(tipoVista==="emergencias"){
     </>
   );
 }
-if(tipoVista==="categorias"){
+if(props.tipoVista==="categorias"){
   return (
     <>
       <IonHeader>
         <IonToolbar>
-        <IonIcon icon={arrowBack} onClick={() => onClose(null)} slot="start" id="flecha-volver">  </IonIcon>
+        <IonIcon icon={arrowBack} onClick={() => props.onClose(null)} slot="start" id="flecha-volver">  </IonIcon>
 
         </IonToolbar>
       </IonHeader>
@@ -78,7 +72,7 @@ else{
     <>
       <IonHeader>
         <IonToolbar>
-        <IonIcon icon={arrowBack} onClick={() => onClose(null)} slot="start" id="flecha-volver">  </IonIcon>
+        <IonIcon icon={arrowBack} onClick={() => props.onClose(null)} slot="start" id="flecha-volver">  </IonIcon>
 
         </IonToolbar>
       </IonHeader>
@@ -216,7 +210,7 @@ const TomarFotografia = (props: {imagen:any, setFilepath:any}) => {
   
 }  
 
-const DatosUsuario = (props:{setIsReg:any, completarInfoPersonal:any, onClose:any,
+const DatosUsuario = (props:{setIsReg:any, completarInfoPersonal:any, onClose:any,rubro1:any, rubro2:any, setRubro1:any, setRubro2:any
   }) =>{
 
   const [agrandarImagen,setAgrandarImagen]=useState(false)
@@ -249,13 +243,13 @@ const DatosUsuario = (props:{setIsReg:any, completarInfoPersonal:any, onClose:an
       
   }
     return(
-      <DatosPersonales setIsReg={props.setIsReg} completarInfoPersonal={props.completarInfoPersonal} closeSesion={closeSesion} datosPersonales={datosPersonales} setDatosPersonales={seDatosPersonales} onClose={props.onClose}></DatosPersonales>
+      <DatosPersonales setIsReg={props.setIsReg} completarInfoPersonal={props.completarInfoPersonal} closeSesion={closeSesion} datosPersonales={datosPersonales} setDatosPersonales={seDatosPersonales} onClose={props.onClose} rubro1={props.rubro1} rubro2={props.rubro2} setRubro1={props.setRubro1} setRubro2={props.setRubro2}></DatosPersonales>
     )
   
 }
 
 
-const DatosPersonales =(props:{setIsReg:any, completarInfoPersonal:any; closeSesion:any;  datosPersonales:any;  setDatosPersonales:any, onClose:any }) => {
+const DatosPersonales =(props:{setIsReg:any, completarInfoPersonal:any; closeSesion:any;  datosPersonales:any;  setDatosPersonales:any, onClose:any, rubro1:any, rubro2:any, setRubro1:any, setRubro2:any }) => {
 
   const [showAlertDatosPersonales, setShowAlertDatosPersonales]=useState(false)
   const [rubros,setRubros]=useState(false) //igual a true para mostrar rubros
@@ -344,7 +338,7 @@ const DatosPersonales =(props:{setIsReg:any, completarInfoPersonal:any; closeSes
                 <>
                 
                 <IonContent >
-                <MisRubros onClose={props.onClose} setIsReg={props.setIsReg} setRubros={setRubros} email={user?.email} tipoProveedor={user!.tipoCliente}></MisRubros>
+                <MisRubros onClose={props.onClose} setIsReg={props.setIsReg} setRubros={setRubros} email={user?.email} tipoProveedor={user!.tipoCliente} rubrosItem1={props.rubro1} rubrosItem2={props.rubro2} setRubro1={props.setRubro1} setRubro2={props.setRubro2}></MisRubros>
                 </IonContent>
               </>
               );
@@ -821,33 +815,29 @@ const MostrarDatosPersonales = (props:{setDatosPersonales:any, setShowAlertDatos
 }
 
 
-const Rubritos = (props:{setAgregarOtroRubro:any,verRubros:any}) =>{
+const Rubritos = (props:{setAgregarOtroRubro:any,verRubros:any, rubrosItem1:any, rubrosItem2:any, setRubro1:any, setRubro2:any}) =>{
+  
 
-
-  const {rubrosItem1,setItemRubro1} = useContext (RubroContext1) 
-  const {rubrosItem2,setItemRubro2} = useContext (RubroContext2) 
-
-
-  if ((rubrosItem1!.rubro!="" && rubrosItem1!.rubro!=undefined) && (rubrosItem2!.rubro!="" && rubrosItem2!.rubro!=undefined)){
+  if ((props.rubrosItem1!.rubro!="" && props.rubrosItem1!.rubro!=undefined) && (props.rubrosItem2!.rubro!="" && props.rubrosItem2!.rubro!=undefined)){
       return (
         <div style={{display:"flex", flexDirection:"column", width:"100%",height:"100%", justifyContent:"center", alignItems:"center"}}>
-          <IonItem style={{width:"80%"}}  onClick={() => (props.verRubros(rubrosItem1!.rubro))}>
-              <strong> {rubrosItem1!.rubro} </strong>
-              <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(rubrosItem1!.rubro)}></img>
+          <IonItem style={{width:"80%"}}  onClick={() => (props.verRubros(props.rubrosItem1!.rubro))}>
+              <strong> {props.rubrosItem1!.rubro} </strong>
+              <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(props.rubrosItem1!.rubro)}></img>
 
           </IonItem>
-          <IonItem style={{width:"80%"}}  onClick={() => (props.verRubros(rubrosItem2!.rubro))}>
-              <strong> {rubrosItem2!.rubro} </strong>
-              <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(rubrosItem2!.rubro)}></img>
+          <IonItem style={{width:"80%"}}  onClick={() => (props.verRubros(props.rubrosItem2!.rubro))}>
+              <strong> {props.rubrosItem2!.rubro} </strong>
+              <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(props.rubrosItem2!.rubro)}></img>
           </IonItem>
         </div>
       )
-  }else if((rubrosItem1!.rubro=="" || rubrosItem1!.rubro==undefined) && (rubrosItem2!.rubro!="" && rubrosItem2!.rubro!=undefined)){ 
+  }else if((props.rubrosItem1!.rubro=="" || props.rubrosItem1!.rubro==undefined) && (props.rubrosItem2!.rubro!="" && props.rubrosItem2!.rubro!=undefined)){ 
       return (
           <div style={{display:"flex", flexDirection:"column", width:"100%",height:"100%", justifyContent:"center", alignItems:"center"}}>
-            <IonItem style={{width:"80%"}}  onClick={() => (props.verRubros(rubrosItem2!.rubro))}>
-                  <strong> {rubrosItem2!.rubro} </strong>
-                  <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(rubrosItem2!.rubro)}></img>
+            <IonItem style={{width:"80%"}}  onClick={() => (props.verRubros(props.rubrosItem2!.rubro))}>
+                  <strong> {props.rubrosItem2!.rubro} </strong>
+                  <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(props.rubrosItem2!.rubro)}></img>
               </IonItem>
               < div style={{display:"flex", width:"100%", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center"}}>
                 <p style={{fontSize:"0.9em", marginTop:"45px"}}> AGREGAR OTRO RUBRO</p>
@@ -855,12 +845,12 @@ const Rubritos = (props:{setAgregarOtroRubro:any,verRubros:any}) =>{
             </div>
            </div>
       )
-  }else if((rubrosItem1!.rubro!="" && rubrosItem1!.rubro!=undefined) && (rubrosItem2!.rubro=="" || rubrosItem2!.rubro==undefined)){ 
+  }else if((props.rubrosItem1!.rubro!="" && props.rubrosItem1!.rubro!=undefined) && (props.rubrosItem2!.rubro=="" || props.rubrosItem2!.rubro==undefined)){ 
       return (
         <div style={{display:"flex", flexDirection:"column", width:"100%",height:"100%", justifyContent:"center", alignItems:"center"}}>
-        <IonItem style={{width:"80%"}} onClick={() => (props.verRubros(rubrosItem1!.rubro))}>
-                  <strong> {rubrosItem1!.rubro} </strong>
-              <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(rubrosItem1!.rubro)}></img>
+        <IonItem style={{width:"80%"}} onClick={() => (props.verRubros(props.rubrosItem1!.rubro))}>
+                  <strong> {props.rubrosItem1!.rubro} </strong>
+              <img style={{width:"32px", height:"32px"}} src={retornarIconoCategoria(props.rubrosItem1!.rubro)}></img>
         </IonItem>
         < div style={{display:"flex", width:"100%", flexDirection:"column", justifyContent:"center", alignItems:"center", textAlign:"center"}}>
                     <p style={{fontSize:"0.9em", marginTop:"45px"}}> AGREGAR OTRO RUBRO</p>
@@ -879,7 +869,7 @@ const Rubritos = (props:{setAgregarOtroRubro:any,verRubros:any}) =>{
 
 }
 
-const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:any,onClose:any}) => {
+const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:any,onClose:any, rubrosItem1:any, rubrosItem2:any, setRubro1:any, setRubro2:any}) => {
 
   const[ hayRubros, setHayRubros]=useState("comprobar")
   const[ verRubro, setVerRubro]=useState("")
@@ -889,12 +879,6 @@ const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:
   const [agregarOtroRubro, setAgregarOtroRubro] = useState(false)
 
  // const[showCargandoRubros, setShowCargandoRubros]= useState(false)
-
- const {rubrosItem1,setItemRubro1} = useContext (RubroContext1) 
-     const {rubrosItem2,setItemRubro2} = useContext (RubroContext2) 
-
- console.log("rubro 1: "+rubrosItem1?.rubro)
- console.log("rubro 2: "+rubrosItem2?.rubro)
 
 
   if (agregarOtroRubro){
@@ -914,8 +898,8 @@ const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:
                 </div>
                   <h1 style={{marginTop:"25px"}}>MIS RUBROS CARGADOS</h1>
               </div>
-    
-                <Rubritos setAgregarOtroRubro={setAgregarOtroRubro} verRubros={setVerRubro}></Rubritos>
+              , rubrosItem1:any, rubrosItem2:any, setRubro1:any, setRubro2:any
+                <Rubritos setAgregarOtroRubro={setAgregarOtroRubro} verRubros={setVerRubro} rubrosItem1={props.rubrosItem1} rubrosItem2={props.rubrosItem2} setRubro1={props.setRubro1} setRubro2={props.setRubro2}></Rubritos>
             
              
             </div> 
@@ -930,7 +914,7 @@ const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:
           <div id="modalProveedor-flechaVolver">
           <IonIcon icon={arrowBack} onClick={() => setVerRubro("")} slot="start" id="flecha-volver">  </IonIcon>
           </div>
-          <CardItemVerRubro pedir={setHayRubros} rubro={verRubro} email={props.email} clientType={props.tipoProveedor} volver={setVerRubro} />
+          <CardItemVerRubro pedir={setHayRubros} rubro={verRubro} email={props.email} clientType={props.tipoProveedor} volver={setVerRubro} rubrosItem1={props.rubrosItem1} rubrosItem2={props.rubrosItem2} setItemRubro1={props.setRubro1} setItemRubro2={props.setRubro2} />
       </div>);
 
   }
@@ -939,17 +923,13 @@ const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:
 }
 }
 
-const CardItemVerRubro= (props:{ pedir:any , rubro:any, clientType:any, email:any, volver:any}) => {
+const CardItemVerRubro= (props:{ pedir:any , rubro:any, clientType:any, email:any, volver:any, rubrosItem1:any, rubrosItem2:any, setItemRubro1:any, setItemRubro2:any}) => {
 
   const [modificarRubro,setModificarRubro]=useState("")
 
   const [datosListos,setDatosListos]=useState(false);
   const [showCargando, setShowCargando]=useState(true)
   const [showRubroEliminado, setShowRubroEliminado]=useState(false)
-
-    const {rubrosItem1,setItemRubro1} = useContext (RubroContext1) 
-    const {rubrosItem2,setItemRubro2} = useContext (RubroContext2) 
-  
   
     const [item, setItem]= useState("")
     const radius = useRef("")
@@ -972,41 +952,41 @@ const CardItemVerRubro= (props:{ pedir:any , rubro:any, clientType:any, email:an
 
     useEffect(() => {   
 
-       if (rubrosItem1?.rubro==props.rubro){
-           setItem(rubrosItem1!.rubro)
-           radius.current=rubrosItem1!.radius
-           description.current=rubrosItem1!.description
-           calificacion.current=rubrosItem1!.calificacion
-           pais.current=rubrosItem1!.pais
-           provincia.current=rubrosItem1!.provincia
-           ciudad.current=rubrosItem1!.ciudad
-           calle.current=rubrosItem1!.calle
-           numeracion.current=rubrosItem1!.numeracion
-           days_of_works.current=rubrosItem1!.days_of_works
-           hour_init.current=rubrosItem1!.hour_init
-           hour_end.current=rubrosItem1!.hour_end
-           certificate.current=rubrosItem1!.certificate
-           picture1.current=rubrosItem1!.picture1
-           picture2.current=rubrosItem1!.picture2
-           picture3.current=rubrosItem1!.picture3
+       if (props.rubrosItem1?.rubro==props.rubro){
+           setItem(props.rubrosItem1!.rubro)
+           radius.current=props.rubrosItem1!.radius
+           description.current=props.rubrosItem1!.description
+           calificacion.current=props.rubrosItem1!.calificacion
+           pais.current=props.rubrosItem1!.pais
+           provincia.current=props.rubrosItem1!.provincia
+           ciudad.current=props.rubrosItem1!.ciudad
+           calle.current=props.rubrosItem1!.calle
+           numeracion.current=props.rubrosItem1!.numeracion
+           days_of_works.current=props.rubrosItem1!.days_of_works
+           hour_init.current=props.rubrosItem1!.hour_init
+           hour_end.current=props.rubrosItem1!.hour_end
+           certificate.current=props.rubrosItem1!.certificate
+           picture1.current=props.rubrosItem1!.picture1
+           picture2.current=props.rubrosItem1!.picture2
+           picture3.current=props.rubrosItem1!.picture3
         }else{
 
-           setItem(rubrosItem2!.rubro)
-           radius.current=rubrosItem2!.radius
-           description.current=rubrosItem2!.description
-           calificacion.current=rubrosItem2!.calificacion
-           pais.current=rubrosItem2!.pais
-           provincia.current=rubrosItem2!.provincia
-           ciudad.current=rubrosItem2!.ciudad
-           calle.current=rubrosItem2!.calle
-           numeracion.current=rubrosItem2!.numeracion
-           days_of_works.current=rubrosItem2!.days_of_works
-           hour_init.current=rubrosItem2!.hour_init
-           hour_end.current=rubrosItem2!.hour_end
-           certificate.current=rubrosItem2!.certificate
-           picture1.current=rubrosItem2!.picture1
-           picture2.current=rubrosItem2!.picture2
-           picture3.current=rubrosItem2!.picture3
+           setItem(props.rubrosItem2!.rubro)
+           radius.current=props.rubrosItem2!.radius
+           description.current=props.rubrosItem2!.description
+           calificacion.current=props.rubrosItem2!.calificacion
+           pais.current=props.rubrosItem2!.pais
+           provincia.current=props.rubrosItem2!.provincia
+           ciudad.current=props.rubrosItem2!.ciudad
+           calle.current=props.rubrosItem2!.calle
+           numeracion.current=props.rubrosItem2!.numeracion
+           days_of_works.current=props.rubrosItem2!.days_of_works
+           hour_init.current=props.rubrosItem2!.hour_init
+           hour_end.current=props.rubrosItem2!.hour_end
+           certificate.current=props.rubrosItem2!.certificate
+           picture1.current=props.rubrosItem2!.picture1
+           picture2.current=props.rubrosItem2!.picture2
+           picture3.current=props.rubrosItem2!.picture3
 
         }
 
@@ -1045,7 +1025,7 @@ const CardItemVerRubro= (props:{ pedir:any , rubro:any, clientType:any, email:an
                           removeItem("rubro2")
                           removeItem("infoRubro2")
                           //props.setRubro(null)
-                          setItemRubro2!({
+                          props.setItemRubro2!({
                             rubro:"",
                             radius:"",
                             description:"",
@@ -1073,7 +1053,7 @@ const CardItemVerRubro= (props:{ pedir:any , rubro:any, clientType:any, email:an
                           if (res!=null && res!= undefined && res!="" && res==item){
                             removeItem("rubro1")
                             removeItem("infoRubro1")
-                            setItemRubro1!({
+                            props.setItemRubro1!({
                               rubro:"",
                               radius:"",
                               description:"",
@@ -1197,19 +1177,16 @@ if(modificarRubro==""){
 
   return (<ModificarDatosRubro 
     clientType={props.clientType} email={props.email}
-    rubro={props.rubro} setVolver={setModificarRubro} 
-    setDatosListos={setDatosListos} />)
+    rubro={props.rubro} setVolver={setModificarRubro}
+    setDatosListos={setDatosListos} rubrosItem1={props.rubrosItem1} rubrosItem2={props.rubrosItem2} setItemRubro1={props.setItemRubro1} setItemRubro2={props.setItemRubro2} />)
 }
 
   
 }
 
-const ModificarDatosRubro = (props:{clientType:any, email:any,rubro:any, setVolver:any, setDatosListos:any}) =>{
+const ModificarDatosRubro = (props:{clientType:any, email:any,rubro:any, setVolver:any, setDatosListos:any, rubrosItem1:any, rubrosItem2:any, setItemRubro1:any, setItemRubro2:any}) =>{
 
   //para volver props.setRubro("")
-
-  const {rubrosItem1,setItemRubro1} = useContext (RubroContext1) 
-  const {rubrosItem2,setItemRubro2} = useContext (RubroContext2) 
 
   const blobCertificado = useRef <Blob>()
   const blobFoto1 = useRef <Blob>()
@@ -1241,41 +1218,41 @@ const ModificarDatosRubro = (props:{clientType:any, email:any,rubro:any, setVolv
 
    useEffect(() => {   
  
-        if (rubrosItem1?.rubro==props.rubro){
-            setItem(rubrosItem1!.rubro)
-            radius.current=rubrosItem1!.radius
-            description.current=rubrosItem1!.description
-            calificacion.current=rubrosItem1!.calificacion
-            pais.current=rubrosItem1!.pais
-            provincia.current=rubrosItem1!.provincia
-            ciudad.current=rubrosItem1!.ciudad
-            calle.current=rubrosItem1!.calle
-            numeracion.current=rubrosItem1!.numeracion
-            days_of_works.current=rubrosItem1!.days_of_works
-            hour_init.current=rubrosItem1!.hour_init
-            hour_end.current=rubrosItem1!.hour_end
-            certificate.current=rubrosItem1!.certificate
-            picture1.current=rubrosItem1!.picture1
-            picture2.current=rubrosItem1!.picture2
-            picture3.current=rubrosItem1!.picture3
+        if (props.rubrosItem1?.rubro==props.rubro){
+            setItem(props.rubrosItem1!.rubro)
+            radius.current=props.rubrosItem1!.radius
+            description.current=props.rubrosItem1!.description
+            calificacion.current=props.rubrosItem1!.calificacion
+            pais.current=props.rubrosItem1!.pais
+            provincia.current=props.rubrosItem1!.provincia
+            ciudad.current=props.rubrosItem1!.ciudad
+            calle.current=props.rubrosItem1!.calle
+            numeracion.current=props.rubrosItem1!.numeracion
+            days_of_works.current=props.rubrosItem1!.days_of_works
+            hour_init.current=props.rubrosItem1!.hour_init
+            hour_end.current=props.rubrosItem1!.hour_end
+            certificate.current=props.rubrosItem1!.certificate
+            picture1.current=props.rubrosItem1!.picture1
+            picture2.current=props.rubrosItem1!.picture2
+            picture3.current=props.rubrosItem1!.picture3
          }else{
 
-            setItem(rubrosItem2!.rubro)
-            radius.current=rubrosItem2!.radius
-            description.current=rubrosItem2!.description
-            calificacion.current=rubrosItem2!.calificacion
-            pais.current=rubrosItem2!.pais
-            provincia.current=rubrosItem2!.provincia
-            ciudad.current=rubrosItem2!.ciudad
-            calle.current=rubrosItem2!.calle
-            numeracion.current=rubrosItem2!.numeracion
-            days_of_works.current=rubrosItem2!.days_of_works
-            hour_init.current=rubrosItem2!.hour_init
-            hour_end.current=rubrosItem2!.hour_end
-            certificate.current=rubrosItem2!.certificate
-            picture1.current=rubrosItem2!.picture1
-            picture2.current=rubrosItem2!.picture2
-            picture3.current=rubrosItem2!.picture3
+            setItem(props.rubrosItem2!.rubro)
+            radius.current=props.rubrosItem2!.radius
+            description.current=props.rubrosItem2!.description
+            calificacion.current=props.rubrosItem2!.calificacion
+            pais.current=props.rubrosItem2!.pais
+            provincia.current=props.rubrosItem2!.provincia
+            ciudad.current=props.rubrosItem2!.ciudad
+            calle.current=props.rubrosItem2!.calle
+            numeracion.current=props.rubrosItem2!.numeracion
+            days_of_works.current=props.rubrosItem2!.days_of_works
+            hour_init.current=props.rubrosItem2!.hour_init
+            hour_end.current=props.rubrosItem2!.hour_end
+            certificate.current=props.rubrosItem2!.certificate
+            picture1.current=props.rubrosItem2!.picture1
+            picture2.current=props.rubrosItem2!.picture2
+            picture3.current=props.rubrosItem2!.picture3
 
          }
  
@@ -1396,14 +1373,14 @@ const ModificarDatosRubro = (props:{clientType:any, email:any,rubro:any, setVolv
       if(res.data=="rubro modificado"){
 
         getItem("rubro1").then(res4 => {
-              if(rubrosItem1?.rubro==res4){
-                setItemRubro1!(
+              if(props.rubrosItem1?.rubro==res4){
+                props.setItemRubro1!(
                   { 
                   rubro:item,
                   radius:radius.current,
                   description:description.current,
                   calificacion:0,
-                  hace_orden_emergencia:rubrosItem1!.hace_orden_emergencia,
+                  hace_orden_emergencia:props.rubrosItem1!.hace_orden_emergencia,
                   days_of_works:days_of_works.current,
                   hour_init: hour_init.current,
                   hour_end:hour_end.current,
@@ -1421,14 +1398,14 @@ const ModificarDatosRubro = (props:{clientType:any, email:any,rubro:any, setVolv
               setShowModificandoRubro(false)
           }else{
             getItem("rubro2").then(res5 => {
-              if(rubrosItem2?.rubro==res5){
-                setItemRubro2!(
+              if(props.rubrosItem2?.rubro==res5){
+                props.setItemRubro2!(
                   { 
                   rubro:item,
                   radius:radius.current,
                   description:description.current,
                   calificacion:0,
-                  hace_orden_emergencia:rubrosItem1!.hace_orden_emergencia,
+                  hace_orden_emergencia:props.rubrosItem1!.hace_orden_emergencia,
                   days_of_works:days_of_works.current,
                   hour_init: hour_init.current,
                   hour_end:hour_end.current,
