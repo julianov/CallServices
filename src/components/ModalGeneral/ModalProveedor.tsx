@@ -1,5 +1,5 @@
 import { arrowBack, person, receipt, help, chatbubble, close, trash, camera, construct } from "ionicons/icons";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import './Modal.css';
 import { base64FromPath } from "@ionic/react-hooks/filesystem";
@@ -898,7 +898,6 @@ const MisRubros = (props:{setIsReg:any, setRubros:any, email:any, tipoProveedor:
                 </div>
                   <h1 style={{marginTop:"25px"}}>MIS RUBROS CARGADOS</h1>
               </div>
-              , rubrosItem1:any, rubrosItem2:any, setRubro1:any, setRubro2:any
                 <Rubritos setAgregarOtroRubro={setAgregarOtroRubro} verRubros={setVerRubro} rubrosItem1={props.rubrosItem1} rubrosItem2={props.rubrosItem2} setRubro1={props.setRubro1} setRubro2={props.setRubro2}></Rubritos>
             
              
@@ -1807,7 +1806,3 @@ const BotonDia=  (props:{dia:any, setDia:any})=> {
   )
 }
 export default ModalProveedor;
-
-function useContext(UserContext: any): { user: any; setUser: any; } {
-  throw new Error("Function not implemented.");
-}

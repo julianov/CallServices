@@ -45,8 +45,8 @@ const getLocation = async () => {
    const {rubrosItem2,setItemRubro2} = useContext (RubroContext2) 
    
    const  {user,setUser}  = useContext(UserContext)
-   const emailRef = useRef("");
-   const clientTypeRef = useRef("");
+   const [emailRef, setEmailRef] = useState("")
+   const [clientTypeRef, setClientTypeRef] = useState("");
  
      const [vista,setVista]=useState(0)
  
@@ -103,14 +103,17 @@ const getLocation = async () => {
           if (user === undefined || !user || user.email === "" || user.tipoCliente === "") {
             const email = await getItem("email");
             const clientType = await getItem("clientType");
-            emailRef.current = email;
-            clientTypeRef.current = clientType;
+            setEmailRef(email);
+            setClientTypeRef(clientType);
           } else {
-            emailRef.current = user.email;
-            clientTypeRef.current = user.tipoCliente;
+            setEmailRef(user.email);
+            setClientTypeRef(user.tipoCliente);
           }
         })();
       }, []);
+
+      console.log("ctrl "+emailRef)
+      console.log("ctrl2 "+clientTypeRef)
 
      useEffect(() => {
          if(vista==0){
@@ -153,8 +156,8 @@ const getLocation = async () => {
              rubro_a_cargar=rubro.current
  
              var formDataToUpload = new FormData();
-             formDataToUpload.append("tipo", String(clientTypeRef.current))
-             formDataToUpload.append("email", emailRef.current);
+             formDataToUpload.append("tipo", String(clientTypeRef))
+             formDataToUpload.append("email", emailRef);
  
              formDataToUpload.append("item", rubro.current);
              arreglo.push(rubro.current)
@@ -272,7 +275,7 @@ const getLocation = async () => {
              <IonPage>
             
                <IonContent fullscreen>
-                 <Vista1 setIsReg={props.setIsReg} setVista={setVista} volver={volver} email={emailRef.current} clientType={clientTypeRef.current} setTituloRubros={setTituloRubros} tituloRubros={tituloRubros} setTituloAVer={setTituloAVer} ></Vista1>
+                 <Vista1 setIsReg={props.setIsReg} setVista={setVista} volver={volver} email={emailRef} clientType={clientTypeRef} setTituloRubros={setTituloRubros} tituloRubros={tituloRubros} setTituloAVer={setTituloAVer} ></Vista1>
                </IonContent>
              </IonPage>
            );
@@ -287,7 +290,7 @@ const getLocation = async () => {
                  <div id="CardItemCompletarRubro">
                  
  
-                 <CardItem volver={volver} setVista={setVista} clientType={clientTypeRef.current} email={emailRef.current} ver={tituloAVer} />
+                 <CardItem volver={volver} setVista={setVista} clientType={clientTypeRef} email={emailRef} ver={tituloAVer} />
                  </div>
                </IonContent>
            );
@@ -474,31 +477,35 @@ const getLocation = async () => {
           
  
          }else{
-             const axios = require('axios');
-             axios.get(url+"rubros/"+"pedir/"+props.clientType+"/"+props.email)
-             .then((res: { data: any; }) => {
-               const resquest = res.data;
-               if(resquest!="No usuario registrado"){
-                 if(resquest=="No hay rubros cargados"){
-                     setTieneCargado(false)
-                 }else{
-     
-                     /* Por aquí agregar */
-                     
-                     setTieneCargado(true)
-                     props.setTituloRubros(resquest.split("-"));
-                 }
-     
-               }
-             }).catch((err: any) => {
-                 // what now?
-                 setError(true)
-         
-             })
+            
+             if (props.clientType != "" && props.email!=""){
+                const axios = require('axios');
+                axios.get(url+"rubros/"+"pedir/"+props.clientType+"/"+props.email)
+                .then((res: { data: any; }) => {
+                  const resquest = res.data;
+                  if(resquest!="No usuario registrado"){
+                    if(resquest=="No hay rubros cargados"){
+                        setTieneCargado(false)
+                    }else{
+        
+                        /* Por aquí agregar */
+                        
+                        setTieneCargado(true)
+                        props.setTituloRubros(resquest.split("-"));
+                    }
+        
+                  }
+                }).catch((err: any) => {
+                    // what now?
+                    setError(true)
+            
+                })
+             }
+            
          }
          
  
-     }, []);
+     }, [props.clientType , props.email]);
  
  
  
@@ -1273,7 +1280,7 @@ const getLocation = async () => {
             
             <h1>DATOS GENERALES</h1>
 
-            <IonCard id="ionCardOrden">
+            <IonCard style={{margin:"15px, 0px 15px 0px",display:"flex", flexDirection:"column", justifyContent:"center", with:"100%", height:"100%"}}>
                 <h1 style={{fontSize:"1.5em", color:"black"}}>DATOS DE DOMICILIO</h1>
                  <IonItemDivider />
 
@@ -1304,7 +1311,7 @@ const getLocation = async () => {
                     
              </IonCard>
  
-             <IonCard id="ionCardOrden">
+             <IonCard style={{margin:"15px, 0px 15px 0px",display:"flex", flexDirection:"column", justifyContent:"center", with:"100%", height:"100%"}}>
                  <h1 style={{fontSize:"1.5em", color:"black"}}>VISITA A CLIENTES</h1>
                  <IonItemDivider />
 

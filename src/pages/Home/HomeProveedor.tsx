@@ -172,7 +172,7 @@ const HomeProveedor = (props:{setIsReg:any}) => {
     if (misOrdenes.length !=0 || misOrdenes!=undefined ){
 
       for (let i=0; i<misOrdenes.length; i++){
-        console.log("asasdfasdfasdf-"+misOrdenes[i].ticket+"%%%"+misOrdenes[i].status)
+
         if(misOrdenes[i].status=="ENV"){
           setNuevasOrdenes([...nuevasOrdenes , (misOrdenes[i].ticket+"%%%"+misOrdenes[i].status)])
           

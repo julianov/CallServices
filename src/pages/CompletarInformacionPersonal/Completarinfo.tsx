@@ -91,18 +91,19 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoProveedor: any;
 
     const  {user,setUser}  = useContext(UserContext)
     const emailRef = useRef("");
-    const clientTypeRef = useRef("");
+    const [clientTypeRef, setclientTypeRef ]=useState("")
 
     useEffect(() => {
         (async () => {
           if (user === undefined || !user || user.email === "" || user.tipoCliente === "") {
+
             const email = await getItem("email");
             const clientType = await getItem("clientType");
             emailRef.current = email;
-            clientTypeRef.current = clientType;
+            setclientTypeRef(clientType);
           } else {
             emailRef.current = user.email;
-            clientTypeRef.current = user.tipoCliente;
+            setclientTypeRef(user.tipoCliente);
           }
         })();
       }, []);
@@ -147,9 +148,15 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoProveedor: any;
 
     if(listo){
         props.setIsReg(true) 
-        console.log("llego aqui")
-        router.push("/", "forward", "push");
-     //   window.location.reload();
+
+     //   aca lo que tengo que hacer es lo sigui9etne, si el tipo no es proveedor va a home y sino va a completar rubro
+        if (clientTypeRef=="1"){
+            router.push("/", "forward", "push");
+        }else{
+            router.push("/CompletarRubros", "forward", "push");
+
+        }
+        
 
     }
 
@@ -160,7 +167,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoProveedor: any;
 
     const enviarInformacion =async ()=>{
 
-        if(clientTypeRef.current!="3"){
+        if(clientTypeRef!="3"){
 
              if(nombre!=null && apellido!=null && imagen_a_enviar.current!=null){
                  
@@ -168,7 +175,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoProveedor: any;
                  
                  var formDataToUpload = new FormData();
                  console.log("datos: "+user!.email+" - "+nombre+" - "+apellido)
-                 formDataToUpload.append("tipo", String(clientTypeRef.current))
+                 formDataToUpload.append("tipo", String(clientTypeRef))
                  formDataToUpload.append("email", emailRef.current);
                  formDataToUpload.append("nombre", nombre);
                  formDataToUpload.append("apellido", apellido);
@@ -197,7 +204,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoProveedor: any;
                         setUser!( (previous) => ({...previous, calificacion: 0}))
 
                         setListo(true);
-                        if (clientTypeRef.current=="2"){
+                        if (clientTypeRef=="2"){
                             props.setTipoProveedor(1)
 
                         }
@@ -230,7 +237,7 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoProveedor: any;
                  setShowLoading(true)
                  
                  var formDataToUpload = new FormData();
-                 formDataToUpload.append("tipo", String(clientTypeRef.current))
+                 formDataToUpload.append("tipo", String(clientTypeRef))
                  formDataToUpload.append("email", emailRef.current);
                  formDataToUpload.append("nombre", nombre);
                  formDataToUpload.append("descripcion", descripcion);
@@ -285,8 +292,9 @@ const CompletarInformacionPersonal = (props: { setIsReg:any, tipoProveedor: any;
          }  
      }
 
+     console.log("el client type es: "+clientTypeRef )
 
-    if(clientTypeRef.current =="1" || clientTypeRef.current =="2"){
+    if(clientTypeRef =="1" || clientTypeRef =="2"){
 
         return (
                 <><IonLoading
