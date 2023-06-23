@@ -278,19 +278,20 @@ const Primero = ( props:{datos:any, setVolver:any, setVista:any, setEstado:any, 
   
                 
                 <IonCard id="ionCard-explorerContainer-Proveedor">
-                  <div id="titulo">
-                      <IonTitle >DATOS DE ORDEN DE SERVICIO</IonTitle>  
-                  </div>
+                  <strong style={{marginTop:"1.1em"}}>DATOS DE ORDEN DE SERVICIO</strong>
                   <IonItemDivider />
-                    <div id="divSentencias">
-                        <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
-                        <p style={{fontSize:"1em", color:"blue"}}>TÍTULO: {props.datos.titulo}</p>
-                        <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-                        <p style={{fontSize:"1em", color:"blue"}}>{props.datos.descripcion}</p>
-                    </div>
+                  <div id="divSentencias">
+                    <p style={{fontSize:"1.5em", color:"black"}}>{props.datos.titulo}</p>
+                    <p style={{fontSize: "1em", color: "black", fontStyle: "italic"}}>DESCRIPCIÓN DE LA SOLICITUD:</p>
+                    <p style={{fontSize:"1.2em", color:"black"}}>{props.datos.descripcion}</p>
+                    <p style={{fontSize:"1em", color:"black", fontStyle: "italic"}}>FECHA DE SOLICITUD:</p>
+                    <p style={{fontSize:"1.2em", color:"black"}}>{props.datos.fecha_creacion}</p>
+                  </div>
                 </IonCard>
   
                 <IonCard id="ionCard-explorerContainer-Proveedor">
+                    <strong style={{marginTop:"1.1em"}}>IMÁGENES ADJUNTAS</strong>
+                    <IonItemDivider />
                     <Imagenes picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
                 </IonCard>
                 
@@ -424,7 +425,6 @@ const ProveedorPideMasInfo = ( props:{setOrden:any, datos:any, setVolver:any, se
             
             <IonCard id="ionCard-explorerContainer-Proveedor">
                 <div id="divSentencias">
-                    <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
                     <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
                     <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
                 </div>
@@ -571,7 +571,6 @@ const RespuestaDeInfoEnviada  = (props:{datos:any, setVolver:any, setVista:any, 
             <IonCard id="ionCard-explorerContainer-Proveedor">
                 <img id="img-orden" src={props.datos.imagen_proveedor}></img>
                 <div id="divSentencias">
-                  <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
                   <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
                   <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
                 </div>
@@ -595,17 +594,22 @@ const RespuestaDeInfoEnviada  = (props:{datos:any, setVolver:any, setVista:any, 
             </IonCard>
             
             <IonCard id="ionCard-explorerContainer-Proveedor">
-                <div id="divSentencias">
-                    <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
-                    <p style={{fontSize:"1em", color:"black"}}>TÍTULO: {props.datos.titulo}</p>
-                    <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-                    <p style={{fontSize:"1em", color:"black"}}>{props.datos.descripcion}</p>
-                </div>
+              <strong style={{marginTop:"1.1em"}}>DATOS DE ORDEN DE SERVICIO</strong>
+              <IonItemDivider />
+              <div id="divSentencias">
+                <p style={{fontSize:"1.5em", color:"black"}}>{props.datos.titulo}</p>
+                <p style={{fontSize: "1em", color: "black", fontStyle: "italic"}}>DESCRIPCIÓN DE LA SOLICITUD:</p>
+                <p style={{fontSize:"1.2em", color:"black"}}>{props.datos.descripcion}</p>
+                <p style={{fontSize:"1em", color:"black", fontStyle: "italic"}}>FECHA DE SOLICITUD:</p>
+                <p style={{fontSize:"1.2em", color:"black"}}>{props.datos.fecha_creacion}</p>
+              </div>
             </IonCard>
             
             <IonCard id="ionCard-explorerContainer-Proveedor">
-                <Imagenes   picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
-            </IonCard>
+                    <strong style={{marginTop:"1.1em"}}>IMÁGENES ADJUNTAS</strong>
+                    <IonItemDivider />
+                    <Imagenes picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
+                </IonCard>
         
             <IonItemDivider style={{margin:"35px 0px 0px 0px"}}></IonItemDivider>
 
@@ -710,7 +714,6 @@ const OrdenPresupuestada = ( props:{datos:any, setVolver:any, setVista:any, setE
                     <IonTitle>SOLICITUD PRESUPUESTADA</IonTitle>  
                     <IonCard id="ionCard-explorerContainer-Proveedor">
                         <div id="divSentencias">
-                            <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
                              <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
                              <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
                         </div>
@@ -736,7 +739,9 @@ const OrdenPresupuestada = ( props:{datos:any, setVolver:any, setVista:any, setE
                     </IonCard>
                     
                     <IonCard id="ionCard-explorerContainer-Proveedor">
-                        <Imagenes picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
+                      <strong style={{marginTop:"1.1em"}}>IMÁGENES ADJUNTAS</strong>
+                      <IonItemDivider />
+                      <Imagenes picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
                     </IonCard>
                     
                     <IonItemDivider />
@@ -820,7 +825,6 @@ const EnEsperaDelProveedor = (props:{datos:any, setVolver:any, setVista:any, set
                   <IonCard id="ionCard-explorerContainer-Proveedor">
                       <img id="img-orden" src={props.datos.imagen_proveedor}></img>
                       <div id="divSentencias">
-                          <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
                           <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
                           <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
                       </div>
@@ -843,17 +847,22 @@ const EnEsperaDelProveedor = (props:{datos:any, setVolver:any, setVista:any, set
                   </IonCard>
 
                   <IonCard id="ionCard-explorerContainer-Proveedor">
-                      <div id="divSentencias">
-                          <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
-                          <p style={{fontSize:"1em", color:"black"}}>TÍTULO: {props.datos.titulo}</p>
-                          <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-                          <p style={{fontSize:"1em", color:"black"}}>{props.datos.descripcion}</p>
-                      </div>
+                    <strong style={{marginTop:"1.1em"}}>DATOS DE ORDEN DE SERVICIO</strong>
+                    <IonItemDivider />
+                    <div id="divSentencias">
+                      <p style={{fontSize:"1.5em", color:"black"}}>{props.datos.titulo}</p>
+                      <p style={{fontSize: "1em", color: "black", fontStyle: "italic"}}>DESCRIPCIÓN DE LA SOLICITUD:</p>
+                      <p style={{fontSize:"1.2em", color:"black"}}>{props.datos.descripcion}</p>
+                      <p style={{fontSize:"1em", color:"black", fontStyle: "italic"}}>FECHA DE SOLICITUD:</p>
+                      <p style={{fontSize:"1.2em", color:"black"}}>{props.datos.fecha_creacion}</p>
+                    </div>
                   </IonCard>
     
                   <IonCard id="ionCard-explorerContainer-Proveedor">
-                      <Imagenes picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
-                  </IonCard>
+                    <strong style={{marginTop:"1.1em"}}>IMÁGENES ADJUNTAS</strong>
+                    <IonItemDivider />
+                    <Imagenes picture1={props.datos.picture1} picture2={props.datos.picture2}  ticket={props.datos.ticket} tipo={props.datos.tipo} ></Imagenes>
+                </IonCard>
 
                   <IonItemDivider />
 
@@ -926,7 +935,6 @@ const OrdenEnViaje = ( props:{datos:any, setVolver:any, setVista:any, setEstado:
       <IonCard id="ionCard-explorerContainer-Proveedor">
             <img id="img-orden" src={props.datos.imagen_proveedor}></img>
             <div id="divSentencias">
-              <p style={{fontSize:"1em", color:"black"}}>TIPO: {props.datos.tipo}</p>
               <p style={{fontSize:"1em", color:"black"}}>STATUS: {props.estado}</p>
               <p style={{fontSize:"1em", color:"black"}}>TICKET: {props.datos.ticket}</p>
             </div>
@@ -951,11 +959,14 @@ const OrdenEnViaje = ( props:{datos:any, setVolver:any, setVista:any, setEstado:
           </IonCard>
     
           <IonCard id="ionCard-explorerContainer-Proveedor">
+            <strong style={{marginTop:"1.1em"}}>DATOS DE ORDEN DE SERVICIO</strong>
+            <IonItemDivider />
             <div id="divSentencias">
-              <p style={{fontSize:"1em", color:"black"}}>FECHA DE SOLICITUD: {props.datos.fecha_creacion}</p>
-              <p style={{fontSize:"1em", color:"black"}}>TÍTULO: {props.datos.titulo}</p>
-              <p style={{fontSize:"1em", color:"black"}}>DESCRIPCIÓN DE LA SOLICITUD: </p>        
-              <p style={{fontSize:"1em", color:"black"}}>{props.datos.descripcion}</p>
+              <p style={{fontSize:"1.5em", color:"black"}}>{props.datos.titulo}</p>
+              <p style={{fontSize: "1em", color: "black", fontStyle: "italic"}}>DESCRIPCIÓN DE LA SOLICITUD:</p>
+              <p style={{fontSize:"1.2em", color:"black"}}>{props.datos.descripcion}</p>
+              <p style={{fontSize:"1em", color:"black", fontStyle: "italic"}}>FECHA DE SOLICITUD:</p>
+              <p style={{fontSize:"1.2em", color:"black"}}>{props.datos.fecha_creacion}</p>
             </div>
           </IonCard>
     
@@ -1063,51 +1074,44 @@ const Finalizada = ( props:{datos:any, setVolver:any, setVista:any, setEstado:an
   }
 
   return (
-    <IonContent>
-      <div id="ionContentModalOrdenes">
+    <><div style={{width:"100", height:"auto", background:"#f3f2ef"}}>
+      <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
+    </div>
+    <div style={{ background: "#f3f2ef", display: "flex", flexDirection: "column", width: "100%", height: "100%", justifyContent: "center", alignItems: "center" }}>
 
-        <div id="modalProveedor-flechaVolver">
-            <IonIcon icon={arrowBack} onClick={() => props.setVolver(false)} slot="start" id="flecha-volver">  </IonIcon>
-        </div>
-
-      
         <IonCard id="ionCardModalCentro">
-          <h2 style={{ fontSize: "1.2em", color: "black" }}>TRABAJO REALIZADO</h2>
-          <h2 style={{ fontSize: "1em", color: "blue" }}>COMPLETE LOS SIGUIENTES CAMPOS</h2>
+          <h1 style={{ fontSize: "1.2em", color: "black" }}>TRABAJO FINALIZADO</h1>
           <IonItemDivider />
+          <h2 style={{ fontSize: "0.8em", color: "black", fontStyle: "italic" }}>COMPLETE LOS SIGUIENTES CAMPOS</h2>
 
-          <h2 style={{ fontSize: "1em", color: "black" }}>INGRESE LA CALIFICACIÓN DEL CLIENTE</h2>
-          <Calificacion calificacion={calificacion} ></Calificacion>
-
-          <h2 style={{ fontSize: "1em", color: "black" }}>¿DESEA INGRESAR UNA RESEÑA DEL CLIENTE?</h2>
+          <h2 style={{ fontSize: "1em", color: "black" }}>INGRESE LA CALIFICACIÓN DEL PROVEEDOR DE SERVICIO</h2>
+          <Calificacion calificacion={calificacion}></Calificacion>
+          <h2 style={{ fontSize: "1em", color: "black" }}>¿DESEA INGRESAR UNA RESEÑA DEL PROVEEDOR DE SERVICIO?</h2>
           <IonItem id="item-completarInfo">
             <IonLabel position="floating">RESEÑA</IonLabel>
-            <IonInput onIonInput={(e: any) => reseña.current=(e.target.value)}></IonInput>
-
+            <IonInput onIonInput={(e: any) => reseña.current = (e.target.value)}></IonInput>
           </IonItem>
-
         </IonCard>
-    
-     <IonButton shape="round" color="warning"  id="botonContratar" onClick={() => enviar()} >ENVIAR CALIFICACIÓN</IonButton>
-   
-          <IonAlert
-                isOpen={showAlertCalificacion}
-                onDidDismiss={() => setShowAlertCalificacion(false)}
-                cssClass='my-custom-class'
-                header={'CALIFICACIÓN'}
-                subHeader={''}
-                message={'Debe ingresra una calificación para el cliente'}
-                buttons={['OK']} />
-          <IonAlert
-                isOpen={showAlertConexion}
-                onDidDismiss={() => setShowAlertConexion(false)}
-                cssClass='my-custom-class'
-                header={'INCONVENIENTE CON EL SERVIDOR'}
-                subHeader={''}
-                message={'Ingrese la calificación luego'}
-                buttons={['OK']} />
-   </div>
-      </IonContent>)
+        <IonButton shape="round" color="warning" id="botonContratar" onClick={() => enviar()}>ENVIAR CALIFICACIÓN</IonButton>
+
+        <IonAlert
+          isOpen={showAlertCalificacion}
+          onDidDismiss={() => setShowAlertCalificacion(false)}
+          cssClass='my-custom-class'
+          header={'CALIFICACIÓN'}
+          subHeader={''}
+          message={'Debe ingresra una calificación para el cliente'}
+          buttons={['OK']} />
+        <IonAlert
+          isOpen={showAlertConexion}
+          onDidDismiss={() => setShowAlertConexion(false)}
+          cssClass='my-custom-class'
+          header={'INCONVENIENTE CON EL SERVIDOR'}
+          subHeader={''}
+          message={'Ingrese la calificación luego'}
+          buttons={['OK']} />
+      </div></>
+)
 
 }
 
@@ -1429,10 +1433,13 @@ const Presupuesto = ( props:{presupuesto:any}) =>
     <>
      
       <IonCard id="ionCard-explorerContainer-Proveedor">
-          <h1 style={{ fontSize: "1em", color: "black" }}>PRESUPUESTO DEL PROVEEDOR:</h1>
+      <strong style={{marginTop:"1.2em", marginBottom:"1.2em"}}>PRESUPUESTO DEL PROVEEDOR</strong>
+
           <img style={{width:"32px", height:"32px"}} src={"./assets/icon/presupuesto.png"} />
           <IonItemDivider />
-          <h2 style={{ fontSize: "1em", color: "blue" }}>{props.presupuesto}</h2>
+          <p style={{fontSize:"1em", color:"black", margin:"0px 10px 0px 10px"}}>Para este trabajo y según la información que le ha suministrado al proveedor, este ha presupuestado lo siguiente: </p>
+
+          <h2 style={{ fontSize: "1em", color: "blue",marginTop:"1.2em", marginBottom:"1.5em" }}>{props.presupuesto}</h2>
       </IonCard>
     </>
   )
@@ -1444,13 +1451,13 @@ const FechaProgramadaPorProveedor = ( props:{hora:any, dia:any, setVista:any}) =
   return (
 
     <IonCard id="ionCard-explorerContainer-Proveedor">
-      <h1 style={{ fontSize: "1em", color: "black", marginTop: "20px" }}>FECHA Y HORA DE VISITA ESTIMATIVA:</h1>
+      <strong style={{marginTop:"1.2em", marginBottom:"1.2em"}}>FECHA Y HORA DE VISITA ESTIMATIVA</strong>
       <img style={{width:"32px", height:"32px"}} src={"./assets/icon/fecha.png"} />
       <IonItemDivider />
-      <h2 style={{ fontSize: "1em", color: "black" }}>DÍA DE VISITA PROPUESTA</h2>
-      <h2 style={{ fontSize: "0.9em", color: "blue" }}>{props.dia}</h2>
-      <h2 style={{ fontSize: "1em", color: "black" }}>HORA DE VISITA PROPUESTA</h2>
-      <h2 style={{ fontSize: "0.9em", color: "blue" }}>{props.hora} hs.</h2>
+      <h2 style={{ fontSize: "1em", color: "black", fontStyle: "italic" }}>DÍA DE VISITA PROPUESTA</h2>
+      <h2 style={{ fontSize: "1.5em", color: "black" }}>{props.dia}</h2>
+      <h2 style={{ fontSize: "1em", color: "black" , fontStyle: "italic"}}>HORA DE VISITA PROPUESTA</h2>
+      <h2 style={{ fontSize: "1.5em", color: "black" }}>{props.hora} hs.</h2>
 
       <IonButton shape="round" style={{width:"50%", marginTop:"15px", marginBottom:"32px"}} onClick={() => props.setVista("chat")}>SOLICITAR CAMBIO DE FECHA</IonButton>
     </IonCard>
