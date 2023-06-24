@@ -91,6 +91,8 @@ import { UserContext } from '../../Contexts/UserContext';
     }
   }, [user]);
 
+  console.log("USER: "+ JSON.stringify(user))
+  
   const cerrarSesion = ()=>{
 
     removeItem("email")
@@ -116,7 +118,6 @@ import { UserContext } from '../../Contexts/UserContext';
 
   }
 
-  console.log("ASDFASDFASDF: "+user!.email)
   
   if( user!.email==""|| user!.email==null){
     return (

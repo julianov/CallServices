@@ -71,11 +71,6 @@ const App: React.FC = () => {
   const [rubro1, setRubro1] =useState("")
   const [rubro2, setRubro2] =useState("")
 
- //removeItem("primevaCargaProveedores");
- //removeItem("clientType");
-
- //const [usuario, setUsuario] =  useState <usuario> ()
-
  const [user,setUser] = useState <usuario> ({
         email:"",
         nombre:"",
@@ -133,6 +128,7 @@ const App: React.FC = () => {
     if (res1 != null) {
       setIsReg(true);
       setEmail(res1);
+      setUser!((state:usuario) => ({ ...state, email: res1 }))
 
       const res2 = await getItem("clientType");
       setTipoCliente(res2);

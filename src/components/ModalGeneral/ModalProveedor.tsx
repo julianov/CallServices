@@ -213,7 +213,7 @@ const TomarFotografia = (props: {imagen:any, setFilepath:any}) => {
 const DatosUsuario = (props:{setIsReg:any, completarInfoPersonal:any, onClose:any,rubro1:any, rubro2:any, setRubro1:any, setRubro2:any
   }) =>{
 
-  const [agrandarImagen,setAgrandarImagen]=useState(false)
+  //const [agrandarImagen,setAgrandarImagen]=useState(false)
   const [datosPersonales,seDatosPersonales]=useState(false)
   const router = useIonRouter();
 
