@@ -38,26 +38,24 @@ import { RubroContext1, RubroContext2 } from '../../Contexts/RubroContext';
       <IonPage>
        
         <IonContent fullscreen id="main-container-Ingresar">
-        <div id="ingresarContenedorCentral">
-        
-          
-        <div id="hero__title">
-          
-        <IngresarDatos setIsReg={props.setIsReg} setCliente={props.setCliente} setShowLoading={setShowLoading} setShowAlertUsuarioContraseñaIncorrectos={setShowAlertUsuarioContraseñaIncorrectos} setShowAlertCompletarInfo={setShowAlertCompletarInfo} setShowAlertServerConnection={setShowAlertServerConnection} setShowAlertContraseñaCambiada={setShowAlertContraseñaCambiada} setShowAlertContraseñaNoIguales={setShowAlertContraseñaNoIguales} setShowAlertBadEmail={setShowAlertBadEmail} setShowAlertBadCode={setShowAlertBadCode} ></IngresarDatos>
-        </div>
-        <div id="cube"></div>
-        <div id="cube"></div>
-        <div id="cube"></div>
-        <div id="cube"></div>
-        <div id="cube"></div>
-        <div id="cube"></div>
 
-          
+        <div id="ingresarContenedorCentral">
+          <div id="hero__title">
+            <IngresarDatos setIsReg={props.setIsReg} setCliente={props.setCliente} setShowLoading={setShowLoading} setShowAlertUsuarioContraseñaIncorrectos={setShowAlertUsuarioContraseñaIncorrectos} setShowAlertCompletarInfo={setShowAlertCompletarInfo} setShowAlertServerConnection={setShowAlertServerConnection} setShowAlertContraseñaCambiada={setShowAlertContraseñaCambiada} setShowAlertContraseñaNoIguales={setShowAlertContraseñaNoIguales} setShowAlertBadEmail={setShowAlertBadEmail} setShowAlertBadCode={setShowAlertBadCode} ></IngresarDatos>
+          </div>
+          <div id="cube"></div>
+          <div id="cube"></div>
+          <div id="cube"></div>
+          <div id="cube"></div>
+          <div id="cube"></div>
+          <div id="cube"></div>
+
         </div>
 
           <IonLoading
             cssClass='my-custom-class'
             isOpen={showLoading}
+            mode='ios'
             onDidDismiss={() => setShowLoading(false)}
             message={'Ingresando...'}
             duration={7000}
@@ -144,36 +142,26 @@ import { RubroContext1, RubroContext2 } from '../../Contexts/RubroContext';
     setShowLoading:any, setShowAlertUsuarioContraseñaIncorrectos:any,  setShowAlertServerConnection:any, setShowAlertCompletarInfo:any, setShowAlertContraseñaCambiada:any, setShowAlertContraseñaNoIguales:any, setShowAlertBadEmail:any, setShowAlertBadCode:any}) => {
   
     const axios = require('axios');
-
-
     const [home, setHome]=useState(false)
-  
     const [restaurar, setRestaurar]=useState(0)
-  
     const password = useRef(0)
     const email=useRef("")
     const tipoDeCliente=useRef("")
-
     const  {user,setUser}  = useContext(UserContext)
-
     const {rubrosItem1,setItemRubro1} = useContext (RubroContext1) 
     const {rubrosItem2,setItemRubro2} = useContext (RubroContext2) 
-    
     const router = useIonRouter();
 
     if(home){
+
       props.setIsReg(true)
-
       props.setCliente(tipoDeCliente.current=="1"?true:false)
-
-      //setUser( (previous: usuario) => ({...previous, email: email.current}))
       setUser!((state:usuario) => ({ ...state, email: email.current }))
-
-      //return(<Redirect push={true} to="/home" />);
      
     }
   
     const validarRestauracion = () => {
+
       if(email.current.length>0){
         setRestaurar(3)
       }
@@ -181,10 +169,8 @@ import { RubroContext1, RubroContext2 } from '../../Contexts/RubroContext';
     }
 
 
-
   const PedirPersonalInfo = ( tipoDeCliente:any)=>{
 
-    //tipoDeCliente.current nos da undefined 
     axios.get(url2+"askpersonalinfo/"+tipoDeCliente.current+"/"+email.current, {timeout: 10000})
     .then((resp: { data: any; }) => {
 
@@ -305,17 +291,11 @@ import { RubroContext1, RubroContext2 } from '../../Contexts/RubroContext';
         }
       });
     }
-  ///////////////////////////////////////////////////////////////////////////////////////////
-  //////////////////////////////////////////////////////////////////////////////////////////
 
   const ingresar = async () => {
-    if (
-      email.current != null &&
-      email.current != undefined &&
-      email.current !== "" &&
-      password.current != null &&
-      password.current != undefined
-    ) {
+
+    if ( email.current != null &&  email.current != undefined &&  email.current !== "" &&  password.current != null &&  password.current != undefined  ) {
+      
       props.setShowLoading(true);
   
       try {
@@ -324,20 +304,18 @@ import { RubroContext1, RubroContext2 } from '../../Contexts/RubroContext';
           { timeout: 10000 }
         );
         const resquest = res.data;
-        console.log(resquest);
   
         if (resquest === "user or password incorrect") {
+          //credenciales incorrectas
           props.setShowLoading(false);
           props.setShowAlertUsuarioContraseñaIncorrectos(true);
-        } else if (resquest[0].personalDataCompleted === "false") {
 
-          if (setUser) {
-            setUser((state) => ({
-              ...state,
-              email: email.current,
-              tipoCliente: resquest[0].clientType,
-            }));
-          }
+        } else if (resquest[0].personalDataCompleted === "false") {
+          
+          //el usuario no completó su información personal. 
+          
+          setUser!((state) => ({...state,  email: email.current, tipoCliente: resquest[0].clientType, }));
+          
           await setItem("email", email.current)
           await setItem("clientType", resquest[0].clientType)
   
@@ -345,40 +323,49 @@ import { RubroContext1, RubroContext2 } from '../../Contexts/RubroContext';
 
         } else if (resquest[0].picture === "") {
 
+          //no se cargó la foto personal 
+
           await setItem("email", resquest[0].user);
           await setItem("clientType", resquest[0].clientType);
-          tipoDeCliente.current = resquest[0].clientType;
           await setItem("personalInfoCompleted", false);
   
-          props.setShowLoading(false);
-
-          tipoDeCliente.current = resquest[0].clientType;
           setUser!((state: usuario) => ({ ...state, foto: person }));
-          setUser!((state: usuario) => ({ ...state, tipoCliente: resquest[0].clientType }));
-  
-          if (resquest[0].clientType !== "1") {
-            await PedirRubros(email, tipoDeCliente);
-          } else {
-            setUser!((state: usuario) => ({ ...state, calificacion: resquest[0].calificacion}));
-          }
-  
+          setUser!((state: usuario) => ({ ...state, tipoCliente: resquest[0].clientType })); 
           setUser!((state: usuario) => ({ ...state, nombre: "" }));
           setUser!((state: usuario) => ({ ...state, apellido: "" }));
           setUser!((state: usuario) => ({ ...state, calificacion: 0 }));
-  
+
+          //esto lo hacemos para saber a donde redirigir
+          tipoDeCliente.current=resquest[0].clientType
+
+          //si es proveedor pedimos los rubros
+          if (resquest[0].clientType !== "1") {
+            await PedirRubros(email, tipoDeCliente);
+          } 
+
+          props.setShowLoading(false);
+
           setHome(true);
         } else {
+
+          //si todo es correcto. 
+
           await setItem("email", email.current);
           await setItem("fotoPersonal", resquest[0].picture);
           await setItem("clientType", resquest[0].clientType);
-          tipoDeCliente.current = resquest[0].clientType;
           await setItem("personalInfoCompleted", true);
   
           setUser!((state: usuario) => ({ ...state, foto: resquest[0].picture }));
           setUser!((state: usuario) => ({ ...state, tipoCliente: resquest[0].clientType }));
   
+          //esto lo hacemos para saber a donde redirigir
+          tipoDeCliente.current=resquest[0].clientType
+          
+          //pedimos la información personal.
           await PedirPersonalInfo(tipoDeCliente);
-          if (tipoDeCliente.current !== "1") {
+
+          //si es proveedor pedimos la información de los rubros.
+          if (resquest[0].clientType !== "1") {
             await PedirRubros(email, tipoDeCliente);
           }
   
@@ -387,7 +374,6 @@ import { RubroContext1, RubroContext2 } from '../../Contexts/RubroContext';
       } catch (err) {
         props.setShowLoading(false);
         props.setShowAlertServerConnection(true);
-        console.log("error: " + err);
       }
     } else {
       props.setShowAlertCompletarInfo(true);

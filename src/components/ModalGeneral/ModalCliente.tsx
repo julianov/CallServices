@@ -220,11 +220,8 @@ const ModalCliente: React.FC<{setIsReg:any, onClose: any; tipoVista: string;
 
 const DatosUsuario = (props:{setIsReg:any, completarInfoPersonal:any, onClose:any }) =>{
 
- // const [done,setDone]=useState(false)
-  //const [agrandarImagen,setAgrandarImagen]=useState(false)
   const [datosPersonales,seDatosPersonales]=useState(false)
  
-
   const closeSesion = () =>{
   
     removeItem("email")
@@ -236,28 +233,21 @@ const DatosUsuario = (props:{setIsReg:any, completarInfoPersonal:any, onClose:an
     removeItem("nombre")
     removeItem("apellido")
     removeItem("calificacion")
-    removeDB("ordenes").then(()=>
-     { 
+    removeDB("ordenes").then(()=> { 
 
       clearDB().then(()=>{
         props.setIsReg(false)
-
         window.location.reload();
-      }
-
-      )
+      })
       
-  }
-    )
+    })
    
   }
 
-        return(
-          <DatosPersonales completarInfoPersonal={props.completarInfoPersonal} closeSesion={closeSesion} datosPersonales={datosPersonales} setDatosPersonales={seDatosPersonales} onClose={props.onClose}  ></DatosPersonales>
-        )
+  return(
+    <DatosPersonales completarInfoPersonal={props.completarInfoPersonal} closeSesion={closeSesion} datosPersonales={datosPersonales} setDatosPersonales={seDatosPersonales} onClose={props.onClose}  ></DatosPersonales>
+  )
   
-
-
 }
 
 
@@ -386,10 +376,8 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
 
   const MostrarDatosPersonales = (props:{ setDatosPersonales:any, setShowAlertDatosPersonales:any, onClose:any}) => {
 
-      const  {user,setUser}  = useContext(UserContext)
+    const  {user,setUser}  = useContext(UserContext)
 
-
-    console.log ("EL NOMBRE ESTA DADO ACÁ: "+user!)
     const nombre = useRef(user!.nombre)
     const apellido = useRef(user!.apellido)
     const calificacion = useRef(user!.calificacion)  

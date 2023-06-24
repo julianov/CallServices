@@ -340,6 +340,7 @@ const HomeCliente = (props:{setIsReg:any}) => {
             <IonLoading
               cssClass='my-custom-class'
               isOpen={showCargandoProveedores}
+              mode='ios'
               onDidDismiss={() => setShowCargandoProveedores(false)}
               message={'Cargando proveedores...'}
               duration={5000}/>

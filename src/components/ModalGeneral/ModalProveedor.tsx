@@ -234,10 +234,8 @@ const DatosUsuario = (props:{setIsReg:any, completarInfoPersonal:any, onClose:an
   
     clearDB().then(()=>{
       props.setIsReg(false)
-      router.push("/", "forward", "push");
+      window.location.reload();
 
-     /* window.location.href="/"
-      window.location.reload(); */
     })
 
       
