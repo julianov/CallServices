@@ -277,15 +277,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
         setImagen(user!.foto)
       }
     }, [user!.foto]);
-/*
-  useEffect(() => {
-    if (user.nombre==null || user.apellido==null){
-    //  aca tengo que buscar los nombres en lo guardado che sino pedirlo al servidor
-      props.setNombre("Debe ingresar nombre")
-      props.setApellido("Debe ingresar apellido")
-    }
-  },[])
-  */
+
 
   if(props.completarInfoPersonal){
     return(
@@ -397,6 +389,7 @@ const DatosPersonales = (props:{closeSesion:any; completarInfoPersonal:any; dato
       const  {user,setUser}  = useContext(UserContext)
 
 
+    console.log ("EL NOMBRE ESTA DADO ACÁ: "+user!)
     const nombre = useRef(user!.nombre)
     const apellido = useRef(user!.apellido)
     const calificacion = useRef(user!.calificacion)  

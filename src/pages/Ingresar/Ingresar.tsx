@@ -19,8 +19,7 @@ import { RubroContext1, RubroContext2 } from '../../Contexts/RubroContext';
   const url3=Https+"completarinfo/"
   
 
-  const Ingresar = (props:{setIsReg:any, setCliente:any, setEmail:any, setFoto:any, setTipoCliente:any,
-    setNombre:any, setApellido:any, setCalificacion:any}) => {
+  const Ingresar = (props:{setIsReg:any, setCliente:any}) => {
 
     const [showAlertServerConnection, setShowAlertServerConnection] = useState(false);
     const [showAlertCompletarInfo,setShowAlertCompletarInfo] = useState(false)
@@ -32,6 +31,7 @@ import { RubroContext1, RubroContext2 } from '../../Contexts/RubroContext';
   
     const [showLoading, setShowLoading]=useState(false)
 
+    const  {user,setUser}  = useContext(UserContext)
 
   
     return (
@@ -43,10 +43,7 @@ import { RubroContext1, RubroContext2 } from '../../Contexts/RubroContext';
           
         <div id="hero__title">
           
-        <IngresarDatos setIsReg={props.setIsReg} setCliente={props.setCliente} 
-              setEmail={props.setEmail} setFoto={props.setFoto} setTipoCliente={props.setTipoCliente} 
-              setNombre={props.setNombre} setApellido={props.setApellido} setCalificacion={props.setCalificacion}
-              setShowLoading={setShowLoading} setShowAlertUsuarioContraseñaIncorrectos={setShowAlertUsuarioContraseñaIncorrectos} setShowAlertCompletarInfo={setShowAlertCompletarInfo} setShowAlertServerConnection={setShowAlertServerConnection} setShowAlertContraseñaCambiada={setShowAlertContraseñaCambiada} setShowAlertContraseñaNoIguales={setShowAlertContraseñaNoIguales} setShowAlertBadEmail={setShowAlertBadEmail} setShowAlertBadCode={setShowAlertBadCode} ></IngresarDatos>
+        <IngresarDatos setIsReg={props.setIsReg} setCliente={props.setCliente} setShowLoading={setShowLoading} setShowAlertUsuarioContraseñaIncorrectos={setShowAlertUsuarioContraseñaIncorrectos} setShowAlertCompletarInfo={setShowAlertCompletarInfo} setShowAlertServerConnection={setShowAlertServerConnection} setShowAlertContraseñaCambiada={setShowAlertContraseñaCambiada} setShowAlertContraseñaNoIguales={setShowAlertContraseñaNoIguales} setShowAlertBadEmail={setShowAlertBadEmail} setShowAlertBadCode={setShowAlertBadCode} ></IngresarDatos>
         </div>
         <div id="cube"></div>
         <div id="cube"></div>
@@ -144,8 +141,6 @@ import { RubroContext1, RubroContext2 } from '../../Contexts/RubroContext';
   
 
   export const IngresarDatos = (props:{setIsReg:any, setCliente:any, 
-    setEmail:any, setFoto:any, setTipoCliente:any, 
-    setNombre:any, setApellido:any, setCalificacion:any,
     setShowLoading:any, setShowAlertUsuarioContraseñaIncorrectos:any,  setShowAlertServerConnection:any, setShowAlertCompletarInfo:any, setShowAlertContraseñaCambiada:any, setShowAlertContraseñaNoIguales:any, setShowAlertBadEmail:any, setShowAlertBadCode:any}) => {
   
     const axios = require('axios');
@@ -170,12 +165,9 @@ import { RubroContext1, RubroContext2 } from '../../Contexts/RubroContext';
       props.setIsReg(true)
 
       props.setCliente(tipoDeCliente.current=="1"?true:false)
-      props.setEmail(email.current)
 
       //setUser( (previous: usuario) => ({...previous, email: email.current}))
       setUser!((state:usuario) => ({ ...state, email: email.current }))
-
-      
 
       //return(<Redirect push={true} to="/home" />);
      
@@ -199,14 +191,11 @@ import { RubroContext1, RubroContext2 } from '../../Contexts/RubroContext';
       if(resp.data!="no ha cargado información personal"){
         
         if (tipoDeCliente!="3"){
-          props.setNombre(resp.data[0].name)
-          props.setApellido(resp.data[0].last_name)
-          props.setCalificacion(resp.data[0].qualification)
-
+         
           setUser!((state:usuario) => ({ ...state, nombre: resp.data[0].name }))
           setUser!((state:usuario) => ({ ...state, apellido: resp.data[0].last_name }))
           setUser!((state:usuario) => ({ ...state, calificacion: resp.data[0].qualification }))
-          setUser!((state:usuario) => ({ ...state, calificacion: resp.data[0].qualification }))
+          setUser!((state:usuario) => ({ ...state, email: email.current }))
 
           setItem("nombre",resp.data[0].name )
           setItem("apellido",resp.data[0].last_name )
@@ -214,10 +203,7 @@ import { RubroContext1, RubroContext2 } from '../../Contexts/RubroContext';
 
                  
         }else{
-         props.setNombre(resp.data[0].name)
-         props.setApellido(resp.data[0].description)
-         props.setCalificacion(resp.data[0].qualification)
-
+       
          setItem("nombre",resp.data[0].name )
          setItem("apellido",resp.data[0].description)
          setItem("calificacion", resp.data[0].qualification)
@@ -225,7 +211,8 @@ import { RubroContext1, RubroContext2 } from '../../Contexts/RubroContext';
          setUser!((state:usuario) => ({ ...state, nombre: resp.data[0].name }))
          setUser!((state:usuario) => ({ ...state, apellido: resp.data[0].last_name }))
          setUser!((state:usuario) => ({ ...state, calificacion: resp.data[0].qualification }))
-        
+         setUser!((state:usuario) => ({ ...state, email: email.current }))
+
         }                      
        }
     })
@@ -357,14 +344,14 @@ import { RubroContext1, RubroContext2 } from '../../Contexts/RubroContext';
           router.push("/Completarinfo", "forward", "push");
 
         } else if (resquest[0].picture === "") {
+
           await setItem("email", resquest[0].user);
           await setItem("clientType", resquest[0].clientType);
           tipoDeCliente.current = resquest[0].clientType;
           await setItem("personalInfoCompleted", false);
   
           props.setShowLoading(false);
-          props.setFoto(person);
-          props.setTipoCliente(resquest[0].clientType);
+
           tipoDeCliente.current = resquest[0].clientType;
           setUser!((state: usuario) => ({ ...state, foto: person }));
           setUser!((state: usuario) => ({ ...state, tipoCliente: resquest[0].clientType }));
@@ -372,12 +359,9 @@ import { RubroContext1, RubroContext2 } from '../../Contexts/RubroContext';
           if (resquest[0].clientType !== "1") {
             await PedirRubros(email, tipoDeCliente);
           } else {
-            props.setCalificacion(resquest[0].calificacion);
+            setUser!((state: usuario) => ({ ...state, calificacion: resquest[0].calificacion}));
           }
   
-          props.setNombre("");
-          props.setApellido("");
-          props.setCalificacion(0);
           setUser!((state: usuario) => ({ ...state, nombre: "" }));
           setUser!((state: usuario) => ({ ...state, apellido: "" }));
           setUser!((state: usuario) => ({ ...state, calificacion: 0 }));
@@ -390,9 +374,6 @@ import { RubroContext1, RubroContext2 } from '../../Contexts/RubroContext';
           tipoDeCliente.current = resquest[0].clientType;
           await setItem("personalInfoCompleted", true);
   
-          props.setShowLoading(false);
-          props.setTipoCliente(tipoDeCliente.current);
-          props.setFoto(resquest[0].picture);
           setUser!((state: usuario) => ({ ...state, foto: resquest[0].picture }));
           setUser!((state: usuario) => ({ ...state, tipoCliente: resquest[0].clientType }));
   

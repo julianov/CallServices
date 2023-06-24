@@ -60,13 +60,6 @@ const App: React.FC = () => {
   const [personalInfoCompleto, setPersonalInfoCompleto] =useState <boolean> ()
   //Fin para registro
 
-  const [email, setEmail] = useState("")
-  const [tipoCliente, setTipoCliente] = useState("")
-
-  const [foto,setFoto] = useState("") 
-  const [nombre,setNombre]= useState("")
-  const [apellido,setApellido]= useState("")
-  const [calificacion, setCalificacion] = useState(0)
 
   const [rubro1, setRubro1] =useState("")
   const [rubro2, setRubro2] =useState("")
@@ -126,32 +119,26 @@ const App: React.FC = () => {
 
     const res1 = await getItem("email");
     if (res1 != null) {
+
       setIsReg(true);
-      setEmail(res1);
       setUser!((state:usuario) => ({ ...state, email: res1 }))
 
       const res2 = await getItem("clientType");
-      setTipoCliente(res2);
       setUser!((state:usuario) => ({ ...state, tipoCliente: res2}))
 
       const res3 = await getItem("fotoPersonal");
       if (res3 !== "" && res3 !== undefined && res3 !== " ") {
-        setFoto(res3);
         setUser!((state:usuario) => ({ ...state, foto: res3 }))
 
       }
 
       const res4 = await getItem("nombre");
-      setNombre(res4);
       setUser!((state:usuario) => ({ ...state, nombre: res4 }))
-               
-
+              
       const res5 = await getItem("apellido");
-      setApellido(res5);
       setUser!((state:usuario) => ({ ...state, apellido: res5}))
 
       const res6 = await getItem("calificacion");
-      setCalificacion(res6);
       setUser!((state:usuario) => ({ ...state, calificacion: res6}))
 
       const res7 = await getItem("infoRubro1");
@@ -242,7 +229,7 @@ return(
 
           <Route path="/ingresar" render={() => isReg ?   ( cliente ?  <HomeCliente  setIsReg={setIsReg} /> 
                                                             :<HomeProveedor  setIsReg={setIsReg} /> ) 
-                                                :<Ingresar setIsReg={setIsReg} setCliente={setCliente} setEmail={setEmail} setFoto={setFoto} setTipoCliente={setTipoCliente} setNombre={setNombre} setApellido={setApellido} setCalificacion={setCalificacion} />} /> 
+                                                :<Ingresar setIsReg={setIsReg} setCliente={setCliente} />} /> 
           
           <Route path="/MisServicios" render={() => <MisServicios ></MisServicios>}></Route>
           
